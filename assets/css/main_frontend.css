@@ -1,0 +1,362 @@
+.errors-register{
+    display: flex;
+    flex-direction: column;
+    color: red;
+    justify-content: start;
+    align-items: start;
+    height: fit-content;
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+.errors-register::-webkit-scrollbar{
+    display: none;
+}
+.errors-register p{
+    padding: 0;
+    margin: 0;
+}
+.success-register{
+    display: flex;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    color: green;
+    flex-direction: column;
+    border-radius: 10px;
+    background: #e0e0e0;
+    box-shadow:  15px 15px 30px #a8a8a8,
+                -15px -15px 30px #ffffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+}
+.success-register a{
+    color: #000;
+    text-decoration: none;
+    margin: 5px;
+}
+.success-register p{
+    margin: none;
+}
+
+.body{
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #a0a0a0;
+    overflow: hidden;
+}
+.header{
+    height: 4rem;
+    border-bottom: solid 1px #727272;
+    overflow: hidden;
+}
+#pfpOnTop, .logo img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    
+}
+.otherButtons{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 50%;
+}
+.logo{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+.otherButtons button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4.5rem;
+    border: none;
+    background: none;
+    width: fit-content;
+    margin: 0 3rem;
+}
+.sideNav{
+    width: fit-content;
+    height: 89.4vh;
+    background-color: #ff1a1a;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.sideContents{
+    display: flex;
+    flex-direction: column;
+}
+.widthDiv{
+    width: 100%;
+    background-color: #ff3c3c;
+}
+.buttonDiv{
+    width: 4rem;
+    padding: 5px 0;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    background-color: #ff3c3c;
+}
+.buttonDiv button{
+    width: 2.5rem;
+    height: 2rem;
+    background-color: #c4c4c4;
+    border: solid 1px #000;
+}
+.profileBox p, .profileBox h4{
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+.profileBox h4{
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+#pfp, .employeeList img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.employeeList img{
+    margin-bottom: 5px;
+}
+.profileBox{
+    width: 15vw;
+    background-color: #ff3c3c;
+    height: 22vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.menuBox, .menuBox ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20rem;
+}
+.menuBox li{
+    width: 100%;
+    height: 3rem;
+    border-bottom: solid 1px #ff5454;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.row{
+    display: flex;
+}
+.menuBox a{
+    text-decoration: none;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-left: 20px;
+}
+.menuBox i{
+    margin-right: 5px;
+}
+.pageWrapper {
+    position: relative;
+}
+.contents{
+    position: relative;
+    min-width: 92vw;
+    height: 100%; 
+}
+.title h3{
+    margin: 0;
+    color: #000;
+}
+.title{
+    width: 100%;
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+.profileMenu{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 2;
+    transform: translate(-2rem, 5rem);
+    background: #e0e0e0;
+    box-shadow:  15px 15px 30px #a8a8a8;
+                /* -15px -15px 30px #ffffff; */
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    z-index: 6;
+}
+.profileMenu a, .profileMenu li{
+    text-decoration: none;
+    color: #000;
+    width: 7rem;
+    height: 2rem;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+.profileMenu li{
+    list-style-type: none;
+    border-bottom: solid 1px #000;
+}
+
+.search{
+    position: fixed;
+    right: 1rem;
+    width: 70%;
+    height: 1.5rem;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    display: flex;
+    justify-content: end;
+    z-index: 2;
+}
+.search input{
+    height: 100%;
+    width: 15rem;
+    padding: 5px 10px;
+}
+.search li{
+    list-style-type: none;
+}
+.search button{
+    width: 4rem;
+    height: 2.4rem;
+}
+#buttonsOnEmployee{
+    width: fit-content;
+}
+.employeeList{
+    width: 92vw;
+    height: 78vh;
+    margin-left: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    transform: translateY(3rem);
+} 
+.employeeList::-webkit-scrollbar{
+    display: none;
+}
+.employeeList ul{
+    list-style-type: none;
+    width: 20rem;
+    height: 12rem;
+    background-color: #cfcfcf;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow:  15px 15px 30px #a8a8a8,
+                -15px -15px 30px #ffffff;
+}
+#profileLi, #infoLi{
+    width: 30%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#infoLi{
+    width: 70%;
+    height: fit-content;
+}
+.employeeList p{
+    margin: 0;
+    padding: 0;
+}
+.accountRequest, .rejectedRequest, .AddEmployee{
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    width: 71.5vw;
+    height: 70vh;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    background: #e0e0e0;
+    box-shadow:  15px 15px 30px #a8a8a8,
+                -15px -15px 30px #ffffff;
+    border-radius: 10px;
+    z-index: 5;
+}
+.accountRequest::-webkit-scrollbar, .rejectedRequest::-webkit-scrollbar, .AddEmployee::-webkit-scrollbar{
+    display: none;
+}
+.accountRequest h3, .rejectedRequest h3{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+.AddEmployee h3{
+    margin-left: 10px;
+}
+.AddEmployee{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    z-index: 5;
+}
+.flex-wrap{
+    padding: 10px;
+}
+.AddEmployee input{
+    width: 13rem;
+    height: 2rem;
+    margin: 10px;
+    padding: 5px 10px ;
+}
+.auth{
+    display: flex;
+}
+.profileP{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.rowButton{
+    display: flex;
+    flex-direction: row;
+}
+.pending{
+    display: flex;
+    flex-wrap: wrap;
+}

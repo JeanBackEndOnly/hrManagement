@@ -1,0 +1,1186 @@
+:root{
+    --main_bg:#CECECE;
+    --content_bg: rgba(255, 255, 255, 0.9);
+    --black: #000;
+    --hover: #ff2828;
+    --success: #4BB543;
+    --form_bg: rgba(255, 255, 255, 0.5);
+    --right: #5a5a5a;
+    --left: #ffffff;
+}
+.errors-admin{
+    /* position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%; */
+    z-index: 8;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--content_bg);
+    display: flex;
+    flex-direction: column;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.errors-admin li{
+    margin: 5px 0;
+    width: fit-content;
+}
+.errors-register {
+    display: flex;
+    flex-direction: column;
+    color: var(--hover);
+    justify-content: center;
+    align-items: start;
+    height: 2rem;
+    width: 100%;
+    margin: 0;
+    padding: 0 5px;
+    z-index: 8;
+    background-color: var(--content_bg);
+}
+.success-register, .unsuccess-registers, .success-registers {
+    transition: opacity 0.5s ease;
+}
+
+.success-register.hidden, .unsuccess-registers.hidden, .success-registers.hidden{
+    opacity: 0;
+}
+
+.errors-register p{
+    padding: 0;
+    margin: 0;
+}
+.success-register, .unsuccess-registers, .success-registers, .success-registerss{
+    display: flex;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 10%;
+    right: -7.3rem;
+    color: var(--left);
+    flex-direction: column;
+    background: rgb(25, 211, 0);
+    padding: 0 15px;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: bold;
+}
+.success-register p, .unsuccess-registers, .success-register p, .success-registerss p{
+    margin: none;
+}
+.success-registers{
+    right: -5.3rem;
+}
+.success-registerss{
+    top: 2rem;
+    left: 50%;
+    width: 15rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.success-registerss p{
+    margin-top: 1rem;
+}
+.unsuccess-registers{
+    background-color: var(--hover);
+    right: -5.3rem;
+}
+/* ======================== all li ======================== */
+.menuBox button{
+    box-shadow:  5px 5px 15px #a8a8a8;
+}
+ 
+.profileMenu li, .menuBox ul, .searchInput li, .accountRequest ul, .rejectedRequest ul, .AddEmployee li, .activeStatus ul{
+    list-style-type: none;
+}
+.profileBox p, .profileBox h4, .menuBox button, .menuBox, .menuBox li, .menuBox a, .hrNavs p, .profileP p, .activeHeader h5,
+.counts h3, .counts h5{
+    margin: 0;
+}
+i{
+    margin-right: 5px;
+}
+#iLeft{
+    margin-left: 5px;
+}
+*{
+    font-family: sans-serif;
+}
+body{
+    background-color: var(--main_bg);
+}
+.header, #buttonpfpmenu, .profileMenu, .profileMenu li, .profileMenu a, .profileMenu p, .sideNav, .profileBox{
+    display: flex;
+    /* width: 100%; */
+    height: 10vh;
+    background-color: var(--content_bg);
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+.header{
+    margin-bottom: 1vh;
+    border-radius: 10px;
+}
+.header h3{
+    margin: 0;
+    font-size: 30px;
+}
+#buttonpfpmenu{
+    border: none;
+    background-color: none;
+}
+#buttonpfpmenu i{
+    margin-left: 5px;
+}
+.otherButtons{
+    margin-right: 2rem;
+}
+.profileMenu{
+    flex-direction: column;
+    position: absolute;
+    transform: translate(-1.5rem, -.1rem);
+    width: 8rem;
+    height: 8rem;
+    padding: 3px;
+    justify-content: space-evenly;
+    border-radius: 5px;
+    box-shadow: 0 0 10px .1px var(--black);
+    z-index: 4;
+    background-color: #fff;
+}
+.profileMenu li, .profileMenu a, .profileMenu p{
+    width: 100%;
+    justify-content: center;
+    text-decoration: none;
+    height: 1.5rem;
+    color: var(--black);
+    background-color: #fff;
+}
+.profileMenu p{
+    width: 6rem;
+    margin: 0;
+    text-align: start;
+    justify-content: start;
+    align-items: start;
+    
+}
+#borderBottom{
+    border-bottom: solid 1px var(--black);
+}
+.logo{
+    margin-left: 2rem;
+}
+.otherButtons img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+#l{
+    margin-bottom: -10px;
+}
+.row{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+    height: 100%;
+}
+.sideNav{
+    flex-direction: column;
+    min-width: 16vw;
+    height: 86.5vh;
+    border-top-right-radius: 10px;
+    margin-right: 1vw;
+    padding: 0;
+}
+.profileBox{
+    justify-content: center;
+    flex-direction: column;
+    max-width: 100%;
+    height: 10rem;
+    border-top-right-radius: 10px;
+    background: none;
+}
+.profileBox p{
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+.contents{
+    min-width: 81.9vw;
+    height: 86.5vh;
+    border-radius: 10px;
+    background: url("../image/pueri-logo.png");
+    background-color: rgba(255, 255, 255, 0.9); /* light overlay */
+    background-size: 50%;
+  background-blend-mode: lighten; /* or 'overlay', 'screen', etc. */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.menuBox, .menuBox ul{
+    display: flex;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    min-width: 16vw;
+}
+.menuBox button{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: solid 1px var(--black);
+    width: 90%;
+    height: 2.5rem;
+    margin: 5px 0;
+    background-color: #fff;
+}
+.menuBox button:hover{
+    background-color: var(--hover);
+    color: var(--left);
+}
+.menuBox a, .menuBox a{
+    text-decoration: none;
+    color: var(--black);
+    width: 100%;
+}
+.hrNavs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+.hrNavs a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+}
+.hrNavs a:hover{
+    color: var(--hover);
+}
+.hrNavs p{
+    width: 10rem;
+    /* display: flex; */
+    text-align: start;
+}
+
+/* ================ EMPLOYEE MANAGEMENT ================= */
+#registerForm{
+    display: flex;
+    flex-direction: column;
+}
+.search, .searchInput{
+    width: 96%;
+    display: flex;
+    justify-content: space-between;
+    height: 3rem;
+    align-items: center;
+    margin: 10px;
+}
+.searchInput{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.searchInput input{
+    width: 60%;
+    height: 1.5rem;
+    padding: 5px 10px;
+}
+.searchInput button{
+    height: 2.3rem;
+    width: 10%;
+}
+.employee_management{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.employee_management button, .jobs button{
+    height: 2.3rem;
+    width: 20%;
+    margin: 0 5px;
+    color: var(--content_bg);
+    border: none;
+    font-weight: bold;
+    transition: .5s;
+    box-shadow:  5px 5px 15px #a8a8a8;
+}
+.employee_management button:hover, .jobs button:hover{
+    transform: scale(1.1);
+}
+.employee_management button:active, .jobs button:active{
+    transform: scale(.5);
+}
+.employeeList{
+    width: 98%;
+    height: 85%;
+    padding: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+.allEmployee{
+    display: flex;
+    background-color: #4BB543;
+    width: 98%;
+    height: 85%;
+    z-index: 3;
+}
+
+.back{
+    width: 48vw;
+    height: 3rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-top-left-radius: 10px;
+}
+.back button{
+    background: none;
+    border: none;
+    margin-left: 1rem;
+    margin-top: .5rem;
+}
+.sideNav img, .employeeList img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.accountRequest ul, .rejectedRequest ul{
+    width: 30rem;
+    height: 12rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    border: solid 1px var(--black);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+.columnDetails{
+    width: 70%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+}
+#infoLi{
+    width: 100%;
+    align-items: start;
+}
+#bold{
+    font-weight: bold;
+    font-size: 15px;
+    margin: 5px 0
+}
+#mailP{
+    margin: 5px 0;
+}
+.pending li, .reject li{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    height: 100%;
+}
+.center{
+    align-items: center;
+}
+#profileLi p{
+    text-align: center;
+}
+#h3Add, #h3WithBack{
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+.AddEmployee{
+    flex-direction: column;
+    padding-top: 0;
+}
+.outerButton{
+    z-index: 7;
+    position: absolute;
+    bottom: 0;
+    background-color: var(--form_bg);
+}
+#register-outer{
+    bottom: -1rem;
+}
+#addmamhens{
+    border-bottom-right-radius: 10px;
+}
+#addmamhens input{
+    height: 2.5rem;
+    width: 13rem;
+}
+#inputDivFour input, #inputDivFour select{
+    width: 15rem;
+}#inputDivFours input{
+    width: 13rem;
+}
+#inputDivFours select{
+    width: 14.3rem;
+}
+#se input{
+    width: 13rem;
+}
+#rateT{
+    width: 13rem;
+}
+.profileP img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+.rowAddEmployee{
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    justify-content: space-between;
+    align-items: center;
+}
+.four-div, .surname-email, .address-div, .account-auth{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;  
+    height: fit-content;  
+}
+.CenterInfo{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+.accountRequest, .rejectedRequest, .AddEmployee, .addmamhen, .Edits{
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    width: 48vw;
+    height: 90vh;
+    overflow-y: scroll;
+    background-color: var(--left);
+    box-shadow: 10px 10px 20px #5a5a5a, -10px -10px 20px #ffffff;
+    z-index: 5;
+}
+.accountRequest::-webkit-scrollbar, .rejectedRequest::-webkit-scrollbar, .AddEmployee::-webkit-scrollbar
+, .addmamhen::-webkit-scrollbar, .Edits::-webkit-scrollbar{
+    width: 8px;
+}
+
+.accountRequest::-webkit-scrollbar-track, .rejectedRequest::-webkit-scrollbar-track, .AddEmployee::-webkit-scrollbar-track
+, .addmamhen::-webkit-scrollbar-track, .Edits::-webkit-scrollbar-track{
+    background: transparent;
+    border-radius: 10px;
+}
+
+.accountRequest::-webkit-scrollbar-thumb, .rejectedRequest::-webkit-scrollbar-thumb, .AddEmployee::-webkit-scrollbar-thumb
+, .addmamhen::-webkit-scrollbar-thumb, .Edits::-webkit-scrollbar-thumb{
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.accountRequest::-webkit-scrollbar-thumb:hover, .rejectedRequest::-webkit-scrollbar-thumb:hover, .AddEmployee::-webkit-scrollbar-thumb:hover
+, .addmamhen::-webkit-scrollbar-thumb:hover , .Edits::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+.addmamhen, .Edits{
+    overflow: hidden;
+    border-radius: 10px;
+}
+#addmamhens{
+    padding-top: 10rem;
+}
+.account-auth{
+    margin-bottom: 3rem;
+}
+ h3{
+    margin: .2rem 2rem;
+}
+.AddEmployee{
+    justify-content: start;
+    align-items: center;
+    z-index: 5;
+}
+.AddEmployee input, .AddEmployee select{
+    height: 2.5rem;
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 17px;
+    background-color: var(--form_bg);
+    border: solid 1px var(--black);
+}
+.AddEmployee input{
+    height: 1.5rem;
+    width: 10%;
+    background-color: var(--form_bg);
+}
+ select, .AddEmployee select{
+    width: 14.4rem;
+    height: 2.3rem;
+    padding: 5px 10px ;
+    cursor: pointer;
+    background-color: var(--form_bg);
+    border: solid 1px var(--black);
+}
+.AddEmployee select{
+    height: 2.3rem;
+    padding: 6px 10px ;
+    width: 100%;
+    background-color: var(--form_bg);
+}
+/* .AddEmployee li{
+    width: 30%;    
+} */
+.four-div{
+    width: 60%;
+    justify-content: space-between;
+}
+/* .four-div li{
+    width: 30%;  
+} */
+.four-div select{
+    width: 10%;
+}
+
+#bottomEdit{
+    margin-bottom: 4rem;
+}
+ label{
+    display: flex;
+    color: var(--hover);
+    font-size: 12px;
+    margin-bottom: 3px;
+    
+}
+.four-div li, .surname-email li, .address-div li, .account-auth li{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin: 10px;
+    height: fit-content;
+    width: 30%; 
+}
+.accountRequest h3, .rejectedRequest h3{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+.accountRequest, .rejectedRequest{
+    height: 55vh;
+    justify-content: center;
+    align-items: start;
+    overflow-x: scroll;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    width: 45vw;
+    background-color: var(--left);
+}
+#optional{
+    color: var(--black);
+}
+.AddEmployee::-webkit-scrollbar, .accountRequest::-webkit-scrollbar,
+.rejectedRequest::-webkit-scrollbar, .employeeList::-webkit-scrollbar{
+    display: none;
+}
+#optional{
+    color: var(--black);
+}
+.auth{
+    display: flex;
+}
+#kk{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.profileP{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+}
+.rowButton{
+    display: flex;
+    flex-direction: row;
+}
+.pending{
+    display: flex;
+    flex-wrap: wrap;
+}
+#required{
+    color: var(--hover);
+}
+#AddButtonEmp{
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: none;
+    transition: .5s;
+    background-color: var(--success);
+    color: var(--black);
+    font-weight: bold;
+    margin: 10px;
+}
+#AddButtonEmp:hover, #naniButton:hover{
+    box-shadow:  10px 10px 10px #a8a8a8,
+    -10px -10px 10px #ffffff;
+    border: none;
+    background-color: var(--black);
+    color: var(--content_bg);
+}
+#naniButton:hover{
+    box-shadow: none;
+}
+#naniButton{
+    width: 48vw;
+    height: 3rem;
+    border: none;
+    transition: .5s;
+    background-color: var(--success);
+    color: var(--black);
+    font-weight: bold;
+    /* margin-bottom: 15px; */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+#AddButtonEmp{
+    margin-bottom: none;
+}
+.buttonBG{
+    width: 62.1%;
+    height: 100%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    
+}
+.approved{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 17rem;
+    height: 20rem;
+    margin: 10px 7px;
+    border-radius: 10px;
+    background-color: var(--form_bg);
+    box-shadow:  5px 5px 15px var(--right),
+                -5px -5px 15px var(--left);
+    border: solid 1px var(--black);
+
+}
+.approved p{
+    margin: 5px 0;
+    font-weight: bold;
+    /* text-shadow: 2px 2px 5px rgba(0,0,0,0.5); */
+    font-size: 14px;
+    text-align: center;
+    
+}
+.approved img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+#e {
+    width: 15rem;
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.crudButtons{
+    display: flex;
+    width: 90%;
+    height: fit-content;
+    margin-top: 10px;
+    align-items: end;
+    justify-content: end;
+    /* transform: translateX(1rem); */
+    border-top: solid 1px var(--black);
+    padding-top: 10px;
+}
+.crudButtons button, .buttonsCenter button, .nanii button{
+    margin: 0 5px;
+    width: 4rem;
+    height: 2rem;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    color: var(--content_bg);
+    transition: .5s;
+}
+#view:hover, #edit:hover, #delete:hover, #deleteUserByHr:hover{
+    background-color: var(--black);
+}
+.crudButtons a{
+    text-decoration: none;
+    color: var(--content_bg);
+}
+#view{
+    background-color: #219CD0;
+}
+#edit{
+    background-color: #18DF3C;
+}
+#delete, #deleteUserByHr{
+    background-color: #E61818;
+}
+.hiddenForms, .deleteJob{
+    position: fixed;
+    transform: translate(-50%, -50%);
+    bottom: 2%;
+    left: 50%;
+    width: 20rem;
+    height: 6rem;
+    background: #e0e0e0;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border: solid 1px var(--black);
+}
+.hiddenForms p, .deleteJob p{
+    border-bottom: solid 1px var(--black);
+    padding: 10px 0px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+.buttonsCenter{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.buttonsCenter button{
+    width: 8rem;
+}
+
+/* ============ DASHBOARD ========================= */
+.activeHeader, .activeStatus, #name, #department, #active, .activeUser, .activeUser ul,
+.employeeInfo, .counts, .jobs, .job-list, .hiddenMJ, .hiddenMJ form, .buttonJob,
+.jobHeader, #id, #jobsId, .jobs_list, .rowJobs, .jobLists, .idList, .actionList, .buttonConfirmation, .nanii{
+    display: flex;
+}
+.activeStatus{
+    margin: 10px;
+    max-width: 50%;
+    height: 50%;
+    background-color: rgba(255, 255, 255, 0.9); /* light overlay */
+    border: solid 1px var(--black);
+    border-radius: 10px;
+    overflow-y: scroll;
+    flex-direction: column;
+    background: #eeeeee;
+    box-shadow:  10px 10px 20px #5a5a5a,
+                 -10px -10px 20px #ffffff;
+    margin-left: 3rem;
+    padding: 0;
+}
+.activeStatus::-webkit-scrollbar{
+    width: 8px;
+}
+
+.activeStatus::-webkit-scrollbar-track{
+    background: transparent;
+    border-radius: 10px;
+}
+
+.activeStatus::-webkit-scrollbar-thumb{
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.activeStatus::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+.activeStatus:hover {
+    background-color: var(--black);
+    color: var(--left);
+}
+
+
+.activeHeader, .activeUser, .activeUser ul{
+    width: 100%;
+    height: fit-content;
+}
+.activeHeader{
+    border-bottom: solid 1px var(--black);
+}
+.no_activeUser{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+#name, #names{
+    width: 60%;
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+#department, #active, #departments, #actives{
+    width: 25%;
+}
+#active, #actives{
+    width: 20%;
+}
+#name, #department, #active, #names, #departments, #actives{
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    font-size: 15px;
+}
+#names, #departments, #actives{
+    border-bottom: solid 1px var(--black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.activeUser ul, .activeHeader{
+    padding: 0;
+    margin: 0;
+    /* border-bottom: solid 1px var(--black); */
+}
+.employeeInfo{
+    justify-content: space-evenly;
+    align-items: start;
+    width: 100%;
+    height: fit-content;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+.counts{
+    width: 25%;
+    height: 10rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    box-shadow:  10px 10px 20px #5a5a5a,
+                 -10px -10px 20px #ffffff;
+                 border-radius: 10px;
+    margin: 0;
+    padding-left: 2rem;
+    border: solid 1px var(--black);
+}
+.counts:hover{
+    background-color: var(--black);
+    color: var(--left);
+}
+#number{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+.contents-job{
+    justify-content: center;
+    align-items: center;
+}
+.jobs, .job-list{
+    width: 94%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin: 0;
+    height: fit-content;
+    justify-content: space-between;
+    align-items: center;
+}
+.jobs button{
+    width: 6rem;
+    height: 2rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color: var(--left);
+    transition: .5s;
+}
+.job-list{
+    height: 88%;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+}
+.hiddenMJ{
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    flex-direction: column;
+    width: 30%;
+    height: 20%;
+    background-color: var(--form_bg);
+    box-shadow:  10px 10px 20px #5a5a5a,
+                 -10px -10px 20px #ffffff;
+    border-radius: 10px;
+    border: solid 1px var(--black);
+    padding-left: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+.hiddenMJ input{
+    width: 90%;
+    height: 20%;
+    padding: 7px 12px;
+    border-radius: 5px;
+
+}
+.hiddenMJ form{
+    flex-direction: column;
+    height: 80%;
+    justify-content: start;
+    align-items: start;
+    padding-right: 2rem;
+    width: 100%;
+    padding-left: 0;
+}
+.hiddenMJ button{
+    width: 30%;
+    height: 2rem;
+    border: none;
+    border-radius: 5px;
+    margin-right: 1rem;
+    margin-top: 2rem;
+    color: var(--left);
+    font-weight: bold;
+}
+.buttonJob{
+    width: 100%;
+    height: 20%;
+    justify-content: end;
+    align-items: center;
+    
+}
+.jobHeader{
+    width: 100%;
+    height: 3rem;
+    justify-content: start;
+    align-items: center;
+    border-bottom: solid 1px var(--black);
+
+}
+#id, .idList{
+    width: 20%;
+    height: 100%;
+    justify-content: start;
+    align-items: center;
+    border-right: solid 1px var(--black);
+    margin: 0;
+    flex-direction: column;
+    padding: 0;
+    
+}
+#jobsId, .jobLists, #actions{
+    width: 70%;
+    justify-content: start;
+    align-items: center;
+    padding-left: 2rem;
+    margin: 0;
+    /* flex-direction: column; */
+}
+#id{
+    justify-content: center;
+}
+#actions{
+    width: 10%;
+    border-left: solid 1px var(--black);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.jobLists{
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    /* margin: 10px 0; */
+}
+.jobLists h3, .idList h3, .actionList button{
+    margin: 20px 0;
+}
+.jobs_list{
+    width: 100%;
+    height: 80%;
+    flex-direction: row;
+}
+.actionList{
+    padding: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 10%;
+    justify-content: start;
+    align-items: center;
+    height: 100%;
+    border-left: solid 1px var(--black);
+    margin: 0;
+}
+.actionList button{
+    border: none;
+    background: none;
+}
+.actionList i{
+    font-size: 25px;
+    color: var(--hover);
+}
+.rowJobs{
+    width: 100%;
+    height: 70vh;
+    justify-content: start;
+    align-items: start;
+}
+#line{
+    margin: 0;
+    padding-top: 12px;
+}
+#Salary_Range_From, #Salary_Range_To{
+    width: 10rem;
+}
+.naniEmployess{
+    display: flex;
+    position: fixed;
+    min-width: 80.5vw;
+    height: 75vh;
+    padding: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.employee-list{
+    padding: 0;
+    display: flex;
+    width: 100%;
+    height: 75vh;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+.employee-list::-webkit-scrollbar{
+    width: 8px;
+}
+
+.employee-list::-webkit-scrollbar-track{
+    background: transparent;
+    border-radius: 10px;
+}
+
+.employee-list::-webkit-scrollbar-thumb{
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.employee-list::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+#statusApprovedContainer{
+    height: 100%;
+    width: 100%;
+}
+.employee_management p{
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    transform: translate(5.5rem, -3.5rem);
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #219CD0;
+    border-radius: 50%;
+    color: var(--left);
+    font-weight: bold;
+    border: solid 1px var(--left);
+}
+#main {
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+    height: 98vh;
+}
+#login-form input[type="text"],
+#login-form input[type="password"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border 0.3s;
+}
+.card{
+    box-shadow: 10px 10px 20px #5a5a5a, -10px -10px 20px #ffffff;
+}
+#login-form input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#login-form button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: var(--hover);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+#login-form button:hover {
+    background-color: var(--success);
+}
+.card .card-header{
+    padding-top: 2rem;
+    padding-bottom: 0;
+}

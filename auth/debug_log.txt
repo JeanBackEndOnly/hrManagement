@@ -1,0 +1,420 @@
+Request received at: 2025-04-21 20:28:58
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => 
+    [Fname] => 
+    [Mname] => 
+    [email] => 
+    [username] => 
+    [password] => 
+    [confirm_password] => 
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => 
+            [full_path] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+)
+
+Request received at: 2025-04-21 20:28:59
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => 
+    [Fname] => 
+    [Mname] => 
+    [email] => 
+    [username] => 
+    [password] => 
+    [confirm_password] => 
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => 
+            [full_path] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+)
+
+Request received at: 2025-04-21 20:28:59
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => 
+    [Fname] => 
+    [Mname] => 
+    [email] => 
+    [username] => 
+    [password] => 
+    [confirm_password] => 
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => 
+            [full_path] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:00
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => 
+    [Fname] => 
+    [Mname] => 
+    [email] => 
+    [username] => 
+    [password] => 
+    [confirm_password] => 
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => 
+            [full_path] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:08
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php8F89.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:09
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php924A.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:10
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php975B.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:10
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php98C4.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:11
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9A1D.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:11
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9AC9.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:11
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9BA5.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:11
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9C62.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:12
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => d451ddb2db3333cd474f6163c8d9ae4d8003f833dd0641bdcbd2e83cc447e7da
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => asdasdasdasdsad@gmail.com
+    [username] => asd
+    [password] => asda
+    [confirm_password] => sdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9D1E.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:29:40
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => 245ff7220159c5e586ecea7c202519119c4eba1b452928e70bcd3c10704eca6b
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdasd
+    [email] => asdas
+    [username] => dasdasd
+    [password] => asdasd
+    [confirm_password] => asdasd
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpCF0.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
+Request received at: 2025-04-21 20:30:07
+POST data: Array
+(
+    [register] => signup
+    [csrf_token] => 60b0151658bff6ad0f364ad58549b9db7f593b9b2798f8d8d06db18a8b940280
+    [Lname] => asd
+    [Fname] => asd
+    [Mname] => asdas
+    [email] => dasd
+    [username] => asda
+    [password] => sdas
+    [confirm_password] => dasdasdas
+)
+
+FILES data: Array
+(
+    [user_profile] => Array
+        (
+            [name] => Seal_of_Zamboanga_City.png
+            [full_path] => Seal_of_Zamboanga_City.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php74C3.tmp
+            [error] => 0
+            [size] => 233749
+        )
+
+)
+
