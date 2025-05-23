@@ -12,7 +12,7 @@ function initInstaller() {
         $admins = $stmt->fetchAll();
 
         $currentUrl = $_SERVER['REQUEST_URI'];
-        $installerPath = "/github/ZPCO-SYS/installer/";
+        $installerPath = "/github/hrManagement/installer/";
 
         if (count($admins) === 0) {
             if ($currentUrl !== $installerPath) {
@@ -51,7 +51,7 @@ function base_url(){
     );
     
     if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-        return $base_url = $protocol . "://" . $_SERVER['SERVER_NAME'].'/github/ZPCO-SYS/';
+        return $base_url = $protocol . "://" . $_SERVER['SERVER_NAME'].'/github/hrManagement/';
     }
     return $base_url = $protocol . "://" . $_SERVER['SERVER_NAME'].'/';
 
