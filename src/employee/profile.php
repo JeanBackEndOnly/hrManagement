@@ -180,16 +180,16 @@
                                         </div>
                                         <div class="inputInfo my-2 row w-100">
                                             <div class="col-md-4">
-                                                <label for="salary" class="fw-bold">Salary</label>
-                                                <input type="number" name="salary" class="form-control" id="salary" value="<?= isset($employeeInfo["salary"]) ? htmlspecialchars($employeeInfo["salary"]) : "N/A" ?>">
+                                                <label for="salary" class="fw-bold">Official Salary</label>
+                                                <input type="number" name="salary" class="form-control" id="salary" value="<?= isset($employeeInfo["salary"]) ? htmlspecialchars($employeeInfo["salary"]) : "N/A" ?>" style="pointer-events: none;">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="from" class="fw-bold">Salary Range From</label>
-                                                <input type="number" name="salary_Range_From" class="form-control" id="from" value="<?= isset($employeeInfo["salary_Range_From"]) ? htmlspecialchars($employeeInfo["salary_Range_From"]) : "N/A" ?>">
+                                                <input type="number" name="salary_Range_From" class="form-control" id="from" value="<?= isset($employeeInfo["salary_Range_From"]) ? htmlspecialchars($employeeInfo["salary_Range_From"]) : "N/A" ?>" style="pointer-events: none;">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="to" class="fw-bold">Salary Range To</label>
-                                                <input type="number" name="salary_Range_To" class="form-control" id="to" value="<?= isset($employeeInfo["salary_Range_To"]) ? htmlspecialchars($employeeInfo["salary_Range_To"]) : "N/A" ?>">
+                                                <input type="number" name="salary_Range_To" class="form-control" id="to" value="<?= isset($employeeInfo["salary_Range_To"]) ? htmlspecialchars($employeeInfo["salary_Range_To"]) : "N/A" ?>" style="pointer-events: none;">
                                             </div>
                                         </div>
                                         <div class="inputInfo my-2 row w-100">

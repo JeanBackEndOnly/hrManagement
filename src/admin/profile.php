@@ -187,7 +187,7 @@
                                         </div>
                                         <div class="inputInfo my-2 row w-100">
                                             <div class="col-md-4">
-                                                <label for="salary" class="fw-bold">Salary</label>
+                                                <label for="salary" class="fw-bold">Official Salary</label>
                                                 <input type="number" name="salary" class="form-control" id="salary" value="<?= isset($row["salary"]) ? htmlspecialchars($row["salary"]) : "N/A" ?>">
                                             </div>
                                             <div class="col-md-4">

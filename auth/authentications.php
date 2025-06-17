@@ -1,7 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
+header('Content-Type: application/json');
 require '../vendor/autoload.php';
 
 require_once '../installer/config.php';
@@ -376,8 +376,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["promotion"]) && $_POST["promotion"] === "true") {
         $users_id_job = $_POST["job_id"];
-        $salary = $_POST["salary"];
         $job_title = $_POST["job_title"];
+        $salary_Range_From = $_POST["salary_Range_From"];
+        $salary_Range_To = $_POST["salary_Range_To"];
+        $salary = $_POST["salary"];
 
         $query = "SELECT * FROM userinformations WHERE users_id = :users_id";
         $stmt = $pdo->prepare($query);
@@ -388,10 +390,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $jobtitleRecent = $getJob["jobTitle"];
         }
 
-        $query = "UPDATE userinformations SET jobTitle = :jobTitle, salary = :salary WHERE users_id = :users_id";
+        $query = "UPDATE userinformations SET jobTitle = :jobTitle, salary_Range_From = :salary_Range_From, salary_Range_To = :salary_Range_To, salary = :salary WHERE users_id = :users_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":users_id", $users_id_job);
         $stmt->bindParam(":jobTitle", $job_title);
+        $stmt->bindParam(":salary_Range_From", $salary_Range_From);
+        $stmt->bindParam(":salary_Range_To", $salary_Range_To);
         $stmt->bindParam(":salary", $salary);
         $stmt->execute();
 
