@@ -1,0 +1,418 @@
+:root{
+    --backGroundDark: #141212;
+    --wihite: #fff;
+    --BG: #F8F8F8;
+    --box-shadow: #8F8F8F;
+    --back: #4772ff;
+    --green: #00A313;
+    --next: #D54446;
+    --hover: #FB6340;
+    --add: #18DF3C;
+}
+html, main, body{
+    height: 99vh;
+    margin: 0;
+    background-color: var(--wihite);
+}
+html, body , main{
+  width: 100vw !important;
+  min-width: 100vw !important;
+  overflow-x: hidden; 
+  margin: 0;
+  padding: 0;
+}
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: inherit; 
+}
+/* =================================== SIDE NAV ==================================== */
+
+.sideNav .navs li {
+    transition: background-color 0.3s ease;
+}
+
+.sideNav .navs li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.sideNav .navs li a,
+.sideNav .navs li button {
+    transition: color 0.3s ease;
+}
+
+.sideNav .navs li p,
+.sideNav .navs li i {
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.sideNav .navs li a:hover p,
+.sideNav .navs li a:hover i,
+.sideNav .navs li button:hover p,
+.sideNav .navs li button:hover i {
+    color: #007bff;
+}
+
+
+.sideNav .navs ul li {
+    transition: background-color 0.3s ease;
+}
+
+.sideNav .navs ul li:hover {
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+}
+.sideNav .navs ul li a:hover {
+    color: #0056b3;
+}
+
+
+/* =================================== DASHBOARD =================================== */
+.validated, .pending, .leave, .reports  {
+    transition: all 0.3s ease;
+    background: linear-gradient(to top right, #ffffff, #f8f9fa);
+    border: 1px solid #e0e0e0;
+}
+.validated:hover, .pending:hover, .leave:hover, .reports:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.main-body{
+    margin: 0;
+}
+.header{
+    box-shadow: 0 0 3px 1px var(--box-shadow);
+    min-height: 8%;
+    margin-bottom: none;
+}
+.logo button, .usersButton button, .sideNav button{
+    background: none;
+    border: none;
+}
+.sideNav{
+    min-width: 5rem;
+    box-shadow: 0 3px 3px 1px var(--box-shadow);
+    height: 75%;
+    transition: .5s;
+    border-bottom-right-radius: 10px;
+}
+.row{
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
+.navs li {
+    list-style-type: none;
+    transition: .5s!important;
+    /* transform: translateX(.5rem); */
+    min-width: 100%;
+}
+
+.navs p {
+    display: none;
+    margin: 0;
+    width: 11rem;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* .sideNav {
+    width: 5rem;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+}
+
+.sideNav:hover {
+    width: 20rem !important;
+}
+
+.sideNav:hover .navs p {
+    display: flex !important;
+} */
+
+
+
+.navs i{
+    margin-left: 12px;
+    transition: .5s!important;
+    transform: translateX(.9rem);
+}
+.navs a {
+    color: var(--backGroundDark);
+    text-decoration: none;
+    transition: .5s!important;
+}
+.navs p{
+transform: translateX(.9rem);
+}
+.usersButton button{
+    display: flex;
+    flex-direction: row;
+}
+.hrLi:hover, .payrollLi:hover, .dashboardLi:hover,
+.attendanceLi:hover, .settingsLi:hover{
+    background-color: #e4e4e4;
+}
+.ulHr{
+    height: 20vh;
+    width: 100%;
+}
+.header i{
+    color: var(--backGroundDark)
+}
+#hrUl,
+#payrollUl {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-top: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+}
+.crud-employee button, .buttonUpdate button{
+    width: 22%;
+    height: 100%;
+    color: var(--backGroundDark);
+    background-color: var(--wihite);
+    transition: .5s ease-in-out;
+    border-style: solid;
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
+}
+.buttonUpdate button{
+    width: 100%;
+}
+#requet{
+    border-color: var(--back);
+}
+#requet:hover, #requet:hover #pendingCountDisplay{
+    background-color: var(--back); 
+    color: var(--wihite);
+}
+#reject{
+    border-color: var(--next);
+}
+#reject:hover{
+    background-color: var(--next); 
+    color: var(--wihite);
+}
+#add, .buttonUpdate button{
+    border-color: var(--add);
+}
+#add:hover, .buttonUpdate button:hover{
+    background-color: var(--add); 
+    color: var(--wihite);
+}
+#requet:active, #reject:active, #add:active, .buttonUpdate button:active{
+    opacity: 0.5;
+}
+.h1{
+     font-family: 'Poppins', sans-serif;
+}
+.sideNav{
+    transform: translateX(-.5rem);
+}
+#sideHEhe {
+    min-width: 5rem;
+    width: 5rem;
+    padding-right: 0;
+    overflow: hidden;
+    transition: min-width 0.4s ease, width 0.4s ease, padding-right 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+#sideHEhe.opened {
+    min-width: 16rem;
+    width: 20rem;
+    padding-right: 1rem;
+}
+
+.side-text {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    transition: max-width 0.4s ease, opacity 0.4s ease;
+}
+#iLeftArrowHr{
+    margin-left: 4px;
+}
+#sideHEhe.opened .side-text {
+    display: flex;
+    max-width: 11rem;
+    opacity: 1;
+}
+#hrUl i, #payrollUl i{
+    transform: translateX(0);
+}
+.search-titles, .search-validated, .search-request, .search-rejected, .search-titles-promotion{
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
+    height: 3rem;
+}
+.search-active input:focus, .form-select:focus{
+    box-shadow: none;
+}
+#ablack{
+    color: #000!important;
+}
+.job-list tbody::-webkit-scrollbar {
+    width: 6px;
+}
+.job-list tbody::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 3px;
+}
+.job-list tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 3px;
+}
+.job-list tbody::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.job-list tbody {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+/* EMPLOYEE ANIMATIONS */
+#loadingAnimation{
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.loading-lines {
+    display: flex;
+    gap: 8px;
+}
+.line {
+    width: 10px;
+    height: 40px;
+    background-color: rgb(230, 230, 230);
+    border-radius: 1px;
+    animation: bounce 1s infinite ease-in-out;
+}
+.line:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.line:nth-child(3) {
+    animation-delay: 0.4s;
+}
+@keyframes bounce {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(1.8);
+    }
+}
+#pendingCountDisplay{
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background-color: var(--wihite);
+    border: solid 2px var(--back);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(4.5rem, -2.6rem);
+    transition: .5s ease-in-out;
+}
+.profileSide{
+    border: none;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.4);
+}
+.profilePict img{
+    width: 50%;
+    height: 100%;
+    border-radius: 50%;
+}
+.tab-btn , .tab-btns{
+    position: relative;
+    background: transparent;
+    border: none;
+    margin: 0 0.25rem;
+    padding-bottom: 5px;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.tab-btn::after, .tab-btns::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0%;
+    background-color: #1bcaff; 
+    transition: width 0.3s ease-in-out;
+}
+
+.tab-btn:hover::after,
+.tab-btn.active::after,.tab-btns:hover::after,
+.tab-btns.active::after {
+    width: 100%;
+}
+.usersButton span{
+    transition: 0.5s ease;
+}
+.usersButton a:hover span{
+    color: var(--back)
+}
+
+@media (max-width: 576px) {
+    .logo h4{
+        font-size: 12px;
+    }
+    .logo img{
+        width: 30px;
+        height: 30px !important;
+        margin-left: 0;
+    }
+    .usersButton {
+        width: 40%;
+        justify-content: end;
+    }
+    .align-items-center{
+        width: 60%;
+    }
+    .align-items-center img{
+        margin-left: 5px !important;
+    }
+    #sideHEhe {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(-100%);
+        transition: all 0.4s ease;
+        background-color: var(--wihite);
+        z-index: 9999;
+    }
+
+    #sideHEhe.opened {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0);
+        margin-top: 5px;
+        min-width: 15rem !important;
+        padding-right: 1rem;
+        z-index: 9999;
+    }
+    #hrUl a{
+        width: 60%;
+    }
+    #hrUl i{
+        width: fit-content;
+    }
+}

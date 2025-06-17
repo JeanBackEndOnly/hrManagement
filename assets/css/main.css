@@ -1,0 +1,50 @@
+/* 
+.main-content{
+    overflow: auto;
+}
+header .dropdown-menu{
+    right: 0;
+    left: unset!important;
+}
+.sidebar .nav-link{
+    color: var(--bs-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar .nav-link.active{
+    color: var(--bs-orange);
+}
+
+.installer-page,
+.login-page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.categories table thead td:last-child {
+    width: 20%;
+}
+aside.sidenav{
+    z-index: 99!important;
+}
+.navbar-vertical.navbar-expand-xs .navbar-collapse{
+    height: 75vh!important;
+} */
+
+.desc{
+    width: 60%;
+}
+
+.installer-page .preview{
+    max-width: 200px;
+    height: auto;
+}
+
+.login-page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

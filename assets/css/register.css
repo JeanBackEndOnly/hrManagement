@@ -1,0 +1,212 @@
+:root{
+    --backGroundDark: #141212;
+    --wihite: #fff;
+    --BG: #F8F8F8;
+    --box-shadow: #8F8F8F;
+    --back: #4772ff;
+    --green: #00A313;
+    --next: #D54446;
+    --hover: #FB6340;
+}
+html, body, main{
+    margin: 0;
+    height: 100vh;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent !important;
+}
+html{
+    background: url("../image/puericultureBG.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+main h4, main h3{
+    color: var(--backGroundDark);
+}
+.card, .column-container{
+    background-color: rgba(255, 255, 255, .7);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 0 5px 1px var(--box-shadow);
+    height: 40vh;
+}
+.card input, .card button{
+    background-color: transparent;
+    border: none;
+    box-shadow: 0 0 2px .1px var(--backGroundDark);
+}
+.card-body input::placeholder, .card input::placeholder{
+    color: var(--backGroundDark);
+}
+.main-container input::placeholder, .main-container select, .main-container input{
+    font-size: 14px;
+}
+.card button{
+    background-color: var(--green);
+    box-shadow: none;
+}
+.card-header{
+    background-color: transparent;
+}
+.login-page{
+    width: 80% !important;
+}
+.column-container form::-webkit-scrollbar{
+    display: none;
+}
+.main-container button{
+    cursor: pointer;
+}
+/* ================ STEP IN REGISTER ======================= */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: 2px solid #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+
+.step.active {
+  background-color: #444;
+  color: white;
+}
+
+.line {
+  height: 2px;
+  width: 60px;
+  background-color: #333;
+  margin: 0 5px;
+  z-index: 0;
+}
+#button-signup-rds, #button-signups{
+    background-color: var(--green);
+    color: var(--wihite);
+    border-radius: 5px;
+    transition: .5s ease-in;
+}
+#back, #backs, #backsA{
+    background-color: var(--back);
+    color: var(--wihite);
+    transition: .5s;
+    border-radius: 3px;
+}
+#next, #nexts{
+    background-color: var(--next);
+    color: var(--wihite);
+    transition: .5s;
+    border-radius: 3px;
+}
+#next:hover, #nexts:hover, #back:hover, #backs:hover, #backsA:hover #button-signup-rds:hover, #button-signups:hover{
+    opacity: 0.7;
+    box-shadow: none;
+}
+select {
+    appearance: auto;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+}
+#image img{
+    width: 200px; height: 200px; border-radius: 50%;
+}
+.input-error {
+  border: 2px solid red;
+}
+#loading-overlay {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.loading-lines {
+    display: flex;
+    gap: 8px;
+}
+.line {
+    width: 10px;
+    height: 40px;
+    background-color: rgb(230, 230, 230);
+    border-radius: 1px;
+    animation: bounce 1s infinite ease-in-out;
+}
+.line:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.line:nth-child(3) {
+    animation-delay: 0.4s;
+}
+@keyframes bounce {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(1.8);
+    }
+}
+@media (max-width: 576px) {
+    .login-page .container {
+        padding: 0 1rem;
+    }
+    html, main{
+        min-width: 90vw;
+        margin: 0s;
+    }
+    .login-page .card{
+        padding: 1rem !important;
+        border-radius: 10px;
+        min-width: 50%;
+        background-color: rgba(255, 255, 255, .9);
+    }
+    .login-page h3,
+    .login-page h4 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+    .login-page input[type="text"],
+    .login-page input[type="password"] {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+    .login-page button[type="submit"] {
+        font-size: 1rem;
+        padding: 0.6rem;
+    }
+    .login-page .li-div {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #showPassword,
+    #hidePassword {
+        right: 1rem !important;
+        font-size: 1rem;
+    }
+    .toast {
+        top: 1rem !important;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+    }
+}

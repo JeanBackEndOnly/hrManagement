@@ -1,0 +1,36 @@
+{
+  "name": "PUERICULTURE WEB APPLICATION",
+  "short_name": "ZPC-webSys",
+  "description": "this app is for Zamboanga Puericulture Center only!",
+  "start_url": "../src/index.php",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#CECECE",
+  "icons": [
+    {
+      "src": "images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "images/screenshot-narrow.png",
+      "sizes": "360x640",
+      "type": "image/png"
+    }
+  ]
+}
+
+  

@@ -1,0 +1,1 @@
+{"jobTitles":[{"id":3,"jobTitle":"Doctor","addAt":"2025-06-15 23:24:25"},{"id":2,"jobTitle":"English Major","addAt":"2025-06-15 23:24:22"},{"id":5,"jobTitle":"Janitor","addAt":"2025-06-16 21:18:22"},{"id":4,"jobTitle":"Nurse","addAt":"2025-06-15 23:24:29"},{"id":1,"jobTitle":"Visiting Lecturer","addAt":"2025-06-15 23:24:18"}],"pendingCount":2}
