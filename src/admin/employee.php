@@ -10,7 +10,7 @@
             </div>
 
             <div class="usersButton d-flex align-items-center">
-                <a href=""><i class="fa-solid fa-gear"></i></a>
+                <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
                 <button class="align-items-center" type="button" onclick="userButton()">
                     <img src="../../assets/image/users.png" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
@@ -64,7 +64,7 @@
                     </li>
 
                     <li class="settingsLi d-flex align-items-center p-2 mb-2">
-                        <a href="#" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
+                        <a href="settings.php" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
                             <i class="fa-solid me-2 fa-gear"></i>
                             <p class="text-start side-text" id="ps">Settings</p>
                         </a>
@@ -120,7 +120,7 @@
                                 <th style="width: 15%;">Actions</th>
                             </tr>
                         </thead>
-                        <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
+                        <tbody id="validatedList" style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
                             <?php if (!empty($validated)): ?>
                                 <?php $num = 1; ?>
                                 <?php foreach($validated as $row): ?>
@@ -182,7 +182,7 @@
                     <?= renderRequestSortAndPerPageControls($currentUrl, $requestPerPage, $requestSortColumn, $requestSortOrder); ?>
                 </div>
 
-                <div class="request-employee-list" id="requestList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
+                <div id="requestList" class="request-employee-list" id="requestList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
                     <table class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">
@@ -289,7 +289,7 @@
                                 <th style="width: 15%;">Actions</th>
                             </tr>
                         </thead>
-                        <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
+                        <tbody id="rejectedList" style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
                             <?php if (!empty($rejectEmployees)): ?>
                                 <?php $num = 1; ?>
                                 <?php foreach($rejectEmployees as $row): ?>

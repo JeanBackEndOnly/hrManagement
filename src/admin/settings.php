@@ -72,62 +72,11 @@
                         </a>
                     </li>
                 </div>
-                
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
                     <div class="h1">
-                        <h3 class="m-0">DASHBOARD</h3>
-                    </div>
-                </div>
-                <div class="d-flex col-ms-12 flex-row justify-content-start align-items-center flex-wrap" style="height: 7rem; width: 95%;">
-                    <div class="validated shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0"><?php echo $validatedCount; ?></h1>
-                                <small class="text-muted">Users</small>
-                            </div>
-                            <div class="text-start">
-                                <h5 class="m-0 fw-semibold text-dark">Validated</h5>
-                                <h6 class="m-0 text-secondary">Employees</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pending shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0"><?php echo $pendingCount; ?></h1>
-                                <small class="text-muted">Users</small>
-                            </div>
-                            <div class="text-start">
-                                <h5 class="m-0 fw-semibold text-dark">Pending</h5>
-                                <h6 class="m-0 text-secondary">Employees</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="leave shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0">2</h1>
-                                <small class="text-muted">Users</small>
-                            </div>
-                            <div class="text-start">
-                                <h5 class="m-0 fw-semibold text-dark">Pending</h5>
-                                <h6 class="m-0 text-secondary">Employees</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reports shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0">3</h1>
-                                <small class="text-muted">Users</small>
-                            </div>
-                            <div class="text-start">
-                                <h5 class="m-0 fw-semibold text-dark">Pending</h5>
-                                <h6 class="m-0 text-secondary">Employees</h6>
-                            </div>
-                        </div>
+                        <h3 class="m-0">SETTINGS</h3>
                     </div>
                 </div>
             </div>

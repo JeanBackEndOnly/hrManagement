@@ -459,13 +459,12 @@
         });
     });
     // ================== EMPLOYEE SEARCH ================== //
-    document.getElementById("searchRejectedInput").addEventListener("input", function () {
+     document.getElementById("searchRejectedInput").addEventListener("input", function () {
         const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#rejectedList tbody tr");
+        const rows = document.querySelectorAll("#rejectedList tr");
 
         rows.forEach(row => {
             if (row.querySelectorAll("td").length < 6) return;
-
             const rowText = row.textContent.toLowerCase();
             row.style.display = rowText.includes(filter) ? "table" : "none";
         });

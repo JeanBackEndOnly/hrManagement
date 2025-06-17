@@ -10,7 +10,7 @@
             </div>
 
             <div class="usersButton d-flex align-items-center">
-                <a href=""><i class="fa-solid fa-gear"></i></a>
+                <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
                 <button class="align-items-center" type="button" onclick="userButton()">
                     <img src="../../assets/image/users.png" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
@@ -66,7 +66,7 @@
                     </li>
 
                     <li class="settingsLi d-flex align-items-center p-2 mb-2">
-                        <a href="#" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
+                        <a href="settings.php" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
                             <i class="fa-solid me-2 fa-gear"></i>
                             <p class="text-start side-text" id="ps">Settings</p>
                         </a>
