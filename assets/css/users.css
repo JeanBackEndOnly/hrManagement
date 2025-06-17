@@ -369,6 +369,7 @@ transform: translateX(.9rem);
 }
 .usersButton a:hover span{
     color: var(--back)
+    
 }
 
 @media (max-width: 576px) {

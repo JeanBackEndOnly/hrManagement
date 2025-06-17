@@ -163,9 +163,7 @@
                                         <div class="inputInfo my-2 row w-100">
                                             <div class="col-md-4">
                                                 <label for="JobTitle" class="fw-bold">Job Title</label>
-                                                <select name="jobTitle" class="form-select rounded-1 p-1 py-2" id="Job_Title">
-                                                    <option value="">Loading...</option>
-                                                </select>
+                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="department" class="fw-bold">Department</label>
@@ -188,15 +186,15 @@
                                         <div class="inputInfo my-2 row w-100">
                                             <div class="col-md-4">
                                                 <label for="salary" class="fw-bold">Official Salary</label>
-                                                <input type="number" name="salary" class="form-control" id="salary" value="<?= isset($row["salary"]) ? htmlspecialchars($row["salary"]) : "N/A" ?>">
+                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary"]) ? htmlspecialchars($row["salary"]) : "N/A" ?></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="from" class="fw-bold">Salary Range From</label>
-                                                <input type="number" name="salary_Range_From" class="form-control" id="from" value="<?= isset($row["salary_Range_From"]) ? htmlspecialchars($row["salary_Range_From"]) : "N/A" ?>">
+                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary_Range_From"]) ? htmlspecialchars($row["salary_Range_From"]) : "N/A" ?></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="to" class="fw-bold">Salary Range To</label>
-                                                <input type="number" name="salary_Range_To" class="form-control" id="to" value="<?= isset($row["salary_Range_To"]) ? htmlspecialchars($row["salary_Range_To"]) : "N/A" ?>">
+                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary_Range_To"]) ? htmlspecialchars($row["salary_Range_To"]) : "N/A" ?></p>
                                             </div>
                                         </div>
                                         <div class="inputInfo my-2 row w-100">

@@ -4,3 +4,7 @@ Email sent successfully to asdgfdfgdfg@gmail.com with action promoted
 ==> Script started at 2025-06-17 13:07:00
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","Visiting Lecturer","English Major","34000.00"]
 Email sent successfully to asdgfdfgdfg@gmail.com with action promoted
+==> Script started at 2025-06-17 21:03:55
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","created","","","","2200496","2200496#21asdasSS"]
+==> Script started at 2025-06-17 21:05:58
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","2","created","","","","2200496sdA","2200496sdA#"]

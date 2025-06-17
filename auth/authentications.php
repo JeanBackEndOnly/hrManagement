@@ -417,6 +417,87 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
+    if (isset($_POST["editSalary"]) && $_POST["editSalary"] === "true") {
+        $users_id_job = $_POST["users_id"];
+        $job_title = $_POST["job_title"];
+        $salary_Range_From = $_POST["salary_Range_From"];
+        $salary_Range_To = $_POST["salary_Range_To"];
+        $salary = $_POST["salary"];
+
+        $query = "UPDATE userinformations SET jobTitle = :jobTitle, salary_Range_From = :salary_Range_From, salary_Range_To = :salary_Range_To, salary = :salary WHERE users_id = :users_id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(":users_id", $users_id_job);
+        $stmt->bindParam(":jobTitle", $job_title);
+        $stmt->bindParam(":salary_Range_From", $salary_Range_From);
+        $stmt->bindParam(":salary_Range_To", $salary_Range_To);
+        $stmt->bindParam(":salary", $salary);
+        $stmt->execute();
+
+        header("Location: ../src/admin/job.php?salary=success&tab=salaryManage");
+        $stmt = null;
+        $pdo = null;
+        exit;
+    }
+
+    // ============================= ADMIN SETTINGS ============================= //
+    if (isset($_POST["changePassword"]) && $_POST["changePassword"] === "true"){
+        $currentPassword = $_POST["current_password"] ?? "";
+        $newPassword = $_POST["new_password"] ?? "";
+        $confirmPassword = $_POST["confirm_password"] ?? "";
+
+        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+            echo json_encode(["status" => "error", "message" => "All fields are required."]);
+            header("Location: ../src/admin/settings.php?password=empty");
+            exit;
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            echo json_encode(["status" => "error", "message" => "New passwords do not match."]);
+            header("Location: ../src/admin/settings.php?password=newNotMatched");
+            exit;
+        }
+
+        try {
+            $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
+            $stmt->execute(['id' => 1]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user) {
+                echo json_encode(["status" => "error", "message" => "Admin user not found."]);
+                exit;
+            }
+
+            if (!password_verify($currentPassword, $user['password'])) {
+                echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
+                header("Location: ../src/admin/settings.php?password=currentNotMatched");
+                exit;
+            }
+
+            $newHashed = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            $updateStmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
+            $updateSuccess = $updateStmt->execute([
+                'password' => $newHashed,
+                'id' => 1
+            ]);
+
+            if ($updateSuccess) {
+                echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
+                header("Location: ../src/admin/settings.php?password=success");
+                exit;
+            } else {
+                echo json_encode(["status" => "error", "message" => "Failed to update password."]);
+                header("Location: ../src/admin/settings.php?password=failed");
+                exit;
+            }
+
+        } catch (PDOException $e) {
+            echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
+            header("Location: ../src/admin/settings.php?password=failed");
+            exit;
+        }
+    } 
+    
 
     // ============================= Employee Authentication ============================= //
     if (isset($_POST["acceptEmployee"]) && $_POST["acceptEmployee"] === "true") {
@@ -1013,215 +1094,179 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    if(isset($_POST["add_employee"]) && $_POST["add_employee"] === "true") {
-        $lname = $_POST["lname"];
-        $fname = $_POST["fname"];
-        $mname = $_POST["mname"];
-        $employeeID = $_POST["employeeID"];
-        $department = $_POST["department"];
-        $jobTitle = $_POST["jobTitle"];
-        $slary_rate = $_POST["slary_rate"];
-        $salary_Range_From = $_POST["salary_Range_From"];
-        $salary_Range_To = $_POST["salary_Range_To"];
-        $salary = $_POST["salary"];
-        $citizenship = $_POST["citizenship"];
-        $gender = $_POST["gender"];
-        $civil_status = $_POST["civil_status"];
-        $religion = $_POST["religion"];
-        $age = $_POST["age"];
-        $birthday = $_POST["birthday"];
-        $birthPlace = $_POST["birthPlace"];
-        $contact = $_POST["contact"];
-        $email = $_POST["email"];
-        $secheduleFrom = $_POST["secheduleFrom"];
-        $scheduleTo = $_POST["scheduleTo"];
-        $houseBlock = $_POST["houseBlock"];
-        $street = $_POST["street"];
-        $subdivision = $_POST["subdivision"];
-        $barangay = $_POST["barangay"];
-        $city_muntinlupa = $_POST["city_muntinlupa"];
-        $province = $_POST["province"];
-        $zipCode = $_POST["zipCode"];
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-        $confirmPassword = $_POST["confirmPassword"];
+    if (isset($_POST["add_employee"]) && $_POST["add_employee"] === "true") {
+            $lname = $_POST["lname"];
+            $fname = $_POST["fname"];
+            $mname = $_POST["mname"];
+            $employeeID = $_POST["employeeID"];
+            $department = $_POST["department"];
+            $jobTitle = $_POST["jobTitle"];
+            $slary_rate = $_POST["slary_rate"];
+            $salary_Range_From = $_POST["salary_Range_From"];
+            $salary_Range_To = $_POST["salary_Range_To"];
+            $salary = $_POST["salary"];
+            $citizenship = $_POST["citizenship"];
+            $gender = $_POST["gender"];
+            $civil_status = $_POST["civil_status"];
+            $religion = $_POST["religion"];
+            $age = $_POST["age"];
+            $birthday = $_POST["birthday"];
+            $birthPlace = $_POST["birthPlace"];
+            $contact = $_POST["contact"];
+            $email = $_POST["email"];
+            $secheduleFrom = $_POST["secheduleFrom"];
+            $scheduleTo = $_POST["scheduleTo"];
+            $houseBlock = $_POST["houseBlock"];
+            $street = $_POST["street"];
+            $subdivision = $_POST["subdivision"];
+            $barangay = $_POST["barangay"];
+            $city_muntinlupa = $_POST["city_muntinlupa"];
+            $province = $_POST["province"];
+            $zipCode = $_POST["zipCode"];
+            $username = $_POST["username"];
+            $password = $_POST["password"];
+            $confirmPassword = $_POST["confirmPassword"];
 
-        $errors = [];
+            $errors = [];
 
-        try {
+            try {
+                // Validate image
+                if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
+                    $profile = $_FILES["user_profile"];
+                    if (empty_image($profile)) {
+                        $errors["image_Empty"] = "Please insert your profile image!";
+                    }
+                    if (fileSize_notCompatible($profile)) {
+                        $errors["large_File"] = "The image must not exceed 5MB!";
+                    }
+                    $allowed_types = ["image/jpeg", "image/jpg", "image/png"];
+                    if (image_notCompatible($profile, $allowed_types)) {
+                        $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
+                    }
 
-            if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
-            $profile = $_FILES["user_profile"];
-            if (empty_image($profile)) {
-                $errors["image_Empty"] = "Please insert your profile image!";
-            }
-        
-            if (fileSize_notCompatible($profile)) {
-                $errors["large_File"] = "The image must not exceed 5MB!";
-            }
-        
-            $allowed_types = [
-                "image/jpeg",
-                "image/jpg",
-                "image/png"
-            ];
-        
-            if (image_notCompatible($profile, $allowed_types)) {
-                $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
-            }
-        
-            if (!$errors) {
-                $target_dir = "../assets/image/upload/";
-                $image_file_name = uniqid() . "-" . basename($profile["name"]);
-                $target_file = $target_dir . $image_file_name;
-            
-                if (move_uploaded_file($profile["tmp_name"], $target_file)) {
-                    $profile = $image_file_name;
+                    if (!$errors) {
+                        $target_dir = "../assets/image/upload/";
+                        $image_file_name = uniqid() . "-" . basename($profile["name"]);
+                        $target_file = $target_dir . $image_file_name;
+
+                        if (move_uploaded_file($profile["tmp_name"], $target_file)) {
+                            $profile = $image_file_name;
+                        } else {
+                            $errors["upload_Error"] = "There was an error uploading your image.";
+                        }
+                    }
                 } else {
-                    $errors["upload_Error"] = "There was an error uploading your image.";
+                    $errors["image_file"] = "Please select an image to upload.";
                 }
+
+                if (user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, $salary_Range_From, $salary_Range_To, $salary,
+                    $citizenship, $gender, $civil_status, $birthday, $contact, $email, $secheduleFrom, $scheduleTo,
+                    $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)) {
+                    $errors["empty_inputs"] = "Please fill out all fields!";
+                }
+
+                if (invalid_email($email)) {
+                    $errors["invalid_email"] = "Your email is invalid!";
+                }
+
+                if (email_registered($pdo, $email)) {
+                    $errors["email_registered"] = "Your email is already registered!";
+                }
+
+                if (password_notMatch($confirmPassword, $password)) {
+                    $errors["password_notMatch"] = "Password not match!";
+                }
+
+                if (username_taken($pdo, $username)) {
+                    $errors["username_taken"] = "Username already taken!";
+                }
+
+                if (password_secured($password)) {
+                    $errors["password_secured"] = "Password must be 8 characters above!";
+                }
+
+                if (password_security($password)) {
+                    $errors["password_security"] = "Password must have at least 1 uppercase, number, and special character.";
+                }
+
+                if ($errors) {
+                    $_SESSION["signup_errors"] = $errors;
+                    $_SESSION["user_signups"] = $_POST;
+                    echo json_encode(["status" => "error", "message" => "Validation failed.", "errors" => $errors]);
+                    header("Location: ../src/admin/register.php?signup=failed");
+                    exit;
+                }
+
+                $createdUserId = adminRegistration(
+                    $pdo,
+                    $lname,
+                    $fname,
+                    $mname,
+                    $employeeID,
+                    $department,
+                    $jobTitle,
+                    $slary_rate,
+                    $salary_Range_From,
+                    $salary_Range_To,
+                    $salary,
+                    $citizenship,
+                    $gender,
+                    $civil_status,
+                    $religion,
+                    $age,
+                    $birthday,
+                    $birthPlace,
+                    $contact,
+                    $email,
+                    $secheduleFrom,
+                    $scheduleTo,
+                    $houseBlock,
+                    $street,
+                    $subdivision,
+                    $barangay,
+                    $city_muntinlupa,
+                    $province,
+                    $zipCode,
+                    $profile,
+                    $username,
+                    $password
+                );
+
+                if (!$createdUserId) {
+                    echo json_encode(["status" => "error", "message" => "Failed to get newly created user ID"]);
+                    header("Location: ../src/admin/register.php?signup=failed");
+                    exit;
+                }
+
+                // Trigger email sending
+                $scriptPath = realpath(__DIR__ . "/emailSender.php");
+                $phpPath = 'C:\\xampp\\php\\php.exe';
+
+                $command = 'cmd.exe /C "start /B "" ' .
+                    escapeshellarg($phpPath) . ' ' .
+                    escapeshellarg($scriptPath) . ' ' .
+                    escapeshellarg($createdUserId) . ' ' .
+                    escapeshellarg("created") . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg($username) . ' ' .
+                    escapeshellarg($password) . '"';
+
+                file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                pclose(popen($command, "r"));
+
+                echo json_encode(["status" => "success", "message" => "Employee added successfully."]);
+                header("Location: ../src/admin/employee.php?acceptEmployee=success&tab=accept");
+                exit;
+
+            } catch (PDOException $e) {
+                echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
+                header("Location: ../src/admin/register.php?signup=failed");
+                exit;
             }
-            } else {
-                $errors["image_file"] = "Please select an image to upload.";
-            }
 
-            if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, $salary_Range_From, $salary_Range_To, $salary,
-            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $secheduleFrom, $scheduleTo,
-            $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)){
-                $errors["empty_inputs"] = "Please fill out all fields!.";
-            }
-
-            if(invalid_email($email)){
-            $errors["invalid_email"] = "your email is invalid!";
-            }
-            if(email_registered($pdo, $email)){
-                $errors["email_registered"] = "your email is already registered!";
-            }
-            if(password_notMatch ($confirmPassword, $password)){
-                $errors["password_notMatch"] = "Password not match!";
-            }
-            if(username_taken($pdo, $username)){
-                $errors["username_taken"] = "Username Already Taken!";
-            }
-            if(password_secured($password)){
-                $errors["password_secured"] = "password must be 8 characters above!";
-            }
-            if(password_security($password)){
-                $errors["password_security"] = "password must have at least 1 uppercase, numbers and unique characters like # or !.";
-            }
-
-            if ($errors) {
-                $_SESSION["signup_errors"] = $errors;
-                $signup_data = [
-                    "lname" => $lname,
-                    "fname" => $fname,
-                    "mname" => $mname,
-                    "employeeID" => $employeeID,
-                    "department" => $department,
-                    "jobTitle" => $jobTitle,
-                    "slary_rate" => $slary_rate,
-                    "salary_Range_From" => $salary_Range_From,
-                    "salary_Range_To" => $salary_Range_To,
-                    "salary" => $salary,
-                    "citizenship" => $citizenship,
-                    "gender" => $gender,
-                    "civil_status" => $civil_status,
-                    "religion" => $religion,
-                    "age" => $age,
-                    "birthday" => $birthday,
-                    "birthPlace" => $birthPlace,
-                    "contact" => $contact,
-                    "email" => $email,
-                    "secheduleFrom" => $secheduleFrom,
-                    "scheduleTo" => $scheduleTo,
-                    "houseBlock" => $houseBlock,
-                    "street" => $street,
-                    "subdivision" => $subdivision,
-                    "barangay" => $barangay,
-                    "city_muntinlupa" => $city_muntinlupa,
-                    "province" => $province,
-                    "zipCode" => $zipCode,
-                    "username" => $username,
-                    "password" => $password,
-                    "confirmPassword" => $confirmPassword
-                ];
-
-                $_SESSION["user_signups"] = $signup_data;
-                header("Location: ../src/admin/register.php");
-                die();
-            }
-
-            $createdUserId = adminRegistration(
-                $pdo,
-                $lname,
-                $fname,
-                $mname,
-                $employeeID,
-                $department,
-                $jobTitle,
-                $slary_rate,
-                $salary_Range_From,
-                $salary_Range_To,
-                $salary,
-                $citizenship,
-                $gender,
-                $civil_status,
-                $religion,
-                $age,
-                $birthday,
-                $birthPlace,
-                $contact,
-                $email,
-                $secheduleFrom,
-                $scheduleTo,
-                $houseBlock,
-                $street,
-                $subdivision,
-                $barangay,
-                $city_muntinlupa,
-                $province,
-                $zipCode,
-                $profile,
-                $username,
-                $password
-            );
-
-            $createdUserId += 1;
-
-            if (!$createdUserId) {
-                die("Failed to get newly created user's ID");
-            }
-            $scriptPath = realpath(__DIR__ . "/emailSender.php");
-            $phpPath = 'C:\\xampp\\php\\php.exe';
-
-            $command = 'cmd.exe /C "start /B "" ' .
-            escapeshellarg($phpPath) . ' ' .
-            escapeshellarg($scriptPath) . ' ' .
-            escapeshellarg($createdUserId) . ' ' .  
-            escapeshellarg("created") . ' ' .     
-            escapeshellarg('') . ' ' .             
-            escapeshellarg('') . ' ' .          
-            escapeshellarg('') . ' ' .          
-            escapeshellarg($username) . ' ' .   
-            escapeshellarg($password) . '"';       
-
-
-            file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
-            pclose(popen($command, "r"));
-
-
-            header("Location: ../src/admin/employee.php?acceptEmployee=success&tab=accept");
-    
-            $stmt = null;
-            $pdo = null;
-    
-            die();
-
-        } catch (PDOException $e) {
-            die("Query Failed: " . $e->getMessage());
         }
-    }
-
     // =============================== EMPLOYEE AREA =============================== //
     if(isset($_POST["userUpdateProfile"]) && $_POST["userUpdateProfile"] === "true") {
         $users_id = $POST["users_id"]; 

@@ -205,5 +205,3 @@ function loginHistory() {
 
     });
 }
-
-

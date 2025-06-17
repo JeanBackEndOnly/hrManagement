@@ -182,7 +182,7 @@
                     <?= renderRequestSortAndPerPageControls($currentUrl, $requestPerPage, $requestSortColumn, $requestSortOrder); ?>
                 </div>
 
-                <div id="requestList" class="request-employee-list" id="requestList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
+                <div class="request-employee-list" id="requestList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
                     <table class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">

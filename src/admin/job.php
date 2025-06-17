@@ -401,7 +401,10 @@
                         <!-- ================================== EDIT MODAL SALARY ===================================== -->
                         <div class="modal fade" id="editJobModalHEhe" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <form method="post" action="edit-job-handler.php">
+                                <form method="post" action="../../auth/authentications.php">
+                                    <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
+                                    <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
+                                    <input type="hidden" name="editSalary" value="true">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                     <h5 class="modal-title" id="editJobModalLabel">Edit Job Information</h5>
@@ -469,6 +472,41 @@ function openEditModalEdit(users_idEdit, jobTitleEdit, salaryFromEdit, salaryToE
     });
 }
 
+ document.addEventListener('DOMContentLoaded', function () {
+        const jobTitleSelect = document.getElementById('editJob_TitleEdit');
+        console.log("heheWorking!");
+        if (!jobTitleSelect) {
+            console.error("JobTitle select element not found!");
+            return;
+        }
+
+        fetch('../api.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!Array.isArray(data.jobTitles)) {
+                    console.error('Invalid data from API:', data);
+                    return;
+                }
+
+                // Clear existing options
+                jobTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
+
+                data.jobTitles.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.jobTitle;
+                    option.textContent = item.jobTitle;
+
+                    if (typeof selectedJobTitle !== 'undefined' && item.jobTitle === selectedJobTitle) {
+                        option.selected = true;
+                    }
+
+                    jobTitleSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading job titles:', error);
+            });
+    });
 
 </script>
 <?php include '../../templates/Ufooter.php'?>

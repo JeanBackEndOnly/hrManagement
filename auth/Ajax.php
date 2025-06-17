@@ -11,6 +11,7 @@ if ($action === 'save_installation_data') {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $email = $_POST['email'];
     $role = 'administrator';
 
     if (!$username || !$password || !$confirm_password) {
@@ -28,6 +29,7 @@ if ($action === 'save_installation_data') {
     $response = save_user([
         'username' => $username,
         'password' => $hashedPassword,
+        'email' => $email,
         'user_role' => $role
     ]);
 
@@ -41,6 +43,7 @@ if ($action === 'save_installation_data') {
 if ($action === 'register-data') {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $email = $_POST['email'];
 
     echo json_encode([
         'success' => true,

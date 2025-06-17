@@ -117,6 +117,10 @@ $validated      = getValidatedEmployees($empPerPage, $empOffset, $empSortColumn,
     $upsertSuccess = false;
     $upsertFailed = false;
     $promotion = false;
+    $salary = false;
+    $password = false;
+    $newNotMatched = false;
+    $currentNotMatched = false;
     if (isset($_GET['job']) && $_GET['job'] === 'success') {
         $AddJobModal = true;
     }elseif(isset($_GET['deleteJob']) && $_GET['deleteJob'] === 'success'){
@@ -145,6 +149,14 @@ $validated      = getValidatedEmployees($empPerPage, $empOffset, $empSortColumn,
         $upsertFailed = true;
     }elseif(isset($_GET['promotion']) && $_GET['promotion'] === 'success'){
         $promotion = true;
+    }elseif(isset($_GET['salary']) && $_GET['salary'] === 'success'){
+        $salary = true;
+    }elseif(isset($_GET['password']) && $_GET['password'] === 'success'){
+        $password = true;
+    }elseif(isset($_GET['password']) && $_GET['password'] === 'currentNotMatched'){
+        $currentNotMatched = true;
+    }elseif(isset($_GET['password']) && $_GET['password'] === 'newNotMatched'){
+        $newNotMatched = true;
     }
 
 ?>
@@ -188,6 +200,10 @@ $validated      = getValidatedEmployees($empPerPage, $empOffset, $empSortColumn,
         const upsertSuccess = <?php echo json_encode($upsertSuccess); ?>;
         const upsertFailed = <?php echo json_encode($upsertFailed); ?>;
         const promotion = <?php echo json_encode($promotion); ?>;
+        const salary = <?php echo json_encode($salary); ?>;
+        const password = <?php echo json_encode($password); ?>;
+        const newNotMatched = <?php echo json_encode($newNotMatched); ?>;
+        const currentNotMatched = <?php echo json_encode($currentNotMatched); ?>;
     </script>
 
 </head>

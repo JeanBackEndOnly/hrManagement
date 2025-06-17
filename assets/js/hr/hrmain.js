@@ -14,6 +14,66 @@
     }
     // ================== TOAST NOTIFICATION ================== //
     document.addEventListener('DOMContentLoaded', () => {
+        if (newNotMatched) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Password not match!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['password']);
+        }else if (currentNotMatched) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Current password not match!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['password']);
+        }else if (currentNotMatched) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Current password not match!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['password']);
+        }else if (password) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Password changed successfully!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['password']);
+        }
+        function removeUrlParams(params) {
+            const url = new URL(window.location);
+            params.forEach(param => url.searchParams.delete(param));
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    });
+    document.addEventListener('DOMContentLoaded', () => {
         if (updateReq) {
             console.log("Showing updateReq toast");
             Swal.fire({
@@ -105,6 +165,19 @@
             customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['promotion']);
+        }else if (salary) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Employee Salary and Job Title Updated Successfully.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['salary']);
         }
         function removeUrlParams(params) {
             const url = new URL(window.location);
@@ -342,6 +415,10 @@
             });
     });
         // ================== PASSWORD EYE ================== //
+    const passwordInputCurrent = document.getElementById('passwordInputCurrent');
+    const showPasswordCurrent = document.getElementById('showPasswordCurrent');
+    const hidePasswordCurrent = document.getElementById('hidePasswordCurrent');
+
     const passwordInput = document.getElementById('passwordInput');
     const showPassword = document.getElementById('showPassword');
     const hidePassword = document.getElementById('hidePassword');
@@ -349,6 +426,18 @@
     const confirmPasswordInput = document.getElementById('confirmPasswordInput');
     const showConfirmPassword = document.getElementById('showConfirmPassword');
     const hideConfirmPassword = document.getElementById('hideConfirmPassword');
+
+    showPasswordCurrent.addEventListener('click', () => {
+        passwordInputCurrent.type = 'text';
+        showPasswordCurrent.style.display = 'none';
+        hidePasswordCurrent.style.display = 'inline';
+    });
+
+    hidePasswordCurrent.addEventListener('click', () => {
+        passwordInputCurrent.type = 'password';
+        showPasswordCurrent.style.display = 'inline';
+        hidePasswordCurrent.style.display = 'none';
+    });
 
     showPassword.addEventListener('click', () => {
         passwordInput.type = 'text';
@@ -373,6 +462,7 @@
         showConfirmPassword.style.display = 'inline';
         hideConfirmPassword.style.display = 'none';
     });
+    
      // ================== SCHEDULE VALIDATION ================== //
     document.addEventListener('DOMContentLoaded', function () {
         const departmentSelect = document.getElementById('Department');

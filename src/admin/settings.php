@@ -73,7 +73,7 @@
                     </li>
                 </div>
             </div>
-            <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
+            <div class="contents w-100 h-100 d-flex flex-column align-items-center justify-content-start p-0 m-0">
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
                     <div class="h1">
                         <h3 class="m-0">SETTINGS</h3>
@@ -85,22 +85,56 @@
                 </div>
                 <div class="container" id="changePAsswordID" style="display: flex;">
                     <div class="container shadow p-5 rounded-2">
-                        <form class="w-100" method="POST" action="change_password.php">
+                        <form class="w-100" method="POST" action="../../auth/authentications.php">
+                                <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
+                                <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
+                                <input type="hidden" name="changePassword" value="true">
                             <div class="mb-3">
-                                <label for="currentPassword" class="form-label">Current Password</label>
-                                <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                                <li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: start;">
+                                    <label for="newPassword" class="form-label text-start fw-bold">Current Password</label>
+                                    <input type="password" class="form-control" name="current_password" placeholder="Password" required id="passwordInputCurrent" style="flex: 1;">
+                                    
+                                    <button type="button" id="showPasswordCurrent" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+
+                                    <button type="button" id="hidePasswordCurrent" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
+                                        <i class="fa-solid fa-eye-slash"></i>
+                                    </button>
+                                </li>
+                            </div>
+                            <div class="mb-3">
+                                <li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: start;">
+                                    <label for="newPassword" class="form-label text-start fw-bold">New Password</label>
+                                    <input type="password" class="form-control" name="new_password" placeholder="Password" required id="passwordInput" style="flex: 1;">
+                                    
+                                    <button type="button" id="showPassword" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+
+                                    <button type="button" id="hidePassword" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
+                                        <i class="fa-solid fa-eye-slash"></i>
+                                    </button>
+                                </li>
                             </div>
 
                             <div class="mb-3">
-                                <label for="newPassword" class="form-label">New Password</label>
-                                <input type="password" class="form-control" id="newPassword" name="new_password" required>
-                            </div>
+                                <li class="li-div w-100 flex-column justify-content-start" style="display: flex; list-style-type: none; align-items: start;">
+                                    <label for="confirmPassword" class="form-label text-start fw-bold">Confirm New Password</label>
+                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required id="confirmPasswordInput" style="flex: 1;">
+                                    
+                                    <button type="button" id="showConfirmPassword" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
+                                    <button type="button" id="hideConfirmPassword" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
+                                        <i class="fa-solid fa-eye-slash"></i>
+                                    </button>
+                                </li>
+                            </div>
                             <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                                <p>Forgot password?</p>
                             </div>
-
                             <button type="submit" class="btn btn-success">Change Password</button>
                         </form>
                     </div>
@@ -120,7 +154,7 @@
                                 <h3 class="text-center fw-bold" style="width: 98% !important;">Logout Time</h3>
                                 <?php foreach($adminHistory as $history): ?>
                                     <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
-                                        <?= date('F j, Y h:i A', strtotime($history['logout_time'])) ?>
+                                        <?= isset($history['logout_time']) ? date('F j, Y h:i A', strtotime($history['logout_time'])) : 'Not logged out' ?>
                                     </p>
                                 <?php endforeach ?>
                             </div>
@@ -138,4 +172,8 @@
             <div class="line"></div>
         </div>
     </div>
+
+    <script>
+
+    </script>
 <?php include '../../templates/Ufooter.php'?>
