@@ -16,10 +16,17 @@ document.getElementById("empSearchInput").addEventListener("input", function () 
         row.style.display = text.includes(query) ? "table" : "none";
     });
 });
-function openUpdateModal(users_id, jobTitle, salary) {
+function openUpdateModal(users_id, jobTitle, salaryFrom, salaryTo, salary) {
     document.getElementById('updateJobId').value = users_id;
     document.getElementById('Job_Title').value = jobTitle;
+    document.getElementById('updateSalaryFrom').value = salaryFrom;
+    document.getElementById('updateSalaryTo').value = salaryTo;
     document.getElementById('updateSalary').value = salary;
+
+    const jobTitleSelect = document.getElementById('Job_Title');
+    Array.from(jobTitleSelect.options).forEach(option => {
+        option.selected = option.value === jobTitleEdit;
+    });
 }
 
 function updateEmpItemsPerPage(perPage) {

@@ -316,16 +316,18 @@
                                             <td style="width: 15%;"><?= htmlspecialchars($row['salary']) ?></td>
                                             <td style="width: 15%;"><?= date('F j, Y h:i A', strtotime($row['created_date'])) ?></td>
                                             <td style="width: 14%;">
-                                                <button class="btn btn-sm btn-primary me-2"
+                                                <button class="btn btn-sm btn-success me-2"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#updateJobModal"
-                                                    onclick='openUpdateModal(<?= $row["users_id"] ?>, <?= json_encode($row["jobTitle"]) ?>, <?= json_encode($row["salary"]) ?>)'>
+                                                    onclick='openUpdateModal(<?= $row["users_id"] ?>, <?= json_encode($row["jobTitle"]) ?>, <?= json_encode($row["salary_Range_From"]) ?>,
+                                                    <?= json_encode($row["salary_Range_To"]) ?>, <?= json_encode($row["salary"]) ?>)'>
                                                     Promote
                                                 </button>
-                                                <button class="btn btn-sm btn-warning me-2"
+                                                <button class="btn btn-sm btn-primary me-2"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editJobModalHEhe"
-                                                    onclick='openEditModal(<?= $row["users_id"] ?>, <?= json_encode($row["jobTitle"]) ?>, <?= json_encode($row["salary"]) ?>)'>
+                                                    onclick='openEditModalEdit(<?= $row["users_id"] ?>, <?= json_encode($row["jobTitle"]) ?>, <?= json_encode($row["salary_Range_From"]) ?>,
+                                                    <?= json_encode($row["salary_Range_To"]) ?>, <?= json_encode($row["salary"]) ?>)'>
                                                     Edit
                                                 </button>
                                             </td>
@@ -348,6 +350,7 @@
                                 <a href="<?= $currentUrl ?>?emp_page=<?= min($empTotalPages, $empPage + 1) ?>&emp_perPage=<?= $empPerPage ?>&emp_sort=<?= $empSortColumn ?>&emp_order=<?= $empSortOrder ?>&tab=salaryManage" class="btn btn-sm btn-outline-primary <?= ($empPage >= $empTotalPages) ? 'disabled' : '' ?>">Next</a>
                             </div>
                         </div>
+                        <!-- ================================== PROMOTION MODAL SALARY ===================================== -->
                         <div class="modal fade" id="updateJobModal" tabindex="-1" aria-labelledby="updateJobModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <form method="post" action="../../auth/authentications.php">
@@ -364,16 +367,27 @@
                                             <input type="hidden" name="job_id" id="updateJobId">
 
                                             <div class="mb-3">
-                                                <label for="updateSalary" class="form-label">Salary</label>
-                                                <input type="number" class="form-control" name="salary" id="updateSalary" min="0" value="">
-                                            </div>
-
-                                            <div class="mb-3">
                                                 <label for="Job_Title" class="form-label">Job Title</label>
                                                 <select name="job_title" id="Job_Title" class="form-select p-1 py-2 rounded-1">
                                                 <option value="">Select Job Title</option>
                                                 </select>
                                             </div>
+
+                                            <div class="mb-3">
+                                                <label for="updateSalary" class="form-label">Salary Range From</label>
+                                                <input type="number" class="form-control" name="salary_Range_From" id="updateSalaryFrom" min="0" value="">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="updateSalary" class="form-label">Salary Range TO</label>
+                                                <input type="number" class="form-control" name="salary_Range_To" id="updateSalaryTo" min="0" value="">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="updateSalary" class="form-label">Official Salary</label>
+                                                <input type="number" class="form-control" name="salary" id="updateSalary" min="0" value="">
+                                            </div>
+
                                         </div>
 
                                         <div class="modal-footer">
@@ -384,6 +398,7 @@
                                 </form>
                             </div>
                         </div>
+                        <!-- ================================== EDIT MODAL SALARY ===================================== -->
                         <div class="modal fade" id="editJobModalHEhe" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <form method="post" action="edit-job-handler.php">
@@ -394,19 +409,29 @@
                                     </div>
 
                                     <div class="modal-body">
-                                    <input type="hidden" name="users_id" id="editUserId">
+                                    <input type="hidden" name="users_id" id="editUserIdEdit">
 
-                                    <div class="mb-3">
-                                        <label for="Job_Title" class="form-label">Job Title</label>
-                                        <select name="job_title" id="Job_Title" class="form-select p-1 py-2 rounded-1">
+                                        <div class="mb-3">
+                                            <label for="Job_Title" class="form-label">Job Title</label>
+                                            <select name="job_title" id="editJob_TitleEdit" class="form-select p-1 py-2 rounded-1">
                                             <option value="">Select Job Title</option>
-                                        </select>
-                                    </div>
+                                            </select>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="editSalary" class="form-label">Salary</label>
-                                        <input type="number" class="form-control" name="salary" id="editSalary" min="0" required>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="updateSalary" class="form-label">Salary Range From</label>
+                                            <input type="number" class="form-control" name="salary_Range_From" id="editSalaryFromEdit" min="0" value="">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="updateSalary" class="form-label">Salary Range TO</label>
+                                            <input type="number" class="form-control" name="salary_Range_To" id="editSalaryToEdit" min="0" value="">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="updateSalary" class="form-label">Official Salary</label>
+                                            <input type="number" class="form-control" name="salary" id="editSalaryEdit" min="0" value="">
+                                        </div>
                                     </div>
 
                                     <div class="modal-footer">
@@ -430,4 +455,20 @@
         </div>
     </div>
 </body>
+<script>
+function openEditModalEdit(users_idEdit, jobTitleEdit, salaryFromEdit, salaryToEdit, salaryEdit) {
+    document.getElementById('editUserIdEdit').value = users_idEdit;
+    document.getElementById('editSalaryFromEdit').value = salaryFromEdit;
+    document.getElementById('editSalaryToEdit').value = salaryToEdit;
+    document.getElementById('editSalaryEdit').value = salaryEdit;
+
+    // For select dropdown
+    const select = document.getElementById('editJob_TitleEdit');
+    Array.from(select.options).forEach(option => {
+        option.selected = option.value === jobTitleEdit;
+    });
+}
+
+
+</script>
 <?php include '../../templates/Ufooter.php'?>
