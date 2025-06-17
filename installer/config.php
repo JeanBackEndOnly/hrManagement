@@ -131,7 +131,13 @@ if (!function_exists('db_connection')) {
                     ON DELETE CASCADE
                     ON UPDATE CASCADE
             )",
-
+            "CREATE TABLE IF NOT EXISTS admin_history (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                admin_id INT NOT NULL,
+                login_time DATETIME NOT NULL,
+                logout_time DATETIME DEFAULT NULL,
+                FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
 
             ];
 

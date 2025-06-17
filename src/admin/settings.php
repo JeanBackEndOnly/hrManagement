@@ -77,10 +77,65 @@
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
                     <div class="h1">
                         <h3 class="m-0">SETTINGS</h3>
+                    </div> 
+                    <div class="History_Pass d-flex flex-row justify-content-between align-items-center" style="width: 25%">
+                        <button id="idChangePass" class="historyPass active" onclick="changePass()">Change password</button>
+                        <button id="idLoginHistory" class="historyPass" onclick="loginHistory()">Login History</button>
+                    </div>
+                </div>
+                <div class="container" id="changePAsswordID" style="display: flex;">
+                    <div class="container shadow p-5 rounded-2">
+                        <form class="w-100" method="POST" action="change_password.php">
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" name="new_password" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Change Password</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:75vh;">
+                    <div class="container shadow p-5 w-100 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap">
+                        <?php if($adminHistory): ?>
+                            <div class="w-50">
+                                <h3 class="text-center fw-bold" style="width: 98% !important;">Login Time</h3>
+                                <?php foreach($adminHistory as $history): ?>
+                                    <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
+                                        <?= date('F j, Y h:i A', strtotime($history['login_time'])) ?>
+                                    </p>
+                                <?php endforeach ?>
+                            </div>
+                            <div class="w-50">
+                                <h3 class="text-center fw-bold" style="width: 98% !important;">Logout Time</h3>
+                                <?php foreach($adminHistory as $history): ?>
+                                    <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
+                                        <?= date('F j, Y h:i A', strtotime($history['logout_time'])) ?>
+                                    </p>
+                                <?php endforeach ?>
+                            </div>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+<div id="loadingAnimation" style="display:none;">
+        <div class="loading-lines">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </div>
 <?php include '../../templates/Ufooter.php'?>

@@ -17,6 +17,8 @@ $validated = getValidatedCountDashboard();
 $validatedCount = $validated["validatedCount"];
 $pending = getPendingCountDashboard();
 $pendingCount = $pending["pendingCount"];
+$historyADmin = adminHistoryLog();
+$adminHistory = $historyADmin["adminHistory"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];

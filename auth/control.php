@@ -565,3 +565,13 @@ function getPendingCountDashboard() {
     $pendingCount = $stmt->fetchColumn();
     return ['pendingCount' => $pendingCount];
 }
+
+// ======================= SETTINGS ====================== //
+function adminHistoryLog(){
+    $pdo = db_connection();
+    $query = "SELECT * FROM admin_history";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $adminHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ['adminHistory' => $adminHistory];
+} 

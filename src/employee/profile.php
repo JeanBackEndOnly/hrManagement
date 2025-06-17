@@ -69,7 +69,7 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="min-height: 2rem; min-width: 95%;">
+                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="min-height: 7rem; min-width: 95%;">
                     <div class="h1">
                         <h3 class="m-0">EMPLOYEE PROFILE</h3>
                     </div>

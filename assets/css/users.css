@@ -338,7 +338,7 @@ transform: translateX(.9rem);
     height: 100%;
     border-radius: 50%;
 }
-.tab-btn , .tab-btns{
+.tab-btn , .tab-btns, .historyPass{
     position: relative;
     background: transparent;
     border: none;
@@ -348,7 +348,7 @@ transform: translateX(.9rem);
     transition: color 0.3s ease;
 }
 
-.tab-btn::after, .tab-btns::after {
+.tab-btn::after, .tab-btns::after, .historyPass::after {
     content: "";
     position: absolute;
     left: 0;
@@ -361,7 +361,7 @@ transform: translateX(.9rem);
 
 .tab-btn:hover::after,
 .tab-btn.active::after,.tab-btns:hover::after,
-.tab-btns.active::after {
+.tab-btns.active::after, .historyPass.active::after, .historyPass:hover::after {
     width: 100%;
 }
 .usersButton span{
@@ -414,5 +414,8 @@ transform: translateX(.9rem);
     }
     #hrUl i{
         width: fit-content;
+    }
+    .History_Pass{
+        width: 75% !important;
     }
 }

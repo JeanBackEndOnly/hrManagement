@@ -89,9 +89,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
             } 
             elseif ($user["user_role"] === "administrator") {
+                $query = "INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW());";
+                $stmt = $pdo->prepare($query);
+                $stmt->execute([$user["id"]]); 
                 header("Location: ../src/admin/dashboard.php");
                 error_log("Redirecting admin to dashboard");
             }
+
             else {
                 header("Location: ../src/index.php");
                 error_log("Redirecting to index (unknown role)");
