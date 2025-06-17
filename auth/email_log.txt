@@ -8,3 +8,5 @@ Email sent successfully to asdgfdfgdfg@gmail.com with action promoted
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","created","","","","2200496","2200496#21asdasSS"]
 ==> Script started at 2025-06-17 21:05:58
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","2","created","","","","2200496sdA","2200496sdA#"]
+==> Script started at 2025-06-17 21:19:00
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","4","created","","","","2200498faa","2200498faa#1A"]
