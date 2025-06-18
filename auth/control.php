@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+date_default_timezone_set('Asia/Manila');
 require_once '../../installer/session.php';
 require_once '../../installer/config.php';
 require_once '../../auth/view.php';
@@ -575,3 +576,88 @@ function adminHistoryLog(){
     $adminHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return ['adminHistory' => $adminHistory];
 } 
+
+// ====================== REPORTS ====================== //
+
+function getReportCount() {
+    $pdo = db_connection();
+    $query = "SELECT COUNT(*) FROM reports WHERE DATE(report_date) = CURDATE();";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $reportCount = $stmt->fetchColumn();
+    return ['reportCount' => $reportCount];
+}
+
+$currentReportsUrl = basename($_SERVER['PHP_SELF']); 
+$dateFilter = $_GET['dateFilter'] ?? 'all'; 
+$whereClause = '';
+
+if ($dateFilter && $dateFilter !== 'all') { 
+    switch ($dateFilter) {
+        case 'today':
+            $whereClause = "WHERE DATE(report_date) = CURDATE()";
+            break;
+        case 'week':
+            $whereClause = "WHERE YEARWEEK(report_date, 1) = YEARWEEK(CURDATE(), 1)";
+            break;
+        case 'month':
+            $whereClause = "WHERE MONTH(report_date) = MONTH(CURDATE()) AND YEAR(report_date) = YEAR(CURDATE())";
+            break;
+        case 'year':
+            $whereClause = "WHERE YEAR(report_date) = YEAR(CURDATE())";
+            break;
+    }
+}
+
+$reportPage        = getCurrentPage('reports_page'); 
+$reportsPerPage    = getPerPage('reports_perPage'); 
+$reportSortColumn  = getSortColumn('reports_sort', 'report_date'); 
+$reportSortOrder   = getSortOrder('reports_order', 'desc'); 
+
+$reportTotalRows   = getReportsCount($whereClause);
+$reportTotalPages  = ceil($reportTotalRows / $reportsPerPage);
+$reportPage        = max(1, min($reportPage, $reportTotalPages));
+$reportOffset      = ($reportPage - 1) * $reportsPerPage;
+
+$reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $reportSortOrder, $whereClause);
+function getReportsCount(string $whereClause = ''): int {
+    $pdo = db_connection();
+    try {
+        $stmt = $pdo->query("SELECT COUNT(*) FROM reports $whereClause");
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        error_log("DB error in getReportsCount: " . $e->getMessage());
+        return 0;
+    }
+}
+
+function getReports(int $limit, int $offset, string $sortColumn, string $sortOrder, string $whereClause = ''): array {
+    $pdo = db_connection();
+
+    $allowedColumns = ['lname', 'report_date'];
+    $allowedOrder = ['asc', 'desc'];
+
+    if (!in_array($sortColumn, $allowedColumns)) $sortColumn = 'report_date';
+    if (!in_array(strtolower($sortOrder), $allowedOrder)) $sortOrder = 'desc';
+
+    $sql = "
+        SELECT *
+        FROM reports
+        LEFT JOIN users ON reports.users_id = users.id
+        LEFT JOIN userinformations ON users.id = userinformations.users_id
+        $whereClause
+        ORDER BY $sortColumn $sortOrder
+        LIMIT :limit OFFSET :offset
+    ";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("DB error in getReports: " . $e->getMessage());
+        return [];
+    }
+}

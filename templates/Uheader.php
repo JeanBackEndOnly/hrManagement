@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Manila'); // Adjust this if needed
 require_once '../../installer/session.php';
 require_once '../../auth/view.php';
 require_once '../../auth/control.php';
@@ -19,6 +20,10 @@ $pending = getPendingCountDashboard();
 $pendingCount = $pending["pendingCount"];
 $historyADmin = adminHistoryLog();
 $adminHistory = $historyADmin["adminHistory"];
+// $reports = getReport();
+// $report = $reports["report"];
+$reportsC = getReportCount();
+$reportCount = $reportsC["reportCount"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];
@@ -100,6 +105,42 @@ $empPage        = max(1, min($empPage, $empTotalPages));
 
 $empOffset      = ($empPage - 1) * $empPerPage;
 $validated      = getValidatedEmployees($empPerPage, $empOffset, $empSortColumn, $empSortOrder);
+
+// ==================== REPORTS ====================== //
+
+$currentReportsUrl = basename($_SERVER['PHP_SELF']); 
+$dateFilter = $_GET['dateFilter'] ?? 'all'; 
+$whereClause = '';
+
+if ($dateFilter && $dateFilter !== 'all') { 
+    switch ($dateFilter) {
+        case 'today':
+            $whereClause = "WHERE DATE(report_date) = CURDATE()";
+            break;
+        case 'week':
+            $whereClause = "WHERE YEARWEEK(report_date, 1) = YEARWEEK(CURDATE(), 1)";
+            break;
+        case 'month':
+            $whereClause = "WHERE MONTH(report_date) = MONTH(CURDATE()) AND YEAR(report_date) = YEAR(CURDATE())";
+            break;
+        case 'year':
+            $whereClause = "WHERE YEAR(report_date) = YEAR(CURDATE())";
+            break;
+    }
+}
+
+$reportPage        = getCurrentPage('reports_page'); 
+$reportsPerPage    = getPerPage('reports_perPage'); 
+$reportSortColumn  = getSortColumn('reports_sort', 'report_date'); 
+$reportSortOrder   = getSortOrder('reports_order', 'desc'); 
+
+$reportTotalRows   = getReportsCount($whereClause);
+$reportTotalPages  = ceil($reportTotalRows / $reportsPerPage);
+$reportPage        = max(1, min($reportPage, $reportTotalPages));
+$reportOffset      = ($reportPage - 1) * $reportsPerPage;
+
+$reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $reportSortOrder, $whereClause);
+
 
 
     // ========= NOTIFICATIONS ========= //

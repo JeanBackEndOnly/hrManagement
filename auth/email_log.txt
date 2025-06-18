@@ -28,3 +28,36 @@ Email sent successfully to cat@gmail.com with action created
 ==> Script started at 2025-06-18 11:19:13
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","promoted","Visiting Lecturer","English Major","35000.00"]
 Email sent successfully to cat@gmail.com with action promoted
+==> Script started at 2025-06-18 18:21:02
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","promoted","English Major","Visiting Lecturer","42000.00"]
+Email sent successfully to cat@gmail.com with action promoted
+==> Script started at 2025-06-18 18:21:51
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","6","promoted","Visiting Lecturer","English Major","35000.00"]
+Email sent successfully to pagotaisidroqwsdasdasdmarcojean@gmail.com with action promoted
+==> Script started at 2025-06-18 20:21:24
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
+==> Script started at 2025-06-18 20:21:27
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","promoted","Visiting Lecturer","Visiting Lecturer","42000.00"]
+==> Script started at 2025-06-18 20:21:29
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","5","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
+Email sent successfully to roronoazoro@gmail.com with action promoted
+==> Script started at 2025-06-18 20:21:31
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","6","promoted","English Major","English Major","35000.00"]
+Email sent successfully to cat@gmail.com with action promoted
+==> Script started at 2025-06-18 20:21:33
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","promoted","Visiting Lecturer","Visiting Lecturer","42000.00"]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action promoted
+==> Script started at 2025-06-18 20:21:36
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","7","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
+Email sent successfully to pagotaisidroqwsdasdasdmarcojean@gmail.com with action promoted
+Email sent successfully to cat@gmail.com with action promoted
+==> Script started at 2025-06-18 20:21:38
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","5","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
+==> Script started at 2025-06-18 20:21:40
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
+Email sent successfully to pagotaisidromarcojean123@gmail.com with action promoted
+Email sent successfully to pagotaisidromarcojean@gmail.com with action promoted
+Email sent successfully to roronoazoro@gmail.com with action promoted
+==> Script started at 2025-06-18 20:28:12
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
+Email sent successfully to roronoazoro@gmail.com with action promoted

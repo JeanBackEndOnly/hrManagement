@@ -379,6 +379,24 @@
         fetchPendingCount(); 
         setInterval(fetchPendingCount, 5000);
     });
+    function fetchReportsCount() {
+        fetch('../api.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched data:', data); 
+                const reportCount = data.reportsCount ?? 0;
+                document.getElementById('reportsCountDisplay').textContent = reportCount;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchPendingCount(); 
+        setInterval(fetchPendingCount, 5000); 
+    });
         // ================== PASSWORD EYE ================== //
     const passwordInputCurrent = document.getElementById('passwordInputCurrent');
     const showPasswordCurrent = document.getElementById('showPasswordCurrent');
@@ -805,22 +823,7 @@ function activateTab(button) {
         window.history.replaceState(null, '', url.toString());
     }
 }
-window.onload = function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tab = urlParams.get("tab");
 
-        switch (tab) {
-            case "accept":
-                if (typeof getValidated === "function") getValidated();
-                break;
-            case "reject":
-                if (typeof getRejected === "function") getRejected();
-                break;
-            case "request":
-                if (typeof getRequest === "function") getRequest();
-                break;
-        }
-};
 function showLoadingAndRun(callback, visibleIds = []) {
     const loadingEl = document.getElementById("loadingAnimation");
 

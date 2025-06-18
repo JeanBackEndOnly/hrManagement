@@ -139,7 +139,13 @@ if (!function_exists('db_connection')) {
                 logout_time DATETIME DEFAULT NULL,
                 FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
             )",
-
+            "CREATE TABLE IF NOT EXISTS reports (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                users_id INT NOT NULL,
+                report_type VARCHAR(255) NOT NULL,
+                report_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
             ];
 
             foreach ($tableQueries as $query) {

@@ -330,5 +330,21 @@
     function getRequest() {
         fetchPendingCount(); 
     }
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get("tab");
+
+        switch (tab) {
+            case "accept":
+                if (typeof getValidated === "function") getValidated();
+                break;
+            case "reject":
+                if (typeof getRejected === "function") getRejected();
+                break;
+            case "request":
+                if (typeof getRequest === "function") getRequest();
+                break;
+        }
+    };
 </script>
 <?php include '../../templates/Ufooter.php'?>

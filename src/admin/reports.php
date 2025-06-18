@@ -72,12 +72,126 @@
                         </a>
                     </li>
                 </div>
-                
+
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
                     <div class="h1">
                         <h3 class="m-0">REPORTS</h3>
+                    </div>
+                </div>
+                <div class="search-titles flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableReport">
+                    <div class="search-bar d-flex align-items-center justify-content-start" style="width: 70%; transform: translateX(-10px);">
+                        <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
+                            <input type="text" class="form-control ps-5" placeholder="Search..." id="reportsSearchInput">
+                            <i class="fa-solid fa-magnifying-glass position-absolute" style="top: 50%; left: 15px; transform: translateY(-50%); color: gray;"></i>
+                        </div>
+                    </div>
+                    <?php
+                    // Get current URL and parameters for pagination and sorting, using distinct keys
+                    $currentUrl = basename($_SERVER['PHP_SELF']);
+                    $dateFilter = $_GET['dateFilter'] ?? 'all'; // Default to 'all'
+                    $reportsPerPage = getPerPage('reports_perPage'); // Use a distinct key for reports per page
+                    $reportSortColumn = getSortColumn('reports_sort', 'report_date'); // Use a distinct key for reports sort column
+                    $reportSortOrder = getSortOrder('reports_order', 'desc'); // Use a distinct key for reports sort order
+
+                    // Function to build query string for cleaner URLs
+                    function buildReportQueryString($params) {
+                        return http_build_query($params);
+                    }
+                    ?>
+                    <div class="date" style="width: 10%;">
+                        <select class="form-select" onchange="location.href='<?= $currentUrl ?>?<?= buildReportQueryString(['dateFilter' => 'all', 'reports_perPage' => $reportsPerPage, 'reports_sort' => $reportSortColumn, 'reports_order' => $reportSortOrder]) ?>' + (this.value !== 'all' ? '&dateFilter=' + this.value : '')">
+                            <option disabled>Date</option>
+                            <option value="all" <?= $dateFilter == 'all' ? 'selected' : '' ?>>All Time</option>
+                            <option value="today" <?= $dateFilter == 'today' ? 'selected' : '' ?>>Today</option>
+                            <option value="week" <?= $dateFilter == 'week' ? 'selected' : '' ?>>This Week</option>
+                            <option value="month" <?= $dateFilter == 'month' ? 'selected' : '' ?>>This Month</option>
+                            <option value="year" <?= $dateFilter == 'year' ? 'selected' : '' ?>>This Year</option>
+                        </select>
+                    </div>
+                    <div class="count" style="width: 8%;">
+                        <select class="form-select" onchange="location.href='<?= $currentUrl ?>?<?= buildReportQueryString(['reports_perPage' => 'REPLACE_ME', 'reports_sort' => $reportSortColumn, 'reports_order' => $reportSortOrder, 'dateFilter' => $dateFilter]) ?>'.replace('REPLACE_ME', this.value)">
+                            <option disabled>Items</option>
+                            <option value="10" <?= ($reportsPerPage == 10) ? 'selected' : '' ?>>10</option>
+                            <option value="20" <?= ($reportsPerPage == 20) ? 'selected' : '' ?>>20</option>
+                            <option value="50" <?= ($reportsPerPage == 50) ? 'selected' : '' ?>>50</option>
+                        </select>
+                    </div>
+                    <div class="sort" style="width: 8%;">
+                        <select class="form-select" onchange="location.href='<?= $currentUrl ?>?<?= buildReportQueryString(['reports_perPage' => $reportsPerPage, 'reports_sort' => $reportSortColumn, 'reports_order' => 'REPLACE_ME', 'dateFilter' => $dateFilter]) ?>'.replace('REPLACE_ME', this.value)">
+                            <option disabled <?= (!in_array($reportSortOrder, ['asc', 'desc'])) ? 'selected' : '' ?>>Sort</option>
+                            <option value="asc" <?= ($reportSortOrder == 'asc') ? 'selected' : '' ?>>A-Z</option>
+                            <option value="desc" <?= ($reportSortOrder == 'desc') ? 'selected' : '' ?>>Z-A</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="report-list" style="width: 95%; margin: 10px auto; height: 50vh; display: flex; flex-direction: column;" id="reportList">
+                    <table id="reportsTableBody" class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
+                        <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
+                            <tr style="display: table; width: 100%; table-layout: fixed;">
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 25%;">
+                                    <a href="<?= $currentUrl ?>?<?= buildReportQueryString(['reports_sort' => 'lname', 'reports_order' => ($reportSortColumn === 'lname' && $reportSortOrder === 'asc') ? 'desc' : 'asc', 'reports_perPage' => $reportsPerPage, 'reports_page' => 1, 'dateFilter' => $dateFilter]) ?>" style="color:black; text-decoration:none;">
+                                        Name <?= $reportSortColumn === 'lname' ? ($reportSortOrder === 'asc' ? '▲' : '▼') : '' ?>
+                                    </a>
+                                </th>
+                                <th style="width: 25%;">Details</th>
+                                <th style="width: 20%;">Department</th>
+                                <th style="width: 20%;">
+                                    <a href="<?= $currentUrl ?>?<?= buildReportQueryString(['reports_sort' => 'report_date', 'reports_order' => ($reportSortColumn === 'report_date' && $reportSortOrder === 'asc') ? 'desc' : 'asc', 'reports_perPage' => $reportsPerPage, 'reports_page' => 1, 'dateFilter' => $dateFilter]) ?>" style="color:black; text-decoration:none;">
+                                        Report Date <?= $reportSortColumn === 'report_date' ? ($reportSortOrder === 'asc' ? '▲' : '▼') : '' ?>
+                                    </a>
+                                </th>
+                                <th style="width: 10%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
+                            <?php if (!empty($reportData)): // Corrected variable name?>
+                                <?php $num = $reportOffset + 1; foreach ($reportData as $row): // Corrected variable name?>
+                                    <tr style="display: table; width: 100%; table-layout: fixed;">
+                                        <td style="width: 5%;"><?= $num ?></td>
+                                        <td style="width: 25%;"><?= htmlspecialchars($row['lname']) . ", " . htmlspecialchars($row['fname']) ?></td>
+                                        <td style="width: 25%;">
+                                            <?php
+                                                if($row['report_type'] == "employeeRegistration") {
+                                                    echo "Requesting for validation!";
+                                                } elseif ($row['report_type'] == "employeePromotion") {
+                                                    echo "Got Promoted to " . htmlspecialchars($row['jobTitle']);
+                                                } elseif ($row['report_type'] == "leaveRequest") {
+                                                    echo "Leave Request";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td style="width: 20%;"><?= htmlspecialchars($row['department']) ?></td>
+                                        <td style="width: 20%;"><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
+                                        <td style="width: 10%;">
+                                            <?php
+                                                if($row['report_type'] == "employeeRegistration") {
+                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
+                                                } elseif ($row['report_type'] == "employeePromotion") {
+                                                    echo '<a class="btn btn-sm btn-primary" href="job.php?tab=salaryManage">View</a>';
+                                                }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <?php $num++; ?>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr><td colspan="6" class="text-center">No reports found.</td></tr>
+                            <?php endif; ?>
+
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between align-items-center mt-1" style="flex-shrink: 0;">
+                        <div>
+                            Page <?= $reportPage ?> of <?= $reportTotalPages ?>
+                        </div>
+                        <div>
+                            <a href="<?= $currentUrl ?>?<?= buildReportQueryString(['reports_page' => max(1, $reportPage - 1), 'reports_perPage' => $reportsPerPage, 'reports_sort' => $reportSortColumn, 'reports_order' => $reportSortOrder, 'dateFilter' => $dateFilter]) ?>" class="btn btn-sm btn-outline-primary <?= ($reportPage <= 1) ? 'disabled' : '' ?>">Previous</a>
+                            <a href="<?= $currentUrl ?>?<?= buildReportQueryString(['reports_page' => min($reportTotalPages, $reportPage + 1), 'reports_perPage' => $reportsPerPage, 'reports_sort' => $reportSortColumn, 'reports_order' => $reportSortOrder, 'dateFilter' => $dateFilter]) ?>" class="btn btn-sm btn-outline-primary <?= ($reportPage >= $reportTotalPages) ? 'disabled' : '' ?>">Next</a>
+                        </div>
                     </div>
                 </div>
             </div>

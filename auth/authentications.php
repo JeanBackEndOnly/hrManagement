@@ -118,9 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $department = $_POST["department"];
         $jobTitle = $_POST["jobTitle"];
         $slary_rate = $_POST["slary_rate"];
-        // $salary_Range_From = $_POST["salary_Range_From"];
-        // $salary_Range_To = $_POST["salary_Range_To"];
-        // $salary = $_POST["salary"];
         $citizenship = $_POST["citizenship"];
         $gender = $_POST["gender"];
         $civil_status = $_POST["civil_status"];
@@ -180,7 +177,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 }
             } else {
-                // No image uploaded; copy default image
                 $default_image = "../assets/image/users.png";
                 $target_dir = "../assets/image/upload/";
                 $image_file_name = uniqid() . "-users.png";
@@ -194,7 +190,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, 
-            // $salary_Range_From, $salary_Range_To, $salary,
             $citizenship, $gender, $civil_status, $birthday, $contact, $email, $secheduleFrom, $scheduleTo,
             $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)){
                 $errors["empty_inputs"] = "Please fill out all fields!.";
@@ -229,9 +224,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     "department" => $department,
                     "jobTitle" => $jobTitle,
                     "slary_rate" => $slary_rate,
-                    // "salary_Range_From" => $salary_Range_From,
-                    // "salary_Range_To" => $salary_Range_To,
-                    // "salary" => $salary,
                     "citizenship" => $citizenship,
                     "gender" => $gender,
                     "civil_status" => $civil_status,
@@ -260,7 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 die();
             }
 
-            employeeRegistration(
+            $usersID = employeeRegistration(
                 $pdo,
                 $lname,
                 $fname,
@@ -269,9 +261,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $department,
                 $jobTitle,
                 $slary_rate,
-                // $salary_Range_From,
-                // $salary_Range_To,
-                // $salary,
                 $citizenship,
                 $gender,
                 $civil_status,
@@ -294,7 +283,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $username,
                 $password
             );
-            
+            $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'employeeRegistration')";
+            $stmt = $pdo->prepare($query); 
+            $stmt->bindParam(":users_id", $usersID);
+            $stmt->execute();
+
             header("Location: ../src/index.php?signup=success");
     
             $stmt = null;
@@ -421,6 +414,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         pclose(popen($command, "r"));
 
+        $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'employeePromotion')";
+        $stmt = $pdo->prepare($query); 
+        $stmt->bindParam(":users_id", $users_id_job);
+        $stmt->execute();
 
         header("Location: ../src/admin/job.php?promotion=success&tab=salaryManage");
         $stmt = null;

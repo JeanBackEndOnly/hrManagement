@@ -650,6 +650,8 @@ function employeeRegistration(
     );
 
     request($pdo, $id);
+
+    return $pdo->lastInsertId();
 }
 function adminRegistration(
     object $pdo,
