@@ -93,7 +93,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pending shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
+                    <a href="employee.php" class="pending shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
                                 <h1 class="fw-bold text-primary m-0"><?php echo $pendingCount; ?></h1>
@@ -104,7 +104,7 @@
                                 <h6 class="m-0 text-secondary">Employees</h6>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <div class="leave shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">

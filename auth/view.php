@@ -111,7 +111,7 @@ function signup_inputs(){
                             echo '<div class="col-12 col-md-6 mb-2 px-1">';
                                 echo '<label for="Citizenship" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
                                 echo '<select name="citizenship" id="Citizenship" class="form-select p-1 py-2 rounded-1">';
-                                    echo '<option value="NO Citizanship"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NO Citizanship' ? ' selected' : '') . '>Select Citizanship</option>';
+                                    echo '<option value="NO Citizenship"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NO Citizenship' ? ' selected' : '') . '>Select Citizenship</option>';
                                     echo '<option value="NATURAL-BORN"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NATURAL-BORN' ? ' selected' : '') . '>NATURAL-BORN</option>';
                                     echo '<option value="NATURALIZED"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NATURALIZED' ? ' selected' : '') . '>NATURALIZED</option>';
                                     echo '<option value="DUAL"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'DUAL' ? ' selected' : '') . '>DUAL</option>';
@@ -268,7 +268,7 @@ function signup_inputs(){
                             echo '</div>';
 
                             echo '<div class="col-md-4 px-1 w-100 position-relative">'; 
-                                echo '<li class="li-div w-100" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
+                                echo '<li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
                                     echo '<input type="password" class="form-control rounded-1 mb-2 pe-4" name="password" placeholder="Password" required id="passwordInputEmp" style="flex: 1;" value="' . (isset($signup_data['password']) ? htmlspecialchars($signup_data['password']) : '') . '">';
 
                                     echo '<button type="button" id="showPasswordEmp" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
@@ -282,7 +282,7 @@ function signup_inputs(){
                             echo '</div>';
 
                             echo '<div class="col-md-4 px-1 w-100 position-relative">'; 
-                                echo '<li class="li-div w-100" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
+                                echo '<li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
                                     echo '<input type="password" class="form-control rounded-1 pe-4" name="confirmPassword" placeholder="Confirm Password" required id="confirmPasswordInputEmp" style="flex: 1;" value="' . (isset($signup_data['confirmPassword']) ? htmlspecialchars($signup_data['confirmPassword']) : '') . '">';
 
                                     echo '<button type="button" id="showConfirmPasswordEmp" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
@@ -448,7 +448,7 @@ function registerEmployeeAdmin() {
                             echo '<div class="col-12 col-md-6 px-1">';
                                 echo '<label for="Citizenship" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
                                 echo '<select name="citizenship" id="Citizenship" class="form-select p-1 py-2 rounded-1">';
-                                    echo '<option value="NO Citizanship"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NO Citizanship' ? ' selected' : '') . '>Select Citizanship</option>';
+                                    echo '<option value="NO Citizenship"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NO Citizenship' ? ' selected' : '') . '>Select Citizenship</option>';
                                     echo '<option value="NATURAL-BORN"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NATURAL-BORN' ? ' selected' : '') . '>NATURAL-BORN</option>';
                                     echo '<option value="NATURALIZED"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'NATURALIZED' ? ' selected' : '') . '>NATURALIZED</option>';
                                     echo '<option value="DUAL"' . (isset($signup_data['citizenship']) && $signup_data['citizenship'] == 'DUAL' ? ' selected' : '') . '>DUAL</option>';

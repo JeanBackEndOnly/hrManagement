@@ -375,6 +375,8 @@ transform: translateX(.9rem);
 @media (max-width: 576px) {
     .logo h4{
         font-size: 12px;
+        text-align: center;
+        width: 9rem !important;
     }
     .logo img{
         width: 30px;
@@ -382,11 +384,8 @@ transform: translateX(.9rem);
         margin-left: 0;
     }
     .usersButton {
-        width: 40%;
+        width: 25%;
         justify-content: end;
-    }
-    .align-items-center{
-        width: 60%;
     }
     .align-items-center img{
         margin-left: 5px !important;
@@ -418,5 +417,8 @@ transform: translateX(.9rem);
     }
     .History_Pass{
         width: 75% !important;
+    }
+    .usersButton span{
+        display: none;
     }
 }

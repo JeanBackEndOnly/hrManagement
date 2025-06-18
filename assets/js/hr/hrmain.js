@@ -286,32 +286,6 @@
             toast.show();
         });
     });
-    // ================== REGISTRATION NOTIFICATION SUCCESS ================== //
-    document.addEventListener('DOMContentLoaded', () => {
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        if (getQueryParam('signup') === 'success') {
-            Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'Signup successful! You may now log in.',
-            showConfirmButton: false,
-            timer: 5000,
-            timerProgressBar: true,
-            customClass: {
-                popup: 'swal2-row-toast'
-            }
-            });
-
-            const url = new URL(window.location);
-            url.searchParams.delete('signup');
-            window.history.replaceState({}, document.title, url.toString());
-        }
-    });
      // ================== JOB TITLE LIST IN REGISTRATION ================== //
     document.addEventListener('DOMContentLoaded', function () {
         const jobTitleSelect = document.getElementById('JobTitle');
@@ -389,16 +363,21 @@
 
     });
      // ================== Request Count ================== //
-    document.addEventListener('DOMContentLoaded', function () {
+    function fetchPendingCount() {
         fetch('../api.php')
             .then(response => response.json())
             .then(data => {
-                const count = data.pendingCount ?? 0; 
+                const count = data.pendingCount ?? 0;
                 document.getElementById('pendingCountDisplay').textContent = count;
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchPendingCount(); 
+        setInterval(fetchPendingCount, 5000);
     });
         // ================== PASSWORD EYE ================== //
     const passwordInputCurrent = document.getElementById('passwordInputCurrent');
@@ -591,489 +570,7 @@
             }
         });
     });
-    // ====================== register =========================== //
-
-//     function showLoaderThen(callback) {
-//         const loader = document.getElementById("loading-overlay");
-//         loader.style.display = "flex";
-
-//         setTimeout(() => {
-//             loader.style.display = "none";
-//             callback();
-//         }, 800); 
-//     }
-
-//     function nextst() {
-//         const lnameEl = document.getElementById('surname');
-//         const fnameEl = document.getElementById('fname');
-//         const mnameEl = document.getElementById('mname');
-//         const employeeIDEl = document.getElementById('employeeIDEmp');
-//         const departmentEl = document.getElementById('Department');
-//         const jobTitleEl = document.getElementById('JobTitle');
-//         const slary_rateEl = document.getElementById('Slary_rate');
-//         // const salary_Range_FromEl = document.getElementById('salary_Range_From');
-//         // const salary_Range_ToEl = document.getElementById('salary_Range_To');
-//         // const salaryEl = document.getElementById('salary');
-//         const citizenshipEl = document.getElementById('Citizenship');
-//         const genderEl = document.getElementById('gender');
-//         const civil_statusEl = document.getElementById('civil_status');
-
-//         const lname = lnameEl.value.trim();
-//         const fname = fnameEl.value.trim();
-//         const mname = mnameEl.value.trim();
-//         const employeeID = employeeIDEl.value.trim();
-//         const department = departmentEl.value;
-//         const jobTitle = jobTitleEl.value.trim();
-//         const slary_rate = slary_rateEl.value;
-//         // const salary_Range_From = salary_Range_FromEl.value.trim();
-//         // const salary_Range_To = salary_Range_ToEl.value.trim();
-//         // const salary = salaryEl.value.trim();
-//         const citizenship = citizenshipEl.value;
-//         const gender = genderEl.value.trim();
-//         const civil_status = civil_statusEl.value.trim();
-
-//         const allFields = [
-//             lnameEl, fnameEl, mnameEl, employeeIDEl,
-//             // salary_Range_FromEl, salary_Range_ToEl, salaryEl,
-//             genderEl, civil_statusEl,
-//             departmentEl, slary_rateEl, jobTitleEl, citizenshipEl
-//         ];
-
-//         function showError(input, message) {
-//         let errorEl = input.nextElementSibling;
-//         if (!errorEl || !errorEl.classList.contains('input-error')) {
-//             errorEl = document.createElement('div');
-//             errorEl.classList.add('input-error');
-//             errorEl.style.color = 'red';
-//             errorEl.style.fontSize = '0.9em';
-//             errorEl.style.marginTop = '4px';
-//             errorEl.style.border = 'none'; 
-//             input.parentNode.insertBefore(errorEl, input.nextSibling);
-//         }
-//         errorEl.textContent = message;
-//         input.style.border = 'solid 1px red'; 
-//     }
-
-
-//         function clearError(input) {
-//         let errorEl = input.nextElementSibling;
-//         if (errorEl && errorEl.classList.contains('input-error')) {
-//             errorEl.textContent = '';
-//         }
-//         input.style.border = ''; 
-//     }
-
-
-//     allFields.forEach(el => clearError(el));
-
-//     let valid = true;
-
-//     if (!lname) { showError(lnameEl); valid = false; }
-//     if (!fname) { showError(fnameEl); valid = false; }
-//     if (!mname) { showError(mnameEl); valid = false; }
-//     if (!employeeID) { showError(employeeIDEl); valid = false; }
-//     // if (!salary_Range_From) { showError(salary_Range_FromEl); valid = false; }
-//     // if (!salary_Range_To) { showError(salary_Range_ToEl); valid = false; }
-//     // if (!salary) { showError(salaryEl); valid = false; }
-//     if (!civil_status) { showError(civil_statusEl); valid = false; }
-//     if (gender === "NO GENDER") { showError(genderEl); valid = false; }
-//     if (department === "NO DEPARTMENT") { showError(departmentEl); valid = false; }
-//     if (slary_rate === "NO SALARY RATE") { showError(slary_rateEl); valid = false; }
-//     if (!jobTitle) { showError(jobTitleEl); valid = false; }
-//     if (citizenship === "NO Citizanship") { showError(citizenshipEl); valid = false; }
-
-//     if (valid) {
-//         showLoaderThen(() => {
-//             document.getElementById("st-step").style.display = "none";
-//             document.getElementById("stButton").style.display = "none";
-
-//             document.getElementById("nd-step").style.display = "flex";
-//             document.getElementById("ndBUtton").style.display = "flex";
-
-//             document.getElementById("rd-step").style.display = "none";
-//             document.getElementById("rdButton").style.display = "none";
-//         });
-//     }
-//     }
-
-
-//     function disable_Button(){
-//         const signup = document.getElementById("button-signups");
-//         signup.disabled = true; 
-//         console.log("ehey!");
-
-//         if (signup.disabled === true) {
-//             signup.style.backgroundColor = "#979797"; 
-//         }
-//     }
     
-//     function isValidEmail(email) {
-//     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     return re.test(email);
-//     }
-
-//     function isValidContactNumber(number) {
-//         return /^[0-9]{11}$/.test(number);
-//     }
-
-//     function showLiveError(input, message) {
-//         let errorEl = input.nextElementSibling;
-//         if (!errorEl || !errorEl.classList.contains('input-error')) {
-//             errorEl = document.createElement('div');
-//             errorEl.classList.add('input-error');
-//             errorEl.style.color = 'red';
-//             errorEl.style.fontSize = '0.9em';
-//             errorEl.style.marginTop = '4px';
-//             input.parentNode.insertBefore(errorEl, input.nextSibling);
-//         }
-//         errorEl.textContent = message;
-//         input.style.border = 'solid 1px red';
-//     }
-
-//     function clearLiveError(input) {
-//         input.style.border = '';
-//         const errorEl = input.nextElementSibling;
-//         if (errorEl && errorEl.classList.contains('input-error')) {
-//             errorEl.textContent = '';
-//         }
-//     }
-//     document.addEventListener("DOMContentLoaded", () => {
-//         const contactInput = document.getElementById('contactEmpt');
-//         const emailInput = document.getElementById('emailEmp');
-
-//         contactInput.addEventListener('input', () => {
-//             const value = contactInput.value.trim();
-
-//             if (!value) {
-//                 clearLiveError(contactInput);
-//                 return;
-//             }
-
-//             if (!/^\d+$/.test(value)) {
-//                 showLiveError(contactInput, "Contact number must contain only digits.");
-//             } else if (value.length !== 11) {
-//                 showLiveError(contactInput, "Contact number must be exactly 11 digits.");
-//             } else {
-//                 clearLiveError(contactInput);
-//             }
-//         });
-
-//         emailInput.addEventListener('input', () => {
-//             const value = emailInput.value.trim();
-
-//             if (!value) {
-//                 clearLiveError(emailInput);
-//                 return;
-//             }
-
-//             if (!isValidEmail(value)) {
-//                 showLiveError(emailInput, "Invalid email format.");
-//             } else {
-//                 clearLiveError(emailInput);
-//             }
-//         });
-//     });
-
-//     async function nextnd() {
-//         const birthdayEl = document.getElementById('birthday');
-//         const birthPlaceEl = document.getElementById('birthPlace');
-//         const contactEl = document.getElementById('contact');
-//         const emailEl = document.getElementById('email');
-//         const secheduleFromEl = document.getElementById('scheduleFrom');
-//         const scheduleToEl = document.getElementById('scheduleTo');
-//         const streetEl = document.getElementById('street');
-//         const barangayEl = document.getElementById('Brangay');
-//         const cityEl = document.getElementById('city_muntinlupa');
-//         const provinceEl = document.getElementById('province');
-//         const zipCodeEl = document.getElementById('zipCode');
-
-//         const birthday = birthdayEl.value.trim();
-//         const birthPlace = birthPlaceEl.value.trim();
-//         const contact = contactEl.value.trim();
-//         const email = emailEl.value.trim();
-//         const secheduleFrom = secheduleFromEl.value;
-//         const scheduleTo = scheduleToEl.value;
-//         const street = streetEl.value.trim();
-//         const barangay = barangayEl.value.trim();
-//         const city = cityEl.value.trim();
-//         const province = provinceEl.value;
-//         const zip_code = zipCodeEl.value.trim();
-
-//         const allFields = [
-//             birthdayEl, birthPlaceEl, contactEl, emailEl,
-//             secheduleFromEl, scheduleToEl,
-//             streetEl, barangayEl, cityEl, provinceEl, zipCodeEl
-//         ];
-
-//         function showError(input, message) {
-//         let errorEl = input.nextElementSibling;
-//         if (!errorEl || !errorEl.classList.contains('input-error')) {
-//             errorEl = document.createElement('div');
-//             errorEl.classList.add('input-error');
-//             errorEl.style.color = 'red';
-//             errorEl.style.fontSize = '0.9em';
-//             errorEl.style.marginTop = '4px';
-//             errorEl.style.border = 'none'; 
-//             input.parentNode.insertBefore(errorEl, input.nextSibling);
-//         }
-//         errorEl.textContent = message;
-//         input.style.border = 'solid 1px red'; 
-//     }
-//         function clearError(input) {
-//             input.style.border = '';
-//             let errorEl = input.nextElementSibling;
-//             if (errorEl && errorEl.classList.contains('input-error')) {
-//                 errorEl.textContent = '';
-//             }
-//         }
-
-//         // Clear all previous errors
-//         allFields.forEach(el => clearError(el));
-
-//         let valid = true;
-
-//         if (!birthday) {
-//             showError(birthdayEl);
-//             valid = false;
-//         }
-//         if (!birthPlace) {
-//             showError(birthPlaceEl);
-//             valid = false;
-//         }
-//         if (!contact) {
-//             showError(contactEl);
-//             valid = false;
-//         }
-//         if (!email) {
-//             showError(emailEl, "Please enter your email.");
-//             valid = false;
-//         }
-//         if (!street) {
-//             showError(streetEl);
-//             valid = false;
-//         }
-//         if (!barangay) {
-//             showError(barangayEl);
-//             valid = false;
-//         }
-//         if (!city) {
-//             showError(cityEl);
-//             valid = false;
-//         }
-//         if (!zip_code) {
-//             showError(zipCodeEl);
-//             valid = false;
-//         }
-//         if (!secheduleFrom) {
-//             showError(secheduleFromEl);
-//             valid = false;
-//         }
-//         if (!scheduleTo) {
-//             showError(scheduleToEl);
-//             valid = false;
-//         }
-//         if (province === "NO PROVINCE" || !province) {
-//             showError(provinceEl);
-//             valid = false;
-//         }
-
-//         if (!valid) {
-//             return;
-//         }
-
-//         if (!isValidEmail(email)) {
-//             showError(emailEl, "Please enter a valid email address.");
-//             return;
-//         }
-
-//         try {
-//             const response = await fetch('emailAuth.php', {
-//                 method: 'POST',
-//                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-//                 body: `email=${encodeURIComponent(email)}`
-//             });
-//             const data = await response.json();
-
-//             if (data.exists) {
-//                 showError(emailEl, "This email is already registered.");
-//                 return;
-//             }
-//         } catch (error) {
-//             showError(emailEl, "Error checking email existence. Please try again.");
-//             return;
-//         }
-
-//         showLoaderThen(() => {
-//             document.getElementById("st-step").style.display = "none";
-//             document.getElementById("stButton").style.display = "none";
-
-//             document.getElementById("nd-step").style.display = "none";
-//             document.getElementById("ndBUtton").style.display = "none";
-
-//             document.getElementById("rd-step").style.display = "flex";
-//             document.getElementById("rdButton").style.display = "flex";
-
-//             document.getElementById("button-signup-rd").style.display = "flex";
-//             document.getElementById("button-signups").style.display = "none";
-//             document.getElementById("button-signup").style.display = "none";
-//         });
-//     }
-
-//     function nextrd(){
-//         const buttonrd = document.getElementById("nexts");
-//         buttonrd.disabled = true;
-//         console.log("ehey!");
-//         if (buttonrd.disabled === true) {
-//             console.log("COLOR CHANGED!");
-//             buttonrd.style.backgroundColor = "#979797"; 
-//         }
-//     }
-
-//     function backst() {
-//         const back = document.getElementById("backs");
-//         back.disabled = true; 
-//         console.log("ehey!");
-
-//         if (back.disabled === true) {
-//             back.style.backgroundColor = "#979797"; 
-//         }
-//     }
-//     function backnd() {
-//         showLoaderThen(() => {
-//             document.getElementById("st-step").style.display = "flex";
-//             document.getElementById("stButton").style.display = "flex";
-
-//             document.getElementById("nd-step").style.display = "none";
-//             document.getElementById("ndBUtton").style.display = "none";
-
-//             document.getElementById("rd-step").style.display = "none";
-//             document.getElementById("rdButton").style.display = "none";
-//         });
-//     }
-//     function backrd() {
-//         showLoaderThen(() => {
-//             document.getElementById("st-step").style.display = "none";
-//             document.getElementById("stButton").style.display = "none";
-
-//             document.getElementById("nd-step").style.display = "flex";
-//             document.getElementById("ndBUtton").style.display = "flex";
-
-//             document.getElementById("rd-step").style.display = "none";
-//             document.getElementById("rdButton").style.display = "none";
-
-//         });
-//     }
-// document.addEventListener('DOMContentLoaded', () => {
-//     const usernameInput = document.getElementById('usernameEmp');
-//     const passwordInput = document.getElementById('passwordInputEmp');
-//     const confirmPasswordInput = document.getElementById('confirmPasswordInputEmp');
-//     const profileInput = document.getElementById('profileEmp');
-//     const form = document.getElementById('signupFormEmp');
-
-//     function showError(input, message, color = 'red') {
-//         let errorEl = input.nextElementSibling;
-//         if (!errorEl || !errorEl.classList.contains('input-error')) {
-//             errorEl = document.createElement('div');
-//             errorEl.classList.add('input-error');
-//             errorEl.style.fontSize = '0.9em';
-//             errorEl.style.marginTop = '4px';
-//             input.parentNode.insertBefore(errorEl, input.nextSibling);
-//         }
-//         errorEl.textContent = message;
-//         errorEl.style.color = color;
-//         input.style.border = `1px solid ${color}`;
-//     }
-
-//     function clearError(input) {
-//         input.style.border = '';
-//         let errorEl = input.nextElementSibling;
-//         if (errorEl && errorEl.classList.contains('input-error')) {
-//             errorEl.textContent = '';
-//         }
-//     }
-
-//     usernameInput.addEventListener('input', async function () {
-//         const username = usernameInput.value.trim();
-//         clearError(usernameInput);
-
-//         if (username === '') return;
-
-//         try {
-//             const response = await fetch('usernameAuth.php', {
-//                 method: 'POST',
-//                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-//                 body: `username=${encodeURIComponent(username)}`
-//             });
-
-//             const data = await response.json();
-
-//             if (data.exists) {
-//                 showError(usernameInput, "Username is already taken.");
-//             } else {
-//                 showError(usernameInput, "✅ Username is available.", 'green');
-//             }
-//         } catch (error) {
-//             showError(usernameInput, "⚠️ Error checking username.", 'orange');
-//         }
-//     });
-
-//     confirmPasswordInput.addEventListener('input', function () {
-//         const password = passwordInput.value;
-//         const confirmPassword = confirmPasswordInput.value;
-
-//         clearError(confirmPasswordInput);
-//         clearError(passwordInput);
-
-//         if (confirmPassword === '') return;
-
-//         if (password !== confirmPassword) {
-//             showError(confirmPasswordInput, "Passwords do not match.");
-//             showError(passwordInput, "Passwords do not match.");
-//         } else {
-//             showError(confirmPasswordInput, "✅ Passwords match.", 'green');
-//         }
-//     });
-
-//     form.addEventListener('submit', function (e) {
-//         let valid = true;
-
-//         clearError(profileInput);
-//         clearError(usernameInput);
-//         clearError(passwordInput);
-//         clearError(confirmPasswordInput);
-
-//         if (!profileInput.files || profileInput.files.length === 0) {
-//             showError(profileInput, "Please select a profile picture.");
-//             valid = false;
-//         }
-
-//         if (!usernameInput.value.trim()) {
-//             showError(usernameInput, "Username is required.");
-//             valid = false;
-//         }
-
-//         if (!passwordInput.value) {
-//             showError(passwordInput, "Password is required.");
-//             valid = false;
-//         }
-
-//         if (!confirmPasswordInput.value) {
-//             showError(confirmPasswordInput, "Please confirm your password.");
-//             valid = false;
-//         }
-
-//         if (passwordInput.value && confirmPasswordInput.value && passwordInput.value !== confirmPasswordInput.value) {
-//             showError(passwordInput, "Passwords do not match.");
-//             showError(confirmPasswordInput, "Passwords do not match.");
-//             valid = false;
-//         }
-
-//         if (!valid) e.preventDefault(); 
-//     });
-// });
-
-
-
 // ===================== toast notification ===================== //
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -1122,7 +619,6 @@
             ilahr.style.display = 'none';
             ilapr.style.display = 'none';
 
-            // Don't reset hrUl display directly — let hrButton handle its own toggle
             hrUls.style.maxHeight = "0";
             hrUls.style.opacity = "0";
             hrUls.style.marginTop = "0";
@@ -1139,17 +635,29 @@
     }
     function hrButton() {
         const hrUl = document.getElementById("hrUl");
+        const sideHEheHr = document.getElementById("sideHEhe");
+        const ilahr = document.getElementById("iLeftArrowHr");
+        const ilapr = document.getElementById("iLeftArrowPr");
 
-        if (hrUl.classList.contains("open")) {
+        const isOpen = hrUl.classList.contains("open");
+
+        if (isOpen) {
+            sideHEheHr.classList.remove("opened");
+             ilahr.style.display = 'none';
+            ilapr.style.display = 'none';
             hrUl.style.maxHeight = "0";
             hrUl.style.opacity = "0";
             hrUl.style.marginTop = "0";
             hrUl.classList.remove("open");
+
             setTimeout(() => {
                 hrUl.style.display = "none";
-            }, 400); 
+            }, 400);
         } else {
-            hrUl.style.display = "flex"; 
+            sideHEheHr.classList.add("opened");
+             ilahr.style.display = 'flex';
+            ilapr.style.display = 'flex';
+            hrUl.style.display = "flex";
             hrUl.style.flexDirection = "column";
             hrUl.style.maxHeight = hrUl.scrollHeight + "px";
             hrUl.style.opacity = "1";
@@ -1157,20 +665,33 @@
             hrUl.classList.add("open");
         }
     }
+
     function payrollButton() {
         const payrollUl = document.getElementById("payrollUl");
+        const sideHEheHr = document.getElementById("sideHEhe");
+        const ilahr = document.getElementById("iLeftArrowHr");
+        const ilapr = document.getElementById("iLeftArrowPr");
 
-        if (payrollUl.classList.contains("open")) {
+        const isOpen = payrollUl.classList.contains("open");
+
+        if (isOpen) {
+            sideHEheHr.classList.remove("opened");
+             ilahr.style.display = 'none';
+            ilapr.style.display = 'none';
             payrollUl.style.maxHeight = "0";
             payrollUl.style.opacity = "0";
             payrollUl.style.marginTop = "0";
             payrollUl.classList.remove("open");
+
             setTimeout(() => {
                 payrollUl.style.display = "none";
-            }, 400); 
+            }, 400);
         } else {
-            payrollUl.style.display = "flex"; 
-            payrollUl.style.flexDirection = "column"; 
+            sideHEheHr.classList.add("opened");
+             ilahr.style.display = 'flex';
+            ilapr.style.display = 'flex';
+            payrollUl.style.display = "flex";
+            payrollUl.style.flexDirection = "column";
             payrollUl.style.maxHeight = payrollUl.scrollHeight + "px";
             payrollUl.style.opacity = "1";
             payrollUl.style.marginTop = "0.5rem";

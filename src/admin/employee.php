@@ -326,4 +326,9 @@
     <div class="line"></div>
   </div>
 </div>
+<script>
+    function getRequest() {
+        fetchPendingCount(); 
+    }
+</script>
 <?php include '../../templates/Ufooter.php'?>

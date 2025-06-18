@@ -25,3 +25,6 @@ Email sent successfully to roronoazoro@gmail.com with action created
 ==> Script started at 2025-06-18 07:22:09
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","created","","","","asd","asdasdasdR2@"]
 Email sent successfully to cat@gmail.com with action created
+==> Script started at 2025-06-18 11:19:13
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","promoted","Visiting Lecturer","English Major","35000.00"]
+Email sent successfully to cat@gmail.com with action promoted

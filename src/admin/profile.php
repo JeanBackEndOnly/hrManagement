@@ -769,5 +769,4 @@
     <div class="line"></div>
   </div>
 </div>
-
 <?php include '../../templates/Ufooter.php'?>
