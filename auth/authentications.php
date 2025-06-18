@@ -147,39 +147,50 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         try {
 
-            if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
-            $profile = $_FILES["user_profile"];
-            if (empty_image($profile)) {
-                $errors["image_Empty"] = "Please insert your profile image!";
-            }
-        
-            if (fileSize_notCompatible($profile)) {
-                $errors["large_File"] = "The image must not exceed 5MB!";
-            }
-        
-            $allowed_types = [
-                "image/jpeg",
-                "image/jpg",
-                "image/png"
-            ];
-        
-            if (image_notCompatible($profile, $allowed_types)) {
-                $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
-            }
-        
-            if (!$errors) {
+             if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
+                $profile = $_FILES["user_profile"];
+
+                if (empty_image($profile)) {
+                    $errors["image_Empty"] = "Please insert your profile image!";
+                }
+
+                if (fileSize_notCompatible($profile)) {
+                    $errors["large_File"] = "The image must not exceed 5MB!";
+                }
+
+                $allowed_types = [
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png"
+                ];
+
+                if (image_notCompatible($profile, $allowed_types)) {
+                    $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
+                }
+
+                if (!$errors) {
+                    $target_dir = "../assets/image/upload/";
+                    $image_file_name = uniqid() . "-" . basename($profile["name"]);
+                    $target_file = $target_dir . $image_file_name;
+
+                    if (move_uploaded_file($profile["tmp_name"], $target_file)) {
+                        $profile = $image_file_name;
+                    } else {
+                        $errors["upload_Error"] = "There was an error uploading your image.";
+                    }
+                }
+            } else {
+                // No image uploaded; copy default image
+                $default_image = "../assets/image/users.png";
                 $target_dir = "../assets/image/upload/";
-                $image_file_name = uniqid() . "-" . basename($profile["name"]);
+                $image_file_name = uniqid() . "-users.png";
                 $target_file = $target_dir . $image_file_name;
-            
-                if (move_uploaded_file($profile["tmp_name"], $target_file)) {
+
+                if (copy($default_image, $target_file)) {
                     $profile = $image_file_name;
                 } else {
-                    $errors["upload_Error"] = "There was an error uploading your image.";
+                    $errors["upload_Error"] = "Failed to assign default profile image.";
                 }
-            }
-            } else {
-                $errors["image_file"] = "Please select an image to upload.";
             }
 
             if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, 
@@ -1131,39 +1142,50 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         try {
 
-            if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
-            $profile = $_FILES["user_profile"];
-            if (empty_image($profile)) {
-                $errors["image_Empty"] = "Please insert your profile image!";
-            }
-        
-            if (fileSize_notCompatible($profile)) {
-                $errors["large_File"] = "The image must not exceed 5MB!";
-            }
-        
-            $allowed_types = [
-                "image/jpeg",
-                "image/jpg",
-                "image/png"
-            ];
-        
-            if (image_notCompatible($profile, $allowed_types)) {
-                $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
-            }
-        
-            if (!$errors) {
+           if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
+                $profile = $_FILES["user_profile"];
+
+                if (empty_image($profile)) {
+                    $errors["image_Empty"] = "Please insert your profile image!";
+                }
+
+                if (fileSize_notCompatible($profile)) {
+                    $errors["large_File"] = "The image must not exceed 5MB!";
+                }
+
+                $allowed_types = [
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png"
+                ];
+
+                if (image_notCompatible($profile, $allowed_types)) {
+                    $errors["file_Types"] = "Only JPG, JPEG, PNG files are allowed.";
+                }
+
+                if (!$errors) {
+                    $target_dir = "../assets/image/upload/";
+                    $image_file_name = uniqid() . "-" . basename($profile["name"]);
+                    $target_file = $target_dir . $image_file_name;
+
+                    if (move_uploaded_file($profile["tmp_name"], $target_file)) {
+                        $profile = $image_file_name;
+                    } else {
+                        $errors["upload_Error"] = "There was an error uploading your image.";
+                    }
+                }
+            } else {
+                // No image uploaded; copy default image
+                $default_image = "../assets/image/users.png";
                 $target_dir = "../assets/image/upload/";
-                $image_file_name = uniqid() . "-" . basename($profile["name"]);
+                $image_file_name = uniqid() . "-users.png";
                 $target_file = $target_dir . $image_file_name;
-            
-                if (move_uploaded_file($profile["tmp_name"], $target_file)) {
+
+                if (copy($default_image, $target_file)) {
                     $profile = $image_file_name;
                 } else {
-                    $errors["upload_Error"] = "There was an error uploading your image.";
+                    $errors["upload_Error"] = "Failed to assign default profile image.";
                 }
-            }
-            } else {
-                $errors["image_file"] = "Please select an image to upload.";
             }
 
             if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, $salary_Range_From, $salary_Range_To, $salary,

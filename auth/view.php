@@ -16,7 +16,7 @@ function signup_inputs(){
                 echo '<div class="back-button w-100 mt-2">';
                     echo '<a href="index.php" class="text-start "><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
                 echo '</div>';
-               echo '<form id="signupForm" action="../auth/authentications.php" method="post" enctype="multipart/form-data"
+               echo '<form id="signupFormEmp" action="../auth/authentications.php" method="post" enctype="multipart/form-data"
                     class="form-signup w-100 overflow-y-auto" style="max-height: 72.5vh; overflow-y: auto;">';
                     echo '<input type="hidden" name="csrf_token" value="' . $csrf_token . '">';
                     echo '<input type="hidden" name="register_user" value="true">';
@@ -54,8 +54,8 @@ function signup_inputs(){
 
                         echo '<div class="   d-flex flex-wrap w-100 px-0 justify-content-center">';
                             echo '<div class="col-12 col-md-6 mb-2 px-1">';
-                                echo '<label for="employeeID" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="employeeID" id="employeeID" class="form-control p-1 py-2 rounded-1" placeholder="Employee ID:" value="' . (isset($signup_data['employeeID']) ? htmlspecialchars($signup_data['employeeID']) : '') . '">';
+                                echo '<label for="employeeIDEmp" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
+                                echo '<input type="text" name="employeeID" id="employeeIDEmp" class="form-control p-1 py-2 rounded-1" placeholder="Employee ID:" value="' . (isset($signup_data['employeeID']) ? htmlspecialchars($signup_data['employeeID']) : '') . '">';
                             echo '</div>';
 
                             echo '<div class="col-12 col-md-6 mb-2 px-1">';
@@ -180,13 +180,13 @@ function signup_inputs(){
 
                         echo '<div class="col-md-12 d-flex flex-wrap w-100 px-0 justify-content-center">';
                             echo '<div class="col-12 col-md-6 px-1">';
-                                echo '<label for="contact" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="contact" id="contact" class="form-control p-1 py-2 rounded-1" placeholder="Contact Number:" value="' . (isset($signup_data['contact']) ? htmlspecialchars($signup_data['contact']) : '') . '">';
+                                echo '<label for="contactEmp" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
+                                echo '<input type="text" name="contact" id="contactEmp" class="form-control p-1 py-2 rounded-1" placeholder="Contact Number:" value="' . (isset($signup_data['contact']) ? htmlspecialchars($signup_data['contact']) : '') . '">';
                             echo '</div>';
 
                             echo '<div class="col-12 col-md-6 px-1">';
-                                echo '<label for="email" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="email" id="email" class="form-control p-1 py-2 rounded-1" placeholder="E-mail:" value="' . (isset($signup_data['email']) ? htmlspecialchars($signup_data['email']) : '') . '">';
+                                echo '<label for="emailEmp" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
+                                echo '<input type="text" name="email" id="emailEmp" class="form-control p-1 py-2 rounded-1" placeholder="E-mail:" value="' . (isset($signup_data['email']) ? htmlspecialchars($signup_data['email']) : '') . '">';
                             echo '</div>';
                         echo '</div>';
                         echo '<div class="col-md-12 d-flex flex-wrap w-100 px-0 justify-content-center">';
@@ -257,25 +257,25 @@ function signup_inputs(){
                             echo '<div class="step active">3</div>';
                         echo '</div>';
                         echo '<div class="form-group col-md-12 d-flex flex-column justify-content-center align-items-center w-100 m-0" id="image">';
-                            echo '<label for="profile" class="mt-3"><img src="../assets/image/users.png" class="rounded-5 m-0" style="width: 200px; height: 200px;" id="imageID"></label>';
-                            echo '<input type="file" name="user_profile" style="display: none;" id="profile" onchange="previewImage(event)">';
+                            echo '<label for="profileEmp" class="mt-3"><img src="../assets/image/users.png" class="rounded-5 m-0" style="width: 200px; height: 200px;" id="imageID"></label>';
+                            echo '<input type="file" name="user_profile" style="display: none;" id="profileEmp" onchange="previewImage(event)">';
                             echo '<p class="mb-3">Profile Picture</p>';
                         echo  '</div>';
                         echo '<div class="col-md-12 w-100 d-flex flex-column px-0">';
                             echo '<div class="col-md-4 px-1 w-100">';
-                                echo '<label for="username" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="username" id="username" class="form-control p-1 mb-2 py-2 rounded-1" placeholder="Username:" value="' . (isset($signup_data['username']) ? htmlspecialchars($signup_data['username']) : '') . '">';
+                                echo '<label for="usernameEmp" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
+                                echo '<input type="text" name="username" id="usernameEmp" class="form-control p-1 mb-2 py-2 rounded-1" placeholder="Username:" value="' . (isset($signup_data['username']) ? htmlspecialchars($signup_data['username']) : '') . '">';
                             echo '</div>';
 
                             echo '<div class="col-md-4 px-1 w-100 position-relative">'; 
                                 echo '<li class="li-div w-100" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
-                                    echo '<input type="password" class="form-control rounded-1 mb-2 pe-4" name="password" placeholder="Password" required id="passwordInput" style="flex: 1;" value="' . (isset($signup_data['password']) ? htmlspecialchars($signup_data['password']) : '') . '">';
+                                    echo '<input type="password" class="form-control rounded-1 mb-2 pe-4" name="password" placeholder="Password" required id="passwordInputEmp" style="flex: 1;" value="' . (isset($signup_data['password']) ? htmlspecialchars($signup_data['password']) : '') . '">';
 
-                                    echo '<button type="button" id="showPassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
+                                    echo '<button type="button" id="showPasswordEmp" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
                                         echo '<i class="fa-solid fa-eye"></i>';
                                     echo '</button>';
 
-                                    echo '<button type="button" id="hidePassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
+                                    echo '<button type="button" id="hidePasswordEmp" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
                                         echo '<i class="fa-solid fa-eye-slash"></i>';
                                     echo '</button>';
                                 echo '</li>';
@@ -283,13 +283,13 @@ function signup_inputs(){
 
                             echo '<div class="col-md-4 px-1 w-100 position-relative">'; 
                                 echo '<li class="li-div w-100" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
-                                    echo '<input type="password" class="form-control rounded-1 pe-4" name="confirmPassword" placeholder="Confirm Password" required id="confirmPasswordInput" style="flex: 1;" value="' . (isset($signup_data['confirmPassword']) ? htmlspecialchars($signup_data['confirmPassword']) : '') . '">';
+                                    echo '<input type="password" class="form-control rounded-1 pe-4" name="confirmPassword" placeholder="Confirm Password" required id="confirmPasswordInputEmp" style="flex: 1;" value="' . (isset($signup_data['confirmPassword']) ? htmlspecialchars($signup_data['confirmPassword']) : '') . '">';
 
-                                    echo '<button type="button" id="showConfirmPassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
+                                    echo '<button type="button" id="showConfirmPasswordEmp" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
                                         echo '<i class="fa-solid fa-eye"></i>';
                                     echo '</button>';
 
-                                    echo '<button type="button" id="hideConfirmPassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
+                                    echo '<button type="button" id="hideConfirmPasswordEmp" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
                                         echo '<i class="fa-solid fa-eye-slash"></i>';
                                     echo '</button>';
                                 echo '</li>';
@@ -598,7 +598,7 @@ function registerEmployeeAdmin() {
                             echo '<div class="step active">3</div>';
                         echo '</div>';
                         echo '<div class="form-group col-md-12 d-flex flex-column justify-content-center align-items-center w-100 m-0" id="image">';
-                            echo '<label for="profile" class="mt-3"><img src="../../assets/image/users.png" class="rounded-5 m-0" style="width: 200px; height: 200px;" id="imageID"></label>';
+                            echo '<label for="profile" class="mt-3"><img src="../../assets/image/users.png" class="rounded-5 m-0" style="width: 200px; height: 200px;" id="imageIDAdmin"></label>';
                             echo '<input type="file" name="user_profile" style="display: none;" id="profile" onchange="previewImage(event)">';
                             echo '<p class="mb-3">Profile Picture</p>';
                         echo  '</div>';
@@ -608,29 +608,29 @@ function registerEmployeeAdmin() {
                                 echo '<input type="text" name="username" id="username" class="form-control p-1 mb-2 py-2 rounded-1" placeholder="Username:" value="' . (isset($signup_data['username']) ? htmlspecialchars($signup_data['username']) : '') . '">';
                             echo '</div>';
 
-                            echo '<div class="col-md-4 px-1 w-100 position-relative">'; 
-                                echo '<li class="li-div w-100" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
-                                    echo '<input type="password" class="form-control rounded-1 mb-2 pe-4" name="password" placeholder="Password" required id="passwordInput" style="flex: 1;" value="' . (isset($signup_data['password']) ? htmlspecialchars($signup_data['password']) : '') . '">';
+                            echo '<div class="col-md-4 d-flex flex-row px-1 w-100 position-relative">'; 
+                                echo '<li class="li-div w-100" style="display: flex; flex-direction: column; list-style-type: none; align-items: center; position: relative;">'; 
+                                    echo '<input type="password" class="form-control rounded-1 mb-2 pe-4" name="password" placeholder="Password" required id="passwordInputAdmin" style="flex: 1;" value="' . (isset($signup_data['password']) ? htmlspecialchars($signup_data['password']) : '') . '">';
 
-                                    echo '<button type="button" id="showPassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
+                                    echo '<button type="button" id="showPasswordAdmin" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
                                         echo '<i class="fa-solid fa-eye"></i>';
                                     echo '</button>';
 
-                                    echo '<button type="button" id="hidePassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
+                                    echo '<button type="button" id="hidePasswordAdmin" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
                                         echo '<i class="fa-solid fa-eye-slash"></i>';
                                     echo '</button>';
                                 echo '</li>';
                             echo '</div>';
 
-                            echo '<div class="col-md-4 px-1 w-100 position-relative">'; 
-                                echo '<li class="li-div w-100" style="display: flex; list-style-type: none; align-items: center; position: relative;">'; 
-                                    echo '<input type="password" class="form-control rounded-1 pe-4" name="confirmPassword" placeholder="Confirm Password" required id="confirmPasswordInput" style="flex: 1;" value="' . (isset($signup_data['confirmPassword']) ? htmlspecialchars($signup_data['confirmPassword']) : '') . '">';
+                            echo '<div class="col-md-4 d-flex flex-row px-1 w-100 position-relative">'; 
+                                echo '<li class="li-div w-100" style="display: flex; flex-direction: column; list-style-type: none; align-items: center; position: relative;">'; 
+                                    echo '<input type="password" class="form-control rounded-1 pe-4" name="confirmPassword" placeholder="Confirm Password" required id="confirmPasswordInputAdmin" style="flex: 1;" value="' . (isset($signup_data['confirmPassword']) ? htmlspecialchars($signup_data['confirmPassword']) : '') . '">';
 
-                                    echo '<button type="button" id="showConfirmPassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
+                                    echo '<button type="button" id="showConfirmPasswordAdmin" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);">';
                                         echo '<i class="fa-solid fa-eye"></i>';
                                     echo '</button>';
 
-                                    echo '<button type="button" id="hideConfirmPassword" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
+                                    echo '<button type="button" id="hideConfirmPasswordAdmin" style="background: none; border: none; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: none;">';
                                         echo '<i class="fa-solid fa-eye-slash"></i>';
                                     echo '</button>';
                                 echo '</li>';

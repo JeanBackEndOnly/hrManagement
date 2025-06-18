@@ -349,6 +349,94 @@ function emp_info(
         echo json_encode(["success" => false, "message" => "Failed to add employee."]);
     }
 }
+function emp_infoAdmin(
+    $pdo, 
+    $id, 
+    $lname, 
+    $fname, 
+    $mname, 
+    $employeeID, 
+    $department, 
+    $jobTitle, 
+    $slary_rate, 
+    $salary_Range_From, 
+    $salary_Range_To, 
+    $salary, 
+    $citizenship, 
+    $gender, 
+    $civil_status, 
+    $religion, 
+    $age, 
+    $birthday, 
+    $birthPlace, 
+    $contact, 
+    $email, 
+    $secheduleFrom, 
+    $scheduleTo, 
+    $houseBlock, 
+    $street, 
+    $subdivision, 
+    $barangay, 
+    $city_muntinlupa, 
+    $province, 
+    $zipCode, 
+    $profile
+    ) {
+    $query = "INSERT INTO userInformations (
+        users_id, lname, fname, mname, employeeID, department, jobTitle, slary_rate, 
+        salary_Range_From, salary_Range_To, salary, 
+        citizenship, gender, civil_status, 
+        religion, age, birthday, birthPlace, contact, email, secheduleFrom, scheduleTo, 
+        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code, 
+        user_profile
+    ) VALUES (
+        :users_id, :lname, :fname, :mname, :employeeID, :department, :jobTitle, :slary_rate, 
+        :salary_Range_From, :salary_Range_To, :salary,
+        :citizenship, :gender, :civil_status, 
+        :religion, :age, :birthday, :birthPlace, :contact, :email, :secheduleFrom, :scheduleTo, 
+        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code, 
+        :user_profile
+    );";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":users_id", $id);
+    $stmt->bindParam(":lname", $lname);
+    $stmt->bindParam(":fname", $fname);
+    $stmt->bindParam(":mname", $mname);
+    $stmt->bindParam(":employeeID", $employeeID);
+    $stmt->bindParam(":department", $department);
+    $stmt->bindParam(":jobTitle", $jobTitle);
+    $stmt->bindParam(":slary_rate", $slary_rate);
+    $stmt->bindParam(":salary_Range_From", $salary_Range_From);
+    $stmt->bindParam(":salary_Range_To", $salary_Range_To);
+    $stmt->bindParam(":salary", $salary);
+    $stmt->bindParam(":citizenship", $citizenship);
+    $stmt->bindParam(":gender", $gender);
+    $stmt->bindParam(":civil_status", $civil_status);
+    $stmt->bindParam(":religion", $religion);
+    $stmt->bindParam(":age", $age);
+    $stmt->bindParam(":birthday", $birthday);
+    $stmt->bindParam(":birthPlace", $birthPlace);
+    $stmt->bindParam(":contact", $contact);
+    $stmt->bindParam(":email", $email);
+    $stmt->bindParam(":secheduleFrom", $secheduleFrom);
+    $stmt->bindParam(":scheduleTo", $scheduleTo);
+    $stmt->bindParam(":houseBlock", $houseBlock);
+    $stmt->bindParam(":street", $street);
+    $stmt->bindParam(":subdivision", $subdivision);
+    $stmt->bindParam(":barangay", $barangay);
+    $stmt->bindParam(":city_muntinlupa", $city_muntinlupa);
+    $stmt->bindParam(":province", $province);
+    $stmt->bindParam(":zip_code", $zipCode);
+    $stmt->bindParam(":user_profile", $profile);
+
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true, "message" => "Employee added successfully."]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Failed to add employee."]);
+    }
+}
 function emp_infoReqUpdate(
     $pdo,
     $users_id,
@@ -601,7 +689,7 @@ function adminRegistration(
     $salary_Range_To = (int)$salary_Range_To;
     $id = getUser_account($pdo, $username, $password);
 
-    emp_info(
+    emp_infoAdmin(
         $pdo,
         $id,
         $lname,

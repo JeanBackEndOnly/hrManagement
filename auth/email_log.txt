@@ -10,3 +10,18 @@ Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","cre
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","2","created","","","","2200496sdA","2200496sdA#"]
 ==> Script started at 2025-06-17 21:19:00
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","4","created","","","","2200498faa","2200498faa#1A"]
+==> Script started at 2025-06-18 06:24:10
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","5","created","","","","2200496","2200496#A"]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action created
+==> Script started at 2025-06-18 06:27:48
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","6","created","","","","Admin@21sdasdasdasd","asdsadasd#AA 1"]
+Email sent successfully to pagotaisidroqwsdasdasdmarcojean@gmail.com with action created
+==> Script started at 2025-06-18 06:50:53
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","7","created","","","","Admin@21asd","P1234567#"]
+Email sent successfully to pagotaisidromarcojean123@gmail.com with action created
+==> Script started at 2025-06-18 06:58:21
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","created","","","","asdasd","#1Pasdasd"]
+Email sent successfully to roronoazoro@gmail.com with action created
+==> Script started at 2025-06-18 07:22:09
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","9","created","","","","asd","asdasdasdR2@"]
+Email sent successfully to cat@gmail.com with action created

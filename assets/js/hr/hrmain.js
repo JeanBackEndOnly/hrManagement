@@ -1,17 +1,3 @@
-
-    function previewImage(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                console.log("Image Loaded: ", e.target.result);
-                document.getElementById("imageID").src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            console.log("No file selected");
-        }
-    }
     // ================== TOAST NOTIFICATION ================== //
     document.addEventListener('DOMContentLoaded', () => {
         if (newNotMatched) {
@@ -607,400 +593,485 @@
     });
     // ====================== register =========================== //
 
-    function showLoaderThen(callback) {
-        const loader = document.getElementById("loading-overlay");
-        loader.style.display = "flex";
+//     function showLoaderThen(callback) {
+//         const loader = document.getElementById("loading-overlay");
+//         loader.style.display = "flex";
 
-        setTimeout(() => {
-            loader.style.display = "none";
-            callback();
-        }, 800); 
-    }
+//         setTimeout(() => {
+//             loader.style.display = "none";
+//             callback();
+//         }, 800); 
+//     }
 
-    function nextst() {
-        const lnameEl = document.getElementById('surname');
-        const fnameEl = document.getElementById('fname');
-        const mnameEl = document.getElementById('mname');
-        const employeeIDEl = document.getElementById('employeeID');
-        const departmentEl = document.getElementById('Department');
-        const jobTitleEl = document.getElementById('JobTitle');
-        const slary_rateEl = document.getElementById('Slary_rate');
-        // const salary_Range_FromEl = document.getElementById('salary_Range_From');
-        // const salary_Range_ToEl = document.getElementById('salary_Range_To');
-        // const salaryEl = document.getElementById('salary');
-        const citizenshipEl = document.getElementById('Citizenship');
-        const genderEl = document.getElementById('gender');
-        const civil_statusEl = document.getElementById('civil_status');
+//     function nextst() {
+//         const lnameEl = document.getElementById('surname');
+//         const fnameEl = document.getElementById('fname');
+//         const mnameEl = document.getElementById('mname');
+//         const employeeIDEl = document.getElementById('employeeIDEmp');
+//         const departmentEl = document.getElementById('Department');
+//         const jobTitleEl = document.getElementById('JobTitle');
+//         const slary_rateEl = document.getElementById('Slary_rate');
+//         // const salary_Range_FromEl = document.getElementById('salary_Range_From');
+//         // const salary_Range_ToEl = document.getElementById('salary_Range_To');
+//         // const salaryEl = document.getElementById('salary');
+//         const citizenshipEl = document.getElementById('Citizenship');
+//         const genderEl = document.getElementById('gender');
+//         const civil_statusEl = document.getElementById('civil_status');
 
-        const lname = lnameEl.value.trim();
-        const fname = fnameEl.value.trim();
-        const mname = mnameEl.value.trim();
-        const employeeID = employeeIDEl.value.trim();
-        const department = departmentEl.value;
-        const jobTitle = jobTitleEl.value.trim();
-        const slary_rate = slary_rateEl.value;
-        // const salary_Range_From = salary_Range_FromEl.value.trim();
-        // const salary_Range_To = salary_Range_ToEl.value.trim();
-        // const salary = salaryEl.value.trim();
-        const citizenship = citizenshipEl.value;
-        const gender = genderEl.value.trim();
-        const civil_status = civil_statusEl.value.trim();
+//         const lname = lnameEl.value.trim();
+//         const fname = fnameEl.value.trim();
+//         const mname = mnameEl.value.trim();
+//         const employeeID = employeeIDEl.value.trim();
+//         const department = departmentEl.value;
+//         const jobTitle = jobTitleEl.value.trim();
+//         const slary_rate = slary_rateEl.value;
+//         // const salary_Range_From = salary_Range_FromEl.value.trim();
+//         // const salary_Range_To = salary_Range_ToEl.value.trim();
+//         // const salary = salaryEl.value.trim();
+//         const citizenship = citizenshipEl.value;
+//         const gender = genderEl.value.trim();
+//         const civil_status = civil_statusEl.value.trim();
 
-        const allFields = [
-            lnameEl, fnameEl, mnameEl, employeeIDEl,
-            // salary_Range_FromEl, salary_Range_ToEl, salaryEl,
-            genderEl, civil_statusEl,
-            departmentEl, slary_rateEl, jobTitleEl, citizenshipEl
-        ];
+//         const allFields = [
+//             lnameEl, fnameEl, mnameEl, employeeIDEl,
+//             // salary_Range_FromEl, salary_Range_ToEl, salaryEl,
+//             genderEl, civil_statusEl,
+//             departmentEl, slary_rateEl, jobTitleEl, citizenshipEl
+//         ];
 
-        function showError(input, message) {
-        let errorEl = input.nextElementSibling;
-        if (!errorEl || !errorEl.classList.contains('input-error')) {
-            errorEl = document.createElement('div');
-            errorEl.classList.add('input-error');
-            errorEl.style.color = 'red';
-            errorEl.style.fontSize = '0.9em';
-            errorEl.style.marginTop = '4px';
-            errorEl.style.border = 'none'; 
-            input.parentNode.insertBefore(errorEl, input.nextSibling);
-        }
-        errorEl.textContent = message;
-        input.style.border = 'solid 1px red'; 
-    }
-
-
-        function clearError(input) {
-        let errorEl = input.nextElementSibling;
-        if (errorEl && errorEl.classList.contains('input-error')) {
-            errorEl.textContent = '';
-        }
-        input.style.border = ''; 
-    }
+//         function showError(input, message) {
+//         let errorEl = input.nextElementSibling;
+//         if (!errorEl || !errorEl.classList.contains('input-error')) {
+//             errorEl = document.createElement('div');
+//             errorEl.classList.add('input-error');
+//             errorEl.style.color = 'red';
+//             errorEl.style.fontSize = '0.9em';
+//             errorEl.style.marginTop = '4px';
+//             errorEl.style.border = 'none'; 
+//             input.parentNode.insertBefore(errorEl, input.nextSibling);
+//         }
+//         errorEl.textContent = message;
+//         input.style.border = 'solid 1px red'; 
+//     }
 
 
-    allFields.forEach(el => clearError(el));
-
-    let valid = true;
-
-    if (!lname) { showError(lnameEl); valid = false; }
-    if (!fname) { showError(fnameEl); valid = false; }
-    if (!mname) { showError(mnameEl); valid = false; }
-    if (!employeeID) { showError(employeeIDEl); valid = false; }
-    // if (!salary_Range_From) { showError(salary_Range_FromEl); valid = false; }
-    // if (!salary_Range_To) { showError(salary_Range_ToEl); valid = false; }
-    // if (!salary) { showError(salaryEl); valid = false; }
-    if (!civil_status) { showError(civil_statusEl); valid = false; }
-    if (gender === "NO GENDER") { showError(genderEl); valid = false; }
-    if (department === "NO DEPARTMENT") { showError(departmentEl); valid = false; }
-    if (slary_rate === "NO SALARY RATE") { showError(slary_rateEl); valid = false; }
-    if (!jobTitle) { showError(jobTitleEl); valid = false; }
-    if (citizenship === "NO Citizanship") { showError(citizenshipEl); valid = false; }
-
-    if (valid) {
-        showLoaderThen(() => {
-            document.getElementById("st-step").style.display = "none";
-            document.getElementById("stButton").style.display = "none";
-
-            document.getElementById("nd-step").style.display = "flex";
-            document.getElementById("ndBUtton").style.display = "flex";
-
-            document.getElementById("rd-step").style.display = "none";
-            document.getElementById("rdButton").style.display = "none";
-        });
-    }
-    }
+//         function clearError(input) {
+//         let errorEl = input.nextElementSibling;
+//         if (errorEl && errorEl.classList.contains('input-error')) {
+//             errorEl.textContent = '';
+//         }
+//         input.style.border = ''; 
+//     }
 
 
-    function disable_Button(){
-        const signup = document.getElementById("button-signups");
-        signup.disabled = true; 
-        console.log("ehey!");
+//     allFields.forEach(el => clearError(el));
 
-        if (signup.disabled === true) {
-            signup.style.backgroundColor = "#979797"; 
-        }
-    }
+//     let valid = true;
 
-    async function nextnd() {
-        const birthdayEl = document.getElementById('birthday');
-        const birthPlaceEl = document.getElementById('birthPlace');
-        const contactEl = document.getElementById('contact');
-        const emailEl = document.getElementById('email');
-        const secheduleFromEl = document.getElementById('scheduleFrom');
-        const scheduleToEl = document.getElementById('scheduleTo');
-        const streetEl = document.getElementById('street');
-        const barangayEl = document.getElementById('Brangay');
-        const cityEl = document.getElementById('city_muntinlupa');
-        const provinceEl = document.getElementById('province');
-        const zipCodeEl = document.getElementById('zipCode');
+//     if (!lname) { showError(lnameEl); valid = false; }
+//     if (!fname) { showError(fnameEl); valid = false; }
+//     if (!mname) { showError(mnameEl); valid = false; }
+//     if (!employeeID) { showError(employeeIDEl); valid = false; }
+//     // if (!salary_Range_From) { showError(salary_Range_FromEl); valid = false; }
+//     // if (!salary_Range_To) { showError(salary_Range_ToEl); valid = false; }
+//     // if (!salary) { showError(salaryEl); valid = false; }
+//     if (!civil_status) { showError(civil_statusEl); valid = false; }
+//     if (gender === "NO GENDER") { showError(genderEl); valid = false; }
+//     if (department === "NO DEPARTMENT") { showError(departmentEl); valid = false; }
+//     if (slary_rate === "NO SALARY RATE") { showError(slary_rateEl); valid = false; }
+//     if (!jobTitle) { showError(jobTitleEl); valid = false; }
+//     if (citizenship === "NO Citizanship") { showError(citizenshipEl); valid = false; }
 
-        const birthday = birthdayEl.value.trim();
-        const birthPlace = birthPlaceEl.value.trim();
-        const contact = contactEl.value.trim();
-        const email = emailEl.value.trim();
-        const secheduleFrom = secheduleFromEl.value;
-        const scheduleTo = scheduleToEl.value;
-        const street = streetEl.value.trim();
-        const barangay = barangayEl.value.trim();
-        const city = cityEl.value.trim();
-        const province = provinceEl.value;
-        const zip_code = zipCodeEl.value.trim();
+//     if (valid) {
+//         showLoaderThen(() => {
+//             document.getElementById("st-step").style.display = "none";
+//             document.getElementById("stButton").style.display = "none";
 
-        const allFields = [
-            birthdayEl, birthPlaceEl, contactEl, emailEl,
-            secheduleFromEl, scheduleToEl,
-            streetEl, barangayEl, cityEl, provinceEl, zipCodeEl
-        ];
+//             document.getElementById("nd-step").style.display = "flex";
+//             document.getElementById("ndBUtton").style.display = "flex";
 
-        function showError(input, message) {
-        let errorEl = input.nextElementSibling;
-        if (!errorEl || !errorEl.classList.contains('input-error')) {
-            errorEl = document.createElement('div');
-            errorEl.classList.add('input-error');
-            errorEl.style.color = 'red';
-            errorEl.style.fontSize = '0.9em';
-            errorEl.style.marginTop = '4px';
-            errorEl.style.border = 'none'; 
-            input.parentNode.insertBefore(errorEl, input.nextSibling);
-        }
-        errorEl.textContent = message;
-        input.style.border = 'solid 1px red'; 
-    }
-        function clearError(input) {
-            input.style.border = '';
-            let errorEl = input.nextElementSibling;
-            if (errorEl && errorEl.classList.contains('input-error')) {
-                errorEl.textContent = '';
-            }
-        }
+//             document.getElementById("rd-step").style.display = "none";
+//             document.getElementById("rdButton").style.display = "none";
+//         });
+//     }
+//     }
 
-        // Clear all previous errors
-        allFields.forEach(el => clearError(el));
 
-        let valid = true;
+//     function disable_Button(){
+//         const signup = document.getElementById("button-signups");
+//         signup.disabled = true; 
+//         console.log("ehey!");
 
-        if (!birthday) {
-            showError(birthdayEl);
-            valid = false;
-        }
-        if (!birthPlace) {
-            showError(birthPlaceEl);
-            valid = false;
-        }
-        if (!contact) {
-            showError(contactEl);
-            valid = false;
-        }
-        if (!email) {
-            showError(emailEl, "Please enter your email.");
-            valid = false;
-        }
-        if (!street) {
-            showError(streetEl);
-            valid = false;
-        }
-        if (!barangay) {
-            showError(barangayEl);
-            valid = false;
-        }
-        if (!city) {
-            showError(cityEl);
-            valid = false;
-        }
-        if (!zip_code) {
-            showError(zipCodeEl);
-            valid = false;
-        }
-        if (!secheduleFrom) {
-            showError(secheduleFromEl);
-            valid = false;
-        }
-        if (!scheduleTo) {
-            showError(scheduleToEl);
-            valid = false;
-        }
-        if (province === "NO PROVINCE" || !province) {
-            showError(provinceEl);
-            valid = false;
-        }
+//         if (signup.disabled === true) {
+//             signup.style.backgroundColor = "#979797"; 
+//         }
+//     }
+    
+//     function isValidEmail(email) {
+//     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     return re.test(email);
+//     }
 
-        if (!valid) {
-            return;
-        }
+//     function isValidContactNumber(number) {
+//         return /^[0-9]{11}$/.test(number);
+//     }
 
-        if (!isValidEmail(email)) {
-            showError(emailEl, "Please enter a valid email address.");
-            return;
-        }
+//     function showLiveError(input, message) {
+//         let errorEl = input.nextElementSibling;
+//         if (!errorEl || !errorEl.classList.contains('input-error')) {
+//             errorEl = document.createElement('div');
+//             errorEl.classList.add('input-error');
+//             errorEl.style.color = 'red';
+//             errorEl.style.fontSize = '0.9em';
+//             errorEl.style.marginTop = '4px';
+//             input.parentNode.insertBefore(errorEl, input.nextSibling);
+//         }
+//         errorEl.textContent = message;
+//         input.style.border = 'solid 1px red';
+//     }
 
-        try {
-            const response = await fetch('emailAuth.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `email=${encodeURIComponent(email)}`
-            });
-            const data = await response.json();
+//     function clearLiveError(input) {
+//         input.style.border = '';
+//         const errorEl = input.nextElementSibling;
+//         if (errorEl && errorEl.classList.contains('input-error')) {
+//             errorEl.textContent = '';
+//         }
+//     }
+//     document.addEventListener("DOMContentLoaded", () => {
+//         const contactInput = document.getElementById('contactEmpt');
+//         const emailInput = document.getElementById('emailEmp');
 
-            if (data.exists) {
-                showError(emailEl, "This email is already registered.");
-                return;
-            }
-        } catch (error) {
-            showError(emailEl, "Error checking email existence. Please try again.");
-            return;
-        }
+//         contactInput.addEventListener('input', () => {
+//             const value = contactInput.value.trim();
 
-        showLoaderThen(() => {
-            document.getElementById("st-step").style.display = "none";
-            document.getElementById("stButton").style.display = "none";
+//             if (!value) {
+//                 clearLiveError(contactInput);
+//                 return;
+//             }
 
-            document.getElementById("nd-step").style.display = "none";
-            document.getElementById("ndBUtton").style.display = "none";
+//             if (!/^\d+$/.test(value)) {
+//                 showLiveError(contactInput, "Contact number must contain only digits.");
+//             } else if (value.length !== 11) {
+//                 showLiveError(contactInput, "Contact number must be exactly 11 digits.");
+//             } else {
+//                 clearLiveError(contactInput);
+//             }
+//         });
 
-            document.getElementById("rd-step").style.display = "flex";
-            document.getElementById("rdButton").style.display = "flex";
+//         emailInput.addEventListener('input', () => {
+//             const value = emailInput.value.trim();
 
-            document.getElementById("button-signup-rd").style.display = "flex";
-            document.getElementById("button-signups").style.display = "none";
-            document.getElementById("button-signup").style.display = "none";
-        });
-    }
+//             if (!value) {
+//                 clearLiveError(emailInput);
+//                 return;
+//             }
 
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-    function nextrd(){
-        const buttonrd = document.getElementById("nexts");
-        buttonrd.disabled = true;
-        console.log("ehey!");
-        if (buttonrd.disabled === true) {
-            console.log("COLOR CHANGED!");
-            buttonrd.style.backgroundColor = "#979797"; 
-        }
-    }
+//             if (!isValidEmail(value)) {
+//                 showLiveError(emailInput, "Invalid email format.");
+//             } else {
+//                 clearLiveError(emailInput);
+//             }
+//         });
+//     });
 
-    function backst() {
-        const back = document.getElementById("backs");
-        back.disabled = true; 
-        console.log("ehey!");
+//     async function nextnd() {
+//         const birthdayEl = document.getElementById('birthday');
+//         const birthPlaceEl = document.getElementById('birthPlace');
+//         const contactEl = document.getElementById('contact');
+//         const emailEl = document.getElementById('email');
+//         const secheduleFromEl = document.getElementById('scheduleFrom');
+//         const scheduleToEl = document.getElementById('scheduleTo');
+//         const streetEl = document.getElementById('street');
+//         const barangayEl = document.getElementById('Brangay');
+//         const cityEl = document.getElementById('city_muntinlupa');
+//         const provinceEl = document.getElementById('province');
+//         const zipCodeEl = document.getElementById('zipCode');
 
-        if (back.disabled === true) {
-            back.style.backgroundColor = "#979797"; 
-        }
-    }
-    function backnd() {
-        showLoaderThen(() => {
-            document.getElementById("st-step").style.display = "flex";
-            document.getElementById("stButton").style.display = "flex";
+//         const birthday = birthdayEl.value.trim();
+//         const birthPlace = birthPlaceEl.value.trim();
+//         const contact = contactEl.value.trim();
+//         const email = emailEl.value.trim();
+//         const secheduleFrom = secheduleFromEl.value;
+//         const scheduleTo = scheduleToEl.value;
+//         const street = streetEl.value.trim();
+//         const barangay = barangayEl.value.trim();
+//         const city = cityEl.value.trim();
+//         const province = provinceEl.value;
+//         const zip_code = zipCodeEl.value.trim();
 
-            document.getElementById("nd-step").style.display = "none";
-            document.getElementById("ndBUtton").style.display = "none";
+//         const allFields = [
+//             birthdayEl, birthPlaceEl, contactEl, emailEl,
+//             secheduleFromEl, scheduleToEl,
+//             streetEl, barangayEl, cityEl, provinceEl, zipCodeEl
+//         ];
 
-            document.getElementById("rd-step").style.display = "none";
-            document.getElementById("rdButton").style.display = "none";
-        });
-    }
-    function backrd() {
-        showLoaderThen(() => {
-            document.getElementById("st-step").style.display = "none";
-            document.getElementById("stButton").style.display = "none";
+//         function showError(input, message) {
+//         let errorEl = input.nextElementSibling;
+//         if (!errorEl || !errorEl.classList.contains('input-error')) {
+//             errorEl = document.createElement('div');
+//             errorEl.classList.add('input-error');
+//             errorEl.style.color = 'red';
+//             errorEl.style.fontSize = '0.9em';
+//             errorEl.style.marginTop = '4px';
+//             errorEl.style.border = 'none'; 
+//             input.parentNode.insertBefore(errorEl, input.nextSibling);
+//         }
+//         errorEl.textContent = message;
+//         input.style.border = 'solid 1px red'; 
+//     }
+//         function clearError(input) {
+//             input.style.border = '';
+//             let errorEl = input.nextElementSibling;
+//             if (errorEl && errorEl.classList.contains('input-error')) {
+//                 errorEl.textContent = '';
+//             }
+//         }
 
-            document.getElementById("nd-step").style.display = "flex";
-            document.getElementById("ndBUtton").style.display = "flex";
+//         // Clear all previous errors
+//         allFields.forEach(el => clearError(el));
 
-            document.getElementById("rd-step").style.display = "none";
-            document.getElementById("rdButton").style.display = "none";
+//         let valid = true;
 
-        });
-    }
-    async function signUP() {
-   
-        const profileInput = document.getElementById('profile');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('passwordInput');
-        const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+//         if (!birthday) {
+//             showError(birthdayEl);
+//             valid = false;
+//         }
+//         if (!birthPlace) {
+//             showError(birthPlaceEl);
+//             valid = false;
+//         }
+//         if (!contact) {
+//             showError(contactEl);
+//             valid = false;
+//         }
+//         if (!email) {
+//             showError(emailEl, "Please enter your email.");
+//             valid = false;
+//         }
+//         if (!street) {
+//             showError(streetEl);
+//             valid = false;
+//         }
+//         if (!barangay) {
+//             showError(barangayEl);
+//             valid = false;
+//         }
+//         if (!city) {
+//             showError(cityEl);
+//             valid = false;
+//         }
+//         if (!zip_code) {
+//             showError(zipCodeEl);
+//             valid = false;
+//         }
+//         if (!secheduleFrom) {
+//             showError(secheduleFromEl);
+//             valid = false;
+//         }
+//         if (!scheduleTo) {
+//             showError(scheduleToEl);
+//             valid = false;
+//         }
+//         if (province === "NO PROVINCE" || !province) {
+//             showError(provinceEl);
+//             valid = false;
+//         }
 
-        function showError(input, message) {
-        let errorEl = input.nextElementSibling;
-        if (!errorEl || !errorEl.classList.contains('input-error')) {
-            errorEl = document.createElement('div');
-            errorEl.classList.add('input-error');
-            errorEl.style.color = 'red';
-            errorEl.style.fontSize = '0.9em';
-            errorEl.style.marginTop = '4px';
-            errorEl.style.border = 'none'; 
-            input.parentNode.insertBefore(errorEl, input.nextSibling);
-        }
-        errorEl.textContent = message;
-        input.style.border = 'solid 2px red'; 
-    }
+//         if (!valid) {
+//             return;
+//         }
 
-        function clearError(input) {
-            input.style.border = '';
-            let errorEl = input.nextElementSibling;
-            if (errorEl && errorEl.classList.contains('input-error')) {
-                errorEl.textContent = '';
-            }
-        }
+//         if (!isValidEmail(email)) {
+//             showError(emailEl, "Please enter a valid email address.");
+//             return;
+//         }
 
-        [profileInput, usernameInput, passwordInput, confirmPasswordInput].forEach(el => {
-            if (el) clearError(el);
-        });
+//         try {
+//             const response = await fetch('emailAuth.php', {
+//                 method: 'POST',
+//                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//                 body: `email=${encodeURIComponent(email)}`
+//             });
+//             const data = await response.json();
 
-        let valid = true;
+//             if (data.exists) {
+//                 showError(emailEl, "This email is already registered.");
+//                 return;
+//             }
+//         } catch (error) {
+//             showError(emailEl, "Error checking email existence. Please try again.");
+//             return;
+//         }
 
-        if (!profileInput.files || profileInput.files.length === 0) {
-            showError(profileInput, "Please select a profile picture.");
-            valid = false;
-        }
+//         showLoaderThen(() => {
+//             document.getElementById("st-step").style.display = "none";
+//             document.getElementById("stButton").style.display = "none";
 
-        const username = usernameInput.value.trim();
-        if (!username) {
-            showError(usernameInput);
-            valid = false;
-        }
+//             document.getElementById("nd-step").style.display = "none";
+//             document.getElementById("ndBUtton").style.display = "none";
 
-        const password = passwordInput.value;
-        const confirmPassword = confirmPasswordInput.value;
+//             document.getElementById("rd-step").style.display = "flex";
+//             document.getElementById("rdButton").style.display = "flex";
 
-        if (!password) {
-            showError(passwordInput);
-            valid = false;
-        }
+//             document.getElementById("button-signup-rd").style.display = "flex";
+//             document.getElementById("button-signups").style.display = "none";
+//             document.getElementById("button-signup").style.display = "none";
+//         });
+//     }
 
-        if (!confirmPassword) {
-            showError(confirmPasswordInput);
-            valid = false;
-        }
+//     function nextrd(){
+//         const buttonrd = document.getElementById("nexts");
+//         buttonrd.disabled = true;
+//         console.log("ehey!");
+//         if (buttonrd.disabled === true) {
+//             console.log("COLOR CHANGED!");
+//             buttonrd.style.backgroundColor = "#979797"; 
+//         }
+//     }
 
-        if (password && confirmPassword && password !== confirmPassword) {
-            showError(passwordInput, "Passwords do not match.");
-            showError(confirmPasswordInput, "Passwords do not match.");
-            valid = false;
-        }
+//     function backst() {
+//         const back = document.getElementById("backs");
+//         back.disabled = true; 
+//         console.log("ehey!");
 
-        if (!valid) return;
+//         if (back.disabled === true) {
+//             back.style.backgroundColor = "#979797"; 
+//         }
+//     }
+//     function backnd() {
+//         showLoaderThen(() => {
+//             document.getElementById("st-step").style.display = "flex";
+//             document.getElementById("stButton").style.display = "flex";
 
-        try {
-            const response = await fetch('username.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `username=${encodeURIComponent(username)}`
-            });
+//             document.getElementById("nd-step").style.display = "none";
+//             document.getElementById("ndBUtton").style.display = "none";
 
-            const data = await response.json();
+//             document.getElementById("rd-step").style.display = "none";
+//             document.getElementById("rdButton").style.display = "none";
+//         });
+//     }
+//     function backrd() {
+//         showLoaderThen(() => {
+//             document.getElementById("st-step").style.display = "none";
+//             document.getElementById("stButton").style.display = "none";
 
-            if (data.exists) {
-                showError(usernameInput, "Username is already taken. Please choose another.");
-                return;
-            }
-        } catch (error) {
-            showError(usernameInput, "Error checking username availability. Please try again.");
-            return;
-        }
+//             document.getElementById("nd-step").style.display = "flex";
+//             document.getElementById("ndBUtton").style.display = "flex";
 
-        document.getElementById('signupForm').submit();
-    }
+//             document.getElementById("rd-step").style.display = "none";
+//             document.getElementById("rdButton").style.display = "none";
+
+//         });
+//     }
+// document.addEventListener('DOMContentLoaded', () => {
+//     const usernameInput = document.getElementById('usernameEmp');
+//     const passwordInput = document.getElementById('passwordInputEmp');
+//     const confirmPasswordInput = document.getElementById('confirmPasswordInputEmp');
+//     const profileInput = document.getElementById('profileEmp');
+//     const form = document.getElementById('signupFormEmp');
+
+//     function showError(input, message, color = 'red') {
+//         let errorEl = input.nextElementSibling;
+//         if (!errorEl || !errorEl.classList.contains('input-error')) {
+//             errorEl = document.createElement('div');
+//             errorEl.classList.add('input-error');
+//             errorEl.style.fontSize = '0.9em';
+//             errorEl.style.marginTop = '4px';
+//             input.parentNode.insertBefore(errorEl, input.nextSibling);
+//         }
+//         errorEl.textContent = message;
+//         errorEl.style.color = color;
+//         input.style.border = `1px solid ${color}`;
+//     }
+
+//     function clearError(input) {
+//         input.style.border = '';
+//         let errorEl = input.nextElementSibling;
+//         if (errorEl && errorEl.classList.contains('input-error')) {
+//             errorEl.textContent = '';
+//         }
+//     }
+
+//     usernameInput.addEventListener('input', async function () {
+//         const username = usernameInput.value.trim();
+//         clearError(usernameInput);
+
+//         if (username === '') return;
+
+//         try {
+//             const response = await fetch('usernameAuth.php', {
+//                 method: 'POST',
+//                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//                 body: `username=${encodeURIComponent(username)}`
+//             });
+
+//             const data = await response.json();
+
+//             if (data.exists) {
+//                 showError(usernameInput, "Username is already taken.");
+//             } else {
+//                 showError(usernameInput, "✅ Username is available.", 'green');
+//             }
+//         } catch (error) {
+//             showError(usernameInput, "⚠️ Error checking username.", 'orange');
+//         }
+//     });
+
+//     confirmPasswordInput.addEventListener('input', function () {
+//         const password = passwordInput.value;
+//         const confirmPassword = confirmPasswordInput.value;
+
+//         clearError(confirmPasswordInput);
+//         clearError(passwordInput);
+
+//         if (confirmPassword === '') return;
+
+//         if (password !== confirmPassword) {
+//             showError(confirmPasswordInput, "Passwords do not match.");
+//             showError(passwordInput, "Passwords do not match.");
+//         } else {
+//             showError(confirmPasswordInput, "✅ Passwords match.", 'green');
+//         }
+//     });
+
+//     form.addEventListener('submit', function (e) {
+//         let valid = true;
+
+//         clearError(profileInput);
+//         clearError(usernameInput);
+//         clearError(passwordInput);
+//         clearError(confirmPasswordInput);
+
+//         if (!profileInput.files || profileInput.files.length === 0) {
+//             showError(profileInput, "Please select a profile picture.");
+//             valid = false;
+//         }
+
+//         if (!usernameInput.value.trim()) {
+//             showError(usernameInput, "Username is required.");
+//             valid = false;
+//         }
+
+//         if (!passwordInput.value) {
+//             showError(passwordInput, "Password is required.");
+//             valid = false;
+//         }
+
+//         if (!confirmPasswordInput.value) {
+//             showError(confirmPasswordInput, "Please confirm your password.");
+//             valid = false;
+//         }
+
+//         if (passwordInput.value && confirmPasswordInput.value && passwordInput.value !== confirmPasswordInput.value) {
+//             showError(passwordInput, "Passwords do not match.");
+//             showError(confirmPasswordInput, "Passwords do not match.");
+//             valid = false;
+//         }
+
+//         if (!valid) e.preventDefault(); 
+//     });
+// });
+
 
 
 // ===================== toast notification ===================== //

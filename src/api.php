@@ -24,4 +24,4 @@ $response = [
 ];
 
 echo json_encode($response);
-file_put_contents("debug.txt", json_encode($response)); // DEBUG
+file_put_contents("debug.txt", json_encode($response)); 
