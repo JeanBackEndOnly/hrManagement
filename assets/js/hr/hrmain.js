@@ -379,24 +379,7 @@
         fetchPendingCount(); 
         setInterval(fetchPendingCount, 5000);
     });
-    function fetchReportsCount() {
-        fetch('../api.php')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetched data:', data); 
-                const reportCount = data.reportsCount ?? 0;
-                document.getElementById('reportsCountDisplay').textContent = reportCount;
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        fetchPendingCount(); 
-        setInterval(fetchPendingCount, 5000); 
-    });
+    
         // ================== PASSWORD EYE ================== //
     const passwordInputCurrent = document.getElementById('passwordInputCurrent');
     const showPasswordCurrent = document.getElementById('showPasswordCurrent');
@@ -529,39 +512,6 @@
                     row.style.display = 'none';
                 }
             });
-        });
-    });
-    // ================== EMPLOYEE SEARCH ================== //
-     document.getElementById("searchRejectedInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#rejectedList tr");
-
-        rows.forEach(row => {
-            if (row.querySelectorAll("td").length < 6) return;
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(filter) ? "table" : "none";
-        });
-    });
-    document.getElementById("searchRequestInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#requestList tbody tr");
-
-        rows.forEach(row => {
-            if (row.querySelectorAll("td").length < 6) return;
-
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(filter) ? "table" : "none";
-        });
-    });
-    document.getElementById("searchValidatedInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#validatedList tbody tr");
-
-        rows.forEach(row => {
-            if (row.querySelectorAll("td").length < 6) return;
-
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(filter) ? "table" : "none";
         });
     });
     // ================== REGISTRATION FORM VALIDATION ================== //

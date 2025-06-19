@@ -28,6 +28,17 @@ function openUpdateModal(users_id, jobTitle, salaryFrom, salaryTo, salary) {
         option.selected = option.value === jobTitleEdit;
     });
 }
+function openEditModalEdit(users_idEdit, jobTitleEdit, salaryFromEdit, salaryToEdit, salaryEdit) {
+    document.getElementById('editUserIdEdit').value = users_idEdit;
+    document.getElementById('editSalaryFromEdit').value = salaryFromEdit;
+    document.getElementById('editSalaryToEdit').value = salaryToEdit;
+    document.getElementById('editSalaryEdit').value = salaryEdit;
+
+    const select = document.getElementById('editJob_TitleEdit');
+    Array.from(select.options).forEach(option => {
+        option.selected = option.value === jobTitleEdit;
+    });
+}
 
 function updateEmpItemsPerPage(perPage) {
     const url = new URL(window.location.href);

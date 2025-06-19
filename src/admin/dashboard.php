@@ -138,6 +138,24 @@
     </div>
 </main>
 <script>
+    function fetchReportsCount() {
+        fetch('../api.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched data:', data); 
+                const reportCount = data.reportsCount ?? 0;
+                document.getElementById('reportsCountDisplay').textContent = reportCount;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchPendingCount(); 
+        setInterval(fetchPendingCount, 5000); 
+    });
     fetchReportsCount(); 
 </script>
 <?php include '../../templates/Ufooter.php'?>

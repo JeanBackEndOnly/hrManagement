@@ -83,6 +83,17 @@
                         <button id="idLoginHistory" class="historyPass" onclick="loginHistory()">Login History</button>
                     </div>
                 </div>
+                 <?php
+                            // function nameInitial($name) {
+                            //     $trimmed = trim($name); 
+                            //     return strtoupper($trimmed[0]);
+                            // }
+
+                            // $name = "juan Francisco";
+                            // $getFirstNameInitial = nameInitial($name);
+                            // echo $getFirstNameInitial; 
+
+                        ?>
                 <div class="container" id="changePAsswordID" style="display: flex;">
                     <div class="container shadow p-5 rounded-2">
                         <form class="w-100" method="POST" action="../../auth/authentications.php">

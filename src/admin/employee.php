@@ -346,5 +346,37 @@
                 break;
         }
     };
+      document.getElementById("searchRejectedInput").addEventListener("input", function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#rejectedList tr");
+
+        rows.forEach(row => {
+            if (row.querySelectorAll("td").length < 6) return;
+            const rowText = row.textContent.toLowerCase();
+            row.style.display = rowText.includes(filter) ? "table" : "none";
+        });
+    });
+    document.getElementById("searchRequestInput").addEventListener("input", function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#requestList tbody tr");
+
+        rows.forEach(row => {
+            if (row.querySelectorAll("td").length < 6) return;
+
+            const rowText = row.textContent.toLowerCase();
+            row.style.display = rowText.includes(filter) ? "table" : "none";
+        });
+    });
+    document.getElementById("searchValidatedInput").addEventListener("input", function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#validatedList tbody tr");
+
+        rows.forEach(row => {
+            if (row.querySelectorAll("td").length < 6) return;
+
+            const rowText = row.textContent.toLowerCase();
+            row.style.display = rowText.includes(filter) ? "table" : "none";
+        });
+    });
 </script>
 <?php include '../../templates/Ufooter.php'?>

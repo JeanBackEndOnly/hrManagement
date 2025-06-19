@@ -61,3 +61,12 @@ Email sent successfully to roronoazoro@gmail.com with action promoted
 ==> Script started at 2025-06-18 20:28:12
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","Visiting Lecturer","Visiting Lecturer","30000.00"]
 Email sent successfully to roronoazoro@gmail.com with action promoted
+==> Script started at 2025-06-19 12:20:58
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","Visiting Lecturer","English Major","37000.00"]
+Email sent successfully to roronoazoro@gmail.com with action promoted
+==> Script started at 2025-06-19 12:22:18
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","12","accepted","","","","",""]
+Email sent successfully to Jeyo@gmail.com with action accepted
+==> Script started at 2025-06-19 12:40:44
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","13","rejected","","","","",""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action rejected

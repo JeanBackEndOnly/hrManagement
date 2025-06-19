@@ -107,6 +107,16 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
+        }elseif ($action === 'rejected') {
+            $mail->Subject = 'Account not valid!';
+            $mail->Body = "
+                <p>Hi {$user['fname']} {$user['lname']},</p>
+                <p>Your request have been rejected for some reason, please go to HR office for clarification.</p>
+                <p>Thank You for your understanding!.</p>
+                <br>
+                <p>Best regards,<br>HR Team</p>
+            ";
+
         }else {
             file_put_contents(__DIR__ . '/email_error.log', "Invalid action type: $action. Exiting.\n", FILE_APPEND);
             exit();

@@ -535,8 +535,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             pclose(popen($command, "r"));
 
-
-
             header("Location: ../src/admin/employee.php?acceptEmployee=success&tab=accept");
             $stmt = null;
             $pdo = null;
@@ -554,6 +552,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $employeeId);
             $stmt->execute();
+
+            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+            $command = "start /B php " .
+                escapeshellarg($scriptPath) . ' ' .         
+                escapeshellarg($employeeId) . ' ' .          
+                escapeshellarg("rejected") . ' ' .         
+                escapeshellarg('') . ' ' .                  
+                escapeshellarg('') . ' ' .                  
+                escapeshellarg('') . ' ' .                   
+                escapeshellarg('') . ' ' .                
+                escapeshellarg('') ;                       
+
+            pclose(popen($command, "r"));
+
             header("Location: ../src/admin/employee.php?rejectEmployee=success&tab=request");
             $stmt=null;
             $pdo=null;

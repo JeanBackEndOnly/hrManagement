@@ -164,6 +164,7 @@
                                             <div class="col-md-4">
                                                 <label for="JobTitle" class="fw-bold">Job Title</label>
                                                 <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></p>
+                                                <input type="hidden" name="jobTitle" value="<?= htmlspecialchars($row["jobTitle"]) ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="department" class="fw-bold">Department</label>
@@ -187,14 +188,17 @@
                                             <div class="col-md-4">
                                                 <label for="salary" class="fw-bold">Official Salary</label>
                                                 <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary"]) ? htmlspecialchars($row["salary"]) : "N/A" ?></p>
+                                                <input type="hidden" name="salary_Range_From" value="<?= htmlspecialchars($row["salary_Range_From"]) ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="from" class="fw-bold">Salary Range From</label>
                                                 <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary_Range_From"]) ? htmlspecialchars($row["salary_Range_From"]) : "N/A" ?></p>
+                                                <input type="hidden" name="salary_Range_To" value="<?= htmlspecialchars($row["salary_Range_To"]) ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="to" class="fw-bold">Salary Range To</label>
                                                 <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary_Range_To"]) ? htmlspecialchars($row["salary_Range_To"]) : "N/A" ?></p>
+                                                <input type="hidden" name="salary" value="<?= htmlspecialchars($row["salary"]) ?>">
                                             </div>
                                         </div>
                                         <div class="inputInfo my-2 row w-100">

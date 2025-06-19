@@ -88,14 +88,12 @@
                         </div>
                     </div>
                     <?php
-                    // Get current URL and parameters for pagination and sorting, using distinct keys
                     $currentUrl = basename($_SERVER['PHP_SELF']);
-                    $dateFilter = $_GET['dateFilter'] ?? 'all'; // Default to 'all'
-                    $reportsPerPage = getPerPage('reports_perPage'); // Use a distinct key for reports per page
-                    $reportSortColumn = getSortColumn('reports_sort', 'report_date'); // Use a distinct key for reports sort column
-                    $reportSortOrder = getSortOrder('reports_order', 'desc'); // Use a distinct key for reports sort order
+                    $dateFilter = $_GET['dateFilter'] ?? 'all';
+                    $reportsPerPage = getPerPage('reports_perPage');
+                    $reportSortColumn = getSortColumn('reports_sort', 'report_date');
+                    $reportSortOrder = getSortOrder('reports_order', 'desc');
 
-                    // Function to build query string for cleaner URLs
                     function buildReportQueryString($params) {
                         return http_build_query($params);
                     }
@@ -198,4 +196,25 @@
         </div>
     </div>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('reportsSearchInput');
+        const tableRows = document.querySelectorAll('#reportsTableBody tbody tr');
+
+        searchInput.addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+
+            tableRows.forEach(row => {
+                const nameCell = row.children[1]?.textContent.toLowerCase();
+                const deptCell = row.children[3]?.textContent.toLowerCase();
+
+                if (nameCell.includes(filter) || deptCell.includes(filter)) {
+                    row.style.display = 'table';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 <?php include '../../templates/Ufooter.php'?>

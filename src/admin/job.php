@@ -255,7 +255,7 @@
                 </div>
                 <!-- ======================================= SALARY ===================================== -->
                 <?php $currentUrl = strtok($_SERVER["REQUEST_URI"], '?'); ?>
-                    <div class="search-titles-promotion flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableJobPromotion">
+                    <div class="search-titles-promotion flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;" id="headerTableJobPromotion">
                         <div class="search-bar d-flex align-items-center justify-content-start" style="width: 80%; transform: translateX(-10px);">
                             <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                                 <input type="text" class="form-control ps-5" placeholder="Search..." id="empSearchInput">
@@ -391,7 +391,7 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success">Save Changes</button>
+                                            <button type="submit" class="btn btn-success">Promote</button>
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
@@ -450,7 +450,7 @@
             </div>
         </div>
     </div>
-    <div id="loadingAnimation" style="display:none;">
+    <div id="loading-overlay" style="display:none;">
         <div class="loading-lines">
             <div class="line"></div>
             <div class="line"></div>
@@ -459,19 +459,6 @@
     </div>
 </body>
 <script>
-function openEditModalEdit(users_idEdit, jobTitleEdit, salaryFromEdit, salaryToEdit, salaryEdit) {
-    document.getElementById('editUserIdEdit').value = users_idEdit;
-    document.getElementById('editSalaryFromEdit').value = salaryFromEdit;
-    document.getElementById('editSalaryToEdit').value = salaryToEdit;
-    document.getElementById('editSalaryEdit').value = salaryEdit;
-
-    // For select dropdown
-    const select = document.getElementById('editJob_TitleEdit');
-    Array.from(select.options).forEach(option => {
-        option.selected = option.value === jobTitleEdit;
-    });
-}
-
  document.addEventListener('DOMContentLoaded', function () {
         const jobTitleSelect = document.getElementById('editJob_TitleEdit');
         console.log("heheWorking!");
