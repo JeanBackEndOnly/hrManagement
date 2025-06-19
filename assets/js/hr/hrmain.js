@@ -362,25 +362,8 @@
         });
 
     });
-     // ================== Request Count ================== //
-    function fetchPendingCount() {
-        fetch('../api.php')
-            .then(response => response.json())
-            .then(data => {
-                const count = data.pendingCount ?? 0;
-                document.getElementById('pendingCountDisplay').textContent = count;
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        fetchPendingCount(); 
-        setInterval(fetchPendingCount, 5000);
-    });
     
-        // ================== PASSWORD EYE ================== //
+    // ================== PASSWORD EYE ================== //
     const passwordInputCurrent = document.getElementById('passwordInputCurrent');
     const showPasswordCurrent = document.getElementById('showPasswordCurrent');
     const hidePasswordCurrent = document.getElementById('hidePasswordCurrent');
@@ -492,27 +475,6 @@
             if (oldFrom) scheduleFrom.value = oldFrom;
             if (oldTo) scheduleTo.value = oldTo;
         }
-    });
-    // ================== JOB TITLE SEARCH ================== //
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.querySelector('.search-active input');
-        const rows = document.querySelectorAll('.job-list tbody tr');
-
-        searchInput.addEventListener('keyup', function () {
-            const query = this.value.trim().toLowerCase();
-
-            rows.forEach(row => {
-                const jobTitleCell = row.querySelector('td:nth-child(2)');
-                if (!jobTitleCell) return;
-
-                const title = jobTitleCell.textContent.trim().toLowerCase();
-                if (title.includes(query)) {
-                    row.style.display = 'table';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
     });
     // ================== REGISTRATION FORM VALIDATION ================== //
     document.addEventListener('DOMContentLoaded', function() {
@@ -667,21 +629,6 @@
         }
     }
 
-// =================== JOB TITLES =========================== //
-
-    function editJob(id, title) {
-        console.log("Edit clicked", id, title); 
-        document.getElementById('editJobId').value = id;
-        document.getElementById('editJobTitle').value = title;
-        var editModal = new bootstrap.Modal(document.getElementById('editJobModal'));
-        editModal.show();
-    }
-
-    function setDeleteJobId(id) {
-        document.getElementById('deleteJobId').value = id;
-    }
-    
-// ==================== EMPLOYEE MANAGEMENT =========================== //
 function showLoading() {
     const loading = document.getElementById("loadingAnimation");
     loading.style.display = "flex";
@@ -690,102 +637,6 @@ function showLoading() {
 function hideLoading() {
     const loading = document.getElementById("loadingAnimation");
     loading.style.display = "none";
-}
-
-function getValidated() {
-    showLoading();
-
-    setTimeout(() => {
-        document.getElementById("validatedList").style.display = 'flex';
-        document.getElementById("validateSearch").style.display = 'flex';
-        document.getElementById("validatedEmployees").style.display = 'flex';
-
-        document.getElementById("requestList").style.display = 'none';
-        document.getElementById("requestSearch").style.display = 'none';
-        document.getElementById("employeesRequest").style.display = 'none';
-        document.getElementById("rejectedList").style.display = 'none';
-        document.getElementById("rejectedSearch").style.display = 'none';
-        document.getElementById("rejectedEmployees").style.display = 'none';
-
-        hideLoading();
-    }, 800); 
-}
-
-function getRequest() {
-    showLoading();
-
-    setTimeout(() => {
-        document.getElementById("requestList").style.display = 'flex';
-        document.getElementById("requestSearch").style.display = 'flex';
-        document.getElementById("employeesRequest").style.display = 'flex';
-
-        document.getElementById("validatedList").style.display = 'none';
-        document.getElementById("validateSearch").style.display = 'none';
-        document.getElementById("validatedEmployees").style.display = 'none';
-        document.getElementById("rejectedList").style.display = 'none';
-        document.getElementById("rejectedSearch").style.display = 'none';
-        document.getElementById("rejectedEmployees").style.display = 'none';
-
-        hideLoading();
-    }, 800); 
-}
-
-function getRejected(){
-   showLoading();
-
-    setTimeout(() => {
-        document.getElementById("rejectedList").style.display = 'flex';
-        document.getElementById("rejectedSearch").style.display = 'flex';
-        document.getElementById("rejectedEmployees").style.display = 'flex';
-
-        document.getElementById("requestList").style.display = 'none';
-        document.getElementById("requestSearch").style.display = 'none';
-        document.getElementById("employeesRequest").style.display = 'none';
-        document.getElementById("validatedList").style.display = 'none';
-        document.getElementById("validateSearch").style.display = 'none';
-        document.getElementById("validatedEmployees").style.display = 'none';
-
-        hideLoading();
-    }, 800); 
-}
-function openAcceptModal(employeeId) {
-    document.getElementById('acceptEmployeeId').value = employeeId;
-    var acceptModal = new bootstrap.Modal(document.getElementById('acceptModal'));
-    acceptModal.show();
-}
-
-function openRejectModal(employeeId) {
-    document.getElementById('rejectEmployeeId').value = employeeId;
-    var rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
-    rejectModal.show();
-}
-function setDeleteId(userId) {
-    document.getElementById('delete_user_id').value = userId;
-}
-function activateTab(button) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-
-    const tabName = button.getAttribute('data-tab');
-    if (tabName) {
-        const url = new URL(window.location);
-        url.searchParams.set('tab', tabName);
-        window.history.replaceState(null, '', url.toString());
-    }
-}
-
-function showLoadingAndRun(callback, visibleIds = []) {
-    const loadingEl = document.getElementById("loadingAnimation");
-
-    showSection([]);
-
-    loadingEl.style.display = "flex";
-
-    setTimeout(() => {
-        callback();
-        loadingEl.style.display = "none";
-        showSection(visibleIds);
-    }, 500);
 }
 
 // ============= END ==================== //

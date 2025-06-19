@@ -176,7 +176,7 @@
         </div>
     </div>
 </main>
-<div id="loadingAnimation" style="display:none;">
+<div id="loadingAnimationSettings" style="display:none;">
         <div class="loading-lines">
             <div class="line"></div>
             <div class="line"></div>
@@ -184,7 +184,19 @@
         </div>
     </div>
 
-    <script>
+<script>
+    function showLoadingAndRun(callback, visibleIds = []) {
+        const loadingEl = document.getElementById("loadingAnimationSettings");
 
-    </script>
+        showSection([]);
+
+        loadingEl.style.display = "flex";
+
+        setTimeout(() => {
+            callback();
+            loadingEl.style.display = "none";
+            showSection(visibleIds);
+        }, 500);
+    }
+</script>
 <?php include '../../templates/Ufooter.php'?>

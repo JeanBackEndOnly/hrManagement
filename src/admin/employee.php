@@ -131,7 +131,7 @@
                                         <td style="width: 15%;"><?= htmlspecialchars($row['department']) ?></td>
                                         <td style="width: 20%;"><?= date('F j, Y h:i A', strtotime($row['add_at'])) ?></td>
                                         <td style="width: 15%;">
-                                            <button class="btn btn-primary"><a href="profile.php?users_id=<?php echo $row['users_id']; ?>" style="text-decoration: none; color: #fff;">View</a></button>
+                                            <button class="btn btn-primary"><a href="profile.php?tab=personal&users_id=<?php echo $row['users_id']; ?>" style="text-decoration: none; color: #fff;">View</a></button>
                                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(<?= $row['users_id'] ?>)">Delete</button>
                                         </td>
                                     </tr>
@@ -326,57 +326,5 @@
     <div class="line"></div>
   </div>
 </div>
-<script>
-    function getRequest() {
-        fetchPendingCount(); 
-    }
-    window.onload = function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tab = urlParams.get("tab");
-
-        switch (tab) {
-            case "accept":
-                if (typeof getValidated === "function") getValidated();
-                break;
-            case "reject":
-                if (typeof getRejected === "function") getRejected();
-                break;
-            case "request":
-                if (typeof getRequest === "function") getRequest();
-                break;
-        }
-    };
-      document.getElementById("searchRejectedInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#rejectedList tr");
-
-        rows.forEach(row => {
-            if (row.querySelectorAll("td").length < 6) return;
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(filter) ? "table" : "none";
-        });
-    });
-    document.getElementById("searchRequestInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#requestList tbody tr");
-
-        rows.forEach(row => {
-            if (row.querySelectorAll("td").length < 6) return;
-
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(filter) ? "table" : "none";
-        });
-    });
-    document.getElementById("searchValidatedInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#validatedList tbody tr");
-
-        rows.forEach(row => {
-            if (row.querySelectorAll("td").length < 6) return;
-
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(filter) ? "table" : "none";
-        });
-    });
-</script>
+<script src="../../assets/js/hr/employee.js"></script>
 <?php include '../../templates/Ufooter.php'?>

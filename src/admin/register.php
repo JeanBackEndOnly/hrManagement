@@ -28,4 +28,5 @@
         <?php endif; ?>
     </div>
 </main>
+<script src="../../assets/js/hr/adminRes.js"></script>
 <?php include '../../templates/Ufooter.php'?>

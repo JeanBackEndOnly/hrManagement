@@ -633,13 +633,11 @@ function removeMessage(input) {
         }
 
         if (errors.length > 0) {
-            showError(passwordInput, errors[0]); // show first error
+            showError(passwordInput, errors[0]); 
             return;
         } else {
             showSuccess(passwordInput, "✓ Password is strong.");
         }
-
-        // Confirm password match
         if (!confirmPassword) {
             removeMessage(confirmPasswordInput);
             return;
@@ -660,8 +658,6 @@ function removeMessage(input) {
             showSuccess(profileInput, "✓ Profile picture selected.");
         }
     }
-
-    // Debounce utility to limit server requests
     function debounce(func, delay) {
         let timeout;
         return function (...args) {
@@ -669,11 +665,8 @@ function removeMessage(input) {
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
     }
-
-    // Attach listeners
     usernameInput.addEventListener('input', debounce(validateUsername, 500));
     passwordInput.addEventListener('input', validatePasswords);
     confirmPasswordInput.addEventListener('input', validatePasswords);
     profileInput.addEventListener('change', validateProfile);
 });
-    // =================================== JOB AND SALARY =========================== //

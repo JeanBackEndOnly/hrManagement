@@ -1,3 +1,38 @@
+document.addEventListener('DOMContentLoaded', function () {
+        const jobTitleSelect = document.getElementById('editJob_TitleEdit');
+        console.log("heheWorking!");
+        if (!jobTitleSelect) {
+            console.error("JobTitle select element not found!");
+            return;
+        }
+
+        fetch('../api.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!Array.isArray(data.jobTitles)) {
+                    console.error('Invalid data from API:', data);
+                    return;
+                }
+
+                // Clear existing options
+                jobTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
+
+                data.jobTitles.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.jobTitle;
+                    option.textContent = item.jobTitle;
+
+                    if (typeof selectedJobTitle !== 'undefined' && item.jobTitle === selectedJobTitle) {
+                        option.selected = true;
+                    }
+
+                    jobTitleSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading job titles:', error);
+            });
+});
 document.getElementById("jobTitleSearchInput").addEventListener("input", function () {
     const query = this.value.toLowerCase().trim();
     const rows = document.querySelectorAll("#jobTitleTableBody tr");
@@ -16,6 +51,26 @@ document.getElementById("empSearchInput").addEventListener("input", function () 
         row.style.display = text.includes(query) ? "table" : "none";
     });
 });
+ document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.querySelector('.search-active input');
+        const rows = document.querySelectorAll('.job-list tbody tr');
+
+        searchInput.addEventListener('keyup', function () {
+            const query = this.value.trim().toLowerCase();
+
+            rows.forEach(row => {
+                const jobTitleCell = row.querySelector('td:nth-child(2)');
+                if (!jobTitleCell) return;
+
+                const title = jobTitleCell.textContent.trim().toLowerCase();
+                if (title.includes(query)) {
+                    row.style.display = 'table';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
 function openUpdateModal(users_id, jobTitle, salaryFrom, salaryTo, salary) {
     document.getElementById('updateJobId').value = users_id;
     document.getElementById('Job_Title').value = jobTitle;
@@ -186,10 +241,23 @@ function showLoadingAndRun(callback) {
         }, 800);
 }
 
+  function editJob(id, title) {
+        console.log("Edit clicked", id, title); 
+        document.getElementById('editJobId').value = id;
+        document.getElementById('editJobTitle').value = title;
+        var editModal = new bootstrap.Modal(document.getElementById('editJobModal'));
+        editModal.show();
+    }
+
+    function setDeleteJobId(id) {
+        document.getElementById('deleteJobId').value = id;
+    }
+    
+
 // ======================= SETTINGS ======================= //
 window.addEventListener('DOMContentLoaded', () => {
         changePass(); 
-    });
+});
 
     function changePass() {
     showLoadingAndRun(() => {

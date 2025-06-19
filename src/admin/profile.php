@@ -98,10 +98,11 @@
                     </div>
                 </div>
                 <!-- ============================ PERSONAL INFO TAB ============================ -->
-                <div class="employeeReqProfileINfo d-flex flex-column justify-content-between p-0 m-0 mt-3" style="width: 95%; min-height: 78vh;">
-                    <div class="row h-100 w-100" id="personalID" style="display: flex;">
+                <div class="employeeReqProfileINfo flex-column justify-content-between p-0 m-0 mt-2" style="width: 95%; height: 74vh; display:flex;">
+                    <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center rounded-1 mb-1 mb-md-0" id="personalProfileInformation" style="height: 80%; display: none;">
+                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                                rounded-1 mb-1 mb-md-0" style="height: 80%; display: flex;" id="personalProfileInformation">
                                 <?php foreach($reqProfInfo as $row): ?>
                                     <input type="hidden" name="users_id" value="<?= $row["users_id"] ?>">
                                     <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
@@ -114,279 +115,155 @@
                                         <h5 class="fs-6 fw-bold"><?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?></h5>
                                         <h5 class="text-center fs-6 fw-bold"><?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>, <?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?> <?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
+                                        <h5 class="fs-6 fw-bold"><?= isset($row["department"]) ? htmlspecialchars($row["department"]) : "N/A" . " DEPARTMENT" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
                                     </div>
                             </div>
-                            <div class="informationSide col-12 col-md-8 d-flex px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" id="personalInformation" style="height: 100%; display: flex;">
-                                <div class="card mb-4 shadow-sm border-0 w-100">
-                                        <div class="card-body">
-                                            <h4 class="card-title text-primary fw-bold mb-4 px-3">EMPLOYEE INFORMATIONS</h4>    
-                                        <div class="profileID row w-100">
-                                            <div class="col-md-8">
-                                                <label for="user_profile" class="fw-bold">Profile</label>
-                                                <input type="file" name="user_profile" class="form-control" id="user_profile">
-                                                <input type="hidden" name="current_profile_image" value="<?= htmlspecialchars($row["user_profile"]) ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="employeeID" class="fw-bold">Employee ID</label>
-                                                <input type="text" name="employeeID" class="form-control" id="employeeID" value="<?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?>">
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 row w-100">
-                                            <div class="col-md-3">
-                                                <label for="lname" class="fw-bold">Surname</label>
-                                                <input type="text" name="lname" class="form-control" id="lname" value="<?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="fname" class="fw-bold">First Name</label>
-                                                <input type="text" name="fname" class="form-control" id="fname" value="<?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="mname" class="fw-bold">Middle Name</label>
-                                                <input type="text" name="mname" class="form-control" id="mname" value="<?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="suffix" class="fw-bold">Suffix</label>
-                                                <select name="suffix" class="form-select rounded-1 p-1 py-2" id="suffix">
-                                                    <?php
-                                                    $suffixes = ["N/A", "Jr.", "Sr.", "II", "III", "IV"];
-                                                    $selected_suffix = isset($row["suffix"]) ? $row["suffix"] : "N/A";
-                                                    foreach ($suffixes as $suffix) {
-                                                        $selected = ($suffix === $selected_suffix) ? "selected" : "";
-                                                        echo "<option value=\"" . htmlspecialchars($suffix) . "\" $selected>" . htmlspecialchars($suffix) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 row w-100">
-                                            <div class="col-md-4">
-                                                <label for="JobTitle" class="fw-bold">Job Title</label>
-                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></p>
-                                                <input type="hidden" name="jobTitle" value="<?= htmlspecialchars($row["jobTitle"]) ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="department" class="fw-bold">Department</label>
-                                                <select name="department" class="form-select rounded-1 p-1 py-2" id="department">
-                                                    <option value="Hospital" <?= (isset($row["department"]) && $row["department"] === "Hospital") ? "selected" : "" ?>>Hospital</option>
-                                                    <option value="School" <?= (isset($row["department"]) && $row["department"] === "School") ? "selected" : "" ?>>School</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="salaryRate" class="fw-bold">Salary Rate</label>
-                                                <select name="salary_rate" id="salaryRate" class="form-select p-1 py-2 rounded-1">
-                                                    <option value="NO DALARY RATE" <?= (isset($row['slary_rate']) && $row['slary_rate'] === 'NO DALARY RATE') ? 'selected' : '' ?>>Select Slary Rate</option>
-                                                    <option value="MONTHLY" <?= (isset($row['slary_rate']) && $row['slary_rate'] === 'MONTHLY') ? 'selected' : '' ?>>MONTHLY</option>
-                                                    <option value="DAILY" <?= (isset($row['slary_rate']) && $row['slary_rate'] === 'DAILY') ? 'selected' : '' ?>>DAILY</option>
-                                                    <option value="HOURLY" <?= (isset($row['slary_rate']) && $row['slary_rate'] === 'HOURLY') ? 'selected' : '' ?>>HOURLY</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 row w-100">
-                                            <div class="col-md-4">
-                                                <label for="salary" class="fw-bold">Official Salary</label>
-                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary"]) ? htmlspecialchars($row["salary"]) : "N/A" ?></p>
-                                                <input type="hidden" name="salary_Range_From" value="<?= htmlspecialchars($row["salary_Range_From"]) ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="from" class="fw-bold">Salary Range From</label>
-                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary_Range_From"]) ? htmlspecialchars($row["salary_Range_From"]) : "N/A" ?></p>
-                                                <input type="hidden" name="salary_Range_To" value="<?= htmlspecialchars($row["salary_Range_To"]) ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="to" class="fw-bold">Salary Range To</label>
-                                                <p class="form-control" id="from" style="pointer-events: not-allowed; cursor:not-allowed;"><?= isset($row["salary_Range_To"]) ? htmlspecialchars($row["salary_Range_To"]) : "N/A" ?></p>
-                                                <input type="hidden" name="salary" value="<?= htmlspecialchars($row["salary"]) ?>">
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 row w-100">
-                                            <div class="col-md-4">
-                                                <label for="Citizenship" class="fw-bold">Citizenship</label>
-                                                <select name="citizenship" id="Citizenship" class="form-select p-1 py-2 rounded-1">
-                                                    <option value="NO Citizanship" <?= (isset($row['citizenship']) && $row['citizenship'] === 'NO Citizanship') ? 'selected' : '' ?>>Select Citizanship</option>
-                                                    <option value="NATURAL-BORN" <?= (isset($row['citizenship']) && $row['citizenship'] === 'NATURAL-BORN') ? 'selected' : '' ?>>NATURAL-BORN</option>
-                                                    <option value="NATURALIZED" <?= (isset($row['citizenship']) && $row['citizenship'] === 'NATURALIZED') ? 'selected' : '' ?>>NATURALIZED</option>
-                                                    <option value="DUAL" <?= (isset($row['citizenship']) && $row['citizenship'] === 'DUAL') ? 'selected' : '' ?>>DUAL</option>
-                                                    <option value="BY ELECTION" <?= (isset($row['citizenship']) && $row['citizenship'] === 'BY ELECTION') ? 'selected' : '' ?>>BY ELECTION</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="Gender" class="fw-bold">Gender</label>
-                                                <select name="gender" id="Gender" class="form-select">
-                                                    <option value="">Select Gender</option>
-                                                    <option value="Male" <?= (isset($row['gender']) && strcasecmp(trim($row['gender']), 'Male') === 0) ? 'selected' : '' ?>>Male</option>
-                                                    <option value="Female" <?= (isset($row['gender']) && strcasecmp(trim($row['gender']), 'Female') === 0) ? 'selected' : '' ?>>Female</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="civil_status" class="fw-bold">Civil Status</label>
-                                                <select name="civil_status" id="civil_status" class="form-select p-1 py-2 rounded-1">
-                                                    <option value="" <?= !isset($row['civil_status']) || $row['civil_status'] === '' ? 'selected' : '' ?>>Select Civil Status</option>
-                                                    <option value="Single" <?= (isset($row['civil_status']) && $row['civil_status'] === 'Single') ? 'selected' : '' ?>>Single</option>
-                                                    <option value="Married" <?= (isset($row['civil_status']) && $row['civil_status'] === 'Married') ? 'selected' : '' ?>>Married</option>
-                                                    <option value="Widowed" <?= (isset($row['civil_status']) && $row['civil_status'] === 'Widowed') ? 'selected' : '' ?>>Widowed</option>
-                                                    <option value="Divorced" <?= (isset($row['civil_status']) && $row['civil_status'] === 'Divorced') ? 'selected' : '' ?>>Divorced</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 row w-100">
-                                            <div class="col-md-4">
-                                                <label for="religion" class="fw-bold">Religion</label>
-                                                <select name="religion" id="religion" class="form-select p-1 py-2 rounded-1">
-                                                    <option value="" <?= !isset($row['religion']) || $row['religion'] === '' ? 'selected' : '' ?>>Select Religion</option>
-                                                    <option value="Roman Catholic" <?= (isset($row['religion']) && $row['religion'] === 'Roman Catholic') ? 'selected' : '' ?>>Roman Catholic</option>
-                                                    <option value="Iglesia ni Cristo" <?= (isset($row['religion']) && $row['religion'] === 'Iglesia ni Cristo') ? 'selected' : '' ?>>Iglesia ni Cristo</option>
-                                                    <option value="Evangelical" <?= (isset($row['religion']) && $row['religion'] === 'Evangelical') ? 'selected' : '' ?>>Evangelical</option>
-                                                    <option value="Islam" <?= (isset($row['religion']) && $row['religion'] === 'Islam') ? 'selected' : '' ?>>Islam</option>
-                                                    <option value="Seventh-day Adventist" <?= (isset($row['religion']) && $row['religion'] === 'Seventh-day Adventist') ? 'selected' : '' ?>>Seventh-day Adventist</option>
-                                                    <option value="Jehovah's Witness" <?= (isset($row['religion']) && $row['religion'] === "Jehovah's Witness") ? 'selected' : '' ?>>Jehovah's Witness</option>
-                                                    <option value="Buddhism" <?= (isset($row['religion']) && $row['religion'] === 'Buddhism') ? 'selected' : '' ?>>Buddhism</option>
-                                                    <option value="Hinduism" <?= (isset($row['religion']) && $row['religion'] === 'Hinduism') ? 'selected' : '' ?>>Hinduism</option>
-                                                    <option value="None" <?= (isset($row['religion']) && $row['religion'] === 'None') ? 'selected' : '' ?>>None</option>
-                                                    <option value="Other" <?= (isset($row['religion']) && $row['religion'] === 'Other') ? 'selected' : '' ?>>Other</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="age" class="fw-bold">Age</label>
-                                                <input type="text" name="age" class="form-control" id="age" value="<?= (isset($row["age"]) && trim($row["houseBlock"]) !== '') ? htmlspecialchars($row["age"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="Birthday" class="fw-bold">Birthday</label>
-                                                <input type="date" name="birthday" class="form-control" id="Birthday" value="<?= isset($row["birthday"]) ? htmlspecialchars($row["birthday"]) : "N/A" ?>">
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 row w-100">
-                                            <div class="col-md-4">
-                                                <label for="BirthPlace" class="fw-bold">Birth Place</label>
-                                                <input type="text" name="birthPlace" class="form-control" id="BirthPlace" value="<?= isset($row["birthPlace"]) ? htmlspecialchars($row["birthPlace"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="Contact" class="fw-bold">Contact</label>
-                                                <input type="text" name="contact" class="form-control" id="Contact" value="<?= isset($row["contact"]) ? htmlspecialchars($row["contact"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="Email" class="fw-bold">Email</label>
-                                                <input type="text" name="email" class="form-control" id="Email" value="<?= isset($row["email"]) ? htmlspecialchars($row["email"]) : "N/A" ?>">
-                                            </div>
-                                        </div>
-                                        <div class="inputInfo my-2 p-2 row w-100">
-                                            <?php
-                                            $schedules = [
-                                                'HOSPITAL' => [
-                                                    ['from' => '07:00 AM', 'to' => '03:00 PM'],
-                                                    ['from' => '03:00 PM', 'to' => '11:00 PM'],
-                                                    ['from' => '11:00 PM', 'to' => '07:00 AM'],
-                                                ],
-                                                'SCHOOL' => [
-                                                    ['from' => '07:30 AM', 'to' => '04:30 PM'],
-                                                ],
-                                            ];
-
-                                            $department = isset($row['department']) ? strtoupper(trim($row['department'])) : null;
-                                            $deptSchedules = isset($schedules[$department]) ? $schedules[$department] : [];
-
-                                            $currentFrom = isset($row['secheduleFrom']) ? $row['secheduleFrom'] : '';
-                                            $currentTo = isset($row['scheduleTo']) ? $row['scheduleTo'] : '';
-
-                                            function valueExistsInSchedules($value, $key, $schedules) {
-                                                foreach ($schedules as $shift) {
-                                                    if ($shift[$key] === $value) {
-                                                        return true;
-                                                    }
-                                                }
-                                                return false;
-                                            }
-                                            ?>
-
-                                            <div class="col-12 col-md-4 px-1">
-                                                <label for="scheduleFrom" class="mb-0">Required (Schedule From)</label>
-                                                <select name="scheduleFrom" id="scheduleFrom" class="form-select p-1 py-2 rounded-1">
-                                                    <option value="">Select Schedule From</option>
-
-                                                    <?php 
-                                                    if ($currentFrom !== '' && !valueExistsInSchedules($currentFrom, 'from', $deptSchedules)) : ?>
-                                                        <option value="<?= htmlspecialchars($currentFrom) ?>" selected><?= htmlspecialchars($currentFrom) ?></option>
-                                                    <?php endif; ?>
-
-                                                    <?php foreach ($deptSchedules as $shift): 
-                                                        $from = $shift['from'];
-                                                        $selected = ($currentFrom === $from) ? ' selected' : '';
-                                                    ?>
-                                                        <option value="<?= htmlspecialchars($from) ?>" <?= $selected ?>><?= htmlspecialchars($from) ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-12 col-md-4 px-1">
-                                                <label for="scheduleTo" class="mb-0">Required (Schedule To)</label>
-                                                <select name="scheduleTo" id="scheduleTo" class="form-select p-1 py-2 rounded-1">
-                                                    <option value="">Select Schedule To</option>
-
-                                                    <?php 
-                                                    if ($currentTo !== '' && !valueExistsInSchedules($currentTo, 'to', $deptSchedules)) : ?>
-                                                        <option value="<?= htmlspecialchars($currentTo) ?>" selected><?= htmlspecialchars($currentTo) ?></option>
-                                                    <?php endif; ?>
-
-                                                    <?php foreach ($deptSchedules as $shift): 
-                                                        $to = $shift['to'];
-                                                        $selected = ($currentTo === $to) ? ' selected' : '';
-                                                    ?>
-                                                        <option value="<?= htmlspecialchars($to) ?>" <?= $selected ?>><?= htmlspecialchars($to) ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
+                            <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" style="height: 100%; display: flex;" id="personalInformation">
+                                <div class="profileID row w-100">
+                                    <div class="col-md-8">
+                                        <label for="user_profile" class="fw-bold">Profile</label>
+                                        <input type="file" name="user_profile" class="form-control" id="user_profile">
+                                        <input type="hidden" name="current_profile_image" value="<?= htmlspecialchars($row["user_profile"]) ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="employeeID" class="fw-bold">Employee ID</label>
+                                        <input type="text" name="employeeID" class="form-control" id="employeeID" value="<?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?>">
                                     </div>
                                 </div>
-                                <div class="card mb-4 shadow-sm border-0 w-100">
-                                    <div class="card-body">
-                                        <h4 class="card-title text-primary fw-bold mb-4 px-3">ADDRESS</h4>
-
-                                        <div class="row g-3 px-3">
-                                            <div class="col-md-4">
-                                                <label for="houseBlock" class="form-label fw-bold">House Block</label>
-                                                <input type="text" name="houseBlock" class="form-control" id="houseBlock" 
-                                                    value="<?= (isset($row["houseBlock"]) && trim($row["houseBlock"]) !== '') ? htmlspecialchars($row["houseBlock"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="street" class="form-label fw-bold">Street</label>
-                                                <input type="text" name="street" class="form-control" id="street" 
-                                                    value="<?= isset($row["street"]) ? htmlspecialchars($row["street"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="subdivision" class="form-label fw-bold">Subdivision</label>
-                                                <input type="text" name="subdivision" class="form-control" id="subdivision" 
-                                                    value="<?= (isset($row["subdivision"]) && trim($row["subdivision"]) !== '') ? htmlspecialchars($row["subdivision"]) : "N/A" ?>">
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-3 px-3 mt-3">
-                                            <div class="col-md-4">
-                                                <label for="barangay" class="form-label fw-bold">Barangay</label>
-                                                <input type="text" name="barangay" class="form-control" id="barangay" 
-                                                    value="<?= isset($row["barangay"]) ? htmlspecialchars($row["barangay"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="city_muntinlupa" class="form-label fw-bold">City Muntinlupa</label>
-                                                <input type="text" name="city_muntinlupa" class="form-control" id="city_muntinlupa" 
-                                                    value="<?= isset($row["city_muntinlupa"]) ? htmlspecialchars($row["city_muntinlupa"]) : "N/A" ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="province" class="form-label fw-bold">Province</label>
-                                                <input type="text" name="province" class="form-control" id="province" 
-                                                    value="<?= isset($row["province"]) ? htmlspecialchars($row["province"]) : "N/A" ?>">
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-3 px-3 mt-3">
-                                            <div class="col-md-4">
-                                                <label for="zip_code" class="form-label fw-bold">Zip Code</label>
-                                                <input type="text" name="zipCode" class="form-control" id="zip_code" 
-                                                    value="<?= isset($row["zip_code"]) ? htmlspecialchars($row["zip_code"]) : "N/A" ?>">
-                                            </div>
-                                        </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-3">
+                                        <label for="lname" class="fw-bold">Surname</label>
+                                        <input type="text" name="lname" class="form-control" id="lname" value="<?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="fname" class="fw-bold">First Name</label>
+                                        <input type="text" name="fname" class="form-control" id="fname" value="<?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="mname" class="fw-bold">Middle Name</label>
+                                        <input type="text" name="mname" class="form-control" id="mname" value="<?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="suffix" class="fw-bold">Suffix</label>
+                                        <input type="text" name="suffix" class="form-control" id="suffix" value="<?= isset($row["suffix"]) ? htmlspecialchars($row["suffix"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="jobTitle" class="fw-bold">Job Title</label>
+                                        <input type="text" name="jobTitle" class="non-editable form-control" id="jobTitle" value="<?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="department" class="fw-bold">Department</label>
+                                        <input type="text" name="department" class="form-control" id="department" value="<?= isset($row["department"]) ? htmlspecialchars($row["department"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaryRate" class="fw-bold">Salary Rate</label>
+                                        <input type="text" name="salary_rate" class="form-control" id="salaryRate" value="<?= isset($row["slary_rate"]) ? htmlspecialchars($row["slary_rate"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="salary" class="fw-bold">Salary</label>
+                                        <input type="number" name="salary" class="non-editable form-control" id="salary" value="<?= isset($row["salary"]) ? htmlspecialchars($row["salary"]) : "N/A" ?>" style="">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="from" class="fw-bold">Salary Range From</label>
+                                        <input type="number" name="salary_Range_From" class="non-editable form-control" id="from" value="<?= isset($row["salary_Range_From"]) ? htmlspecialchars($row["salary_Range_From"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="to" class="fw-bold">Salary Range To</label>
+                                        <input type="number" name="salary_Range_To" class="non-editable form-control" id="to" value="<?= isset($row["salary_Range_To"]) ? htmlspecialchars($row["salary_Range_To"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="Citizenship" class="fw-bold">Citizenship</label>
+                                        <input type="text" name="citizenship" class="form-control" id="Citizenship" value="<?= isset($row["citizenship"]) ? htmlspecialchars($row["citizenship"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="Gender" class="fw-bold">Gender</label>
+                                        <input type="text" name="gender" class="form-control" id="Gender" value="<?= isset($row["gender"]) ? htmlspecialchars($row["gender"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="civil_status" class="fw-bold">Civil Status</label>
+                                        <input type="text" name="civil_status" class="form-control" id="civil_status" value="<?= isset($row["civil_status"]) ? htmlspecialchars($row["age"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="religion" class="fw-bold">Religion</label>
+                                        <input type="text" name="religion" class="form-control" id="religion" value="<?= isset($row["religion"]) ? htmlspecialchars($row["citizenship"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="age" class="fw-bold">Age</label>
+                                        <input type="text" name="age" class="form-control" id="age" value="<?= isset($row["age"]) ? htmlspecialchars($row["gender"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="Birthday" class="fw-bold">Birthday</label>
+                                        <input type="text" name="birthday" class="form-control" id="Birthday" value="<?= isset($row["birthday"]) ? htmlspecialchars($row["birthday"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="BirthPlace" class="fw-bold">Birth Place</label>
+                                        <input type="text" name="birthPlace" class="form-control" id="BirthPlace" value="<?= isset($row["birthPlace"]) ? htmlspecialchars($row["birthPlace"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="Contact" class="fw-bold">Contact</label>
+                                        <input type="text" name="contact" class="form-control" id="Contact" value="<?= isset($row["contact"]) ? htmlspecialchars($row["contact"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="Email" class="fw-bold">Email</label>
+                                        <input type="text" name="email" class="form-control" id="Email" value="<?= isset($row["email"]) ? htmlspecialchars($row["email"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="city_muntinlupa" class="fw-bold">Schedule From</label>
+                                        <input type="text" name="scheduleFrom" class="form-control" id="city_muntinlupa" value="<?= isset($row["secheduleFrom"]) ? htmlspecialchars($row["secheduleFrom"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="ScheduleTo" class="fw-bold">Schedule To</label>
+                                        <input type="text" name="scheduleTo" class="form-control" id="ScheduleTo" value="<?= isset($row["scheduleTo"]) ? htmlspecialchars($row["scheduleTo"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="addressContents w-100 mt-4">
+                                    <h4 class="px-3">ADDRESS</h4>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="houseBlock" class="fw-bold">House Block</label>
+                                        <input type="text" name="houseBlock" class="form-control" id="houseBlock" value="<?= !empty(isset($row["houseBlock"])) ? htmlspecialchars($row["houseBlock"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="street" class="fw-bold">Street</label>
+                                        <input type="text" name="street" class="form-control" id="street" value="<?= isset($row["street"]) ? htmlspecialchars($row["street"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="subdivision" class="fw-bold">Subdivision</label>
+                                        <input type="text" name="subdivision" class="form-control" id="subdivision" value="<?= isset($row["subdivision"]) ? htmlspecialchars($row["subdivision"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="barangay" class="fw-bold">Barangay</label>
+                                        <input type="text" name="barangay" class="form-control" id="barangay" value="<?= isset($row["barangay"]) ? htmlspecialchars($row["barangay"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="city_muntinlupa" class="fw-bold">City Muntinlupa</label>
+                                        <input type="text" name="city_muntinlupa" class="form-control" id="city_muntinlupa" value="<?= isset($row["secheduleFrom"]) ? htmlspecialchars($row["secheduleFrom"]) : "N/A" ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="province" class="fw-bold">Province</label>
+                                        <input type="text" name="province" class="form-control" id="province" value="<?= isset($row["province"]) ? htmlspecialchars($row["province"]) : "N/A" ?>">
+                                    </div>
+                                </div>
+                                <div class="inputInfo my-2 row w-100">
+                                    <div class="col-md-4">
+                                        <label for="zip_code" class="fw-bold">Zip Code</label>
+                                        <input type="text" name="zipCode" class="form-control" id="zip_code" value="<?= isset($row["zip_code"]) ? htmlspecialchars($row["zip_code"]) : "N/A" ?>">
                                     </div>
                                 </div>
                             </div>
@@ -410,6 +287,7 @@
                             </div>
                         </form>
                     </div>
+                </div>
                     <!-- ============================ FAMILY BACKGROUND TAB ============================ -->
                     <div class="familybg h-100 h-100" id="familybg" style="display: none;">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
@@ -773,4 +651,6 @@
     <div class="line"></div>
   </div>
 </div>
+<!-- <script src="../../assets/js/hr/profAdmin.js"></script> -->
+ <script src="../../assets/js/hr/profile.js"></script>
 <?php include '../../templates/Ufooter.php'?>
