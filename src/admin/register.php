@@ -28,5 +28,16 @@
         <?php endif; ?>
     </div>
 </main>
+<script>
+    function showLoaderThen(callback) {
+    const loader = document.getElementById("loading-overlay");
+    loader.style.display = "flex";
+
+    setTimeout(() => {
+        loader.style.display = "none";
+        callback();
+    }, 800); 
+}
+</script>
 <script src="../../assets/js/hr/adminRes.js"></script>
 <?php include '../../templates/Ufooter.php'?>

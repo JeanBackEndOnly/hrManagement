@@ -70,3 +70,21 @@ Email sent successfully to Jeyo@gmail.com with action accepted
 ==> Script started at 2025-06-19 12:40:44
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","13","rejected","","","","",""]
 Email sent successfully to pagotaisidromarcojean@gmail.com with action rejected
+==> Script started at 2025-06-19 20:23:30
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","password","","","","","$2y$10$gGEc7EmW8OZ.y3QrApPMgeVawKhzE\/MpL20M6oQFclqEZHzL9OuAm\""]
+==> Script started at 2025-06-19 20:25:20
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","Puericulture@2025"]
+==> Script started at 2025-06-19 20:27:19
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","promoted","English Major","English Major","37000.00"]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action promoted
+==> Script started at 2025-06-19 20:29:35
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","Puericulture@2025"]
+==> Script started at 2025-06-19 20:33:51
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","Puericulture@2025"]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-19 20:39:47
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","Puericulture@2025"]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-19 20:51:53
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","17","created","","","","Admin@21asddas","P0#qwerqwer"]
+Email sent successfully to maasdrco@gmail.com with action created

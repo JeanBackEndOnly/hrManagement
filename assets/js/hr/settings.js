@@ -11,8 +11,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function showSection(visibleIds) {
     const allSections = [
-        "changePAsswordID", // content div
-        "loginHisotryID"    // content div
+        "changePAsswordID",
+        "loginHisotryID"  
     ];
 
     allSections.forEach(id => {
@@ -36,37 +36,40 @@ function hideLoading() {
 function changePass() {
     showLoadingAndRun(() => {
         console.log("Change Password tab action triggered.");
-        activateTab(document.getElementById("idChangePass")); // ✅ correct tab
+        activateTab(document.getElementById("idChangePass")); 
         document.getElementById("idLoginHistory").classList.remove("active");
-    }, ["changePAsswordID"]); // ✅ show password section
+    }, ["changePAsswordID"]); 
 }
 
 function loginHistory() {
     showLoadingAndRun(() => {
         console.log("Login History tab action triggered.");
-        activateTab(document.getElementById("idLoginHistory")); // ✅ correct tab
+        activateTab(document.getElementById("idLoginHistory")); 
         document.getElementById("idChangePass").classList.remove("active");
-    }, ["loginHisotryID"]); // ✅ show login history section
+    }, ["loginHisotryID"]);
 }
 
 function showLoadingAndRun(callback, visibleIds = []) {
     const loadingEl = document.getElementById("loadingAnimationSettings");
     console.log("Loader shown");
 
-    showSection([]); // Hide all first
-    loadingEl.style.display = "flex"; // Show loader
+    showSection([]); 
+    loadingEl.style.display = "flex"; 
 
     setTimeout(() => {
         try {
-            callback(); // Run the main logic
+            callback(); 
             console.log("Callback done");
         } catch (err) {
             console.error("Error in callback:", err);
         }
 
-        loadingEl.style.display = "none"; // Hide loader
+        loadingEl.style.display = "none"; 
         console.log("Loader hidden");
 
-        showSection(visibleIds); // Show the required section
+        showSection(visibleIds); 
     }, 500);
+}
+function PasswordForgot(){
+    
 }

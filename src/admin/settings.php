@@ -143,15 +143,15 @@
                                     </button>
                                 </li>
                             </div>
-                            <div class="mb-3">
-                                <p>Forgot password?</p>
-                            </div>
                             <button type="submit" class="btn btn-success">Change Password</button>
                         </form>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#changePassword">Forgot Password?</button>
+                        </div>
                     </div>
                 </div>
                 <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:75vh;">
-                    <div class="container shadow p-5 w-100 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap">
+                    <div class="container shadow p-5 w-100 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
                         <?php if($adminHistory): ?>
                             <div class="w-50">
                                 <h3 class="text-center fw-bold" style="width: 98% !important;">Login Time</h3>
@@ -170,6 +170,31 @@
                                 <?php endforeach ?>
                             </div>
                         <?php endif ?>
+                    </div>
+                </div>
+                <!-- ============================ Change Password Modal End ============================ -->
+                 <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="POST" action="../../auth/authentications.php" class="modal-content">
+                            <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
+                            <input type="hidden" name="updatePassword" value="true">
+                            <div class="modal-header bg-success d-flex flex-column">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title text-start w-100" id="passwordModalLabel" style="color: #fff;">We will send you a new password</h5>
+                                <h5 class="modal-title text-start w-100" id="passwordModalLabel" style="color: #fff;">Choose Authentications:</h5>
+                            </div>
+                            <div class="modal-body">
+                                <label for="mailRadio" class="text-start d-flex align-items-center fs-5" 
+                                    style="height: 2rem; cursor: pointer !important;">
+                                    Gmail authentication <input type="radio" id="mailRadio" class="ms-3" name="mail" value="authEmail" required>
+                                </label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

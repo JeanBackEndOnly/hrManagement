@@ -506,6 +506,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
     
+    if (isset($_POST["updatePassword"]) && $_POST["updatePassword"] === "true"){
+        $mailType = $_POST["mail"];
+        if($mailType == "authEmail"){
+            $newPasswordAdmin = "Puericulture@2025";
+            $hashed = password_hash($newPasswordAdmin, PASSWORD_DEFAULT);
+            $query = "UPDATE users SET password = :password WHERE id = 1;";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":password", $hashed);
+            $stmt->execute();
+
+            $query = "SELECT * FROM users WHERE id = 1";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+            $userPass = $stmt->fetch(PDO::FETCH_ASSOC);
+            $password = $userPass['password'];
+            
+            $employeeId = 1; 
+
+            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+            $command = "start /B php " .
+                escapeshellarg($scriptPath) . ' ' .         
+                escapeshellarg($employeeId) . ' ' .         
+                escapeshellarg("password") . ' ' .         
+                escapeshellarg('') . ' ' .                  
+                escapeshellarg('') . ' ' .                  
+                escapeshellarg('') . ' ' .                   
+                escapeshellarg('') . ' ' .                
+                escapeshellarg($newPasswordAdmin); 
+
+            pclose(popen($command, "r"));
+
+
+            header("Location: ../src/admin/settings.php?password=success");
+            $pdo=null;
+            $stmt=null;
+            die();
+
+        }else{
+            echo "Cannot implement this logic";
+        }
+    }
 
     // ============================= Employee Authentication ============================= //
     if (isset($_POST["acceptEmployee"]) && $_POST["acceptEmployee"] === "true") {

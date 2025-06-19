@@ -36,16 +36,34 @@ $password          = $argv[7] ?? null;
 $pdo = db_connection();
 
 try {
+    $user = null;
+
     $query = "SELECT * FROM userinformations WHERE users_id = :users_id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":users_id", $createdUserId);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    if (!$user && $createdUserId == 1) {
+        $query = "SELECT * FROM users WHERE id = 1";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($admin) {
+            $user = [
+                'email' => $admin['email'],
+                'fname' => 'Admin',
+                'lname' => 'Account'
+            ];
+        }
+    }
+
     if (!$user) {
-        file_put_contents(__DIR__ . '/email_error.log', "No user found for ID: $createdUserId. Exiting.\n", FILE_APPEND);
+        file_put_contents(__DIR__ . '/email_error.log', "No user found in userinformations or users for ID: $createdUserId. Exiting.\n", FILE_APPEND);
         exit();
     }
+
     if (!$pdo) {
         file_put_contents(__DIR__ . '/email_error.log', "Database connection failed.\n", FILE_APPEND);
         exit();
@@ -113,6 +131,16 @@ try {
                 <p>Hi {$user['fname']} {$user['lname']},</p>
                 <p>Your request have been rejected for some reason, please go to HR office for clarification.</p>
                 <p>Thank You for your understanding!.</p>
+                <br>
+                <p>Best regards,<br>HR Team</p>
+            ";
+
+        }elseif ($action === 'password') {
+            $mail->Subject = 'Password Reset!';
+            $mail->Body = "
+                <p>Hi Admin,</p>
+                <p>Your New Password is :</strong> $password .</p>
+                <p>Thank You for your service!.</p>
                 <br>
                 <p>Best regards,<br>HR Team</p>
             ";

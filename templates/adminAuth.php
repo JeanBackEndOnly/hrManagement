@@ -3,19 +3,24 @@ require_once '../../installer/session.php';
 require_once '../../auth/view.php';
 require_once '../../auth/control.php';
 
-//    if (isset($_SESSION["user_id"])) {
-//         $users_id = $_SESSION["user_id"];
+date_default_timezone_set('Asia/Manila'); 
 
-//         $query = "UPDATE users SET session_id = NULL WHERE id = :id";
-//         $stmt = $pdo->prepare($query);
-//         $stmt->bindParam(":id", $users_id);
-//         $stmt->execute();
-//     }
+if (isset($_SESSION["user_id"])) {
+    $users_id = $_SESSION["user_id"];
 
-//     session_unset();
-//     session_destroy();
+    $currentHour = date("G"); 
 
-//     header("Location: ../index.php");
-//     exit;
+    if (in_array($currentHour, [6, 12, 18])) {
+        if (!isset($_SESSION['last_session_update']) || $_SESSION['last_session_update'] != $currentHour) {
+            $query = "UPDATE users SET session_id = NULL WHERE id = :id";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":id", $users_id);
+            $stmt->execute();
+
+            $_SESSION['last_session_update'] = $currentHour;
+        }
+    }
+}
+
 
 ?>
