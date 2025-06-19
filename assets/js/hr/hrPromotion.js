@@ -253,34 +253,3 @@ function showLoadingAndRun(callback) {
         document.getElementById('deleteJobId').value = id;
     }
     
-
-// ======================= SETTINGS ======================= //
-window.addEventListener('DOMContentLoaded', () => {
-        changePass(); 
-});
-
-    function changePass() {
-    showLoadingAndRun(() => {
-        console.log("Change Password tab action triggered.");
-
-       document.getElementById("changePAsswordID").style.display = 'flex';
-       document.getElementById("loginHisotryID").style.display = 'none';
-
-        activateTab(document.getElementById("idChangePass"));
-        document.getElementById("idLoginHistory").classList.remove("active");
-
-    });
-}
-
-function loginHistory() {
-    showLoadingAndRun(() => {
-        console.log("Login HIstory tab action triggered.");
-
-        document.getElementById("loginHisotryID").style.display = 'flex';
-        document.getElementById("changePAsswordID").style.display = 'none';
-
-        activateTab(document.getElementById("idLoginHistory"));
-        document.getElementById("idChangePass").classList.remove("active");
-
-    });
-}

@@ -72,10 +72,10 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3 " style="width: 95%; height: 5rem;">
+                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3 " style="width: 95%; height: 5rem !important;">
                     <a href="employee.php" style="text-decoration: none;"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>Go back to Employee Management</a>
                 </div>
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="min-height: 2rem; min-width: 95%;">
+                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="min-height: 2rem !important; min-width: 95%;">
                     <div class="h1">
                         <h3 class="m-0">EMPLOYEE PROFILE</h3>
                     </div>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <!-- ============================ PERSONAL INFO TAB ============================ -->
-                <div class="employeeReqProfileINfo flex-column justify-content-between p-0 m-0 mt-2" style="width: 95%; height: 74vh; display:flex;">
+                <div class="employeeReqProfileINfo flex-column justify-content-between p-0 m-0 mt-2" style="width: 95%; height: 74vh; display:flex;" id="personalID">
                     <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
                             <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
@@ -289,9 +289,11 @@
                     </div>
                 </div>
                     <!-- ============================ FAMILY BACKGROUND TAB ============================ -->
-                    <div class="familybg h-100 h-100" id="familybg" style="display: none;">
+                <div class="familybg flex-column justify-content-between p-0 m-0 mt-2" id="familybg" style="width: 95%; height: 74vh; display: none;">
+                    <!-- <div class="row h-100 w-100"> -->
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center rounded-1 mb-1 mb-md-0" id="familyProfileInformation" style="height: 80%; display: none;">
+                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                                rounded-1 mb-1 mb-md-0" id="familyProfileInformation" style="height: 80%; display: none;">
                                 <?php foreach ($reqProfInfo as $row): ?>
                                     <input type="hidden" name="users_id" value="<?= $row["users_id"] ?>">
                                     <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
@@ -542,11 +544,14 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    <!-- </div> -->
+                </div>
                     <!-- ============================ EDUCATIONAL BACKGROUND TAB ============================ -->
-                    <div class="educationalbg w-100 h-100" id="educationalbg" style="display: none;">
+                <div class="educationalbg" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
+                    <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center rounded-1 mb-1 mb-md-0" id="educationProfileInformation" style="height: 80%; display: none;">
+                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                                rounded-1 mb-1 mb-md-0" id="educationProfileInformation" style="height: 80%; display: none;">
                                 <?php foreach ($reqProfInfo as $row): ?>
                                     <input type="hidden" name="users_id" value="<?= htmlspecialchars($row["users_id"]) ?>">
                                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? '') ?>">

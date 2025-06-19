@@ -1,4 +1,4 @@
-       function activateTab(clickedBtn) {
+function activateTab(clickedBtn) {
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.classList.remove("active");
     });
@@ -52,21 +52,7 @@ function educationalBG() {
 }
 
 
-function showSection(visibleIds) {
-    const allSections = [
-        "personalID", "familybg", "educationalbg",
-        "updateButton", "updateButtonFBG", "updateButtonEBG",
-        "educationalInformation", "familyInformation", "personalInformation",
-        "educationProfileInformation", "familyProfileInformation", "personalProfileInformation"
-    ];
 
-    allSections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.style.display = visibleIds.includes(id) ? 'flex' : 'none';
-        }
-    });
-}
 
 window.addEventListener("load", function () {
     const urlParams = new URLSearchParams(window.location.search);

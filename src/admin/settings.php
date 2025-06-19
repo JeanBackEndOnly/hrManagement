@@ -184,19 +184,5 @@
         </div>
     </div>
 
-<script>
-    function showLoadingAndRun(callback, visibleIds = []) {
-        const loadingEl = document.getElementById("loadingAnimationSettings");
-
-        showSection([]);
-
-        loadingEl.style.display = "flex";
-
-        setTimeout(() => {
-            callback();
-            loadingEl.style.display = "none";
-            showSection(visibleIds);
-        }, 500);
-    }
-</script>
+<script src="../../assets/js/hr/settings.js"></script>
 <?php include '../../templates/Ufooter.php'?>
