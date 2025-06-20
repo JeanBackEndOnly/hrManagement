@@ -205,41 +205,5 @@
             <div class="line"></div>
         </div>
     </div>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (passwordAuthFailes) {
-            console.log("Showing updateReq toast");
-            Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Username not match, Try again!.',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: { popup: 'swal2-row-toast' }
-            });
-            removeUrlParams(['passwordAuthFailes']);
-        }else if (passwordChange) {
-            console.log("Showing updateReq toast");
-            Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'Password Change Successfully!.',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: { popup: 'swal2-row-toast' }
-            });
-            removeUrlParams(['passwordChange']);
-        }
-        function removeUrlParams(params) {
-            const url = new URL(window.location);
-            params.forEach(param => url.searchParams.delete(param));
-            window.history.replaceState({}, document.title, url.toString());
-        }
-    });
-</script>
 <script src="../../assets/js/hr/settings.js"></script>
 <?php include '../../templates/Ufooter.php'?>

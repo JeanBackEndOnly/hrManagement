@@ -167,6 +167,15 @@ select {
         transform: scaleY(1.8);
     }
 }
+ .modal-backdrop {
+        z-index: 1040 !important;
+    }
+
+    .modal {
+        z-index: 1050 !important;
+    }
+
+
 @media (max-width: 576px) {
     .login-page .container {
         padding: 0 1rem;

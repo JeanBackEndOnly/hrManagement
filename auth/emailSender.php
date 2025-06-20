@@ -145,6 +145,16 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
+        }elseif ($action === 'ForgotEmployeePass') {
+            $mail->Subject = 'Mail Code!';
+            $mail->Body = "
+                <p>Hi Admin,</p>
+                <p>Your Mail Code is :</strong>  $mailCode.</p>
+                <p>Please Enter this and create your new password!.</p>
+                <br>
+                <p>Best regards,<br>HR Team</p>
+            ";
+
         }else {
             file_put_contents(__DIR__ . '/email_error.log', "Invalid action type: $action. Exiting.\n", FILE_APPEND);
             exit();

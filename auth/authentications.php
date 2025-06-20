@@ -526,7 +526,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if($usersnameAuth !== null && $usersnameAuth === $getUsername){
                 $emailAuth = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
                 $employeeId = 1;
-               $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
                 $command = "start /B php " .
                     escapeshellarg($scriptPath) . ' ' .  //     1  
                     escapeshellarg($employeeId) . ' ' .      //     2  
@@ -538,9 +538,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     escapeshellarg('') . ' ' .                          // 8 == 7
                     escapeshellarg($emailAuth) . '"';                         // 7 == 8
                     // TAng ina yung mail lang pala maliiiiii!!!!!!!!!!
-                  file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
-                  $_SESSION["EmailAuth"] = $emailAuth;
+                file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
                 pclose(popen($command, "r"));
+                $_SESSION["EmailAuth"] = $emailAuth;
                 header("Location: ../src/admin/changePass.php?username=success");
                 die();
             }else if($usersnameAuth !== '' && $usersnameAuth !== $getUsername){
@@ -599,7 +599,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 escapeshellarg('') . ' ' .            //  5       
                 escapeshellarg('') . ' ' .                 //     6
                 escapeshellarg('') . ' ' .                  // 7
-                escapeshellarg('') ;                         // 8 == 7
+                escapeshellarg('') . ' ' .                  // 8
+                escapeshellarg('') ;                         // 9 == 8
 
             pclose(popen($command, "r"));
 
@@ -629,6 +630,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 escapeshellarg('') . ' ' .                  
                 escapeshellarg('') . ' ' .                  
                 escapeshellarg('') . ' ' .                   
+                escapeshellarg('') . ' ' .                
                 escapeshellarg('') . ' ' .                
                 escapeshellarg('') ;                       
 
@@ -1383,7 +1385,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             escapeshellarg('') . ' ' .          
             escapeshellarg('') . ' ' .          
             escapeshellarg($username) . ' ' .   
-            escapeshellarg($password) . '"';       
+            escapeshellarg($password) . ' ';       
+            escapeshellarg($password) ;       
 
 
             file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
@@ -1803,6 +1806,82 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: ../src/employee/profile.php?upsert=failed&users_id=" . $users_id . "&tab=educational");
             exit;
         }
+    }
+
+    // ============================== FORGOT PASSWORD ============================== //
+    if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true"){
+        $usernameForgot = $_POST["usernameAuth"] ?? null;
+        $AuthType = $_POST["AuthType"] ?? null;
+        $mailCode = $_POST["mailCode"] ?? '';
+        $new_password = $_POST["new_password"] ?? '';
+        $confirm_password = $_POST["confirm_password"] ?? '';
+        try{
+            $query = "SELECT username FROM users WHERE username = :username";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute(['username' => $usernameForgot]);
+            $userForgot = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($usernameForgot === null && $usernameForgot !== $userForgot && $AuthType == null) {
+                header("location: ../src/index.php?username=failed");
+                die();
+            }else if($userForgot){
+                $mailAuth = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
+                $_SESSION["mailAuth"] = $mailAuth;
+                $query = "SELECT id FROM users WHERE username = :username";
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(":username", $usernameForgot);
+                $stmt->execute();
+                $hehe = $stmt->fetch(PDO::FETCH_ASSOC);
+                $employeeId = $hehe['id'];
+                $_SESSION["idNgEmployee"] = $employeeId;
+                header("Location: ../src/authCode.php?username=success");
+
+            }else if($AuthType == "emailAuth"){
+                $mailCode = $_SESSION["mailAuth"] ?? '';
+                $employeeId = $_SESSION["idNgEmployee"] ?? '';
+                
+                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $command = "start /B php " .
+                    escapeshellarg($scriptPath) . ' ' .  //     1  
+                    escapeshellarg($employeeId) . ' ' .      //     2  
+                    escapeshellarg("ForgotEmployeePass") . ' ' .     //   3    
+                    escapeshellarg('') . ' ' .         //      4      
+                    escapeshellarg('') . ' ' .            //  5       
+                    escapeshellarg('') . ' ' .                 //     6
+                    escapeshellarg('') . ' ' .                  // 7
+                    escapeshellarg('') . ' ' .                          // 8 == 7
+                    escapeshellarg($mailCode) . '"';                         // 7 == 8
+                    // TAng ina yung mail lang pala maliiiiii!!!!!!!!!!
+                file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                pclose(popen($command, "r"));
+                $_SESSION["EmailAuth"] = $mailCode;
+                header("Location: ../src/changePass.php");
+                die();
+            }elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]){
+                if($new_password !== $confirm_password){
+                    header("Location: ../src/changePass.php?password=notMatch");
+                    die();
+                }
+                if(empty($new_password) || empty($confirm_password)){
+                     header("Location: ../src/changePass.php?password=empty");
+                    die();
+                }
+                $hasedPass = password_hash($new_password, PASSWORD_DEFAULT);
+                $query = "UPDATE users SET password = :password WHERE id = 1";
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(":password", $hasedPass);
+                $stmt->execute();
+
+                header("Location: ../src/index.php?passwordChange=success");
+                die();
+            }elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
+                header("Location: ../src/changePass.php?code=notMatch");
+                die();
+            }
+
+        }catch(PDOException $e){
+            die("Query Failed: " . $e->getMessage());
+        }
+        
     }
 
     unset($_SESSION['csrf_token']);

@@ -3,6 +3,11 @@ require_once '../installer/session.php';
 require_once '../auth/view.php'; 
 ?>
 <?php initInstaller();
+    if(isset($_GET['signup']) && $_GET['signup'] === 'success'){
+        $signup = true;
+    }elseif(isset($_GET['username']) && $_GET['username'] === 'failed'){
+        $username = true;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +27,8 @@ require_once '../auth/view.php';
     <script>
         var base_url = '<?php echo base_url(); ?>';
         console.log('Base URL: ' + base_url);
+        const signup = <?php echo json_encode($signup); ?>;
+        const username = <?php echo json_encode($username); ?>;
     </script>
     <style>
         body, main, h1, h2, h3, h4, h5{

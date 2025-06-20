@@ -141,3 +141,22 @@ Email sent successfully to pagotaisidromarcojean@gmail.com with action password
 ==> Script started at 2025-06-20 10:40:46
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","LXREJW\""]
 Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 17:20:04
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","PWcdgp\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 17:30:54
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","14","rejected","","","","","",""]
+==> Script started at 2025-06-20 17:31:00
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","15","accepted","","","","","",""]
+Email sent successfully to In@gmail.com with action rejected
+Email sent successfully to lelouch@gmail.com with action accepted
+==> Script started at 2025-06-20 18:59:40
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","accepted","","","","","",""]
+==> Script started at 2025-06-20 19:00:35
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","accepted","","","","","",""]
+==> Script started at 2025-06-20 19:18:18
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","L6fBxK\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 19:20:29
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","ForgotEmployeePass","","","","","","sgDB2J\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action ForgotEmployeePass
