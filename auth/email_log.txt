@@ -88,3 +88,56 @@ Email sent successfully to pagotaisidromarcojean@gmail.com with action password
 ==> Script started at 2025-06-19 20:51:53
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","17","created","","","","Admin@21asddas","P0#qwerqwer"]
 Email sent successfully to maasdrco@gmail.com with action created
+==> Script started at 2025-06-20 09:48:15
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","accepted","","","","",""]
+==> Script started at 2025-06-20 09:51:24
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","accepted","","","","",""]
+==> Script started at 2025-06-20 09:54:21
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","password","","","","",""]
+==> Script started at 2025-06-20 09:55:01
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","","password","","","","",""]
+==> Script started at 2025-06-20 09:56:19
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 09:57:25
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 09:57:57
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 09:58:25
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 10:04:09
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+==> Script started at 2025-06-20 10:06:14
+Args: null
+==> Script started at 2025-06-20 10:07:39
+Args: null
+==> Script started at 2025-06-20 10:07:47
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+==> Script started at 2025-06-20 10:08:37
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 10:10:27
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","",""]
+==> Script started at 2025-06-20 10:13:00
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","CadJTQ"]
+==> Script started at 2025-06-20 10:14:32
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","17eV3q\""]
+==> Script started at 2025-06-20 10:16:32
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","nhV2aT\""]
+==> Script started at 2025-06-20 10:22:33
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","IsDC2r\""]
+==> Script started at 2025-06-20 10:32:30
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","5Dwn4c\""]
+==> Script started at 2025-06-20 10:33:30
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","iUhcgt\""]
+==> Script started at 2025-06-20 10:35:21
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","RfMBmI\""]
+==> Script started at 2025-06-20 10:38:37
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","nhGOEJ\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password
+==> Script started at 2025-06-20 10:40:46
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","password","","","","","","LXREJW\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action password

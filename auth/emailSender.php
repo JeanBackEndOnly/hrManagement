@@ -23,19 +23,19 @@ if (!isset($argv[1]) || !isset($argv[2])) {
     exit();
 }
 
-$createdUserId     = $argv[1];
+$createdUserId     = $argv[1];          
 $action            = $argv[2];
 $previousJobTitle  = $argv[3] ?? null;
 $newJobTitle       = $argv[4] ?? null;
 $newSalary         = $argv[5] ?? null;
 $username          = $argv[6] ?? null;
 $password          = $argv[7] ?? null;
-
-
+$mailCode          = $argv[8] ?? null;
 
 $pdo = db_connection();
 
 try {
+    
     $user = null;
 
     $query = "SELECT * FROM userinformations WHERE users_id = :users_id";
@@ -136,11 +136,11 @@ try {
             ";
 
         }elseif ($action === 'password') {
-            $mail->Subject = 'Password Reset!';
+            $mail->Subject = 'Mail Code!';
             $mail->Body = "
                 <p>Hi Admin,</p>
-                <p>Your New Password is :</strong> $password .</p>
-                <p>Thank You for your service!.</p>
+                <p>Your Mail Code is :</strong>  $mailCode.</p>
+                <p>Please Enter this and create your new password!.</p>
                 <br>
                 <p>Best regards,<br>HR Team</p>
             ";

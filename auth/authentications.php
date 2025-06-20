@@ -506,45 +506,72 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
     
-    if (isset($_POST["updatePassword"]) && $_POST["updatePassword"] === "true"){
-        $mailType = $_POST["mail"];
-        if($mailType == "authEmail"){
-            $newPasswordAdmin = "Puericulture@2025";
-            $hashed = password_hash($newPasswordAdmin, PASSWORD_DEFAULT);
-            $query = "UPDATE users SET password = :password WHERE id = 1;";
+    if (isset($_POST["forgotPassword"]) && $_POST["forgotPassword"] === "true"){
+       $usersnameAuth = $_POST["username"] ?? '';
+       $mailCode = $_POST["mailCode"] ?? '';
+       $new_password = $_POST["new_password"] ?? '';
+       $confirm_password = $_POST["confirm_password"] ?? '';
+
+       // =============== SEND TO EMAIL ====================== //
+
+        try{
+            $query = "SELECT username FROM users WHERE id = 1";
             $stmt = $pdo->prepare($query);
-            $stmt->bindParam(":password", $hashed);
             $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $getUsername = $user["username"];
 
-            $query = "SELECT * FROM users WHERE id = 1";
-            $stmt = $pdo->prepare($query);
-            $stmt->execute();
-            $userPass = $stmt->fetch(PDO::FETCH_ASSOC);
-            $password = $userPass['password'];
-            
-            $employeeId = 1; 
+          
 
-            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
-            $command = "start /B php " .
-                escapeshellarg($scriptPath) . ' ' .         
-                escapeshellarg($employeeId) . ' ' .         
-                escapeshellarg("password") . ' ' .         
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                   
-                escapeshellarg('') . ' ' .                
-                escapeshellarg($newPasswordAdmin); 
+            if($usersnameAuth !== null && $usersnameAuth === $getUsername){
+                $emailAuth = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
+                $employeeId = 1;
+               $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $command = "start /B php " .
+                    escapeshellarg($scriptPath) . ' ' .  //     1  
+                    escapeshellarg($employeeId) . ' ' .      //     2  
+                    escapeshellarg("password") . ' ' .     //   3    
+                    escapeshellarg('') . ' ' .         //      4      
+                    escapeshellarg('') . ' ' .            //  5       
+                    escapeshellarg('') . ' ' .                 //     6
+                    escapeshellarg('') . ' ' .                  // 7
+                    escapeshellarg('') . ' ' .                          // 8 == 7
+                    escapeshellarg($emailAuth) . '"';                         // 7 == 8
+                    // TAng ina yung mail lang pala maliiiiii!!!!!!!!!!
+                  file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                  $_SESSION["EmailAuth"] = $emailAuth;
+                pclose(popen($command, "r"));
+                header("Location: ../src/admin/changePass.php?username=success");
+                die();
+            }else if($usersnameAuth !== '' && $usersnameAuth !== $getUsername){
+                header("Location: ../src/admin/settings.php?passwordAuthFailes=failed");
+                die();
+            }else if($usersnameAuth !== ''){
+                 header("Location: ../src/admin/settings.php?passwordAuth=null");
+                die();
+            }elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]) {
+                if($new_password !== $confirm_password){
+                    header("Location: ../src/admin/changePass.php?password=notMatch");
+                    die();
+                }
+                if(empty($new_password) || empty($confirm_password)){
+                     header("Location: ../src/admin/changePass.php?password=empty");
+                    die();
+                }
+                $hasedPass = password_hash($new_password, PASSWORD_DEFAULT);
+                $query = "UPDATE users SET password = :password WHERE id = 1";
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(":password", $hasedPass);
+                $stmt->execute();
 
-            pclose(popen($command, "r"));
-
-
-            header("Location: ../src/admin/settings.php?password=success");
-            $pdo=null;
-            $stmt=null;
-            die();
-
-        }else{
-            echo "Cannot implement this logic";
+                header("Location: ../src/admin/settings.php?passwordChange=success");
+                die();
+            }elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
+                header("Location: ../src/admin/changePass.php?code=notMatch");
+                die();
+            }
+        }catch(PDOException $e){
+            die("Query Failed: " . $e->getMessage());
         }
     }
 
@@ -565,14 +592,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
             $command = "start /B php " .
-                escapeshellarg($scriptPath) . ' ' .         
-                escapeshellarg($employeeId) . ' ' .          
-                escapeshellarg("accepted") . ' ' .         
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                   
-                escapeshellarg('') . ' ' .                
-                escapeshellarg('') ;                       
+                escapeshellarg($scriptPath) . ' ' .  //     1  
+                escapeshellarg($employeeId) . ' ' .      //     2  
+                escapeshellarg("accepted") . ' ' .     //   3    
+                escapeshellarg('') . ' ' .         //      4      
+                escapeshellarg('') . ' ' .            //  5       
+                escapeshellarg('') . ' ' .                 //     6
+                escapeshellarg('') . ' ' .                  // 7
+                escapeshellarg('') ;                         // 8 == 7
 
             pclose(popen($command, "r"));
 

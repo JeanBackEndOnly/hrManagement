@@ -52,6 +52,32 @@
             customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['password']);
+        }else if (passwordAuth) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Fill up empty fields!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['passwordAuth']);
+        }else if (passwordAuthFailes) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Username not match, Try again!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['passwordAuthFailes']);
         }
         function removeUrlParams(params) {
             const url = new URL(window.location);

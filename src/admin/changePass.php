@@ -80,44 +80,25 @@
                     </div> 
                     <div class="History_Pass d-flex flex-row justify-content-between align-items-center" style="width: 25%">
                         <button id="idChangePass" class="historyPass active" onclick="changePass()">Change password</button>
-                        <button id="idLoginHistory" class="historyPass" onclick="loginHistory()">Login History</button>
                     </div>
                 </div>
-                 <?php
-                            // function nameInitial($name) {
-                            //     $trimmed = trim($name); 
-                            //     return strtoupper($trimmed[0]);
-                            // }
-
-                            // $name = "juan Francisco";
-                            // $getFirstNameInitial = nameInitial($name);
-                            // echo $getFirstNameInitial; 
-
-                        ?>
                 <div class="container" id="changePAsswordID" style="display: flex;">
                     <div class="container shadow p-5 rounded-2">
                         <form class="w-100" method="POST" action="../../auth/authentications.php">
                                 <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                                <input type="hidden" name="changePassword" value="true">
+                                <input type="hidden" name="forgotPassword" value="true">
                             <div class="mb-3">
                                 <li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: start;">
-                                    <label for="newPassword" class="form-label text-start fw-bold">Current Password</label>
-                                    <input type="password" class="form-control" name="current_password" placeholder="Password" required id="passwordInputCurrent" style="flex: 1;">
-                                    
-                                    <button type="button" id="showPasswordCurrent" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-
-                                    <button type="button" id="hidePasswordCurrent" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
-                                        <i class="fa-solid fa-eye-slash"></i>
-                                    </button>
+                                    <label for="newPassword" class="form-label text-start fw-bold">Mail Code</label>
+                                    <input type="text" class="form-control" name="mailCode" placeholder="Password" required id="mailCode" style="flex: 1;">
                                 </li>
                             </div>
+                            <!-- ==================== MAMAYA NAYUNG EMAIL NAKAKA BUSIT DI MA FIX! ===================== -->
                             <div class="mb-3">
                                 <li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: start;">
                                     <label for="newPassword" class="form-label text-start fw-bold">New Password</label>
-                                    <input type="password" class="form-control" name="new_password" placeholder="Password" required id="passwordInput" style="flex: 1;">
+                                    <input type="password" class="form-control" name="new_password" placeholder="Mail Code" required id="passwordInput" style="flex: 1;">
                                     
                                     <button type="button" id="showPassword" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
                                         <i class="fa-solid fa-eye"></i>
@@ -144,53 +125,6 @@
                                 </li>
                             </div>
                             <button type="submit" class="btn btn-success">Change Password</button>
-                        </form>
-                        <div class="mt-3">
-                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#changePassword">Forgot Password?</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:75vh;">
-                    <div class="container shadow p-5 w-100 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
-                        <?php if($adminHistory): ?>
-                            <div class="w-50">
-                                <h3 class="text-center fw-bold" style="width: 98% !important;">Login Time</h3>
-                                <?php foreach($adminHistory as $history): ?>
-                                    <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
-                                        <?= date('F j, Y h:i A', strtotime($history['login_time'])) ?>
-                                    </p>
-                                <?php endforeach ?>
-                            </div>
-                            <div class="w-50">
-                                <h3 class="text-center fw-bold" style="width: 98% !important;">Logout Time</h3>
-                                <?php foreach($adminHistory as $history): ?>
-                                    <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
-                                        <?= isset($history['logout_time']) ? date('F j, Y h:i A', strtotime($history['logout_time'])) : 'Not logged out' ?>
-                                    </p>
-                                <?php endforeach ?>
-                            </div>
-                        <?php endif ?>
-                    </div>
-                </div>
-                <!-- ============================ Change Password Modal End ============================ -->
-                <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <form method="POST" action="../../auth/authentications.php" class="modal-content">
-                            <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
-                            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                            <input type="hidden" name="forgotPassword" value="true">
-                            <div class="modal-header bg-success">
-                                <h5 class="modal-title text-start w-100" id="passwordModalLabel" style="color: #fff;">Enter your username:</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <label for="usernameConfim">Username:</label>
-                                <input type="text" name="username" id="usernameConfim" class="form-control">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Confirm</button>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -220,19 +154,32 @@
             customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['passwordAuthFailes']);
-        }else if (passwordChange) {
+        }else if (username) {
             console.log("Showing updateReq toast");
             Swal.fire({
             toast: true,
             position: 'top-end',
             icon: 'success',
-            title: 'Password Change Successfully!.',
+            title: 'Username matched! Enter the Code and change Password.',
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
             customClass: { popup: 'swal2-row-toast' }
             });
-            removeUrlParams(['passwordChange']);
+            removeUrlParams(['username']);
+        }else if (code) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Code not match!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['code']);
         }
         function removeUrlParams(params) {
             const url = new URL(window.location);

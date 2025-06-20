@@ -162,6 +162,11 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
     $password = false;
     $newNotMatched = false;
     $currentNotMatched = false;
+    $passwordAuth = false;
+    $passwordAuthFailes = false;
+    $username = false;
+    $passwordChange = false;
+    $code = false;
     if (isset($_GET['job']) && $_GET['job'] === 'success') {
         $AddJobModal = true;
     }elseif(isset($_GET['deleteJob']) && $_GET['deleteJob'] === 'success'){
@@ -198,6 +203,16 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         $currentNotMatched = true;
     }elseif(isset($_GET['password']) && $_GET['password'] === 'newNotMatched'){
         $newNotMatched = true;
+    }elseif(isset($_GET['passwordAuth']) && $_GET['passwordAuth'] === 'null'){
+        $passwordAuth = true;
+    }elseif(isset($_GET['passwordAuthFailes']) && $_GET['passwordAuthFailes'] === 'failed'){
+        $passwordAuthFailes = true;
+    }elseif(isset($_GET['username']) && $_GET['username'] === 'success'){
+        $username = true;
+    }elseif(isset($_GET['passwordChange']) && $_GET['passwordChange'] === 'success'){
+        $passwordChange = true;
+    }elseif(isset($_GET['code']) && $_GET['code'] === 'notMatch'){
+        $code = true;
     }
 
 ?>
@@ -245,6 +260,11 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         const password = <?php echo json_encode($password); ?>;
         const newNotMatched = <?php echo json_encode($newNotMatched); ?>;
         const currentNotMatched = <?php echo json_encode($currentNotMatched); ?>;
+        const passwordAuth = <?php echo json_encode($passwordAuth); ?>;
+        const passwordAuthFailes = <?php echo json_encode($passwordAuthFailes); ?>;
+        const username = <?php echo json_encode($username); ?>;
+        const passwordChange = <?php echo json_encode($passwordChange); ?>;
+        const code = <?php echo json_encode($code); ?>;
     </script>
 
 </head>
