@@ -22,19 +22,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["loginAuth"]) && $_POST["loginAuth"] === "true") {
         $username = $_POST["username"] ?? '';
         $password = $_POST["password"] ?? '';
+        $AuthType = $_POST["AuthType"] ?? '';
+        $mailCode = $_POST["mailCode"] ?? '';
 
         $errors = [];
 
-        if (empty($username) || empty($password)) {
-            $errors["empty_inputs"] = "Fill all fields!";
-        }
+        // if (empty($username) || empty($password) && empty($AuthType)) {
+        //     $errors["empty_inputs"] = "Fill all fields!";
+        // }
 
         try {
             $user = getUsername($pdo, $username);
 
-            if (!$user) {
+            if ($AuthType == '' && $mailCode == '' && !$user) {
                 $errors["login_incorrect"] = "Incorrect username!";
-            } elseif (!password_verify($password, $user["password"])) {
+            } elseif ($AuthType == '' && $mailCode == '' && $mailCode == '' && !password_verify($password, $user["password"])) {
                 $errors["login_incorrect"] = "Wrong password!";
             }
 
@@ -69,37 +71,69 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             session_regenerate_id(true);
-
-            $_SESSION["user_id"] = $user["id"];
-            $_SESSION["user_username"] = htmlspecialchars($user["username"]);
-            $_SESSION["roles"] = $user["user_role"];
-            $_SESSION["last_regeneration"] = time();
-
-            if ($user["user_role"] === "administrator") {
-                updateUserSession($pdo, $user["id"], session_id());
-            }
-
-            if ($user["user_role"] === "employee") {
-                if ($status === "validated") {
-                    header("Location: ../src/employee/dashboard.php");
-                    error_log("Redirecting employee to dashboard");
-                } else {
-                    header("Location: ../src/employee/pending.php");
-                    error_log("Redirecting employee to pending");
+            // if($AuthType == '' && $mailCode == $_SESSION["EmailAuth"]){
+            
+                if ($AuthType == '' && $mailCode == '' && $user["user_role"] === "administrator") {
+                    updateUserSession($pdo, $user["id"], session_id());
                 }
-            } 
-            elseif ($user["user_role"] === "administrator") {
-                $query = "INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW());";
-                $stmt = $pdo->prepare($query);
-                $stmt->execute([$user["id"]]); 
-                header("Location: ../src/admin/dashboard.php");
-                error_log("Redirecting admin to dashboard");
-            }
 
-            else {
-                header("Location: ../src/index.php");
-                error_log("Redirecting to index (unknown role)");
-            }
+                if ($AuthType == '' && $mailCode == '' && $user["user_role"] === "employee") {
+                        $_SESSION["user_id"] = $user["id"] ?? '';
+                        $_SESSION["user_username"] = htmlspecialchars($user["username"]  ?? '');
+                        $_SESSION["roles"] = $user["user_role"] ?? '';
+                        $_SESSION["last_regeneration"] = time();
+                    if ($status === "validated") {
+                          $employeeId =  $user["id"] ?? 'WALANG ID';
+                          $_SESSION["newID"] =  $employeeId;
+                        header("Location: ../src/MFAchoices.php");
+                        die();
+                    }else {
+                        header("Location: ../src/employee/pending.php");
+                        error_log("Redirecting employee to pending");
+                    }
+                } 
+                elseif ($AuthType == '' && $mailCode == '' && $user["user_role"] === "administrator") {
+                    $query = "INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW());";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->execute([$user["id"]]); 
+                    header("Location: ../src/admin/dashboard.php");
+                    error_log("Redirecting admin to dashboard");
+                }
+                else if($mailCode == '' && $AuthType == 'MFA-Mail' && $username == '' && $password == '') {
+                            $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
+                            echo $employeeId =  $_SESSION["newID"] ?? 'WALANG ID';
+                            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                            $command = "start /B php " .
+                                escapeshellarg($scriptPath) . ' ' .  //     1  
+                                escapeshellarg($employeeId) . ' ' .      //     2  
+                                escapeshellarg("MFA") . ' ' .     //   3    
+                                escapeshellarg('') . ' ' .         //      4      
+                                escapeshellarg('') . ' ' .            //  5       
+                                escapeshellarg('') . ' ' .                 //     6
+                                escapeshellarg('') . ' ' .                  // 7
+                                escapeshellarg('') . ' ' .                          // 8 == 7
+                                escapeshellarg($mailCode) . '"';
+                            
+                            file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                            pclose(popen($command, "r"));
+
+                    $_SESSION["EmailAuth"] = $mailCode;
+                    header("Location: ../src/MFAauth.php");
+                    die();
+                }
+                
+                elseif ($AuthType == '' && $username == '' && $password == '' && $mailCode == $_SESSION["EmailAuth"]){
+                    header("Location: ../src/employee/dashboard.php");
+                    die();
+                }elseif ($AuthType == '' && $username == '' && $password == '' && $mailCode !== $_SESSION["EmailAuth"]) {
+                    header("Location: ../src/MFAauth.php?mfa=failed");
+                    die();
+                }
+                else {
+                    header("Location: ../src/index.php");
+                    error_log("Redirecting to index (unknown role)");
+                }
+            // }
         } catch (PDOException $e) {
             error_log("Login error: " . $e->getMessage());
             session_start();
@@ -108,6 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
     }
+
 
     // ============================= User Registration Authentication ============================= //
     if(isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
@@ -1820,10 +1855,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($query);
             $stmt->execute(['username' => $usernameForgot]);
             $userForgot = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($usernameForgot === null && $usernameForgot !== $userForgot && $AuthType == null) {
+            // ===================== USERNAME NOT MATCH! ===================== //
+            if (!$userForgot && $AuthType == '' && $mailCode == '' &&
+            $new_password == '' && $confirm_password == '') {
                 header("location: ../src/index.php?username=failed");
                 die();
-            }else if($userForgot){
+            }
+             // ===================== USERNAME MATCHED! ===================== //
+            else if($userForgot){
                 $mailAuth = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
                 $_SESSION["mailAuth"] = $mailAuth;
                 $query = "SELECT id FROM users WHERE username = :username";
@@ -1835,7 +1874,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION["idNgEmployee"] = $employeeId;
                 header("Location: ../src/authCode.php?username=success");
 
-            }else if($AuthType == "emailAuth"){
+            }
+            // ===================== AUTH TYPE = EMAIL AUTH! ===================== //
+            else if($AuthType == "emailAuth"){
                 $mailCode = $_SESSION["mailAuth"] ?? '';
                 $employeeId = $_SESSION["idNgEmployee"] ?? '';
                 
@@ -1849,32 +1890,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     escapeshellarg('') . ' ' .                 //     6
                     escapeshellarg('') . ' ' .                  // 7
                     escapeshellarg('') . ' ' .                          // 8 == 7
-                    escapeshellarg($mailCode) . '"';                         // 7 == 8
-                    // TAng ina yung mail lang pala maliiiiii!!!!!!!!!!
+                    escapeshellarg($mailCode) . '"';
+
                 file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
                 pclose(popen($command, "r"));
+
                 $_SESSION["EmailAuth"] = $mailCode;
+
                 header("Location: ../src/changePass.php");
                 die();
-            }elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]){
+            }
+            // ===================== CODE MAIL MATCHED! ===================== //
+            elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]){
+                $employeeId = $_SESSION["idNgEmployee"] ?? '';
                 if($new_password !== $confirm_password){
                     header("Location: ../src/changePass.php?password=notMatch");
                     die();
                 }
-                if(empty($new_password) || empty($confirm_password)){
+                if(empty($new_password) || empty($confirm_password) && $userForgot){
                      header("Location: ../src/changePass.php?password=empty");
                     die();
                 }
                 $hasedPass = password_hash($new_password, PASSWORD_DEFAULT);
-                $query = "UPDATE users SET password = :password WHERE id = 1";
+                $query = "UPDATE users SET password = :password WHERE id = :id";
                 $stmt = $pdo->prepare($query);
+                $stmt->bindParam(":id", $employeeId);
                 $stmt->bindParam(":password", $hasedPass);
                 $stmt->execute();
 
                 header("Location: ../src/index.php?passwordChange=success");
                 die();
-            }elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
+            }
+            // ===================== USERNAME NOT MATCHED! ===================== //
+            elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
                 header("Location: ../src/changePass.php?code=notMatch");
+                die();
+            }
+            // ===================== EMPTY INPUTS (IN CASE)! ===================== //
+            else if(empty($usernameForgot) && empty($AuthType) && empty($new_password) && empty($confirm_password)){
+                header("Location: ../src/index.php?empty=input");
                 die();
             }
 

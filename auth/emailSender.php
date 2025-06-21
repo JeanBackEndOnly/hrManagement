@@ -148,7 +148,17 @@ try {
         }elseif ($action === 'ForgotEmployeePass') {
             $mail->Subject = 'Mail Code!';
             $mail->Body = "
-                <p>Hi Admin,</p>
+                <p>Hi {$user['fname']} {$user['lname']},</p>
+                <p>Your Mail Code is :</strong>  $mailCode.</p>
+                <p>Please Enter this and create your new password!.</p>
+                <br>
+                <p>Best regards,<br>HR Team</p>
+            ";
+
+        }elseif ($action === 'MFA') {
+            $mail->Subject = 'Mail Code!';
+            $mail->Body = "
+                <p>Hi {$user['fname']} {$user['lname']},</p>
                 <p>Your Mail Code is :</strong>  $mailCode.</p>
                 <p>Please Enter this and create your new password!.</p>
                 <br>

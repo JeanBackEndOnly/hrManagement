@@ -3,10 +3,22 @@ require_once '../installer/session.php';
 require_once '../auth/view.php'; 
 ?>
 <?php initInstaller();
+    $signup = false;
+    $username = false;
+    $passwordChange = false;
+    $code = false;
+    $password = false;
+
     if(isset($_GET['signup']) && $_GET['signup'] === 'success'){
         $signup = true;
     }elseif(isset($_GET['username']) && $_GET['username'] === 'failed'){
         $username = true;
+    }elseif(isset($_GET['passwordChange']) && $_GET['passwordChange'] === 'success'){
+        $passwordChange = true;
+    }elseif(isset($_GET['code']) && $_GET['code'] === 'notMatch'){
+        $code = true;
+    }elseif(isset($_GET['password']) && $_GET['password'] === 'notMatch'){
+        $password = true;
     }
 ?>
 
@@ -29,6 +41,9 @@ require_once '../auth/view.php';
         console.log('Base URL: ' + base_url);
         const signup = <?php echo json_encode($signup); ?>;
         const username = <?php echo json_encode($username); ?>;
+        const passwordChange = <?php echo json_encode($passwordChange); ?>;
+        const code = <?php echo json_encode($code); ?>;
+        const password = <?php echo json_encode($password); ?>;
     </script>
     <style>
         body, main, h1, h2, h3, h4, h5{

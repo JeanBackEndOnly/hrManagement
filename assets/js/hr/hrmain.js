@@ -390,53 +390,53 @@
     });
     
     // ================== PASSWORD EYE ================== //
-    const passwordInputCurrent = document.getElementById('passwordInputCurrent');
-    const showPasswordCurrent = document.getElementById('showPasswordCurrent');
-    const hidePasswordCurrent = document.getElementById('hidePasswordCurrent');
+    // const passwordInputCurrent = document.getElementById('passwordInputCurrent');
+    // const showPasswordCurrent = document.getElementById('showPasswordCurrent');
+    // const hidePasswordCurrent = document.getElementById('hidePasswordCurrent');
 
-    const passwordInput = document.getElementById('passwordInput');
-    const showPassword = document.getElementById('showPassword');
-    const hidePassword = document.getElementById('hidePassword');
+    // const passwordInput = document.getElementById('passwordInput');
+    // const showPassword = document.getElementById('showPassword');
+    // const hidePassword = document.getElementById('hidePassword');
 
-    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
-    const showConfirmPassword = document.getElementById('showConfirmPassword');
-    const hideConfirmPassword = document.getElementById('hideConfirmPassword');
+    // const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+    // const showConfirmPassword = document.getElementById('showConfirmPassword');
+    // const hideConfirmPassword = document.getElementById('hideConfirmPassword');
 
-    showPasswordCurrent.addEventListener('click', () => {
-        passwordInputCurrent.type = 'text';
-        showPasswordCurrent.style.display = 'none';
-        hidePasswordCurrent.style.display = 'inline';
-    });
+    // showPasswordCurrent.addEventListener('click', () => {
+    //     passwordInputCurrent.type = 'text';
+    //     showPasswordCurrent.style.display = 'none';
+    //     hidePasswordCurrent.style.display = 'inline';
+    // });
 
-    hidePasswordCurrent.addEventListener('click', () => {
-        passwordInputCurrent.type = 'password';
-        showPasswordCurrent.style.display = 'inline';
-        hidePasswordCurrent.style.display = 'none';
-    });
+    // hidePasswordCurrent.addEventListener('click', () => {
+    //     passwordInputCurrent.type = 'password';
+    //     showPasswordCurrent.style.display = 'inline';
+    //     hidePasswordCurrent.style.display = 'none';
+    // });
 
-    showPassword.addEventListener('click', () => {
-        passwordInput.type = 'text';
-        showPassword.style.display = 'none';
-        hidePassword.style.display = 'inline';
-    });
+    // showPassword.addEventListener('click', () => {
+    //     passwordInput.type = 'text';
+    //     showPassword.style.display = 'none';
+    //     hidePassword.style.display = 'inline';
+    // });
 
-    hidePassword.addEventListener('click', () => {
-        passwordInput.type = 'password';
-        showPassword.style.display = 'inline';
-        hidePassword.style.display = 'none';
-    });
+    // hidePassword.addEventListener('click', () => {
+    //     passwordInput.type = 'password';
+    //     showPassword.style.display = 'inline';
+    //     hidePassword.style.display = 'none';
+    // });
 
-    showConfirmPassword.addEventListener('click', () => {
-        confirmPasswordInput.type = 'text';
-        showConfirmPassword.style.display = 'none';
-        hideConfirmPassword.style.display = 'inline';
-    });
+    // showConfirmPassword.addEventListener('click', () => {
+    //     confirmPasswordInput.type = 'text';
+    //     showConfirmPassword.style.display = 'none';
+    //     hideConfirmPassword.style.display = 'inline';
+    // });
 
-    hideConfirmPassword.addEventListener('click', () => {
-        confirmPasswordInput.type = 'password';
-        showConfirmPassword.style.display = 'inline';
-        hideConfirmPassword.style.display = 'none';
-    });
+    // hideConfirmPassword.addEventListener('click', () => {
+    //     confirmPasswordInput.type = 'password';
+    //     showConfirmPassword.style.display = 'inline';
+    //     hideConfirmPassword.style.display = 'none';
+    // });
     
      // ================== SCHEDULE VALIDATION ================== //
     document.addEventListener('DOMContentLoaded', function () {

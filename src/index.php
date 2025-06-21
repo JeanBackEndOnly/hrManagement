@@ -64,57 +64,5 @@
         </form>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (signup) {
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Sign-up success!.',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: { popup: 'swal2-row-toast' }
-            });
-            removeUrlParams(['signup']);
-        }if (username) {
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'error',
-                title: 'Username not match, Try again!.',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: { popup: 'swal2-row-toast' }
-            });
-            removeUrlParams(['username']);
-        }
-
-        function removeUrlParams(params) {
-            const url = new URL(window.location);
-            params.forEach(param => url.searchParams.delete(param));
-            window.history.replaceState({}, document.title, url.toString());
-        }
-
-        const passwordInputs = document.getElementById('passwordInputs');
-        const showPasswords = document.getElementById('showPasswords');
-        const hidePasswords = document.getElementById('hidePasswords');
-
-        showPasswords.addEventListener('click', () => {
-            passwordInput.type = 'text';
-            showPasswords.style.display = 'none';
-            hidePasswords.style.display = 'inline';
-        });
-
-        hidePasswords.addEventListener('click', () => {
-            passwordInput.type = 'password';
-            showPasswords.style.display = 'inline';
-            hidePasswords.style.display = 'none';
-        });
-    });
-</script>
-
+<script src="../assets/js/hr/login.js"></script>
 <?php include '../templates/RLfooter.php'; ?>
