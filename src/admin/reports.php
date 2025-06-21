@@ -151,25 +151,33 @@
                                         <td style="width: 5%;"><?= $num ?></td>
                                         <td style="width: 25%;"><?= htmlspecialchars($row['lname']) . ", " . htmlspecialchars($row['fname']) ?></td>
                                         <td style="width: 25%;">
-                                            <?php
+                                            <?php 
                                                 if($row['report_type'] == "employeeRegistration") {
                                                     echo "Requesting for validation!";
                                                 } elseif ($row['report_type'] == "employeePromotion") {
                                                     echo "Got Promoted to " . htmlspecialchars($row['jobTitle']);
                                                 } elseif ($row['report_type'] == "leaveRequest") {
                                                     echo "Leave Request";
+                                                } elseif ($row['report_type'] == "employeeValidated") {
+                                                    echo "Employee Validated!";
+                                                } elseif ($row['report_type'] == "employeeRejected") {
+                                                    echo "Employee Rejected!";
                                                 }
                                             ?>
                                         </td>
                                         <td style="width: 20%;"><?= htmlspecialchars($row['department']) ?></td>
                                         <td style="width: 20%;"><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
                                         <td style="width: 10%;">
-                                            <?php
+                                            <?php 
                                                 if($row['report_type'] == "employeeRegistration") {
                                                     echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
                                                 } elseif ($row['report_type'] == "employeePromotion") {
                                                     echo '<a class="btn btn-sm btn-primary" href="job.php?tab=salaryManage">View</a>';
-                                                }
+                                                }  elseif ($row['report_type'] == "employeeValidated") {
+                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';
+                                                }   elseif ($row['report_type'] == "employeeRejected") {
+                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=reject">View</a>';
+                                                } 
                                             ?>
                                         </td>
                                     </tr>

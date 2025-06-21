@@ -51,9 +51,6 @@ function educationalBG() {
     });
 }
 
-
-
-
 window.addEventListener("load", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get("tab") || "personal";

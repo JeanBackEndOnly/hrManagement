@@ -10,6 +10,8 @@
                 <div class="card-header p-0 w-100 mb-2">
                     <h4 class="fs-4 text-start p-0">Login</h4>
                 </div>
+                <?php
+                // if($_SESSION["user_id"] !== ''){ ?>
                 <div class="card-body w-100 p-0">
                     <form action="../auth/authentications.php" method="post">
                          <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
@@ -38,6 +40,8 @@
                         <a href="register.php" style="color: blue;">Register</a>
                     </div>
                 </div>
+                <?php 
+            // } ?>
             </div>
         </div>
     </div>

@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $password = $_POST["password"] ?? '';
         $AuthType = $_POST["AuthType"] ?? '';
         $mailCode = $_POST["mailCode"] ?? '';
+        $AdminMailCode = $_POST["AdminMailCode"] ?? '';
 
         $errors = [];
 
@@ -34,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         try {
             $user = getUsername($pdo, $username);
 
-            if ($AuthType == '' && $mailCode == '' && !$user) {
+            if ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && !$user) {
                 $errors["login_incorrect"] = "Incorrect username!";
-            } elseif ($AuthType == '' && $mailCode == '' && $mailCode == '' && !password_verify($password, $user["password"])) {
+            } elseif ($AuthType == '' && $mailCode == ''&& $AdminMailCode == '' && $mailCode == '' && !password_verify($password, $user["password"])) {
                 $errors["login_incorrect"] = "Wrong password!";
             }
 
@@ -73,11 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             session_regenerate_id(true);
             // if($AuthType == '' && $mailCode == $_SESSION["EmailAuth"]){
             
-                if ($AuthType == '' && $mailCode == '' && $user["user_role"] === "administrator") {
+                if ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "administrator") {
                     updateUserSession($pdo, $user["id"], session_id());
                 }
 
-                if ($AuthType == '' && $mailCode == '' && $user["user_role"] === "employee") {
+                if ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "employee") {
                         $_SESSION["user_id"] = $user["id"] ?? '';
                         $_SESSION["user_username"] = htmlspecialchars($user["username"]  ?? '');
                         $_SESSION["roles"] = $user["user_role"] ?? '';
@@ -92,14 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         error_log("Redirecting employee to pending");
                     }
                 } 
-                elseif ($AuthType == '' && $mailCode == '' && $user["user_role"] === "administrator") {
-                    $query = "INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW());";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->execute([$user["id"]]); 
-                    header("Location: ../src/admin/dashboard.php");
+                elseif ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "administrator") {
+                    header("Location: ../src/adminMfa.php");
                     error_log("Redirecting admin to dashboard");
                 }
-                else if($mailCode == '' && $AuthType == 'MFA-Mail' && $username == '' && $password == '') {
+                else if($mailCode == '' && $AdminMailCode == '' && $AuthType == 'MFA-Mail' && $username == '' && $password == '') {
                             $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
                             echo $employeeId =  $_SESSION["newID"] ?? 'WALANG ID';
                             $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
@@ -121,11 +119,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     header("Location: ../src/MFAauth.php");
                     die();
                 }
-                
-                elseif ($AuthType == '' && $username == '' && $password == '' && $mailCode == $_SESSION["EmailAuth"]){
+                else if($mailCode == '' && $AdminMailCode == '' && $AuthType == 'MFA-Mail-ADMIN' && $username == '' && $password == '') {
+                            $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
+                            $employeeId =  1;
+                            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                            $command = "start /B php " .
+                                escapeshellarg($scriptPath) . ' ' .  //     1  
+                                escapeshellarg($employeeId) . ' ' .      //     2  
+                                escapeshellarg("MFA") . ' ' .     //   3    
+                                escapeshellarg('') . ' ' .         //      4      
+                                escapeshellarg('') . ' ' .            //  5       
+                                escapeshellarg('') . ' ' .                 //     6
+                                escapeshellarg('') . ' ' .                  // 7
+                                escapeshellarg('') . ' ' .                          // 8 == 7
+                                escapeshellarg($mailCode) . '"';
+                            
+                            file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                            pclose(popen($command, "r"));
+
+                    $_SESSION["EmailAuth"] = $mailCode;
+                    header("Location: ../src/adminMfaMailCode.php");
+                    die();
+                }
+                elseif ($AuthType == '' && $username == '' && $AdminMailCode == '' && $password == '' && $mailCode == $_SESSION["EmailAuth"]){
                     header("Location: ../src/employee/dashboard.php");
                     die();
-                }elseif ($AuthType == '' && $username == '' && $password == '' && $mailCode !== $_SESSION["EmailAuth"]) {
+                }elseif ($AuthType == '' && $username == '' && $mailCode == '' && $password == '' && $AdminMailCode == $_SESSION["EmailAuth"]){
+                    $adminID = 1;
+                    $query = "INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW());";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->execute([$adminID]); 
+                    header("Location: ../src/admin/dashboard.php");
+                    die();
+                }elseif ($AuthType == '' && $AdminMailCode == '' && $username == '' && $password == '' && $mailCode !== $_SESSION["EmailAuth"]) {
+                    header("Location: ../src/MFAauth.php?mfa=failed");
+                    die();
+                }elseif ($AuthType == '' && $mailCode == '' && $username == '' && $password == '' && $AdminMailCode !== $_SESSION["EmailAuth"]) {
                     header("Location: ../src/MFAauth.php?mfa=failed");
                     die();
                 }
@@ -137,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } catch (PDOException $e) {
             error_log("Login error: " . $e->getMessage());
             session_start();
-            $_SESSION["errors_login"] = ["login_incorrect" => "System error. Please try again."];
+            $_SESSION["errors_login"] = ["login_incorrect" => "System error"];
             header("Location: ../src/index.php");
             exit();
         }
@@ -625,6 +654,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam(":users_id", $employeeId);
             $stmt->execute();
 
+            $query = "UPDATE reports SET report_type = 'employeeValidated' WHERE users_id = :users_id";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam("users_id", $employeeId);
+            $stmt->execute();
+
             $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
             $command = "start /B php " .
                 escapeshellarg($scriptPath) . ' ' .  //     1  
@@ -655,6 +689,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $query = "UPDATE userrequest SET status = 'rejected' WHERE users_id = :users_id";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $employeeId);
+            $stmt->execute();
+
+            $query = "UPDATE reports SET report_type = 'employeeRejected' WHERE users_id = :users_id";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam("users_id", $employeeId);
             $stmt->execute();
 
             $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
