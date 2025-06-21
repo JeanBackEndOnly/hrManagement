@@ -313,3 +313,9 @@ Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
 ==> Script started at 2025-06-21 21:43:01
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","promoted","Visiting Lecturer","English Major","38000.00"]
 Email sent successfully to pagotaisidromarcojean@gmail.com with action promoted
+==> Script started at 2025-06-21 21:47:46
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","ELOXyD\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-21 21:49:11
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","pVImcR\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA

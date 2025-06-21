@@ -50,6 +50,32 @@ function educationalBG() {
         ]);
     });
 }
+function showSection(visibleIds) {
+    const allSections = [
+        "personalID",
+        "updateButton",
+        "personalInformation",
+        "personalProfileInformation",
+        "familybg",
+        "updateButtonFBG",
+        "familyInformation",
+        "familyProfileInformation",
+        "educationalbg",
+        "updateButtonEBG",
+        "educationalInformation",
+        "educationProfileInformation"
+    ];
+
+    allSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = "none";
+    });
+
+    visibleIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = "block";
+    });
+}
 
 window.addEventListener("load", function () {
     const urlParams = new URLSearchParams(window.location.search);
