@@ -72,11 +72,11 @@
                 </div>
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="height: 7rem; width: 95%;">
-                    <div class="h1">
+                <div class="header-employee col-md-12 d-flex flex-row flex-wrap justify-content-between align-items-center" style="height: 7rem; width: 95%;">
+                    <div class="h1 col-md-5 col-12">
                         <h3 class="m-0">EMPLOYEE MANAGEMENT</h3>
                     </div>
-                    <div class="crud-employee d-flex flex-row justify-content-between me-3" style="width: 30rem; height: 2rem">
+                    <div class="crud-employee d-flex flex-row justify-content-between me-3 col-md-5 col-12" style="height: 2rem">
                         <button type="button" onclick="getValidated()" class="rounded-2 border-2" style="font-size:15px;" id="requet">Validated</button>
                         <button type="button" onclick="getRequest()" class="rounded-2 border-2" style="font-size: 15px;" id="requet">
                             Request <span id="pendingCountDisplay"></span>

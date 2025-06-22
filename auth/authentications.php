@@ -22,13 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["loginAuth"]) && $_POST["loginAuth"] === "true") {
         $username = $_POST["username"] ?? '';
         $password = $_POST["password"] ?? '';
-        $AuthType = $_POST["AuthType"] ?? '';
         $mailCode = $_POST["mailCode"] ?? '';
         $AdminMailCode = $_POST["AdminMailCode"] ?? '';
 
         $errors = [];
 
-        // if (empty($username) || empty($password) && empty($AuthType)) {
+        // if ($mailCode == '' && $AdminMailCode == '' && empty($username) || empty($password)) {
         //     $errors["empty_inputs"] = "Fill all fields!";
         // }
 
@@ -84,9 +83,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $_SESSION["roles"] = $user["user_role"] ?? '';
                         $_SESSION["last_regeneration"] = time();
                     if ($status === "validated") {
-                          $employeeId =  $user["id"] ?? 'WALANG ID';
-                          $_SESSION["newID"] =  $employeeId;
-                        header("Location: ../src/MFAchoices.php");
+                        $employeeId =  $user["id"] ?? 'WALANG ID';
+                        $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
+                        $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                        $command = "start /B php " .
+                            escapeshellarg($scriptPath) . ' ' .  //     1  
+                            escapeshellarg($employeeId) . ' ' .      //     2  
+                            escapeshellarg("MFA") . ' ' .     //   3    
+                            escapeshellarg('') . ' ' .         //      4      
+                            escapeshellarg('') . ' ' .            //  5       
+                            escapeshellarg('') . ' ' .                 //     6
+                            escapeshellarg('') . ' ' .                  // 7
+                            escapeshellarg('') . ' ' .                          // 8 == 7
+                            escapeshellarg($mailCode) . '"';
+                            
+                        file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                        pclose(popen($command, "r"));
+
+                        $_SESSION["EmailAuth"] = $mailCode;
+                        header("Location: ../src/MFAauth.php");
                         die();
                     }else {
                         header("Location: ../src/employee/pending.php");
@@ -94,52 +109,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 } 
                 elseif ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "administrator") {
-                    header("Location: ../src/adminMfa.php");
-                    error_log("Redirecting admin to dashboard");
-                }
-                else if($mailCode == '' && $AdminMailCode == '' && $AuthType == 'MFA-Mail' && $username == '' && $password == '') {
-                            $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
-                            echo $employeeId =  $_SESSION["newID"] ?? 'WALANG ID';
-                            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
-                            $command = "start /B php " .
-                                escapeshellarg($scriptPath) . ' ' .  //     1  
-                                escapeshellarg($employeeId) . ' ' .      //     2  
-                                escapeshellarg("MFA") . ' ' .     //   3    
-                                escapeshellarg('') . ' ' .         //      4      
-                                escapeshellarg('') . ' ' .            //  5       
-                                escapeshellarg('') . ' ' .                 //     6
-                                escapeshellarg('') . ' ' .                  // 7
-                                escapeshellarg('') . ' ' .                          // 8 == 7
-                                escapeshellarg($mailCode) . '"';
-                            
-                            file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
-                            pclose(popen($command, "r"));
-
-                    $_SESSION["EmailAuth"] = $mailCode;
-                    header("Location: ../src/MFAauth.php");
-                    die();
-                }
-                else if($mailCode == '' && $AdminMailCode == '' && $AuthType == 'MFA-Mail-ADMIN' && $username == '' && $password == '') {
-                            $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
-                            $employeeId =  1;
-                            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
-                            $command = "start /B php " .
-                                escapeshellarg($scriptPath) . ' ' .  //     1  
-                                escapeshellarg($employeeId) . ' ' .      //     2  
-                                escapeshellarg("MFA") . ' ' .     //   3    
-                                escapeshellarg('') . ' ' .         //      4      
-                                escapeshellarg('') . ' ' .            //  5       
-                                escapeshellarg('') . ' ' .                 //     6
-                                escapeshellarg('') . ' ' .                  // 7
-                                escapeshellarg('') . ' ' .                          // 8 == 7
-                                escapeshellarg($mailCode) . '"';
-                            
-                            file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
-                            pclose(popen($command, "r"));
+                    $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
+                    $employeeId =  1;
+                    $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                    $command = "start /B php " .
+                        escapeshellarg($scriptPath) . ' ' .  //     1  
+                        escapeshellarg($employeeId) . ' ' .      //     2  
+                        escapeshellarg("MFA") . ' ' .     //   3    
+                        escapeshellarg('') . ' ' .         //      4      
+                        escapeshellarg('') . ' ' .            //  5       
+                        escapeshellarg('') . ' ' .                 //     6
+                        escapeshellarg('') . ' ' .                  // 7
+                        escapeshellarg('') . ' ' .                          // 8 == 7
+                        escapeshellarg($mailCode) . '"';
+                        
+                    file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                    pclose(popen($command, "r"));
 
                     $_SESSION["EmailAuth"] = $mailCode;
                     header("Location: ../src/adminMfaMailCode.php");
                     die();
+                    header("Location: ../src/adminMfa.php");
                 }
                 elseif ($AuthType == '' && $username == '' && $AdminMailCode == '' && $password == '' && $mailCode == $_SESSION["EmailAuth"]){
                     header("Location: ../src/employee/dashboard.php");
@@ -1902,33 +1892,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
              // ===================== USERNAME MATCHED! ===================== //
             else if($userForgot){
-                $mailAuth = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
-                $_SESSION["mailAuth"] = $mailAuth;
+                $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
                 $query = "SELECT id FROM users WHERE username = :username";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(":username", $usernameForgot);
                 $stmt->execute();
                 $hehe = $stmt->fetch(PDO::FETCH_ASSOC);
                 $employeeId = $hehe['id'];
-                $_SESSION["idNgEmployee"] = $employeeId;
-                header("Location: ../src/authCode.php?username=success");
-
-            }
-            // ===================== AUTH TYPE = EMAIL AUTH! ===================== //
-            else if($AuthType == "emailAuth"){
-                $mailCode = $_SESSION["mailAuth"] ?? '';
-                $employeeId = $_SESSION["idNgEmployee"] ?? '';
-                
+                $_SESSION["idNgEmployee"] = $hehe['id'];
                 $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
                 $command = "start /B php " .
-                    escapeshellarg($scriptPath) . ' ' .  //     1  
-                    escapeshellarg($employeeId) . ' ' .      //     2  
-                    escapeshellarg("ForgotEmployeePass") . ' ' .     //   3    
-                    escapeshellarg('') . ' ' .         //      4      
-                    escapeshellarg('') . ' ' .            //  5       
-                    escapeshellarg('') . ' ' .                 //     6
-                    escapeshellarg('') . ' ' .                  // 7
-                    escapeshellarg('') . ' ' .                          // 8 == 7
+                    escapeshellarg($scriptPath) . ' ' . 
+                    escapeshellarg($employeeId) . ' ' .    
+                    escapeshellarg("ForgotEmployeePass") . ' ' .  
+                    escapeshellarg('') . ' ' .         
+                    escapeshellarg('') . ' ' .              
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg('') . ' ' .                 
+                    escapeshellarg('') . ' ' .             
                     escapeshellarg($mailCode) . '"';
 
                 file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
@@ -1936,12 +1917,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $_SESSION["EmailAuth"] = $mailCode;
 
-                header("Location: ../src/changePass.php");
+                header("Location: ../src/changePass.php?username=success");
                 die();
             }
             // ===================== CODE MAIL MATCHED! ===================== //
             elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]){
-                $employeeId = $_SESSION["idNgEmployee"] ?? '';
+                echo "<pre>";
+                print_r($_SESSION);
+                echo "</pre>";
+                echo $employeeId = $_SESSION["user_id"] ?? 'Wala   ';
+
                 if($new_password !== $confirm_password){
                     header("Location: ../src/changePass.php?password=notMatch");
                     die();
@@ -1956,7 +1941,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt->bindParam(":id", $employeeId);
                 $stmt->bindParam(":password", $hasedPass);
                 $stmt->execute();
-
+                echo $new_password;
                 header("Location: ../src/index.php?passwordChange=success");
                 die();
             }

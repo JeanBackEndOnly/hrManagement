@@ -103,13 +103,13 @@
                             <div class="mb-3">
                                 <li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: start;">
                                     <label for="newPassword" class="form-label text-start fw-bold">Current Password</label>
-                                    <input type="password" class="form-control" name="current_password" placeholder="Password" required id="passwordInputCurrent" style="flex: 1;">
+                                    <input type="password" class="form-control" name="current_password" placeholder="Password" required id="passwordInputCurrents" style="flex: 1;">
                                     
-                                    <button type="button" id="showPasswordCurrent" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
+                                    <button type="button" id="showPasswordCurrents" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <button type="button" id="hidePasswordCurrent" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
+                                    <button type="button" id="hidePasswordCurrents" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
                                         <i class="fa-solid fa-eye-slash"></i>
                                     </button>
                                 </li>
@@ -117,13 +117,13 @@
                             <div class="mb-3">
                                 <li class="li-div w-100 flex-column" style="display: flex; list-style-type: none; align-items: start;">
                                     <label for="newPassword" class="form-label text-start fw-bold">New Password</label>
-                                    <input type="password" class="form-control" name="new_password" placeholder="Password" required id="passwordInput" style="flex: 1;">
+                                    <input type="password" class="form-control" name="new_password" placeholder="Password" required id="passwordInputs" style="flex: 1;">
                                     
-                                    <button type="button" id="showPassword" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
+                                    <button type="button" id="showPasswords" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <button type="button" id="hidePassword" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
+                                    <button type="button" id="hidePasswords" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
                                         <i class="fa-solid fa-eye-slash"></i>
                                     </button>
                                 </li>
@@ -132,13 +132,13 @@
                             <div class="mb-3">
                                 <li class="li-div w-100 flex-column justify-content-start" style="display: flex; list-style-type: none; align-items: start;">
                                     <label for="confirmPassword" class="form-label text-start fw-bold">Confirm New Password</label>
-                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required id="confirmPasswordInput" style="flex: 1;">
+                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required id="confirmPasswordInputs" style="flex: 1;">
                                     
-                                    <button type="button" id="showConfirmPassword" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
+                                    <button type="button" id="showConfirmPasswords" style="background: none; border: none;  position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px;">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <button type="button" id="hideConfirmPassword" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
+                                    <button type="button" id="hideConfirmPasswords" style="background: none; border: none; position:fixed; right: 7rem; transform: translateY(2.5rem); margin-left: 5px; display: none;">
                                         <i class="fa-solid fa-eye-slash"></i>
                                     </button>
                                 </li>
@@ -205,5 +205,64 @@
             <div class="line"></div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        const passwordInputCurrents = document.getElementById('passwordInputCurrents');
+        const showPasswordCurrents = document.getElementById('showPasswordCurrents');
+        const hidePasswordCurrents = document.getElementById('hidePasswordCurrents');
+
+        const passwordInputs = document.getElementById('passwordInputs');
+        const showPasswords = document.getElementById('showPasswords');
+        const hidePasswords = document.getElementById('hidePasswords');
+
+        const confirmPasswordInputs = document.getElementById('confirmPasswordInputs');
+        const showConfirmPasswords = document.getElementById('showConfirmPasswords');
+        const hideConfirmPasswords = document.getElementById('hideConfirmPasswords');
+
+        if (showPasswordCurrents && hidePasswordCurrents && passwordInputCurrents) {
+            showPasswordCurrents.addEventListener('click', () => {
+                passwordInputCurrents.type = 'text';
+                showPasswordCurrents.style.display = 'none';
+                hidePasswordCurrents.style.display = 'inline';
+            });
+
+            hidePasswordCurrents.addEventListener('click', () => {
+                passwordInputCurrents.type = 'password';
+                showPasswordCurrents.style.display = 'inline';
+                hidePasswordCurrents.style.display = 'none';
+            });
+        }
+
+        if (showPasswords && hidePasswords && passwordInputs) {
+            showPasswords.addEventListener('click', () => {
+                passwordInputs.type = 'text';
+                showPasswords.style.display = 'none';
+                hidePasswords.style.display = 'inline';
+            });
+
+            hidePasswords.addEventListener('click', () => {
+                passwordInputs.type = 'password';
+                showPasswords.style.display = 'inline';
+                hidePasswords.style.display = 'none';
+            });
+        }
+
+        if (showConfirmPasswords && hideConfirmPasswords && confirmPasswordInputs) {
+            showConfirmPasswords.addEventListener('click', () => {
+                confirmPasswordInputs.type = 'text';
+                showConfirmPasswords.style.display = 'none';
+                hideConfirmPasswords.style.display = 'inline';
+            });
+
+            hideConfirmPasswords.addEventListener('click', () => {
+                confirmPasswordInputs.type = 'password';
+                showConfirmPasswords.style.display = 'inline';
+                hideConfirmPasswords.style.display = 'none';
+            });
+        }
+    });
+
+    </script>
 <script src="../../assets/js/hr/settings.js"></script>
 <?php include '../../templates/Ufooter.php'?>

@@ -72,20 +72,20 @@
                 </div>
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="height: 7rem; width: 95%;">
-                    <div class="h1 flex-row align-items-center justify-content-end" id="titleJob" style="display: flex;">
+                <div class="header-employee d-flex flex-wrap col-md-12 flex-row justify-content-between align-items-center" style="height: 7rem; width: 95%;">
+                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-start" id="titleJob" style="display: flex;">
                         <h3 class="m-0">JOB TITLES</h3>
                     </div>
-                    <div class="h1 flex-row align-items-center justify-content-end" id="titleSalary" style="display: none;">
+                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-end" id="titleSalary" style="display: none;">
                         <h3 class="m-0">JOB TITLE AND SALARY MANAGEMENT</h3>
                     </div>
-                    <div class="jobSalaryButton d-flex flex-row align-items-center justify-content-between w-25">
-                        <div class="crud-employee d-flex flex-row align-items-center justify-content-end" style="width: 48%; height: 2rem">
+                    <div class="jobSalaryButton d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
+                        <div class="crud-employee d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
                             <button type="button" class="tab-btns w-100" onclick="jobTitleButton()" style="font-size:15px; border:none; box-shadow: none;" id="jobTtitles">
                                 JOB TITLES
                             </button>
                         </div>
-                        <div class="crud-employee d-flex flex-row align-items-center justify-content-end" style="width: 48%; height: 2rem">
+                        <div class="crud-employee d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
                             <button type="button" class="tab-btns w-100" onclick="jobSalaryButton()" style="font-size:15px; border:none; box-shadow: none;" id="salaryManage">
                                 PROMOTION
                             </button>
