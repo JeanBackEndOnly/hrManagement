@@ -377,6 +377,7 @@ transform: translateX(.9rem);
     background-color: #f5f5f5; 
     pointer-events: none;     
 }
+
 @media (max-width: 576px) {
     .logo h4{
         font-size: 12px;
@@ -425,5 +426,19 @@ transform: translateX(.9rem);
     }
     .usersButton span{
         display: none;
+    }
+    .header-employee{
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+    }
+    .navigations{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .h1{
+        margin-left: 3rem;
+    }
+    .logo img{
+        width: 30px !important;
     }
 }

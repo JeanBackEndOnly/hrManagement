@@ -159,8 +159,8 @@ try {
             $mail->Subject = 'Mail Code!';
             $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
-                <p>Your Mail Code is :</strong>  $mailCode.</p>
-                <p>Please Enter this and create your new password!.</p>
+                <p>Your Mail Code is :<strong>  $mailCode.</strong></p>
+                <p>Please Enter this 6 digit codes!.</p>
                 <br>
                 <p>Best regards,<br>HR Team</p>
             ";

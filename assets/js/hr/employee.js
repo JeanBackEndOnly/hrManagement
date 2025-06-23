@@ -15,7 +15,30 @@ window.onload = function () {
                 break;
         }
 };
-      document.getElementById("searchRejectedInput").addEventListener("input", function () {
+document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[action="../auth/authentications.php"]');
+
+        form.addEventListener('submit', function(e) {
+            const requiredFields = form.querySelectorAll('input[required], textarea[required], select[required]');
+            
+            let emptyFound = false;
+
+            requiredFields.forEach(field => {
+            if (!field.value.trim()) {  
+                emptyFound = true;
+                field.classList.add('input-error'); 
+            } else {
+                field.classList.remove('input-error');
+            }
+            });
+
+            if (emptyFound) {
+            e.preventDefault();  
+            alert('Please fill out all required fields before submitting.');
+            }
+        });
+    });
+    document.getElementById("searchRejectedInput").addEventListener("input", function () {
         const filter = this.value.toLowerCase();
         const rows = document.querySelectorAll("#rejectedList tr");
 

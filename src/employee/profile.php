@@ -1,4 +1,4 @@
-<<?php include '../../templates/Uheader.php'; include '../../templates/adminAuth.php';?>
+<?php include '../../templates/Uheader.php'; include '../../templates/adminAuth.php';?>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
@@ -10,7 +10,7 @@
 
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
-                <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
+                <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
                 <button class="align-items-center" type="button" onclick="userButton()">
                     <img src="../../assets/image/users.png" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
                     <span class="fw-bold">ADMIN</span>
@@ -72,27 +72,24 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3 " style="width: 95%; height: 5rem !important;">
-                    <a href="employee.php" style="text-decoration: none;"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>Go back to Employee Management</a>
-                </div>
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="min-height: 2rem !important; min-width: 95%;">
-                    <div class="h1">
+                <div class="header-employee col-md-12 d-flex flex-wrap flex-row justify-content-between align-items-center" style="height: 7rem; min-width: 95%;">
+                    <div class="h1 col-md-3 col-10">
                         <h3 class="m-0">EMPLOYEE PROFILE</h3>
                     </div>
-                    <div class="navigations">
-                        <button type="button" id="Personal" onclick="activateTab(this); personalInfo()" class="tab-btn active">Personal Information</button>
-                        <button type="button" id="Family" onclick="activateTab(this); familyBG()" class="tab-btn">Family Background</button>
-                        <button type="button" id="Educational" onclick="activateTab(this); educationalBG()" class="tab-btn">Educational Background</button>
+                    <div class="navigations col-md-4 col-12 d-flex flex-row justify-content-between align-items-center">
+                        <button type="button" id="Personal" onclick="activateTab(this); personalInfo()" style="width: 30%" class="tab-btn active">Personal INFO</button>
+                        <button type="button" id="Family" onclick="activateTab(this); familyBG()" style="width: 30%" class="tab-btn">Family BG</button>
+                        <button type="button" id="Educational" onclick="activateTab(this); educationalBG()" style="width: 30%" class="tab-btn">Educational BG</button>
                     </div>
 
-                    <div class="buttonUpdate">
-                       <button type="button" id="updateButton" class="btn" data-bs-toggle="modal" data-bs-target="#updateModal">
+                    <div class="buttonUpdate col-md-3 col-12 d-flex align-items-center justify-content-end">
+                       <button type="button" id="updateButton" class="btn w-25" data-bs-toggle="modal" data-bs-target="#updateModal">
                             Update
                         </button>
-                        <button type="button" id="updateButtonFBG" class="btn" data-bs-toggle="modal" data-bs-target="#updateModalFBG">
+                        <button type="button" id="updateButtonFBG" class="btn w-25" data-bs-toggle="modal" data-bs-target="#updateModalFBG">
                             Update
                         </button>
-                        <button type="button" id="updateButtonEBG" class="btn" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
+                        <button type="button" id="updateButtonEBG" class="btn w-25" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
                             Update
                         </button>
                     </div>
@@ -544,30 +541,35 @@
                 <div class="educationalbg" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
                     <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
+                            <!-- Left Profile Column -->
                             <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
                                 rounded-1 mb-1 mb-md-0" id="educationProfileInformation" style="height: 80%; display: none;">
-                                <?php foreach ($employeeInfo as $row): ?>
-                                    <input type="hidden" name="users_id" value="<?= htmlspecialchars($row["users_id"]) ?>">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? '') ?>">
-                                    <input type="hidden" name="educationalUpdate" value="true">
+                                
+                                <input type="hidden" name="users_id" value="<?= htmlspecialchars($employeeInfo["users_id"]) ?>">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? '') ?>">
+                                <input type="hidden" name="educationalUpdate" value="true">
 
-                                    <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
-                                        <img src="../../assets/image/upload/<?= isset($row["user_profile"]) ? htmlspecialchars($row["user_profile"]) : "N/A" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
-                                    </div>
+                                <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
+                                    <img src="../../assets/image/upload/<?= isset($employeeInfo["user_profile"]) && $employeeInfo["user_profile"] !== "" ? htmlspecialchars($employeeInfo["user_profile"]) : "default.png" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
+                                </div>
 
-                                    <div class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["employeeID"] ?? "N/A") ?></h5>
-                                        <h5 class="text-center fs-6 fw-bold"><?= htmlspecialchars($row["lname"] ?? "N/A") ?>, <?= htmlspecialchars($row["fname"] ?? "N/A") ?> <?= htmlspecialchars($row["mname"] ?? "N/A") ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["jobTitle"] ?? "N/A") ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"] ?? "N/A") ?></h5>
-                                    </div>
-                                <?php endforeach; ?>
+                                <div class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
+                                    <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["employeeID"] ?? "N/A") ?></h5>
+                                    <h5 class="text-center fs-6 fw-bold">
+                                        <?= htmlspecialchars($employeeInfo["lname"] ?? "N/A") ?>, 
+                                        <?= htmlspecialchars($employeeInfo["fname"] ?? "N/A") ?> 
+                                        <?= htmlspecialchars($employeeInfo["mname"] ?? "N/A") ?>
+                                    </h5>
+                                    <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["jobTitle"] ?? "N/A") ?></h5>
+                                    <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["department"] ?? "N/A") ?> DEPARTMENT</h5>
+                                    <h5 class="fs-6 fw-bold">Status: <?= htmlspecialchars($employeeInfo["status"] ?? "N/A") ?></h5>
+                                </div>
                             </div>
 
+                            <!-- Right Educational Input Fields -->
                             <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" id="educationalInformation" style="height: 100%; display: block;">
                                 <input type="hidden" name="educationalUpdate" value="true">
-                                <input type="hidden" name="users_id" value="<?= htmlspecialchars($_GET['users_id'] ?? '') ?>">
+                                <input type="hidden" name="users_id" value="<?= htmlspecialchars($employeeInfo['users_id'] ?? '') ?>">
 
                                 <?php foreach ($getEduc as $level => $row): ?>
                                     <div class="card mb-4 shadow-sm border-0">
@@ -579,6 +581,7 @@
                                                     <input type="text" name="<?= $level ?>_school" class="form-control" 
                                                         value="<?= isset($row["school_name"]) ? htmlspecialchars($row["school_name"]) : "" ?>">
                                                 </div>
+
                                                 <?php $currentYear = date("Y"); ?>
                                                 <div class="col-md-6 col-lg-4">
                                                     <label class="form-label fw-bold">Year Started</label>
@@ -591,6 +594,7 @@
                                                         <?php endfor; ?>
                                                     </select>
                                                 </div>
+
                                                 <div class="col-md-6 col-lg-4">
                                                     <label class="form-label fw-bold">Year Ended</label>
                                                     <select name="<?= $level ?>_year_ended" class="form-select">
@@ -602,6 +606,7 @@
                                                         <?php endfor; ?>
                                                     </select>
                                                 </div>
+
                                                 <?php if (in_array($level, ['college', 'graduate', 'senior_high'])): ?>
                                                     <div class="col-md-6 col-lg-4">
                                                         <label class="form-label fw-bold">Course/Strand</label>
@@ -609,6 +614,7 @@
                                                             value="<?= isset($row["course_or_strand"]) ? htmlspecialchars($row["course_or_strand"]) : "" ?>">
                                                     </div>
                                                 <?php endif; ?>
+
                                                 <div class="col-md-6 col-lg-4">
                                                     <label class="form-label fw-bold">Honors</label>
                                                     <textarea name="<?= $level ?>_honors" class="form-control" rows="3"><?= isset($row["honors"]) ? htmlspecialchars($row["honors"]) : "" ?></textarea>
@@ -617,27 +623,10 @@
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
-
-                            </div>
-                            <div class="modal fade" id="updateModalEBG" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-md modal-dialog-start">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="updateModalLabel">Update Employee Profile</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modalConfirmation px-3 py-4 text-center">
-                                            <h5 class="mb-0">Are you sure you want to update this profile?</h5>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success">Save Changes</button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </form>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -650,107 +639,5 @@
     <div class="line"></div>
   </div>
 </div>
-<!-- <script src="../../assets/js/hr/profAdmin.js"></script> -->
- <script>
-    function activateTab(clickedBtn) {
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-        btn.classList.remove("active");
-    });
-    clickedBtn.classList.add("active");
-}
-
-function showLoadingAndRun(callback) {
-    const loader = document.getElementById("loadingAnimation");
-    loader.style.display = "flex";
-
-    setTimeout(() => {
-        loader.style.display = "none";
-        callback();
-    }, 800);
-}
-
-function personalInfo() {
-    console.log("Personal Information!");
-    showLoadingAndRun(() => {
-        showSection([
-            "personalID",
-            "updateButton",
-            "personalInformation",
-            "personalProfileInformation"
-        ]);
-    });
-}
-
-function familyBG() {
-    console.log("Family Background!");
-    showLoadingAndRun(() => {
-        showSection([
-            "familybg",
-            "updateButtonFBG",
-            "familyInformation",
-            "familyProfileInformation"
-        ]);
-    });
-}
-
-function educationalBG() {
-    console.log("Educational Background!");
-    showLoadingAndRun(() => {
-        showSection([
-            "educationalbg",
-            "updateButtonEBG",
-            "educationalInformation",
-            "educationProfileInformation"
-        ]);
-    });
-}
-function showSection(visibleIds) {
-    const allSections = [
-        "personalID",
-        "updateButton",
-        "personalInformation",
-        "personalProfileInformation",
-        "familybg",
-        "updateButtonFBG",
-        "familyInformation",
-        "familyProfileInformation",
-        "educationalbg",
-        "updateButtonEBG",
-        "educationalInformation",
-        "educationProfileInformation"
-    ];
-
-    // Hide all sections first
-    allSections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = "none";
-    });
-
-    // Show only selected sections
-    visibleIds.forEach(id => {
-        let el = document.getElementById(id);
-        while (el) {
-            el.style.display = "block";
-            el = el.parentElement;
-        }
-    });
-}
-
-
-window.addEventListener("load", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const tab = urlParams.get("tab") || "personal";
-
-    const tabMap = {
-        personal: { btnId: "Personal", action: personalInfo },
-        family: { btnId: "Family", action: familyBG },
-        educational: { btnId: "Educational", action: educationalBG }
-    };
-
-    const tabConfig = tabMap[tab] || tabMap["personal"];
-    const btn = document.getElementById(tabConfig.btnId);
-    if (btn) activateTab(btn);
-    tabConfig.action();
-});
- </script>
+<script src="../../assets/js/hr/employeePro.js"></script>
 <?php include '../../templates/Ufooter.php'?>

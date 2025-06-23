@@ -103,7 +103,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $_SESSION["EmailAuth"] = $mailCode;
                         header("Location: ../src/MFAauth.php");
                         die();
-                    }else {
+                    }else if($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "employee" && $status === "rejected"){
+                        header("Location: ../src/employee/rejected.php");
+                        error_log("Redirecting employee to pending");
+                    }
+                    else {
                         header("Location: ../src/employee/pending.php");
                         error_log("Redirecting employee to pending");
                     }

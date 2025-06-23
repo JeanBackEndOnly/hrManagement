@@ -11,10 +11,10 @@
     <div class="form-group h-100 w-100 d-flex justify-content-center align-items-center flex-column">
         <div class="container w-75 h-50 shadow rounded-2 p-3 d-flex justify-content-center align-items-center flex-column">
             <div class="w-75 d-flex justify-content-center align-items-center m-0 p-0">
-                <h3 class="text-center">Waiting for HR admin to accept your account!</h3>
+                <h3 class="text-center">Your account have been rejected!</h3>
             </div>
             <div class="w-75 d-flex justify-content-center align-items-center m-0 p-0">
-                <h3 class="text-center">Please wait patiently and we will email you soon... Thank you!</h3>
+                <h3 class="text-center">Please come to the HR office for clarification... Thank you!</h3>
             </div>
         </div>
     </div>

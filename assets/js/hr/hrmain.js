@@ -312,185 +312,19 @@
             toast.show();
         });
     });
-     // ================== JOB TITLE LIST IN REGISTRATION ================== //
-    document.addEventListener('DOMContentLoaded', function () {
-        const jobTitleSelect = document.getElementById('JobTitle');
-        console.log("heheWorking!");
-        if (!jobTitleSelect) {
-            console.error("JobTitle select element not found!");
-            return;
-        }
-
-        fetch('api.php')
-            .then(response => response.json())
-            .then(data => {
-                if (!Array.isArray(data.jobTitles)) {
-                    console.error('Invalid data from API:', data);
-                    return;
-                }
-
-                // Clear existing options
-                jobTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
-
-                data.jobTitles.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.jobTitle;
-                    option.textContent = item.jobTitle;
-
-                    if (typeof selectedJobTitle !== 'undefined' && item.jobTitle === selectedJobTitle) {
-                        option.selected = true;
-                    }
-
-                    jobTitleSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading job titles:', error);
-            });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        const jobTitleSelect = document.getElementById('Job_Title');
-        console.log("Fok!");
-        console.log("Selected Job Title is:", selectedJobTitle);
-
-        if (!jobTitleSelect) {
-            console.error("JobTitle select element not found!");
-            return;
-        }
-
-        fetch('../api.php')
-        .then(response => response.json())
-        .then(data => {
-            console.log("Fetched data:", data);
-
-            if (!Array.isArray(data.jobTitles)) {
-                console.error('Invalid data from API:', data);
-                return;
-            }
-
-            jobTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
-
-            data.jobTitles.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.jobTitle;
-                option.textContent = item.jobTitle;
-
-                if (selectedJobTitle && item.jobTitle === selectedJobTitle) {
-                    option.selected = true;
-                }
-
-                jobTitleSelect.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error('Error loading job titles:', error);
-            jobTitleSelect.innerHTML = '<option value="">Failed to load job titles</option>';
-        });
-
-    });
-    
-    
-     // ================== SCHEDULE VALIDATION ================== //
-    document.addEventListener('DOMContentLoaded', function () {
-        const departmentSelect = document.getElementById('Department');
-        const scheduleFrom = document.getElementById('scheduleFrom');
-        const scheduleTo = document.getElementById('scheduleTo');
-
-        if (!departmentSelect || !scheduleFrom || !scheduleTo) {
-            console.error('One or more required DOM elements are missing');
-            return;
-        }
-
-        const schedules = {
-            HOSPITAL: [
-                { from: '07:00 AM', to: '03:00 PM' },
-                { from: '03:00 PM', to: '11:00 PM' },
-                { from: '11:00 PM', to: '07:00 AM' }
-            ],
-            SCHOOL: [
-                { from: '07:30 AM', to: '04:30 PM' }
-            ]
-        };
-
-        console.log('Department value:', departmentSelect.value);
-        console.log('Schedules available:', schedules[departmentSelect.value]);
-        console.log('Old scheduleFrom:', window.signupData ? window.signupData.scheduleFrom : undefined);
-        console.log('Old scheduleTo:', window.signupData ? window.signupData.scheduleTo : undefined);
-
-        function populateSchedules(dept) {
-            scheduleFrom.innerHTML = '<option value="">Select Schedule From</option>';
-            scheduleTo.innerHTML = '<option value="">Select Schedule To</option>';
-
-            if (!schedules[dept]) return;
-
-            schedules[dept].forEach(shift => {
-                const optionFrom = document.createElement('option');
-                optionFrom.value = shift.from;
-                optionFrom.textContent = shift.from;
-                scheduleFrom.appendChild(optionFrom);
-
-                const optionTo = document.createElement('option');
-                optionTo.value = shift.to;
-                optionTo.textContent = shift.to;
-                scheduleTo.appendChild(optionTo);
-            });
-        }
-
-        departmentSelect.addEventListener('change', function () {
-            populateSchedules(this.value);
-        });
-
-        if (departmentSelect.value && departmentSelect.value !== 'NO DEPARTMENT') {
-            console.log('Populating schedules for department:', departmentSelect.value);
-            populateSchedules(departmentSelect.value);
-
-            const oldFrom = window.signupData ? window.signupData.scheduleFrom : null;
-            const oldTo = window.signupData ? window.signupData.scheduleTo : null;
-
-            console.log('Old From:', oldFrom);
-            console.log('Old To:', oldTo);
-
-            if (oldFrom) scheduleFrom.value = oldFrom;
-            if (oldTo) scheduleTo.value = oldTo;
-        }
-    });
-    // ================== REGISTRATION FORM VALIDATION ================== //
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form[action="../auth/authentications.php"]');
-
-        form.addEventListener('submit', function(e) {
-            const requiredFields = form.querySelectorAll('input[required], textarea[required], select[required]');
-            
-            let emptyFound = false;
-
-            requiredFields.forEach(field => {
-            if (!field.value.trim()) {  
-                emptyFound = true;
-                field.classList.add('input-error'); 
-            } else {
-                field.classList.remove('input-error');
-            }
-            });
-
-            if (emptyFound) {
-            e.preventDefault();  
-            alert('Please fill out all required fields before submitting.');
-            }
-        });
-    });
-    
-// ===================== toast notification ===================== //
-
     document.addEventListener('DOMContentLoaded', function () {
             var toastEl = document.querySelector('.toast');
             if (toastEl) {
             var toast = new bootstrap.Toast(toastEl);
             toast.show();
             }
-        });
+    });
+    
+    
+    
   // ===================== side navs ===================== //
 
-   function sideNav() {
+function sideNav() {
         const sideHEhe = document.getElementById("sideHEhe");
         const ilahr = document.getElementById("iLeftArrowHr");
         const ilapr = document.getElementById("iLeftArrowPr");
@@ -540,8 +374,8 @@
             }, 400);
 
         }
-    }
-    function hrButton() {
+}
+function hrButton() {
         const hrUl = document.getElementById("hrUl");
         const sideHEheHr = document.getElementById("sideHEhe");
         const ilahr = document.getElementById("iLeftArrowHr");
@@ -572,9 +406,9 @@
             hrUl.style.marginTop = "0.5rem";
             hrUl.classList.add("open");
         }
-    }
+}
 
-    function payrollButton() {
+function payrollButton() {
         const payrollUl = document.getElementById("payrollUl");
         const sideHEheHr = document.getElementById("sideHEhe");
         const ilahr = document.getElementById("iLeftArrowHr");
@@ -605,7 +439,7 @@
             payrollUl.style.marginTop = "0.5rem";
             payrollUl.classList.add("open");
         }
-    }
+}
 
 function showLoading() {
     const loading = document.getElementById("loadingAnimation");

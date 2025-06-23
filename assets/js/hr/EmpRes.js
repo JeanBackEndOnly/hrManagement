@@ -468,7 +468,7 @@ async function nextnd() {
             document.getElementById("button-signup").style.display = "none";
         });
 }
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
         const departmentSelect = document.getElementById('Department');
         const scheduleFrom = document.getElementById('scheduleFrom');
         const scheduleTo = document.getElementById('scheduleTo');
@@ -530,7 +530,7 @@ async function nextnd() {
             if (oldFrom) scheduleFrom.value = oldFrom;
             if (oldTo) scheduleTo.value = oldTo;
         }
-    });
+});
      function nextrd(){
         const buttonrd = document.getElementById("nexts");
         buttonrd.disabled = true;

@@ -148,6 +148,69 @@ hideConfirmPassword.addEventListener('click', () => {
         showConfirmPassword.style.display = 'inline';
         hideConfirmPassword.style.display = 'none';
 });
+document.addEventListener('DOMContentLoaded', function () {
+        const departmentSelect = document.getElementById('Department');
+        const scheduleFrom = document.getElementById('scheduleFrom');
+        const scheduleTo = document.getElementById('scheduleTo');
+
+        if (!departmentSelect || !scheduleFrom || !scheduleTo) {
+            console.error('One or more required DOM elements are missing');
+            return;
+        }
+
+        const schedules = {
+            HOSPITAL: [
+                { from: '07:00 AM', to: '03:00 PM' },
+                { from: '03:00 PM', to: '11:00 PM' },
+                { from: '11:00 PM', to: '07:00 AM' }
+            ],
+            SCHOOL: [
+                { from: '07:30 AM', to: '04:30 PM' }
+            ]
+        };
+
+        console.log('Department value:', departmentSelect.value);
+        console.log('Schedules available:', schedules[departmentSelect.value]);
+        console.log('Old scheduleFrom:', window.signupData ? window.signupData.scheduleFrom : undefined);
+        console.log('Old scheduleTo:', window.signupData ? window.signupData.scheduleTo : undefined);
+
+        function populateSchedules(dept) {
+            scheduleFrom.innerHTML = '<option value="">Select Schedule From</option>';
+            scheduleTo.innerHTML = '<option value="">Select Schedule To</option>';
+
+            if (!schedules[dept]) return;
+
+            schedules[dept].forEach(shift => {
+                const optionFrom = document.createElement('option');
+                optionFrom.value = shift.from;
+                optionFrom.textContent = shift.from;
+                scheduleFrom.appendChild(optionFrom);
+
+                const optionTo = document.createElement('option');
+                optionTo.value = shift.to;
+                optionTo.textContent = shift.to;
+                scheduleTo.appendChild(optionTo);
+            });
+        }
+
+        departmentSelect.addEventListener('change', function () {
+            populateSchedules(this.value);
+        });
+
+        if (departmentSelect.value && departmentSelect.value !== 'NO DEPARTMENT') {
+            console.log('Populating schedules for department:', departmentSelect.value);
+            populateSchedules(departmentSelect.value);
+
+            const oldFrom = window.signupData ? window.signupData.scheduleFrom : null;
+            const oldTo = window.signupData ? window.signupData.scheduleTo : null;
+
+            console.log('Old From:', oldFrom);
+            console.log('Old To:', oldTo);
+
+            if (oldFrom) scheduleFrom.value = oldFrom;
+            if (oldTo) scheduleTo.value = oldTo;
+        }
+    });
 function nextstA() {
         const lnameEl = document.getElementById('surname');
         const fnameEl = document.getElementById('fname');

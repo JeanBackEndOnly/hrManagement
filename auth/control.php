@@ -535,19 +535,38 @@ function getEducationalBG() {
 // ===================== EMPLOYEE ===================== //
 function getEmployee() {
     $pdo = db_connection();
-    isset($_SESSION["user_id"]) ? $user_id = $_SESSION["user_id"] : "no fucking ID";
+
+    $user_id = $_SESSION["user_id"] ?? '';
+
+
     $query = "SELECT * FROM users 
-    INNER JOIN userinformations ON users.id = userinformations.users_id
-    LEFT JOIN family_information ON users.id = family_information.users_id
-    LEFT JOIN educational_background ON users.id = educational_background.users_id
-    LEFT JOIN userrequest ON users.id = userrequest.users_id
-    WHERE users.id = :id";
+        INNER JOIN userinformations ON users.id = userinformations.users_id
+        LEFT JOIN family_information ON users.id = family_information.users_id
+        LEFT JOIN userrequest ON users.id = userrequest.users_id
+        WHERE users.id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":id", $user_id);
     $stmt->execute();
     $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC);
-    return ['employeeInfo' => $employeeInfo];
+
+    $queryEduc = "SELECT * FROM educational_background WHERE users_id = :id";
+    $stmtEduc = $pdo->prepare($queryEduc);
+    $stmtEduc->bindParam(":id", $user_id);
+    $stmtEduc->execute();
+    $educData = $stmtEduc->fetchAll(PDO::FETCH_ASSOC);
+
+    $getEduc = [];
+    foreach ($educData as $row) {
+        $level = $row['education_level'];
+        $getEduc[$level] = $row;
+    }
+
+    return [
+        'employeeInfo' => $employeeInfo,
+        'getEduc' => $getEduc
+    ];
 }
+
 
 // ===================== DASHBOARD ===================== //
 function getValidatedCountDashboard() {
