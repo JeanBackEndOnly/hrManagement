@@ -109,14 +109,23 @@
                                     <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                                     <input type="hidden" name="validatedUpdate" value="true">
                                     <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
-                                        <img src="../../assets/image/upload/<?= isset($row["user_profile"]) ? htmlspecialchars($row["user_profile"]) : "N/A" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
+                                        <?php if (!empty($row["user_profile"])): ?>
+                                            <img src="../../assets/image/upload/<?= htmlspecialchars($row["user_profile"]) ?>" 
+                                                alt="Profile Picture" 
+                                                class="img-fluid rounded-circle">
+                                        <?php else: ?>
+                                            <img src="../../assets/image/users.png" 
+                                                alt="Profile Picture" 
+                                                class="img-fluid rounded-circle">
+                                        <?php endif; ?>
                                     </div>
                                     <div class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
                                         <h5 class="fs-6 fw-bold"><?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?></h5>
                                         <h5 class="text-center fs-6 fw-bold"><?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>, <?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?> <?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= isset($row["department"]) ? htmlspecialchars($row["department"]) : "N/A" . " DEPARTMENT" ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["secheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                             </div>
                             <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" style="height: 100%; display: flex;" id="personalInformation">
@@ -308,6 +317,7 @@
                                         <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["secheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -567,6 +577,7 @@
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["jobTitle"] ?? "N/A") ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"] ?? "N/A") ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["secheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                                 <?php endforeach; ?>
                             </div>

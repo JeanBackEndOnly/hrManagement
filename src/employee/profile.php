@@ -72,24 +72,24 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee col-md-12 d-flex flex-wrap flex-row justify-content-between align-items-center" style="height: 7rem; min-width: 95%;">
+                <div class="header-employee col-md-11 d-flex flex-wrap flex-row justify-content-between align-items-center" style="height: 7rem;">
                     <div class="h1 col-md-3 col-10">
                         <h3 class="m-0">EMPLOYEE PROFILE</h3>
                     </div>
-                    <div class="navigations col-md-4 col-12 d-flex flex-row justify-content-between align-items-center">
+                    <div class="navigations col-md-5 col-12 d-flex flex-row justify-content-between align-items-center">
                         <button type="button" id="Personal" onclick="activateTab(this); personalInfo()" style="width: 30%" class="tab-btn active">Personal INFO</button>
                         <button type="button" id="Family" onclick="activateTab(this); familyBG()" style="width: 30%" class="tab-btn">Family BG</button>
                         <button type="button" id="Educational" onclick="activateTab(this); educationalBG()" style="width: 30%" class="tab-btn">Educational BG</button>
                     </div>
 
                     <div class="buttonUpdate col-md-3 col-12 d-flex align-items-center justify-content-end">
-                       <button type="button" id="updateButton" class="btn w-25" data-bs-toggle="modal" data-bs-target="#updateModal">
+                       <button type="button" id="updateButton" class="btn" style="width:7rem;" data-bs-toggle="modal" data-bs-target="#updateModal">
                             Update
                         </button>
-                        <button type="button" id="updateButtonFBG" class="btn w-25" data-bs-toggle="modal" data-bs-target="#updateModalFBG">
+                        <button type="button" id="updateButtonFBG" class="btn" style="width:7rem;" data-bs-toggle="modal" data-bs-target="#updateModalFBG">
                             Update
                         </button>
-                        <button type="button" id="updateButtonEBG" class="btn w-25" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
+                        <button type="button" id="updateButtonEBG" class="btn" style="width:7rem;" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
                             Update
                         </button>
                     </div>
@@ -103,7 +103,7 @@
                                 <input type="hidden" name="users_id" value="<?= $employeeInfo["users_id"] ?>">
                                 <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                                <input type="hidden" name="validatedUpdate" value="true">
+                                <input type="hidden" name="userUpdateProfile" value="true">
                                 <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
                                     <img src="../../assets/image/upload/<?= isset($employeeInfo["user_profile"]) ? htmlspecialchars($employeeInfo["user_profile"]) : "N/A" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
                                 </div>
@@ -292,7 +292,7 @@
                                 <input type="hidden" name="users_id" value="<?= $employeeInfo["users_id"] ?>">
                                 <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                                <input type="hidden" name="familyUpdate" value="true">
+                                <input type="hidden" name="familyEmployeeUpdate" value="true">
                                 <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
                                     <img src="../../assets/image/upload/<?= isset($employeeInfo["user_profile"]) ? htmlspecialchars($employeeInfo["user_profile"]) : "N/A" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
                                 </div>
@@ -305,8 +305,7 @@
                                 </div>
                             </div>
                                 
-                            <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" id="familyInformation" style="height: 100%; display: flex;">
-                                <input type="hidden" name="familyUpdate" value="true">
+                            <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" id="familyInformation" style="height: 100%; display: flex
                                 <?php
                                 $familyData = !empty($getFam) ? $getFam : [[
                                     'father_name' => '',
@@ -538,7 +537,7 @@
                     <!-- </div> -->
                 </div>
                     <!-- ============================ EDUCATIONAL BACKGROUND TAB ============================ -->
-                <div class="educationalbg" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
+                <div class="educationalbg flex-column justify-content-between p-0 m-0 mt-2" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
                     <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
                             <!-- Left Profile Column -->
@@ -547,7 +546,7 @@
                                 
                                 <input type="hidden" name="users_id" value="<?= htmlspecialchars($employeeInfo["users_id"]) ?>">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? '') ?>">
-                                <input type="hidden" name="educationalUpdate" value="true">
+                                <input type="hidden" name="educationalEmployeeUpdate" value="true">
 
                                 <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
                                     <img src="../../assets/image/upload/<?= isset($employeeInfo["user_profile"]) && $employeeInfo["user_profile"] !== "" ? htmlspecialchars($employeeInfo["user_profile"]) : "default.png" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
@@ -568,7 +567,7 @@
 
                             <!-- Right Educational Input Fields -->
                             <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" id="educationalInformation" style="height: 100%; display: block;">
-                                <input type="hidden" name="educationalUpdate" value="true">
+                                <input type="hidden" name="educationalEmployeeUpdate" value="true">
                                 <input type="hidden" name="users_id" value="<?= htmlspecialchars($employeeInfo['users_id'] ?? '') ?>">
 
                                 <?php foreach ($getEduc as $level => $row): ?>

@@ -1475,7 +1475,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // =============================== EMPLOYEE AREA =============================== //
     if(isset($_POST["userUpdateProfile"]) && $_POST["userUpdateProfile"] === "true") {
-        $users_id = $POST["users_id"]; 
         $users_id = (int)$_POST["users_id"];
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];

@@ -392,6 +392,7 @@ transform: translateX(.9rem);
     .usersButton {
         width: 25%;
         justify-content: end;
+        margin-left: 2rem;
     }
     .align-items-center img{
         margin-left: 5px !important;
@@ -435,10 +436,10 @@ transform: translateX(.9rem);
         margin-top: 10px;
         margin-bottom: 10px;
     }
-    .h1{
+    /* .h1{
         margin-left: 3rem;
     }
     .logo img{
         width: 30px !important;
-    }
+    } */
 }

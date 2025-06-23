@@ -211,6 +211,76 @@ document.addEventListener('DOMContentLoaded', function () {
             if (oldTo) scheduleTo.value = oldTo;
         }
     });
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('employeeID').addEventListener('input', async function () {
+        const employeeIDEl = this;
+        const employeeID = employeeIDEl.value.trim();
+
+        const errorClass = 'input-errors';
+        let errorEl = employeeIDEl.nextElementSibling;
+
+        if (!errorEl || !errorEl.classList.contains(errorClass)) {
+            errorEl = document.createElement('div');
+            errorEl.classList.add(errorClass);
+            errorEl.style.fontSize = '0.9em';
+            errorEl.style.marginTop = '4px';
+            employeeIDEl.parentNode.insertBefore(errorEl, employeeIDEl.nextSibling);
+        }
+
+        errorEl.textContent = '';
+        employeeIDEl.style.border = '';
+
+        if (employeeID === '') return;
+
+        try {
+            const response = await fetch('employeeIDAuth.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `employeeID=${encodeURIComponent(employeeID)}`
+            });
+
+            const data = await response.json();
+
+            if (data.exists) {
+                errorEl.textContent = "This Employee ID already exists.";
+                errorEl.style.color = 'red';
+                employeeIDEl.style.border = 'solid 1px red';
+            } else {
+                errorEl.textContent = "✅ Employee ID is available.";
+                errorEl.style.color = 'green';
+                employeeIDEl.style.border = 'solid 1px green';
+            }
+        } catch (error) {
+            errorEl.textContent = "Error checking Employee ID.";
+            errorEl.style.color = '#000';
+            employeeIDEl.style.border = 'solid 1px red';
+        }
+    });
+});
+function isValidContactNumber(number) {
+    return /^[0-9]{11}$/.test(number);
+}
+function showLiveError(input, message, color = 'red') {
+    let errorEl = input.nextElementSibling;
+    if (!errorEl || !errorEl.classList.contains('input-errors')) {
+        errorEl = document.createElement('div');
+        errorEl.classList.add('input-errors');
+        errorEl.style.fontSize = '0.9em';
+        errorEl.style.marginTop = '4px';
+        input.parentNode.insertBefore(errorEl, input.nextSibling);
+    }
+    errorEl.textContent = message;
+    errorEl.style.color = color;
+    // input.style.border = `solid 1px ${color}`;
+}
+function clearLiveError(input) {
+    input.style.border = '';
+    const errorEl = input.nextElementSibling;
+    if (errorEl && errorEl.classList.contains('input-errors')) {
+        errorEl.textContent = '';
+    }
+}
+
 function nextstA() {
         const lnameEl = document.getElementById('surname');
         const fnameEl = document.getElementById('fname');
@@ -458,65 +528,42 @@ async function nextndA() {
         });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const emailEl = document.getElementById('email');
+document.addEventListener("DOMContentLoaded", () => {
+    const contactInput = document.getElementById('contact');
+    const emailInput = document.getElementById('email');
 
-    function showError(input, message) {
-        let messageEl = input.nextElementSibling;
-        if (!messageEl || !messageEl.classList.contains('input-message')) {
-            messageEl = document.createElement('div');
-            messageEl.classList.add('input-message');
-            messageEl.style.fontSize = '0.9em';
-            messageEl.style.marginTop = '4px';
-            input.parentNode.insertBefore(messageEl, input.nextSibling);
+    contactInput.addEventListener('input', () => {
+        const value = contactInput.value.trim();
+
+        if (!value) {
+            clearLiveError(contactInput);
+            return;
         }
-        messageEl.textContent = message;
-        messageEl.style.color = 'red';
-        input.style.border = 'solid 1px red';
-    }
 
-    function showSuccess(input, message) {
-        let messageEl = input.nextElementSibling;
-        if (!messageEl || !messageEl.classList.contains('input-message')) {
-            messageEl = document.createElement('div');
-            messageEl.classList.add('input-message');
-            messageEl.style.fontSize = '0.9em';
-            messageEl.style.marginTop = '4px';
-            input.parentNode.insertBefore(messageEl, input.nextSibling);
+        if (!/^\d+$/.test(value)) {
+            showLiveError(contactInput, "Contact number must contain only digits.");
+        } else if (value.length !== 11) {
+            showLiveError(contactInput, "Contact number must be exactly 11 digits.");
+        } else {
+            clearLiveError(contactInput);
         }
-        messageEl.textContent = message;
-        messageEl.style.color = 'green';
-        input.style.border = 'solid 1px green';
-    }
+    });
 
-    function clearMessage(input) {
-        input.style.border = '';
-        let messageEl = input.nextElementSibling;
-        if (messageEl && messageEl.classList.contains('input-message')) {
-            messageEl.textContent = '';
-        }
-    }
-
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    async function validateEmailLive() {
-        const email = emailEl.value.trim();
-        clearMessage(emailEl);
+    emailInput.addEventListener('input', async () => {
+        const email = emailInput.value.trim();
 
         if (!email) {
-            showError(emailEl, "Email is required.");
+            clearLiveError(emailInput);
             return;
         }
 
         if (!isValidEmail(email)) {
-            showError(emailEl, "Invalid email format.");
+            showLiveError(emailInput, "Invalid email format.");
             return;
         }
 
         try {
-            const response = await fetch('../emailAuth.php', {
+            const response = await fetch('emailAuth.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `email=${encodeURIComponent(email)}`
@@ -525,27 +572,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.exists) {
-                showError(emailEl, "This email is already registered.");
+                showLiveError(emailInput, "This email is already registered.");
             } else {
-                showSuccess(emailEl, "✔️ Valid email and available.");
+                showLiveError(emailInput, "✅ Email is available.", 'green');
             }
         } catch (err) {
-            showError(emailEl, "Error checking email. Try again.");
+            showLiveError(emailInput, "⚠️ Error checking email.", 'orange');
         }
-    }
-
-    // Debounce
-    function debounce(func, delay) {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
-    }
-
-    emailEl.addEventListener('input', debounce(validateEmailLive, 500));
+    });
 });
-
 
 function isValidEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -594,142 +629,265 @@ function backrdA() {
 
         });
 }
+// document.addEventListener('DOMContentLoaded', () => {
+//     const profileInput = document.getElementById('profile');
+//     const usernameInput = document.getElementById('username');
+//     const passwordInput = document.getElementById('passwordInput');
+//     const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+
+//     function showError(input, message) {
+//     removeMessage(input);
+//     const msg = document.createElement('div');
+//     msg.classList.add('input-error');
+//     msg.style.color = 'red';
+//     msg.style.fontSize = '0.9em';
+//     msg.style.marginTop = '4px';
+//     msg.style.border = 'none';
+//     msg.textContent = message;
+
+//     const wrapper = input.closest('li');
+//     if (wrapper) {
+//         wrapper.insertAdjacentElement('afterend', msg);
+//     }
+
+//     input.style.border = '2px solid red';
+// }
+
+// function showSuccess(input, message) {
+//     removeMessage(input);
+//     const msg = document.createElement('div');
+//     msg.classList.add('input-success');
+//     msg.style.color = 'green';
+//     msg.style.fontSize = '0.9em';
+//     msg.style.marginTop = '4px';
+//     msg.style.border = 'none';
+//     msg.textContent = message;
+
+//     const wrapper = input.closest('li');
+//     if (wrapper) {
+//         wrapper.insertAdjacentElement('afterend', msg);
+//     }
+
+//     input.style.border = '2px solid green';
+// }
+
+// function removeMessage(input) {
+//     input.style.border = '';
+//     const wrapper = input.closest('li');
+//     if (wrapper && wrapper.nextElementSibling) {
+//         const sibling = wrapper.nextElementSibling;
+//         if (sibling.classList.contains('input-error') || sibling.classList.contains('input-success')) {
+//             sibling.remove();
+//         }
+//     }
+// }
+
+
+//     async function validateUsername() {
+//         const username = usernameInput.value.trim();
+//         removeMessage(usernameInput);
+//         if (!username) return;
+
+//         try {
+//             const response = await fetch('../usernameAuth.php', {
+//                 method: 'POST',
+//                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//                 body: `username=${encodeURIComponent(username)}`
+//             });
+//             const data = await response.json();
+//             if (data.exists) {
+//                 showError(usernameInput, "Username is already taken.");
+//             } else {
+//                 showSuccess(usernameInput, "✓ Username is available.");
+//             }
+//         } catch (error) {
+//             showError(usernameInput, "Error checking username. Try again.");
+//         }
+//     }
+
+//     function validatePasswords() {
+//         const password = passwordInput.value;
+//         const confirmPassword = confirmPasswordInput.value;
+
+//         removeMessage(passwordInput);
+//         removeMessage(confirmPasswordInput);
+
+//         const errors = [];
+
+//         if (password.length < 8) {
+//             errors.push("Password must be at least 8 characters.");
+//         }
+
+//         if (!/[A-Z]/.test(password)) {
+//             errors.push("Password must contain at least one uppercase letter.");
+//         }
+
+//         if (!/[0-9]/.test(password)) {
+//             errors.push("Password must contain at least one number.");
+//         }
+
+//         if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+//             errors.push("Password must contain at least one special character (e.g. #, !, @).");
+//         }
+
+//         if (errors.length > 0) {
+//             showError(passwordInput, errors[0]); 
+//             return;
+//         } else {
+//             showSuccess(passwordInput, "✓ Password is strong.");
+//         }
+//         if (!confirmPassword) {
+//             removeMessage(confirmPasswordInput);
+//             return;
+//         }
+
+//         if (password !== confirmPassword) {
+//             showError(confirmPasswordInput, "Passwords do not match.");
+//         } else {
+//             showSuccess(confirmPasswordInput, "✓ Passwords match.");
+//         }
+//     }
+
+//     function validateProfile() {
+//         removeMessage(profileInput);
+//         if (!profileInput.files || profileInput.files.length === 0) {
+//             showError(profileInput, "Please select a profile picture.");
+//         } else {
+//             showSuccess(profileInput, "✓ Profile picture selected.");
+//         }
+//     }
+//     function debounce(func, delay) {
+//         let timeout;
+//         return function (...args) {
+//             clearTimeout(timeout);
+//             timeout = setTimeout(() => func.apply(this, args), delay);
+//         };
+//     }
+//     usernameInput.addEventListener('input', debounce(validateUsername, 500));
+//     passwordInput.addEventListener('input', validatePasswords);
+//     confirmPasswordInput.addEventListener('input', validatePasswords);
+//     profileInput.addEventListener('change', validateProfile);
+// });
+
 document.addEventListener('DOMContentLoaded', () => {
-    const profileInput = document.getElementById('profile');
     const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('passwordInput');
-    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+    const passwordInput = document.getElementById('passwordInputAdmin');
+    const confirmPasswordInput = document.getElementById('confirmPasswordInputAdmin');
+    const profileInput = document.getElementById('profile');
+    const form = document.getElementById('signupForm');
 
-    function showError(input, message) {
-    removeMessage(input);
-    const msg = document.createElement('div');
-    msg.classList.add('input-error');
-    msg.style.color = 'red';
-    msg.style.fontSize = '0.9em';
-    msg.style.marginTop = '4px';
-    msg.style.border = 'none';
-    msg.textContent = message;
-
-    const wrapper = input.closest('li');
-    if (wrapper) {
-        wrapper.insertAdjacentElement('afterend', msg);
+    function showError(input, message, color = 'red') {
+        let errorEl = input.nextElementSibling;
+        if (!errorEl || !errorEl.classList.contains('input-errors')) {
+            errorEl = document.createElement('div');
+            errorEl.classList.add('input-errors');
+            errorEl.style.fontSize = '0.9em';
+            errorEl.style.marginTop = '4px';
+            input.parentNode.insertBefore(errorEl, input.nextSibling);
+        }
+        errorEl.textContent = message;
+        errorEl.style.color = color;
+        input.style.border = `1px solid ${color}`;
     }
 
-    input.style.border = '2px solid red';
-}
-
-function showSuccess(input, message) {
-    removeMessage(input);
-    const msg = document.createElement('div');
-    msg.classList.add('input-success');
-    msg.style.color = 'green';
-    msg.style.fontSize = '0.9em';
-    msg.style.marginTop = '4px';
-    msg.style.border = 'none';
-    msg.textContent = message;
-
-    const wrapper = input.closest('li');
-    if (wrapper) {
-        wrapper.insertAdjacentElement('afterend', msg);
-    }
-
-    input.style.border = '2px solid green';
-}
-
-function removeMessage(input) {
-    input.style.border = '';
-    const wrapper = input.closest('li');
-    if (wrapper && wrapper.nextElementSibling) {
-        const sibling = wrapper.nextElementSibling;
-        if (sibling.classList.contains('input-error') || sibling.classList.contains('input-success')) {
-            sibling.remove();
+    function clearError(input) {
+        input.style.border = '';
+        let errorEl = input.nextElementSibling;
+        if (errorEl && errorEl.classList.contains('input-errors')) {
+            errorEl.textContent = '';
         }
     }
-}
 
+    function isStrongPassword(password) {
+        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        return regex.test(password);
+    }
 
-    async function validateUsername() {
+    usernameInput.addEventListener('input', async function () {
         const username = usernameInput.value.trim();
-        removeMessage(usernameInput);
-        if (!username) return;
+        clearError(usernameInput);
+
+        if (username === '') return;
 
         try {
-            const response = await fetch('../usernameAuth.php', {
+            const response = await fetch('usernameAuth.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `username=${encodeURIComponent(username)}`
             });
+
             const data = await response.json();
+
             if (data.exists) {
                 showError(usernameInput, "Username is already taken.");
             } else {
-                showSuccess(usernameInput, "✓ Username is available.");
+                showError(usernameInput, "✅ Username is available.", 'green');
             }
         } catch (error) {
-            showError(usernameInput, "Error checking username. Try again.");
+            showError(usernameInput, "⚠️ Error checking username.", 'orange');
         }
-    }
+    });
 
-    function validatePasswords() {
+    confirmPasswordInput.addEventListener('input', function () {
         const password = passwordInput.value;
         const confirmPassword = confirmPasswordInput.value;
 
-        removeMessage(passwordInput);
-        removeMessage(confirmPasswordInput);
+        clearError(confirmPasswordInput);
+        clearError(passwordInput);
 
-        const errors = [];
-
-        if (password.length < 8) {
-            errors.push("Password must be at least 8 characters.");
-        }
-
-        if (!/[A-Z]/.test(password)) {
-            errors.push("Password must contain at least one uppercase letter.");
-        }
-
-        if (!/[0-9]/.test(password)) {
-            errors.push("Password must contain at least one number.");
-        }
-
-        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-            errors.push("Password must contain at least one special character (e.g. #, !, @).");
-        }
-
-        if (errors.length > 0) {
-            showError(passwordInput, errors[0]); 
-            return;
-        } else {
-            showSuccess(passwordInput, "✓ Password is strong.");
-        }
-        if (!confirmPassword) {
-            removeMessage(confirmPasswordInput);
-            return;
-        }
+        if (confirmPassword === '') return;
 
         if (password !== confirmPassword) {
             showError(confirmPasswordInput, "Passwords do not match.");
+            showError(passwordInput, "Passwords do not match.");
+        } else if (!isStrongPassword(password)) {
+            showError(passwordInput, "Password must be at least 8 chars, 1 capital, 1 special char, 1 number.");
         } else {
-            showSuccess(confirmPasswordInput, "✓ Passwords match.");
+            showError(confirmPasswordInput, "✅ Passwords match.", 'green');
         }
-    }
+    });
 
-    function validateProfile() {
-        removeMessage(profileInput);
-        if (!profileInput.files || profileInput.files.length === 0) {
-            showError(profileInput, "Please select a profile picture.");
-        } else {
-            showSuccess(profileInput, "✓ Profile picture selected.");
+    form.addEventListener('submit', function (e) {
+        let valid = true;
+
+        clearError(profileInput);
+        clearError(usernameInput);
+        clearError(passwordInput);
+        clearError(confirmPasswordInput);
+
+        // if (!profileInput.files || profileInput.files.length === 0) {
+        //     showError(profileInput, "Please select a profile picture.");
+        //     valid = false;
+        // }
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (!username) {
+            showError(usernameInput, "Username is required.");
+            valid = false;
         }
-    }
-    function debounce(func, delay) {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
-    }
-    usernameInput.addEventListener('input', debounce(validateUsername, 500));
-    passwordInput.addEventListener('input', validatePasswords);
-    confirmPasswordInput.addEventListener('input', validatePasswords);
-    profileInput.addEventListener('change', validateProfile);
+
+        if (!password) {
+            showError(passwordInput, "Password is required.");
+            valid = false;
+        } else if (!isStrongPassword(password)) {
+            showError(passwordInput, "Password must be at least 8 chars, 1 capital, 1 special char, 1 number.");
+            valid = false;
+        }
+
+        if (!confirmPassword) {
+            showError(confirmPasswordInput, "Please confirm your password.");
+            valid = false;
+        }
+
+        if (password && confirmPassword && password !== confirmPassword) {
+            showError(passwordInput, "Passwords do not match.");
+            showError(confirmPasswordInput, "Passwords do not match.");
+            valid = false;
+        }
+
+        if (!valid) e.preventDefault();
+    });
 });

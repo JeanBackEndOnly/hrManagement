@@ -412,3 +412,45 @@ Email sent successfully to pagotaisidromarcojean123@gmail.com with action MFA
 ==> Script started at 2025-06-23 18:33:44
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","MDeYPg\""]
 Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 18:51:45
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","KtmpDU\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 18:57:39
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","zfTRwU\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:05:53
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","kpOSXm\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:09:55
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","xPoaqW\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:10:54
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","ScrqLh\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:16:32
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","rfFdEC\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:48:09
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","10","created","","","","asd","asd#eweQ1 "]
+Email sent successfully to asdasdasdasdsad@gmail.com with action created
+==> Script started at 2025-06-23 19:48:43
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","AlHmsM\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:52:19
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","oEjPIG\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 19:54:16
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","amqrCI\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 20:13:13
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","IRxAyE\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 20:16:18
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","XxgaVj\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 20:18:23
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","igSQmu\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
+==> Script started at 2025-06-23 20:19:27
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","3","MFA","","","","","","VJLtqu\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
