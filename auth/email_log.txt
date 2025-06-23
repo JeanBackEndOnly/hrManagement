@@ -409,3 +409,6 @@ Email sent successfully to pagotaisidromarcojean123@gmail.com with action MFA
 ==> Script started at 2025-06-23 18:24:21
 Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","8","MFA","","","","","","msuVaB\""]
 Email sent successfully to pagotaisidromarcojean123@gmail.com with action MFA
+==> Script started at 2025-06-23 18:33:44
+Args: ["C:\\xampp\\htdocs\\github\\hrManagement\\auth\\emailSender.php","1","MFA","","","","","","MDeYPg\""]
+Email sent successfully to pagotaisidromarcojean@gmail.com with action MFA
