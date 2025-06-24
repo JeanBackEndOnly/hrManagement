@@ -1,19 +1,20 @@
 const passwordInputs = document.getElementById('passwordInputs');
-        const showPasswords = document.getElementById('showPasswords');
-        const hidePasswords = document.getElementById('hidePasswords');
+const showPasswords = document.getElementById('showPasswords');
+const hidePasswords = document.getElementById('hidePasswords');
 
-        showPasswords.addEventListener('click', () => {
-            passwordInputs.type = 'text';
-            showPasswords.style.display = 'none';
-            hidePasswords.style.display = 'inline';
-        });
+showPasswords.addEventListener('click', () => {
+    passwordInputs.type = 'text';
+    showPasswords.style.display = 'none';
+    hidePasswords.style.display = 'inline';        
+});
 
-        hidePasswords.addEventListener('click', () => {
-            passwordInputs.type = 'password';
-            showPasswords.style.display = 'inline';
-            hidePasswords.style.display = 'none';
-        });
-    document.addEventListener('DOMContentLoaded', () => {
+hidePasswords.addEventListener('click', () => {
+    passwordInputs.type = 'password';
+    showPasswords.style.display = 'inline';
+    hidePasswords.style.display = 'none';
+});
+    
+document.addEventListener('DOMContentLoaded', () => {
         if (signup) {
             Swal.fire({
                 toast: true,
@@ -50,6 +51,19 @@ const passwordInputs = document.getElementById('passwordInputs');
                 customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['username']);
+        }else if (passwordLogin) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Wrong Password, please try again..!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['passwordLogin']);
         }
 
         function removeUrlParams(params) {
@@ -57,4 +71,4 @@ const passwordInputs = document.getElementById('passwordInputs');
             params.forEach(param => url.searchParams.delete(param));
             window.history.replaceState({}, document.title, url.toString());
         }
-    });
+});

@@ -5,12 +5,10 @@ error_reporting(E_ALL);
 register_shutdown_function(function () {
     $error = error_get_last();
     if ($error) {
-        file_put_contents(__DIR__ . '/email_fatal_error.log', json_encode($error) . "\n", FILE_APPEND);
+        echo "hehe";
     }
 });
 
-file_put_contents(__DIR__ . '/email_log.txt', "==> Script started at " . date("Y-m-d H:i:s") . "\n", FILE_APPEND);
-file_put_contents(__DIR__ . '/email_log.txt', "Args: " . json_encode($argv) . "\n", FILE_APPEND);
 
 require __DIR__ . '/../vendor/autoload.php';
 require_once(__DIR__ . '/../installer/config.php');
@@ -19,7 +17,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if (!isset($argv[1]) || !isset($argv[2])) {
-    file_put_contents(__DIR__ . '/email_error.log', "Missing parameters. Exiting.\n", FILE_APPEND);
     exit();
 }
 
@@ -59,13 +56,11 @@ try {
         }
     }
 
-    if (!$user) {
-        file_put_contents(__DIR__ . '/email_error.log', "No user found in userinformations or users for ID: $createdUserId. Exiting.\n", FILE_APPEND);
+    if (!$user) { 
         exit();
     }
 
     if (!$pdo) {
-        file_put_contents(__DIR__ . '/email_error.log', "Database connection failed.\n", FILE_APPEND);
         exit();
     }
 
@@ -166,13 +161,11 @@ try {
             ";
 
         }else {
-            file_put_contents(__DIR__ . '/email_error.log', "Invalid action type: $action. Exiting.\n", FILE_APPEND);
             exit();
         }
 
         $mail->send();
-        file_put_contents(__DIR__ . '/email_log.txt', "Email sent successfully to {$user['email']} with action $action\n", FILE_APPEND);
-
+        
     } catch (Exception $e) {
         file_put_contents(__DIR__ . '/email_error.log', "PHPMailer Error: {$mail->ErrorInfo}\n", FILE_APPEND);
     }

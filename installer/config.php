@@ -138,6 +138,13 @@ if (!function_exists('db_connection')) {
                 logout_time DATETIME DEFAULT NULL,
                 FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
             )",
+            "CREATE TABLE IF NOT EXISTS employee_history (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                employee_id INT NOT NULL,
+                login_time DATETIME NOT NULL,
+                logout_time DATETIME DEFAULT NULL,
+                FOREIGN KEY (employee_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
             "CREATE TABLE IF NOT EXISTS reports (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 users_id INT NOT NULL,

@@ -20,152 +20,128 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // ============================= Login Authentication ============================= //
     if (isset($_POST["loginAuth"]) && $_POST["loginAuth"] === "true") {
-        $username = $_POST["username"] ?? '';
-        $password = $_POST["password"] ?? '';
-        $mailCode = $_POST["mailCode"] ?? '';
-        $AdminMailCode = $_POST["AdminMailCode"] ?? '';
+        $username      = $_POST['username']      ?? '';
+        $password      = $_POST['password']      ?? '';
+        $mailCode      = $_POST['mailCode']      ?? '';
+        $adminMailCode = $_POST['AdminMailCode'] ?? '';
 
-        $errors = [];
-
-        // if ($mailCode == '' && $AdminMailCode == '' && empty($username) || empty($password)) {
-        //     $errors["empty_inputs"] = "Fill all fields!";
-        // }
+        $hasCredentials = $username !== '' && $password !== '';
+        $hasMfaCode     = ($mailCode !== '') || ($adminMailCode !== '');
 
         try {
-            $user = getUsername($pdo, $username);
+            if ($hasCredentials && !$hasMfaCode) {
+                $user = getUsername($pdo, $username);   
 
-            if ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && !$user) {
-                $errors["login_incorrect"] = "Incorrect username!";
-            } elseif ($AuthType == '' && $mailCode == ''&& $AdminMailCode == '' && $mailCode == '' && !password_verify($password, $user["password"])) {
-                $errors["login_incorrect"] = "Wrong password!";
-            }
-
-            $status = null;
-            
-            if ($user && $user["user_role"] === "employee") {
-                $stmt = $pdo->prepare("SELECT status FROM userRequest WHERE users_id = ? ORDER BY request_date DESC LIMIT 1");
-                $stmt->execute([$user['id']]);
-                $request = $stmt->fetch(PDO::FETCH_ASSOC);
-                
-                if ($request) {
-                    $status = $request['status'];
-                    error_log("Student status found: $status for user ID: {$user['id']}");
-                } else {
-                    $status = 'pending';
-                    error_log("No status record found for user ID: {$user['id']}, defaulting to pending");
-                    
+                if (!$user) {
+                    $_SESSION['errors_login']['login_incorrect'] = 'Incorrect username!';
+                    header('Location: ../src/index.php?usernameLogin=wrong');
+                    exit();
                 }
-            }
-
-            if ($user && $user["user_role"] === "administrator") {
-                $activeSession = checkActiveAdminSession($pdo, $user["id"]);
-                if ($activeSession && $activeSession !== session_id()) {
-                    $errors["login_incorrect"] = "Administrator is already logged in elsewhere!";
+                if (!password_verify($password, $user['password'])) {
+                    $_SESSION['errors_login']['login_incorrect'] = 'Wrong password!';
+                    header('Location: ../src/index.php?passwordLogin=wrong');
+                    exit();
                 }
-            }
 
-            if (!empty($errors)) {
-                $_SESSION["errors_login"] = $errors;
-                header("Location: ../src/index.php");
+                $status = 'pending';
+                if ($user['user_role'] === 'employee') {
+                    $stmt  = $pdo->prepare('SELECT status
+                                            FROM userRequest
+                                            WHERE users_id = ?
+                                        ORDER BY request_date DESC
+                                            LIMIT 1');
+                    $stmt->execute([$user['id']]);
+                    $row   = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $status = $row['status'] ?? 'pending';
+                }
+
+                session_regenerate_id(true);
+
+                $code = substr(str_shuffle('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), 0, 6);
+                $_SESSION['EmailAuth']         = $code;
+                $_SESSION['pending_user_id']   = $user['id'];
+                $_SESSION['pending_user_role'] = $user['user_role'];
+
+                $script   = realpath(__DIR__ . '/emailSender.php');
+                $cmdParts = [
+                    'php',
+                    escapeshellarg($script),
+                    escapeshellarg($user['id']),   
+                    escapeshellarg('MFA'),         
+                    escapeshellarg(''),          
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg($code)         
+                ];
+                pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));   
+
+                if ($user['user_role'] === 'employee') {
+                    switch ($status) {
+                        case 'validated':  header('Location: ../src/MFAauth.php');             break;
+                        case 'rejected':   header('Location: ../src/employee/rejected.php');   break;
+                        default:           header('Location: ../src/employee/pending.php');    break;
+                    }
+                } else { 
+                    header('Location: ../src/adminMfaMailCode.php');
+                }
                 exit();
             }
 
-            session_regenerate_id(true);
-            // if($AuthType == '' && $mailCode == $_SESSION["EmailAuth"]){
-            
-                if ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "administrator") {
-                    updateUserSession($pdo, $user["id"], session_id());
+            if ($hasMfaCode && !$hasCredentials) {
+                $expected = $_SESSION['EmailAuth'] ?? '';
+                $posted   = $mailCode !== '' ? $mailCode : $adminMailCode;
+
+                if ($posted !== $expected) {
+                    header('Location: ../src/MFAauth.php?mfa=failed');
+                    exit();
                 }
 
-                if ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "employee") {
-                        $_SESSION["user_id"] = $user["id"] ?? '';
-                        $_SESSION["user_username"] = htmlspecialchars($user["username"]  ?? '');
-                        $_SESSION["roles"] = $user["user_role"] ?? '';
-                        $_SESSION["last_regeneration"] = time();
-                    if ($status === "validated") {
-                        $employeeId =  $user["id"] ?? 'WALANG ID';
-                        $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
-                        $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
-                        $command = "start /B php " .
-                            escapeshellarg($scriptPath) . ' ' .  //     1  
-                            escapeshellarg($employeeId) . ' ' .      //     2  
-                            escapeshellarg("MFA") . ' ' .     //   3    
-                            escapeshellarg('') . ' ' .         //      4      
-                            escapeshellarg('') . ' ' .            //  5       
-                            escapeshellarg('') . ' ' .                 //     6
-                            escapeshellarg('') . ' ' .                  // 7
-                            escapeshellarg('') . ' ' .                          // 8 == 7
-                            escapeshellarg($mailCode) . '"';
-                            
-                        file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
-                        pclose(popen($command, "r"));
+                $userId   = $_SESSION['pending_user_id']   ?? null;
+                $userRole = $_SESSION['pending_user_role'] ?? null;
+                if (!$userId || !$userRole) {
+                    $_SESSION['errors_login']['login_incorrect'] = 'Session expired. Please log in again.';
+                    header('Location: ../src/index.php');
+                    exit();
+                }
 
-                        $_SESSION["EmailAuth"] = $mailCode;
-                        header("Location: ../src/MFAauth.php");
-                        die();
-                    }else if($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "employee" && $status === "rejected"){
-                        header("Location: ../src/employee/rejected.php");
-                        error_log("Redirecting employee to pending");
-                    }
-                    else {
-                        header("Location: ../src/employee/pending.php");
-                        error_log("Redirecting employee to pending");
-                    }
-                } 
-                elseif ($AuthType == '' && $mailCode == '' && $AdminMailCode == '' && $user["user_role"] === "administrator") {
-                    $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), 0, 6);
-                    $employeeId =  1;
-                    $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
-                    $command = "start /B php " .
-                        escapeshellarg($scriptPath) . ' ' .  //     1  
-                        escapeshellarg($employeeId) . ' ' .      //     2  
-                        escapeshellarg("MFA") . ' ' .     //   3    
-                        escapeshellarg('') . ' ' .         //      4      
-                        escapeshellarg('') . ' ' .            //  5       
-                        escapeshellarg('') . ' ' .                 //     6
-                        escapeshellarg('') . ' ' .                  // 7
-                        escapeshellarg('') . ' ' .                          // 8 == 7
-                        escapeshellarg($mailCode) . '"';
-                        
-                    file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
-                    pclose(popen($command, "r"));
+                $_SESSION['user_id']   = $userId;
+                $_SESSION['user_role'] = $userRole;   
 
-                    $_SESSION["EmailAuth"] = $mailCode;
-                    header("Location: ../src/adminMfaMailCode.php");
-                    die();
-                    header("Location: ../src/adminMfa.php");
+                if ($userRole === 'employee') {
+                    $stmt = $pdo->prepare('INSERT INTO employee_history (employee_id, login_time) VALUES (?, NOW())');
+                    $stmt->execute([$userId]);
+                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['EmailAuth']);
+                    header('Location: ../src/employee/dashboard.php');
+                    exit();
                 }
-                elseif ($AuthType == '' && $username == '' && $AdminMailCode == '' && $password == '' && $mailCode == $_SESSION["EmailAuth"]){
-                    header("Location: ../src/employee/dashboard.php");
-                    die();
-                }elseif ($AuthType == '' && $username == '' && $mailCode == '' && $password == '' && $AdminMailCode == $_SESSION["EmailAuth"]){
-                    $adminID = 1;
-                    $query = "INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW());";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->execute([$adminID]); 
-                    header("Location: ../src/admin/dashboard.php");
-                    die();
-                }elseif ($AuthType == '' && $AdminMailCode == '' && $username == '' && $password == '' && $mailCode !== $_SESSION["EmailAuth"]) {
-                    header("Location: ../src/MFAauth.php?mfa=failed");
-                    die();
-                }elseif ($AuthType == '' && $mailCode == '' && $username == '' && $password == '' && $AdminMailCode !== $_SESSION["EmailAuth"]) {
-                    header("Location: ../src/MFAauth.php?mfa=failed");
-                    die();
+
+                if ($userRole === 'administrator') {
+                    $stmt = $pdo->prepare('INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW())');
+                    $stmt->execute([$userId]);
+                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['EmailAuth']);
+                    header('Location: ../src/admin/dashboard.php');
+                    exit();
                 }
-                else {
-                    header("Location: ../src/index.php");
-                    error_log("Redirecting to index (unknown role)");
-                }
-            // }
+
+                $_SESSION['errors_login']['login_incorrect'] = 'Unknown user role';
+                header('Location: ../src/index.php');
+                exit();
+            }
+
+            $_SESSION['errors_login']['login_incorrect'] = 'Invalid form submission.';
+            header('Location: ../src/index.php');
+            exit();
+
         } catch (PDOException $e) {
-            error_log("Login error: " . $e->getMessage());
-            session_start();
-            $_SESSION["errors_login"] = ["login_incorrect" => "System error"];
-            header("Location: ../src/index.php");
+            error_log('Login error: ' . $e->getMessage());
+            $_SESSION['errors_login'] = ['login_incorrect' => 'System error'];
+            header('Location: ../src/index.php');
             exit();
         }
-    }
 
+    }
 
     // ============================= User Registration Authentication ============================= //
     if(isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
@@ -586,17 +562,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $employeeId = 1;
                 $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
                 $command = "start /B php " .
-                    escapeshellarg($scriptPath) . ' ' .  //     1  
-                    escapeshellarg($employeeId) . ' ' .      //     2  
-                    escapeshellarg("password") . ' ' .     //   3    
-                    escapeshellarg('') . ' ' .         //      4      
-                    escapeshellarg('') . ' ' .            //  5       
-                    escapeshellarg('') . ' ' .                 //     6
-                    escapeshellarg('') . ' ' .                  // 7
-                    escapeshellarg('') . ' ' .                          // 8 == 7
-                    escapeshellarg($emailAuth) . '"';                         // 7 == 8
-                    // TAng ina yung mail lang pala maliiiiii!!!!!!!!!!
-                file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
+                    escapeshellarg($scriptPath) . ' ' . 
+                    escapeshellarg($employeeId) . ' ' .     
+                    escapeshellarg("password") . ' ' .     
+                    escapeshellarg('') . ' ' .           
+                    escapeshellarg('') . ' ' .                 
+                    escapeshellarg('') . ' ' .               
+                    escapeshellarg('') . ' ' .                 
+                    escapeshellarg('') . ' ' .                        
+                    escapeshellarg($emailAuth) . '"';                       
                 pclose(popen($command, "r"));
                 $_SESSION["EmailAuth"] = $emailAuth;
                 header("Location: ../src/admin/changePass.php?username=success");
@@ -655,15 +629,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
             $command = "start /B php " .
-                escapeshellarg($scriptPath) . ' ' .  //     1  
-                escapeshellarg($employeeId) . ' ' .      //     2  
-                escapeshellarg("accepted") . ' ' .     //   3    
-                escapeshellarg('') . ' ' .         //      4      
-                escapeshellarg('') . ' ' .            //  5       
-                escapeshellarg('') . ' ' .                 //     6
-                escapeshellarg('') . ' ' .                  // 7
-                escapeshellarg('') . ' ' .                  // 8
-                escapeshellarg('') ;                         // 9 == 8
+                escapeshellarg($scriptPath) . ' ' .  
+                escapeshellarg($employeeId) . ' ' .     
+                escapeshellarg("accepted") . ' ' .     
+                escapeshellarg('') . ' ' .            
+                escapeshellarg('') . ' ' .                   
+                escapeshellarg('') . ' ' .                
+                escapeshellarg('') . ' ' .                
+                escapeshellarg('') . ' ' .                  
+                escapeshellarg('') ;                       
 
             pclose(popen($command, "r"));
 
@@ -1456,8 +1430,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             escapeshellarg($password) . ' ';       
             escapeshellarg($password) ;       
 
-
-            file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
             pclose(popen($command, "r"));
 
 
@@ -1875,6 +1847,65 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
+    if (isset($_POST["changePasswordEmp"]) && $_POST["changePasswordEmp"] === "true"){
+        $currentPassword = $_POST["current_password"] ?? "";
+        $newPassword = $_POST["new_password"] ?? "";
+        $confirmPassword = $_POST["confirm_password"] ?? "";
+
+        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+            echo json_encode(["status" => "error", "message" => "All fields are required."]);
+            header("Location: ../src/employee/settings.php?password=empty");
+            exit;
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            echo json_encode(["status" => "error", "message" => "New passwords do not match."]);
+            header("Location: ../src/employee/settings.php?password=newNotMatched");
+            exit;
+        }
+
+        try {
+            echo $employeeId = $_SESSION["user_id"] ?? 'BIlat';
+            $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
+            $stmt->execute(['id' => $employeeId]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user) {
+                echo json_encode(["status" => "error", "message" => "employee user not found."]);
+                exit;
+            }
+
+            if (!password_verify($currentPassword, $user['password'])) {
+                echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
+                header("Location: ../src/employee/settings.php?password=currentNotMatched");
+                exit;
+            }
+
+            $newHashed = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            $updateStmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
+            $updateSuccess = $updateStmt->execute([
+                'password' => $newHashed,
+                'id' => $employeeId
+            ]);
+
+            if ($updateSuccess) {
+                echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
+                header("Location: ../src/employee/settings.php?password=success");
+                exit;
+            } else {
+                echo json_encode(["status" => "error", "message" => "Failed to update password."]);
+                header("Location: ../src/employee/settings.php?password=failed");
+                exit;
+            }
+
+        } catch (PDOException $e) {
+            echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
+            header("Location: ../src/employee/settings.php?password=failed");
+            exit;
+        }
+    }
+
     // ============================== FORGOT PASSWORD ============================== //
     if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true"){
         $usernameForgot = $_POST["usernameAuth"] ?? null;
@@ -1915,7 +1946,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     escapeshellarg('') . ' ' .             
                     escapeshellarg($mailCode) . '"';
 
-                file_put_contents("debug_command.log", "Command: $command\n", FILE_APPEND);
                 pclose(popen($command, "r"));
 
                 $_SESSION["EmailAuth"] = $mailCode;

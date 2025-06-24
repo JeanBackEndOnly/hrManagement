@@ -533,39 +533,42 @@ function getEducationalBG() {
 }
 
 // ===================== EMPLOYEE ===================== //
-function getEmployee() {
+function getEmployee() {         // make sure the session is open
     $pdo = db_connection();
 
-    $user_id = $_SESSION["user_id"] ?? '';
+    $user_id = $_SESSION['user_id'] ?? null;  //  <-- permanent key
 
+    if (!$user_id) {
+        echo "Bilat";               // or handle “not logged in” however you prefer
+    }
 
-    $query = "SELECT * FROM users 
-        INNER JOIN userinformations ON users.id = userinformations.users_id
-        LEFT JOIN family_information ON users.id = family_information.users_id
-        LEFT JOIN userrequest ON users.id = userrequest.users_id
-        WHERE users.id = :id";
+    $query = "SELECT * FROM users
+              INNER JOIN userinformations ON users.id = userinformations.users_id
+              LEFT JOIN family_information ON users.id = family_information.users_id
+              LEFT JOIN userrequest ON users.id = userrequest.users_id
+              WHERE users.id = :id";
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(":id", $user_id);
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $queryEduc = "SELECT * FROM educational_background WHERE users_id = :id";
+    $queryEduc = 'SELECT * FROM educational_background WHERE users_id = :id';
     $stmtEduc = $pdo->prepare($queryEduc);
-    $stmtEduc->bindParam(":id", $user_id);
+    $stmtEduc->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmtEduc->execute();
     $educData = $stmtEduc->fetchAll(PDO::FETCH_ASSOC);
 
     $getEduc = [];
     foreach ($educData as $row) {
-        $level = $row['education_level'];
-        $getEduc[$level] = $row;
+        $getEduc[$row['level']] = $row;
     }
 
     return [
         'employeeInfo' => $employeeInfo,
-        'getEduc' => $getEduc
+        'getEduc'      => $getEduc
     ];
 }
+
 
 
 // ===================== DASHBOARD ===================== //
@@ -595,7 +598,16 @@ function adminHistoryLog(){
     $adminHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return ['adminHistory' => $adminHistory];
 } 
-
+function employeeHistoryLog(){
+    $pdo = db_connection();
+    $employeeID = $_SESSION["user_id"] ?? '';
+    $query = "SELECT * FROM employee_history WHERE employee_id = :employee_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":employee_id", $employeeID);
+    $stmt->execute();
+    $employeeHistory = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ['employeeHistory' => $employeeHistory];
+} 
 // ====================== REPORTS ====================== //
 
 function getReportCount() {

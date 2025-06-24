@@ -26,19 +26,6 @@
             customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['password']);
-        }else if (currentNotMatched) {
-            console.log("Showing updateReq toast");
-            Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Current password not match!.',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: { popup: 'swal2-row-toast' }
-            });
-            removeUrlParams(['password']);
         }else if (password) {
             console.log("Showing updateReq toast");
             Swal.fire({

@@ -27,7 +27,8 @@ $reportCount = $reportsC["reportCount"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];
-
+$historyEmployee = employeeHistoryLog();
+$employeeHistory = $historyEmployee["employeeHistory"];
 
 
 $educData = getEducationalBG();
@@ -167,6 +168,8 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
     $username = false;
     $passwordChange = false;
     $code = false;
+    $passwordFailed = false;
+    
     if (isset($_GET['job']) && $_GET['job'] === 'success') {
         $AddJobModal = true;
     }elseif(isset($_GET['deleteJob']) && $_GET['deleteJob'] === 'success'){
@@ -213,6 +216,8 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         $passwordChange = true;
     }elseif(isset($_GET['code']) && $_GET['code'] === 'notMatch'){
         $code = true;
+    }elseif(isset($_GET['password']) && $_GET['password'] === 'failed'){
+        $passwordFailed = true;
     }
 
 ?>
@@ -265,6 +270,8 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         const username = <?php echo json_encode($username); ?>;
         const passwordChange = <?php echo json_encode($passwordChange); ?>;
         const code = <?php echo json_encode($code); ?>;
+        const passwordFailed = <?php echo json_encode($passwordFailed); ?>;
+        
     </script>
 
 </head>
