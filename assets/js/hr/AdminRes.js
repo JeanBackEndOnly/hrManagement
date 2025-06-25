@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('../api.php')
+        fetch('../functions/api.php')
         .then(response => response.json())
         .then(data => {
             console.log("Fetched data:", data);
@@ -281,6 +281,7 @@ function clearLiveError(input) {
     }
 }
 
+
 function nextstA() {
         const lnameEl = document.getElementById('surname');
         const fnameEl = document.getElementById('fname');
@@ -497,7 +498,7 @@ async function nextndA() {
         }
 
         try {
-            const response = await fetch('../emailAuth.php', {
+            const response = await fetch('../functions/emailAuth.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `email=${encodeURIComponent(email)}`

@@ -79,12 +79,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 if ($user['user_role'] === 'employee') {
                     switch ($status) {
-                        case 'validated':  header('Location: ../src/MFAauth.php');             break;
+                        case 'validated':  header('Location: ../src/functions/MFAauth.php');   break;
                         case 'rejected':   header('Location: ../src/employee/rejected.php');   break;
                         default:           header('Location: ../src/employee/pending.php');    break;
                     }
                 } else { 
-                    header('Location: ../src/adminMfaMailCode.php');
+                    header('Location: ../src/functions/adminMfaMailCode.php');
                 }
                 exit();
             }
@@ -92,9 +92,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($hasMfaCode && !$hasCredentials) {
                 $expected = $_SESSION['EmailAuth'] ?? '';
                 $posted   = $mailCode !== '' ? $mailCode : $adminMailCode;
+                // $postedAdmin   = $adminMailCode !== '' ? $mailCode : $adminMailCode;
 
-                if ($posted !== $expected) {
-                    header('Location: ../src/MFAauth.php?mfa=failed');
+                if ($posted !== $expected && $posted == $mailCode) {
+                    header('Location: ../src/functions/MFAauth.php?mfa=failed');
+                    exit();
+                }elseif ($posted !== $expected && $posted == $adminMailCode) {
+                     header('Location: ../src/functions/adminMfaMailCode.php?mfa=failed');
                     exit();
                 }
 
@@ -1234,8 +1238,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $department = $_POST["department"];
         $jobTitle = $_POST["jobTitle"];
         $slary_rate = $_POST["slary_rate"];
-        $salary_Range_From = $_POST["salary_Range_From"];
-        $salary_Range_To = $_POST["salary_Range_To"];
+        $salary_Range_From = intval($_POST["salary_Range_From"]);
+        $salary_Range_To = intval($_POST["salary_Range_To"]);
         $salary = $_POST["salary"];
         $citizenship = $_POST["citizenship"];
         $gender = $_POST["gender"];
@@ -1865,7 +1869,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         try {
-            echo $employeeId = $_SESSION["user_id"] ?? 'BIlat';
+            echo $employeeId = $_SESSION["user_id"] ?? '';
             $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
             $stmt->execute(['id' => $employeeId]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -1950,7 +1954,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $_SESSION["EmailAuth"] = $mailCode;
 
-                header("Location: ../src/changePass.php?username=success");
+                header("Location: ../src/functions/changePass.php?username=success");
                 die();
             }
             // ===================== CODE MAIL MATCHED! ===================== //
@@ -1961,11 +1965,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 echo $employeeId = $_SESSION["user_id"] ?? 'Wala   ';
 
                 if($new_password !== $confirm_password){
-                    header("Location: ../src/changePass.php?password=notMatch");
+                    header("Location: ../src/functions/changePass.php?password=notMatch");
                     die();
                 }
                 if(empty($new_password) || empty($confirm_password) && $userForgot){
-                     header("Location: ../src/changePass.php?password=empty");
+                     header("Location: ../src/functions/changePass.php?password=empty");
                     die();
                 }
                 $hasedPass = password_hash($new_password, PASSWORD_DEFAULT);
@@ -1980,7 +1984,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
             // ===================== USERNAME NOT MATCHED! ===================== //
             elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
-                header("Location: ../src/changePass.php?code=notMatch");
+                header("Location: ../src/functions/changePass.php?code=notMatch");
                 die();
             }
             // ===================== EMPTY INPUTS (IN CASE)! ===================== //

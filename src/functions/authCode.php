@@ -1,4 +1,4 @@
-<?php include '../templates/RLheader.php'; ?>
+<?php include '../../templates/funcHeader.php'; ?>
 <div class="hehe h-75 w-100 d-flex justify-content-start align-items-start">
     <div class="heh w-100 h-25 d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-2" >
         <form method="POST" action="../auth/authentications.php" class="modal-content">
@@ -20,4 +20,4 @@
         </form>
     </div>
 </div>
-<?php include '../templates/RLfooter.php'; ?>
+<?php include '../../templates/funcFooter.php'; ?>

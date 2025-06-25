@@ -1,4 +1,4 @@
-<?php include '../../templates/Uheader.php'; include '../../templates/adminAuth.php';?>
+<?php include '../../templates/Uheader.php';?>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">

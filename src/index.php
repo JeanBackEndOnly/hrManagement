@@ -3,7 +3,8 @@
     <div class="container px-0 w-100">
         <div class="row">
             <div class="card h-50 w-100 px-4 rounded-2">
-                <?php loginErros(); ?>
+                <?php 
+                //loginErros(); ?>
                 <div class="body-header mb-1 mt-4 w-100">
                     <h3 class="text-center">ZAMBOANGA PUERICULTURE CENTER</h3>
                 </div>

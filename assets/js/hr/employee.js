@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
     function fetchPendingCount() {
-        fetch('../api.php')
+        fetch('../functions/api.php')
             .then(response => response.json())
             .then(data => {
                 const count = data.pendingCount ?? 0;
@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 function getValidated() {
-    console.log("BilaT REQUEST");
     showLoading();
 
     setTimeout(() => {

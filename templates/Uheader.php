@@ -145,30 +145,6 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
 
 
     // ========= NOTIFICATIONS ========= //
-    $AddJobModal = false;
-    $DeleteJobModal = false;
-    $JobExistModal = false;
-    $JobTitleExdit = false;
-    $acceptEmployee = false;
-    $rejectEmployee = false;
-    $updateReq = false;
-    $updateReqFailed = false;
-    $updateVal = false;
-    $updateValFailed = false;
-    $deleteValidatedEmployee = false;
-    $upsertSuccess = false;
-    $upsertFailed = false;
-    $promotion = false;
-    $salary = false;
-    $password = false;
-    $newNotMatched = false;
-    $currentNotMatched = false;
-    $passwordAuth = false;
-    $passwordAuthFailes = false;
-    $username = false;
-    $passwordChange = false;
-    $code = false;
-    $passwordFailed = false;
     
     if (isset($_GET['job']) && $_GET['job'] === 'success') {
         $AddJobModal = true;
@@ -271,7 +247,6 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         const passwordChange = <?php echo json_encode($passwordChange); ?>;
         const code = <?php echo json_encode($code); ?>;
         const passwordFailed = <?php echo json_encode($passwordFailed); ?>;
-        
     </script>
 
 </head>

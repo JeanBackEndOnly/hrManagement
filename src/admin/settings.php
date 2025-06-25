@@ -1,4 +1,4 @@
-<?php include '../../templates/Uheader.php'; include '../../templates/adminAuth.php';?>
+<?php include '../../templates/Uheader.php';?>
 
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
@@ -83,17 +83,6 @@
                         <button id="idLoginHistory" class="historyPass" onclick="loginHistory()">Login History</button>
                     </div>
                 </div>
-                 <?php
-                            // function nameInitial($name) {
-                            //     $trimmed = trim($name); 
-                            //     return strtoupper($trimmed[0]);
-                            // }
-
-                            // $name = "juan Francisco";
-                            // $getFirstNameInitial = nameInitial($name);
-                            // echo $getFirstNameInitial; 
-
-                        ?>
                 <div class="container" id="changePAsswordID" style="display: flex;">
                     <div class="container shadow p-5 rounded-2">
                         <form class="w-100" method="POST" action="../../auth/authentications.php">
@@ -205,64 +194,5 @@
             <div class="line"></div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-        const passwordInputCurrents = document.getElementById('passwordInputCurrents');
-        const showPasswordCurrents = document.getElementById('showPasswordCurrents');
-        const hidePasswordCurrents = document.getElementById('hidePasswordCurrents');
-
-        const passwordInputs = document.getElementById('passwordInputs');
-        const showPasswords = document.getElementById('showPasswords');
-        const hidePasswords = document.getElementById('hidePasswords');
-
-        const confirmPasswordInputs = document.getElementById('confirmPasswordInputs');
-        const showConfirmPasswords = document.getElementById('showConfirmPasswords');
-        const hideConfirmPasswords = document.getElementById('hideConfirmPasswords');
-
-        if (showPasswordCurrents && hidePasswordCurrents && passwordInputCurrents) {
-            showPasswordCurrents.addEventListener('click', () => {
-                passwordInputCurrents.type = 'text';
-                showPasswordCurrents.style.display = 'none';
-                hidePasswordCurrents.style.display = 'inline';
-            });
-
-            hidePasswordCurrents.addEventListener('click', () => {
-                passwordInputCurrents.type = 'password';
-                showPasswordCurrents.style.display = 'inline';
-                hidePasswordCurrents.style.display = 'none';
-            });
-        }
-
-        if (showPasswords && hidePasswords && passwordInputs) {
-            showPasswords.addEventListener('click', () => {
-                passwordInputs.type = 'text';
-                showPasswords.style.display = 'none';
-                hidePasswords.style.display = 'inline';
-            });
-
-            hidePasswords.addEventListener('click', () => {
-                passwordInputs.type = 'password';
-                showPasswords.style.display = 'inline';
-                hidePasswords.style.display = 'none';
-            });
-        }
-
-        if (showConfirmPasswords && hideConfirmPasswords && confirmPasswordInputs) {
-            showConfirmPasswords.addEventListener('click', () => {
-                confirmPasswordInputs.type = 'text';
-                showConfirmPasswords.style.display = 'none';
-                hideConfirmPasswords.style.display = 'inline';
-            });
-
-            hideConfirmPasswords.addEventListener('click', () => {
-                confirmPasswordInputs.type = 'password';
-                showConfirmPasswords.style.display = 'inline';
-                hideConfirmPasswords.style.display = 'none';
-            });
-        }
-    });
-
-    </script>
 <script src="../../assets/js/hr/settings.js"></script>
 <?php include '../../templates/Ufooter.php'?>

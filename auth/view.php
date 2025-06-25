@@ -642,7 +642,7 @@ function registerEmployeeAdmin() {
                         echo '<button class="w-100 border-0 mb-1 px-1 text-center" style="height: 100%;" onclick="disable_Button()" id="backs">Sign-up</button>';
                     echo '</div>';
                     echo '<div class="col-md-12 w-100 ms-2" mb-1 style="height: 35px; display: none; margin-top: -1.5rem"  id="button-signup-rdA">';
-                        echo '<button class="w-100 border-0 mb-1 px-1 text-center" onclick="signUP()" type="submit" style="height: 100%;" id="button-signup-rds">Sign-up</button>';
+                        echo '<button class="w-100 border-0 mb-1 px-1 text-center" type="submit" style="height: 100%;" id="button-signup-rds">Sign-up</button>';
                     echo '</div>';
                 echo '</form>';
             //====================== FIRST PAGE BUTTONS =============== //

@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once '../installer/config.php';
+require_once '../../installer/config.php';
 
 if (!isset($_POST['employeeID'])) {
     echo json_encode(['exists' => false]);

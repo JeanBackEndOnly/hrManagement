@@ -1,4 +1,4 @@
-<?php include '../templates/RLheader.php';?>
+<?php include '../../templates/funcHeader.php';?>
 
 <main class="w-100">
     <div class="main-body w-100 h-100 m-0 p-0 d-flex justify-content-center align-items-center">
@@ -12,7 +12,7 @@
                 </div>
                 <div class="container w-100 p-0" id="changePAsswordID" style="display: flex;">
                     <div class="container  p-0 ">
-                        <form class="w-100" method="POST" action="../auth/authentications.php">
+                        <form class="w-100" method="POST" action="../../auth/authentications.php">
                                 <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                                 <input type="hidden" name="usersForgottenPass" value="true">
@@ -68,4 +68,4 @@
     </div>
 </div>
 <script src="../../assets/js/hr/changePass.js"></script>
-<?php include '../templates/RLfooter.php'?>
+<?php include '../../templates/funcFooter.php'?>

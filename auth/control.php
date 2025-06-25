@@ -5,7 +5,33 @@ date_default_timezone_set('Asia/Manila');
 require_once '../../installer/session.php';
 require_once '../../installer/config.php';
 require_once '../../auth/view.php';
+    // =========================== Notifications =========================== //
+    $AddJobModal = false;
+    $DeleteJobModal = false;
+    $JobExistModal = false;
+    $JobTitleExdit = false;
+    $acceptEmployee = false;
+    $rejectEmployee = false;
+    $updateReq = false;
+    $updateReqFailed = false;
+    $updateVal = false;
+    $updateValFailed = false;
+    $deleteValidatedEmployee = false;
+    $upsertSuccess = false;
+    $upsertFailed = false;
+    $promotion = false;
+    $salary = false;
+    $password = false;
+    $newNotMatched = false;
+    $currentNotMatched = false;
+    $passwordAuth = false;
+    $passwordAuthFailes = false;
+    $username = false;
+    $passwordChange = false;
+    $code = false;
+    $passwordFailed = false;
 
+    // =========================== JOB TITLES =========================== //
 function getJobTitlesCount(): int {
     $pdo = db_connection();
     try {
@@ -537,10 +563,6 @@ function getEmployee() {         // make sure the session is open
     $pdo = db_connection();
 
     $user_id = $_SESSION['user_id'] ?? null;  //  <-- permanent key
-
-    if (!$user_id) {
-        echo "Bilat";               // or handle “not logged in” however you prefer
-    }
 
     $query = "SELECT * FROM users
               INNER JOIN userinformations ON users.id = userinformations.users_id

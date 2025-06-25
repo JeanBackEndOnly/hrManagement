@@ -1,4 +1,4 @@
-<?php include '../../templates/Uheader.php'; include '../../templates/registerH.php';?>
+<?php include '../../templates/Uheader.php'; include '../../templates/regHeader.php';?>
  
  <main id="main" class="login-page">
     <?php

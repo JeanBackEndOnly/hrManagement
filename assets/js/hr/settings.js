@@ -71,13 +71,68 @@ document.addEventListener('DOMContentLoaded', () => {
             window.history.replaceState({}, document.title, url.toString());
         }
 });
+document.addEventListener("DOMContentLoaded", function () {
+
+        const passwordInputCurrents = document.getElementById('passwordInputCurrents');
+        const showPasswordCurrents = document.getElementById('showPasswordCurrents');
+        const hidePasswordCurrents = document.getElementById('hidePasswordCurrents');
+
+        const passwordInputs = document.getElementById('passwordInputs');
+        const showPasswords = document.getElementById('showPasswords');
+        const hidePasswords = document.getElementById('hidePasswords');
+
+        const confirmPasswordInputs = document.getElementById('confirmPasswordInputs');
+        const showConfirmPasswords = document.getElementById('showConfirmPasswords');
+        const hideConfirmPasswords = document.getElementById('hideConfirmPasswords');
+
+        if (showPasswordCurrents && hidePasswordCurrents && passwordInputCurrents) {
+            showPasswordCurrents.addEventListener('click', () => {
+                passwordInputCurrents.type = 'text';
+                showPasswordCurrents.style.display = 'none';
+                hidePasswordCurrents.style.display = 'inline';
+            });
+
+            hidePasswordCurrents.addEventListener('click', () => {
+                passwordInputCurrents.type = 'password';
+                showPasswordCurrents.style.display = 'inline';
+                hidePasswordCurrents.style.display = 'none';
+            });
+        }
+
+        if (showPasswords && hidePasswords && passwordInputs) {
+            showPasswords.addEventListener('click', () => {
+                passwordInputs.type = 'text';
+                showPasswords.style.display = 'none';
+                hidePasswords.style.display = 'inline';
+            });
+
+            hidePasswords.addEventListener('click', () => {
+                passwordInputs.type = 'password';
+                showPasswords.style.display = 'inline';
+                hidePasswords.style.display = 'none';
+            });
+        }
+
+        if (showConfirmPasswords && hideConfirmPasswords && confirmPasswordInputs) {
+            showConfirmPasswords.addEventListener('click', () => {
+                confirmPasswordInputs.type = 'text';
+                showConfirmPasswords.style.display = 'none';
+                hideConfirmPasswords.style.display = 'inline';
+            });
+
+            hideConfirmPasswords.addEventListener('click', () => {
+                confirmPasswordInputs.type = 'password';
+                showConfirmPasswords.style.display = 'inline';
+                hideConfirmPasswords.style.display = 'none';
+            });
+        }
+});
 function activateTab(clickedBtn) {
     document.querySelectorAll(".historyPass").forEach(btn => {
         btn.classList.remove("active");
     });
     clickedBtn.classList.add("active");
 }
-
 window.addEventListener('DOMContentLoaded', () => {
     changePass(); 
 });

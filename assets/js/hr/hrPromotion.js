@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('../api.php')
+        fetch('../functions/api.php')
             .then(response => response.json())
             .then(data => {
                 if (!Array.isArray(data.jobTitles)) {
