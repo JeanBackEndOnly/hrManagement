@@ -57,7 +57,7 @@ function showLoaderThen(callback) {
             return;
         }
 
-        fetch('api.php')
+        fetch('functions/api.php')
             .then(response => response.json())
             .then(data => {
                 if (!Array.isArray(data.jobTitles)) {
@@ -104,7 +104,9 @@ function showLoaderThen(callback) {
         if (employeeIDEmp === '') return;
 
         try {
-            const response = await fetch('employeeIDAuth.php', {
+            console.log("ABCABC");
+            const response = await fetch('functions/employeeIDAuth.php', {
+                
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `employeeID=${encodeURIComponent(employeeIDEmp)}`
@@ -287,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch('emailAuth.php', {
+            const response = await fetch('functions/emailAuth.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `email=${encodeURIComponent(email)}`
@@ -648,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (username === '') return;
 
         try {
-            const response = await fetch('usernameAuth.php', {
+            const response = await fetch('functions/usernameAuth.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `username=${encodeURIComponent(username)}`

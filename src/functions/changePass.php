@@ -67,5 +67,28 @@
         <div class="line"></div>
     </div>
 </div>
+<script>
+     document.addEventListener('DOMContentLoaded', () => {
+        if (code) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Mail code not match!, Please try again.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['code']);
+        }
+        function removeUrlParams(params) {
+            const url = new URL(window.location);
+            params.forEach(param => url.searchParams.delete(param));
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    });
+</script>
 <script src="../../assets/js/hr/changePass.js"></script>
 <?php include '../../templates/funcFooter.php'?>

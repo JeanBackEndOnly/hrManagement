@@ -354,7 +354,7 @@ function registerEmployeeAdmin() {
                 echo '<div class="back-button w-100 mt-2">';
                     echo '<a href="employee.php" class="text-start "><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
                 echo '</div>';
-               echo '<form id="signupForm" action="../../auth/authentications.php" method="post" enctype="multipart/form-data"
+               echo '<form id="signupForm" novalidate action="../../auth/authentications.php" method="post" enctype="multipart/form-data"
                     class="form-signup w-100 overflow-y-auto" style="max-height: 72.5vh; overflow-y: auto;">';
                     echo '<input type="hidden" name="csrf_token" value="' . $csrf_token . '">';
                     echo '<input type="hidden" name="add_employee" value="true">';

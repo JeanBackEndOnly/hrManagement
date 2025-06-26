@@ -1,38 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
-        const jobTitleSelect = document.getElementById('editJob_TitleEdit');
-        console.log("heheWorking!");
-        if (!jobTitleSelect) {
-            console.error("JobTitle select element not found!");
-            return;
-        }
 
-        fetch('../functions/api.php')
-            .then(response => response.json())
-            .then(data => {
-                if (!Array.isArray(data.jobTitles)) {
-                    console.error('Invalid data from API:', data);
-                    return;
-                }
-
-                // Clear existing options
-                jobTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
-
-                data.jobTitles.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.jobTitle;
-                    option.textContent = item.jobTitle;
-
-                    if (typeof selectedJobTitle !== 'undefined' && item.jobTitle === selectedJobTitle) {
-                        option.selected = true;
-                    }
-
-                    jobTitleSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading job titles:', error);
-            });
-});
 document.getElementById("jobTitleSearchInput").addEventListener("input", function () {
     const query = this.value.toLowerCase().trim();
     const rows = document.querySelectorAll("#jobTitleTableBody tr");

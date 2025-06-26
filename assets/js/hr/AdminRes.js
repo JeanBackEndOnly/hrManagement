@@ -148,6 +148,8 @@ hideConfirmPassword.addEventListener('click', () => {
         showConfirmPassword.style.display = 'inline';
         hideConfirmPassword.style.display = 'none';
 });
+
+
 document.addEventListener('DOMContentLoaded', function () {
         const departmentSelect = document.getElementById('Department');
         const scheduleFrom = document.getElementById('scheduleFrom');
@@ -281,99 +283,155 @@ function clearLiveError(input) {
     }
 }
 
+(function () {
+  /* ===== helper: wait for DOM ===== */
+  document.addEventListener('DOMContentLoaded', initWizard);
 
-function nextstA() {
-        const lnameEl = document.getElementById('surname');
-        const fnameEl = document.getElementById('fname');
-        const mnameEl = document.getElementById('mname');
-        const employeeIDEl = document.getElementById('employeeID');
-        const departmentEl = document.getElementById('Department');
-        const jobTitleEl = document.getElementById('Job_Title');
-        const slary_rateEl = document.getElementById('Slary_rate');
-        const salary_Range_FromEl = document.getElementById('salary_Range_From');
-        const salary_Range_ToEl = document.getElementById('salary_Range_To');
-        const salaryEl = document.getElementById('salary');
-        const citizenshipEl = document.getElementById('Citizenship');
-        const genderEl = document.getElementById('gender');
-        const civil_statusEl = document.getElementById('civil_status');
+  function initWizard() {
+    /* -----------------------------------------------------------
+       Section 1 – generic helpers
+    ----------------------------------------------------------- */
+    const form = document.getElementById('signupForm');
 
-        const lname = lnameEl.value.trim();
-        const fname = fnameEl.value.trim();
-        const mname = mnameEl.value.trim();
-        const employeeID = employeeIDEl.value.trim();
-        const department = departmentEl.value;
-        const job_Title = jobTitleEl.value;
-        const slary_rate = slary_rateEl.value;
-        const salary_Range_From = salary_Range_FromEl.value.trim();
-        const salary_Range_To = salary_Range_ToEl.value.trim();
-        const salary = salaryEl.value.trim();
-        const citizenship = citizenshipEl.value;
-        const gender = genderEl.value.trim();
-        const civil_status = civil_statusEl.value.trim();
+    /* spinner overlay (the same delay you used earlier) */
+    window.showLoaderThen = function (callback) {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) overlay.style.display = 'flex';
+      setTimeout(() => {
+        if (overlay) overlay.style.display = 'none';
+        callback();
+      }, 800);
+    };
 
-        const allFields = [
-            lnameEl, fnameEl, mnameEl, employeeIDEl,
-            salary_Range_FromEl, salary_Range_ToEl, salaryEl,
-            genderEl, civil_statusEl,
-            departmentEl, slary_rateEl, jobTitleEl, citizenshipEl
-        ];
+    /* step toggling + enable/disable controls */
+    window.switchStep = function (currentStepEl, nextStepEl) {
+      /* 1 — disable everything in the step we’re about to hide */
+      currentStepEl
+        .querySelectorAll('input, select, textarea')
+        .forEach((el) => (el.disabled = true));
+      currentStepEl.style.display = 'none';
 
-        function showError(input, message) {
+      /* 2 — enable everything in the step we’re about to show */
+      nextStepEl
+        .querySelectorAll('input, select, textarea')
+        .forEach((el) => (el.disabled = false));
+      /* your containers use flex, so keep it consistent         */
+      nextStepEl.style.display = 'flex';
+    };
+
+    /* Disable controls that live in steps hidden at page-load   */
+    ['nd-stepA', 'rd-stepA'].forEach((id) => {
+      const step = document.getElementById(id);
+      if (step) {
+        step
+          .querySelectorAll('input, select, textarea')
+          .forEach((el) => (el.disabled = true));
+      }
+    });
+
+    /* Re-enable EVERYTHING just before the real submit          */
+    form.addEventListener('submit', () => {
+      form.querySelectorAll('[disabled]').forEach((el) => (el.disabled = false));
+    });
+ window.nextstA = function () {
+      /* === original validation block === */
+      const lnameEl = document.getElementById('surname');
+      const fnameEl = document.getElementById('fname');
+      const mnameEl = document.getElementById('mname');
+      const employeeIDEl = document.getElementById('employeeID');
+      const departmentEl = document.getElementById('Department');
+      const jobTitleEl = document.getElementById('Job_Title');
+      const slary_rateEl = document.getElementById('Slary_rate');
+      const salary_Range_FromEl = document.getElementById('salary_Range_From');
+      const salary_Range_ToEl = document.getElementById('salary_Range_To');
+      const salaryEl = document.getElementById('salary');
+      const citizenshipEl = document.getElementById('Citizenship');
+      const genderEl = document.getElementById('gender');
+      const civil_statusEl = document.getElementById('civil_status');
+
+      const lname = lnameEl.value.trim();
+      const fname = fnameEl.value.trim();
+      const mname = mnameEl.value.trim();
+      const employeeID = employeeIDEl.value.trim();
+      const department = departmentEl.value;
+      const job_Title = jobTitleEl.value;
+      const slary_rate = slary_rateEl.value;
+      const salary_Range_From = salary_Range_FromEl.value.trim();
+      const salary_Range_To = salary_Range_ToEl.value.trim();
+      const salary = salaryEl.value.trim();
+      const citizenship = citizenshipEl.value;
+      const gender = genderEl.value.trim();
+      const civil_status = civil_statusEl.value.trim();
+
+      const allFields = [
+        lnameEl,
+        fnameEl,
+        mnameEl,
+        employeeIDEl,
+        salary_Range_FromEl,
+        salary_Range_ToEl,
+        salaryEl,
+        genderEl,
+        civil_statusEl,
+        departmentEl,
+        slary_rateEl,
+        jobTitleEl,
+        citizenshipEl,
+      ];
+
+      function showError(input, message = 'This field is required') {
         let errorEl = input.nextElementSibling;
         if (!errorEl || !errorEl.classList.contains('input-error')) {
-            errorEl = document.createElement('div');
-            errorEl.classList.add('input-error');
-            errorEl.style.color = 'red';
-            errorEl.style.fontSize = '0.9em';
-            errorEl.style.marginTop = '4px';
-            errorEl.style.border = 'none'; 
-            input.parentNode.insertBefore(errorEl, input.nextSibling);
+          errorEl = document.createElement('div');
+          errorEl.classList.add('input-error');
+          errorEl.style.color = 'red';
+          errorEl.style.fontSize = '0.9em';
+          errorEl.style.marginTop = '4px';
+          errorEl.style.border = 'none';
+          input.parentNode.insertBefore(errorEl, input.nextSibling);
         }
         errorEl.textContent = message;
-        input.style.border = 'solid 1px red'; 
+        input.style.border = 'solid 1px red';
+      }
+      function clearError(input) {
+        let errorEl = input.nextElementSibling;
+        if (errorEl && errorEl.classList.contains('input-error')) {
+          errorEl.textContent = '';
         }
+        input.style.border = '';
+      }
+      allFields.forEach(clearError);
 
+      let valid = true;
+      if (!lname) showError(lnameEl), (valid = false);
+      if (!fname) showError(fnameEl), (valid = false);
+      if (!mname) showError(mnameEl), (valid = false);
+      if (!employeeID) showError(employeeIDEl), (valid = false);
+      if (!salary_Range_From) showError(salary_Range_FromEl), (valid = false);
+      if (!salary_Range_To) showError(salary_Range_ToEl), (valid = false);
+      if (!salary) showError(salaryEl), (valid = false);
+      if (!civil_status) showError(civil_statusEl), (valid = false);
+      if (gender === 'NO GENDER') showError(genderEl), (valid = false);
+      if (department === 'NO DEPARTMENT')
+        showError(departmentEl), (valid = false);
+      if (slary_rate === 'NO SALARY RATE')
+        showError(slary_rateEl), (valid = false);
+      if (!job_Title) showError(jobTitleEl), (valid = false);
+      if (citizenship === 'NO Citizanship')
+        showError(citizenshipEl), (valid = false);
 
-            function clearError(input) {
-            let errorEl = input.nextElementSibling;
-            if (errorEl && errorEl.classList.contains('input-error')) {
-                errorEl.textContent = '';
-            }
-            input.style.border = ''; 
-        }
-
-
-        allFields.forEach(el => clearError(el));
-
-        let valid = true;
-
-        if (!lname) { showError(lnameEl); valid = false; }
-        if (!fname) { showError(fnameEl); valid = false; }
-        if (!mname) { showError(mnameEl); valid = false; }
-        if (!employeeID) { showError(employeeIDEl); valid = false; }
-        if (!salary_Range_From) { showError(salary_Range_FromEl); valid = false; }
-        if (!salary_Range_To) { showError(salary_Range_ToEl); valid = false; }
-        if (!salary) { showError(salaryEl); valid = false; }
-        if (!civil_status) { showError(civil_statusEl); valid = false; }
-        if (gender === "NO GENDER") { showError(genderEl); valid = false; }
-        if (department === "NO DEPARTMENT") { showError(departmentEl); valid = false; }
-        if (slary_rate === "NO SALARY RATE") { showError(slary_rateEl); valid = false; }
-        if (!job_Title) { showError(jobTitleEl); valid = false; }
-        if (citizenship === "NO Citizanship") { showError(citizenshipEl); valid = false; }
-
-        if (valid) {
-            showLoaderThen(() => {
-                document.getElementById("st-stepA").style.display = "none";
-                document.getElementById("stButtonA").style.display = "none";
-
-                document.getElementById("nd-stepA").style.display = "block";
-                document.getElementById("ndBUttonA").style.display = "flex";
-
-                document.getElementById("rd-stepA").style.display = "none";
-                document.getElementById("rdButtonA").style.display = "none";
-            });
-        }
-}
+      /* === on success, switch step === */
+      if (valid) {
+        showLoaderThen(() => {
+          switchStep(
+            document.getElementById('st-stepA'),
+            document.getElementById('nd-stepA')
+          );
+          document.getElementById('stButtonA').style.display = 'none';
+          document.getElementById('ndBUttonA').style.display = 'flex';
+        });
+      }
+    };
 
 function disable_Button(){
         const signup = document.getElementById("button-signupA");
@@ -385,7 +443,7 @@ function disable_Button(){
         }
 }
 
-async function nextndA() {
+  window.nextndA = async function () {
         const birthdayEl = document.getElementById('birthday');
         const birthPlaceEl = document.getElementById('birthPlace');
         const contactEl = document.getElementById('contact');
@@ -514,20 +572,45 @@ async function nextndA() {
             return;
         }
 
+        if (valid) {
         showLoaderThen(() => {
-            document.getElementById("st-stepA").style.display = "none";
-            document.getElementById("stButtonA").style.display = "none";
-
-            document.getElementById("nd-stepA").style.display = "none";
-            document.getElementById("ndBUttonA").style.display = "none";
-
-            document.getElementById("rd-stepA").style.display = "flex";
-            document.getElementById("rdButtonA").style.display = "flex";
-
-            document.getElementById("button-signup-rdA").style.display = "flex";
-            document.getElementById("button-signupA").style.display = "none";
+          switchStep(
+            document.getElementById('nd-stepA'),
+            document.getElementById('rd-stepA')
+          );
+          document.getElementById('ndBUttonA').style.display = 'none';
+          document.getElementById('rdButtonA').style.display = 'flex';
+          /* swap the final NEXT/SUBMIT buttons */
+          document.getElementById('button-signupA').style.display = 'none';
+          document.getElementById('button-signup-rdA').style.display = 'flex';
         });
-}
+      }
+};
+window.backndA = function () {
+      showLoaderThen(() => {
+        switchStep(
+          document.getElementById('nd-stepA'),
+          document.getElementById('st-stepA')
+        );
+        document.getElementById('ndBUttonA').style.display = 'none';
+        document.getElementById('stButtonA').style.display = 'flex';
+      });
+    };
+
+    window.backrdA = function () {
+      showLoaderThen(() => {
+        switchStep(
+          document.getElementById('rd-stepA'),
+          document.getElementById('nd-stepA')
+        );
+        document.getElementById('rdButtonA').style.display = 'none';
+        document.getElementById('ndBUttonA').style.display = 'flex';
+        document.getElementById('button-signup-rdA').style.display = 'none';
+        document.getElementById('button-signupA').style.display = 'flex';
+      });
+    };
+  }
+})();
 
 document.addEventListener("DOMContentLoaded", () => {
     const contactInput = document.getElementById('contact');
@@ -605,31 +688,7 @@ function backstA() {
             back.style.backgroundColor = "#979797"; 
         }
 }
-function backndA() {
-        showLoaderThen(() => {
-            document.getElementById("st-stepA").style.display = "flex";
-            document.getElementById("stButtonA").style.display = "flex";
 
-            document.getElementById("nd-stepA").style.display = "none";
-            document.getElementById("ndBUttonA").style.display = "none";
-
-            document.getElementById("rd-stepA").style.display = "none";
-            document.getElementById("rdButtonA").style.display = "none";
-        });
-}
-function backrdA() {
-        showLoaderThen(() => {
-            document.getElementById("st-stepA").style.display = "none";
-            document.getElementById("stButtonA").style.display = "none";
-
-            document.getElementById("nd-stepA").style.display = "flex";
-            document.getElementById("ndBUttonA").style.display = "flex";
-
-            document.getElementById("rd-stepA").style.display = "none";
-            document.getElementById("rdButtonA").style.display = "none";
-
-        });
-}
 // document.addEventListener('DOMContentLoaded', () => {
 //     const profileInput = document.getElementById('profile');
 //     const usernameInput = document.getElementById('username');
@@ -769,6 +828,8 @@ function backrdA() {
 //     confirmPasswordInput.addEventListener('input', validatePasswords);
 //     profileInput.addEventListener('change', validateProfile);
 // });
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const usernameInput = document.getElementById('username');
