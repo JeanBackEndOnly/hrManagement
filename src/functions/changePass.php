@@ -5,6 +5,9 @@
 
         <div class="d-flex w-100 align-items-center justify-content-center" style="height: 91%">
             <div class="contents shadow rounded-2 w-100 h-auto d-flex flex-column align-items-center p-5 justify-content-center p-0 m-0" style="background-color: #f7f7f7;">
+                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0" style="width: 95%; height: 2rem !important;">
+                        <a href="../index.php" style="text-decoration: none;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>Go back to Login</a>
+                    </div>
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 5rem; width: 95%;">
                     <div class="h1">
                         <h3 class="m-0">Change Password</h3>
