@@ -38,10 +38,8 @@
                     </li>
 
                     <ul id="hrUl" class="flex-column" style="display:none;">
-                       <li class="my-1"><a href="employee.php" class="d-flex justify-content-start"><i class="fa-solid me-1 fa-users-gear d-flex align-items-center"></i><p style="display:flex;" id="pNone" class="text-start">RECRUITMENTS</p></a></li>
                         <li class="my-1"><a href="leave.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">LEAVE REQUEST</p></a></li>
-                        <li class="my-1"><a href="job.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-briefcase"></i><p style="display:flex;" id="pNone" class="text-start">JOB & SALARY</p></a></li>
-                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 fa-flag" d-flex align-items-center></i><p style="display:flex;" id="pNone" class="text-start">Reports</p></a></li>
+                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">Reports</p></a></li>
                     </ul>
 
                     <li class="payrollLi d-flex align-items-center p-2 mb-2">
@@ -74,13 +72,13 @@
                 </div>
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center justify-content-start p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center col-md-12 flex-wrap" style="height: 7rem; width: 95%;">
-                    <div class="h1 col-md-5 col-12">
-                        <h3 class="m-0">SETTINGS</h3>
+                <div class="header-employee d-flex flex-row justify-content-between align-items-center col-md-11 flex-wrap" style="height: 7rem;">
+                    <div class="h1 col-md-4 col-12">
+                        <h3 class="h3-employee">SETTINGS</h3>
                     </div> 
-                    <div class="History_Pass d-flex flex-row justify-content-between align-items-center col-12 col-md-6" style="width: 25%">
-                        <button id="idChangePass" class="historyPass active col-8" onclick="changePass()">Change password</button>
-                        <button id="idLoginHistory" class="historyPass col-6" onclick="loginHistory()">Login History</button>
+                    <div class="History_Pass d-flex flex-row justify-content-between align-items-center col-12 col-md-4">
+                        <button id="idChangePass" class="historyPass active col-md-6 col-6" onclick="changePass()">Change password</button>
+                        <button id="idLoginHistory" class="historyPass col-md-4 col-6" onclick="loginHistory()">Login History</button>
                     </div>
                 </div>
                 
@@ -137,11 +135,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:75vh;">
-                    <div class="container shadow p-5 w-100 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
+                <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:63vh;">
+                    <div class="container shadow p-5 cold-md-12 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
                         <?php if($employeeHistory): ?>
                             <div class="w-50">
-                                <h3 class="text-center fw-bold" style="width: 98% !important;">Login Time</h3>
+                                <h3 class="text-center fw-bold col-md-5 col-8">Login Time</h3>
                                 <?php foreach($employeeHistory as $history): ?>
                                     <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
                                         <?= date('F j, Y h:i A', strtotime($history['login_time'])) ?>
@@ -149,7 +147,7 @@
                                 <?php endforeach ?>
                             </div>
                             <div class="w-50">
-                                <h3 class="text-center fw-bold" style="width: 98% !important;">Logout Time</h3>
+                                <h3 class="text-center fw-bold col-md-5 col-8" style="width: 98% !important;">Logout Time</h3>
                                 <?php foreach($employeeHistory as $history): ?>
                                     <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
                                         <?= isset($history['logout_time']) ? date('F j, Y h:i A', strtotime($history['logout_time'])) : 'Not logged out' ?>

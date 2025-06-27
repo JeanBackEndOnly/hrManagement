@@ -19,18 +19,66 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pdo = db_connection(); 
 
     // ============================= Login Authentication ============================= //
-    if (isset($_POST["loginAuth"]) && $_POST["loginAuth"] === "true") {
-        $username      = $_POST['username']      ?? '';
-        $password      = $_POST['password']      ?? '';
-        $mailCode      = $_POST['mailCode']      ?? '';
-        $adminMailCode = $_POST['AdminMailCode'] ?? '';
+    if (isset($_POST['loginAuth']) && $_POST['loginAuth'] === 'true') {
+        $username        = $_POST['username']        ?? '';
+        $password        = $_POST['password']        ?? '';
+        $mailCode        = $_POST['mailCode']        ?? '';
+        $adminMailCode   = $_POST['AdminMailCode']   ?? '';
+        $resendCode      = $_POST['resendCode']      ?? '';
+        $AdminResendCode = $_POST['AdminResendCode'] ?? '';
 
         $hasCredentials = $username !== '' && $password !== '';
         $hasMfaCode     = ($mailCode !== '') || ($adminMailCode !== '');
 
         try {
+            if (($resendCode === 'true' || $AdminResendCode === 'true') && !$hasCredentials && !$hasMfaCode) {
+                $userId   = $_SESSION['pending_user_id']   ?? null;
+                $userRole = $_SESSION['pending_user_role'] ?? null;
+
+                if (!$userId || !$userRole) {
+                    $_SESSION['errors_login']['login_incorrect'] = 'Session expired. Please log in again.';
+                    header('Location: ../src/index.php');
+                    exit();
+                }
+
+                $stmt = $pdo->prepare('SELECT id, email, user_role FROM users WHERE id = ?');
+                $stmt->execute([$userId]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$user) {
+                    $_SESSION['errors_login']['login_incorrect'] = 'User not found. Please log in again.';
+                    header('Location: ../src/index.php');
+                    exit();
+                }
+
+                $code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
+                $_SESSION['EmailAuth'] = $code;
+
+                $script   = realpath(__DIR__ . '/emailSender.php');
+                $cmdParts = [
+                    'php',
+                    escapeshellarg($script),
+                    escapeshellarg($user['id']),
+                    escapeshellarg('MFA'),
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg(''),
+                    escapeshellarg($code)
+                ];
+                pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));
+
+                if ($AdminResendCode === 'true') {
+                    header('Location: ../src/functions/adminMfaMailCode.php?resent=true');
+                } else {
+                    header('Location: ../src/functions/MFAauth.php?resent=true');
+                }
+                exit();
+            }
+
             if ($hasCredentials && !$hasMfaCode) {
-                $user = getUsername($pdo, $username);   
+                $user = getUsername($pdo, $username);
 
                 if (!$user) {
                     $_SESSION['errors_login']['login_incorrect'] = 'Incorrect username!';
@@ -45,11 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $status = 'pending';
                 if ($user['user_role'] === 'employee') {
-                    $stmt  = $pdo->prepare('SELECT status
-                                            FROM userRequest
-                                            WHERE users_id = ?
-                                        ORDER BY request_date DESC
-                                            LIMIT 1');
+                    $stmt  = $pdo->prepare('SELECT status FROM userRequest WHERE users_id = ? ORDER BY request_date DESC LIMIT 1');
                     $stmt->execute([$user['id']]);
                     $row   = $stmt->fetch(PDO::FETCH_ASSOC);
                     $status = $row['status'] ?? 'pending';
@@ -57,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 session_regenerate_id(true);
 
-                $code = substr(str_shuffle('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), 0, 6);
+                $code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
                 $_SESSION['EmailAuth']         = $code;
                 $_SESSION['pending_user_id']   = $user['id'];
                 $_SESSION['pending_user_role'] = $user['user_role'];
@@ -66,16 +110,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $cmdParts = [
                     'php',
                     escapeshellarg($script),
-                    escapeshellarg($user['id']),   
-                    escapeshellarg('MFA'),         
-                    escapeshellarg(''),          
+                    escapeshellarg($user['id']),
+                    escapeshellarg('MFA'),
                     escapeshellarg(''),
                     escapeshellarg(''),
                     escapeshellarg(''),
                     escapeshellarg(''),
-                    escapeshellarg($code)         
+                    escapeshellarg(''),
+                    escapeshellarg($code)
                 ];
-                pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));   
+                pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));
 
                 if ($user['user_role'] === 'employee') {
                     switch ($status) {
@@ -83,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         case 'rejected':   header('Location: ../src/employee/rejected.php');   break;
                         default:           header('Location: ../src/employee/pending.php');    break;
                     }
-                } else { 
+                } else {
                     header('Location: ../src/functions/adminMfaMailCode.php');
                 }
                 exit();
@@ -92,13 +136,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($hasMfaCode && !$hasCredentials) {
                 $expected = $_SESSION['EmailAuth'] ?? '';
                 $posted   = $mailCode !== '' ? $mailCode : $adminMailCode;
-                // $postedAdmin   = $adminMailCode !== '' ? $mailCode : $adminMailCode;
 
                 if ($posted !== $expected && $posted == $mailCode) {
                     header('Location: ../src/functions/MFAauth.php?mfa=failed');
                     exit();
-                }elseif ($posted !== $expected && $posted == $adminMailCode) {
-                     header('Location: ../src/functions/adminMfaMailCode.php?mfa=failed');
+                } elseif ($posted !== $expected && $posted == $adminMailCode) {
+                    header('Location: ../src/functions/adminMfaMailCode.php?mfa=failed');
                     exit();
                 }
 
@@ -111,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
 
                 $_SESSION['user_id']   = $userId;
-                $_SESSION['user_role'] = $userRole;   
+                $_SESSION['user_role'] = $userRole;
 
                 if ($userRole === 'employee') {
                     $stmt = $pdo->prepare('INSERT INTO employee_history (employee_id, login_time) VALUES (?, NOW())');
@@ -137,14 +180,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['errors_login']['login_incorrect'] = 'Invalid form submission.';
             header('Location: ../src/index.php');
             exit();
-
         } catch (PDOException $e) {
             error_log('Login error: ' . $e->getMessage());
             $_SESSION['errors_login'] = ['login_incorrect' => 'System error'];
             header('Location: ../src/index.php');
             exit();
         }
-
     }
 
     // ============================= User Registration Authentication ============================= //

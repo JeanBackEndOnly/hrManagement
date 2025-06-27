@@ -205,6 +205,7 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <title>PUERICULTURE SYSTEM</title>
     <link rel="manifest" href="../../webApp/manifest.json">
+    <link rel="manifest" href="/github/hrManagement/webApp/manifest.json">
     <link rel="stylesheet" href="../../assets/css/all.min.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="../../assets/css/users.css?v=<?php echo time() ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
