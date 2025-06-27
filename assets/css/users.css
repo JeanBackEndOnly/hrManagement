@@ -377,7 +377,12 @@ transform: translateX(.9rem);
     background-color: #f5f5f5; 
     pointer-events: none;     
 }
-
+.bg{
+    background: URL(../../assets/image/construction.png);
+    background-position: center;
+    background-size: cover;
+    transform: translate(-.2rem, .4rem);
+}
 @media (max-width: 576px) {
     .logo h4{
         font-size: 12px;
