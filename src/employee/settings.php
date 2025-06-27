@@ -74,13 +74,13 @@
                 </div>
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center justify-content-start p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
-                    <div class="h1">
+                <div class="header-employee d-flex flex-row justify-content-between align-items-center col-md-12 flex-wrap" style="height: 7rem; width: 95%;">
+                    <div class="h1 col-md-5 col-12">
                         <h3 class="m-0">SETTINGS</h3>
                     </div> 
-                    <div class="History_Pass d-flex flex-row justify-content-between align-items-center" style="width: 25%">
-                        <button id="idChangePass" class="historyPass active" onclick="changePass()">Change password</button>
-                        <button id="idLoginHistory" class="historyPass" onclick="loginHistory()">Login History</button>
+                    <div class="History_Pass d-flex flex-row justify-content-between align-items-center col-12 col-md-6" style="width: 25%">
+                        <button id="idChangePass" class="historyPass active col-8" onclick="changePass()">Change password</button>
+                        <button id="idLoginHistory" class="historyPass col-6" onclick="loginHistory()">Login History</button>
                     </div>
                 </div>
                 

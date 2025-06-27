@@ -1,4 +1,5 @@
 <?php include '../../templates/Uheader.php';?>
+
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
@@ -74,20 +75,20 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3 " style="width: 95%; height: 5rem !important;">
+                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
                     <a href="employee.php" style="text-decoration: none;"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>Go back to Employee Management</a>
                 </div>
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center" style="min-height: 2rem !important; min-width: 95%;">
-                    <div class="h1">
+                <div class="header-employee d-flex flex-row justify-content-between align-items-centercol-md-3 col-md-11 flex-wrap m-0">
+                    <div class="h1 col-md-3 col-12">
                         <h3 class="m-0">EMPLOYEE PROFILE</h3>
                     </div>
-                    <div class="navigations">
+                    <div class="navigations col-md-6 col-12">
                         <button type="button" id="Personal" onclick="activateTab(this); personalInfo()" class="tab-btn active">Personal Information</button>
                         <button type="button" id="Family" onclick="activateTab(this); familyBG()" class="tab-btn">Family Background</button>
                         <button type="button" id="Educational" onclick="activateTab(this); educationalBG()" class="tab-btn">Educational Background</button>
                     </div>
 
-                    <div class="buttonUpdate">
+                    <div class="buttonUpdate col-md-1 col-12">
                        <button type="button" id="updateButton" class="btn" data-bs-toggle="modal" data-bs-target="#updateModal">
                             Update
                         </button>
@@ -559,7 +560,7 @@
                     <!-- </div> -->
                 </div>
                     <!-- ============================ EDUCATIONAL BACKGROUND TAB ============================ -->
-                <div class="educationalbg" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
+                <div class="educationalbg mt-2" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
                     <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
                             <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
@@ -670,5 +671,5 @@
   </div>
 </div>
 <!-- <script src="../../assets/js/hr/profAdmin.js"></script> -->
- <script src="../../assets/js/hr/profile.js"></script>
+<script src="../../assets/js/hr/profile.js" defer></script>
 <?php include '../../templates/Ufooter.php'?>

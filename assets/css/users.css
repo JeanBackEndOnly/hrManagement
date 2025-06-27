@@ -378,7 +378,7 @@ transform: translateX(.9rem);
     pointer-events: none;     
 }
 .bg{
-    background: URL(../../assets/image/construction.png);
+    background: URL("../../assets/image/construction.png");
     background-position: center;
     background-size: cover;
     transform: translate(-.2rem, .4rem);
@@ -440,6 +440,9 @@ transform: translateX(.9rem);
     .navigations{
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+    .h3-employee{
+        margin-left: 1rem !important;
     }
     /* .h1{
         margin-left: 3rem;

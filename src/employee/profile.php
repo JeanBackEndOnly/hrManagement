@@ -72,9 +72,9 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee col-md-11 d-flex flex-wrap flex-row justify-content-between align-items-center" style="height: 7rem;">
+                <div class="header-employee col-md-11 d-flex flex-wrap flex-row justify-content-between align-items-center" style="width: 95%; height: 7rem;">
                     <div class="h1 col-md-3 col-10">
-                        <h3 class="m-0">EMPLOYEE PROFILE</h3>
+                        <h3 class="h3-employee" style="margin-left: 0;">EMPLOYEE PROFILE</h3>
                     </div>
                     <div class="navigations col-md-5 col-12 d-flex flex-row justify-content-between align-items-center">
                         <button type="button" id="Personal" onclick="activateTab(this); personalInfo()" style="width: 30%" class="tab-btn active">Personal</button>
