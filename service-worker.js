@@ -1,14 +1,17 @@
-/*  /github/hrManagement/service-worker.js  */
+/* ---------- /service-worker.js ------------------------------- */
+/* Cache version – bump when you change file names */
 const CACHE_NAME = 'pueri-cache-v1';
 
+/* Pre‑cache the key app shell files */
 const urlsToCache = [
-  '/github/hrManagement/src/index.php',
-  '/github/hrManagement/main.js',
-  '/github/hrManagement/webApp/images/icon-192x192.png',
-  '/github/hrManagement/webApp/images/icon-512x512.png',
-  '/github/hrManagement/webApp/manifest.json'
+  './src/index.php',
+  './main.js',
+  './webApp/manifest.json',
+  './webApp/images/icon-192x192.png',
+  './webApp/images/icon-512x512.png'
 ];
 
+/* INSTALL – add files to cache */
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -17,16 +20,23 @@ self.addEventListener('install', event => {
   );
 });
 
+/* ACTIVATE – clear old caches */
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+      )
     ).then(() => self.clients.claim())
   );
 });
 
+/* FETCH – network‑first fallback‑to‑cache */
 self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return; // ignore POST/PUT
   event.respondWith(
-    caches.match(event.request).then(resp => resp || fetch(event.request))
+    fetch(event.request)
+      .then(response => response)
+      .catch(() => caches.match(event.request))
   );
 });

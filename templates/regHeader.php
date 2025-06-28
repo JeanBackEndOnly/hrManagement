@@ -15,8 +15,7 @@ require_once '../../auth/view.php';
     <?php render_styles()?>
     <link rel="stylesheet" href="../../assets/css/main_frontend.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="../../assets/css/register.css?v=<?php echo time() ?>">
-    <link rel="manifest"
-          href="/github/hrManagement/webApp/manifest.json">
+    <link rel="manifest" href="../../webApp/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#E72120">
     <link rel="stylesheet" href="../../assets/css/all.min.css?v=<?php echo time() ?>">

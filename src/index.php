@@ -69,5 +69,12 @@
         </form>
     </div>
 </div>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('✅ SW registered ➜', reg.scope))
+      .catch(err => console.error('ServiceWorker registration failed:', err));
+  }
+</script>
 <script src="../assets/js/hr/login.js"></script>
 <?php include '../templates/RLfooter.php'; ?>
