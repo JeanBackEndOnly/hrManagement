@@ -51,6 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['username']);
+        }else if (usernameLogin) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Username not match, Try again!.',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['usernameLogin']);
         }else if (passwordLogin) {
             console.log("Showing updateReq toast");
             Swal.fire({

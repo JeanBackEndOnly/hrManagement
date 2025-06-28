@@ -56,9 +56,6 @@
     </div>
 
 </main>
-
-
-<script src="../assets/js/hr/hrmain.js"></script>
 <script>
     const passwordInputs = document.getElementById('passwordInputs');
     const showPasswords = document.getElementById('showPasswords');

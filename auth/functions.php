@@ -67,6 +67,7 @@ function render_scripts(): void
         'assets/js/custom-bs.js',
         'assets/js/hr/hrmain.js',
         'assets/js/EmpRes.js',
+        'assets/js/login.js',
         'main.js',                     // main bootstrap
     ] as $js) {
         echo '<script src="' . $base . $js . '"></script>' . PHP_EOL;

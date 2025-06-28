@@ -1,7 +1,7 @@
 /* ---------- /service-worker.js ------------------------------ */
 const CACHE_NAME = 'pueri-cache-v1';
 const urlsToCache = [
-  './src/index.php',
+  './installer/index.php',
   './main.js',
   './webApp/manifest.json',
   './webApp/images/icon-192x192.png',

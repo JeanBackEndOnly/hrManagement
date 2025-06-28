@@ -2,7 +2,7 @@
   "name": "PUERICULTURE WEB APPLICATION",
   "short_name": "ZPC-webSys",
   "description": "this app is for Zamboanga Puericulture Center only!",
-  "start_url": "/github/hrManagement/src/index.php",
+  "start_url": "/installer/index.php",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#E72120",

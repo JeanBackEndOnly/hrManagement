@@ -9,6 +9,7 @@ require_once '../auth/view.php';
     $code = false;
     $password = false;
     $passwordLogin = false;
+    $usernameLogin = false;
     if(isset($_GET['signup']) && $_GET['signup'] === 'success'){
         $signup = true;
     }elseif(isset($_GET['username']) && $_GET['username'] === 'failed'){
@@ -21,6 +22,8 @@ require_once '../auth/view.php';
         $password = true;
     }elseif(isset($_GET['passwordLogin']) && $_GET['passwordLogin'] === 'wrong'){
         $passwordLogin = true;
+    }elseif(isset($_GET['usernameLogin']) && $_GET['usernameLogin'] === 'wrong'){
+        $usernameLogin = true;
     }
 ?>
 
@@ -44,6 +47,7 @@ require_once '../auth/view.php';
         const code = <?php echo json_encode($code); ?>;
         const password = <?php echo json_encode($password); ?>;
         const passwordLogin = <?php echo json_encode($passwordLogin); ?>;
+        const usernameLogin = <?php echo json_encode($usernameLogin); ?>;
     </script>
     <style>
         body, main, h1, h2, h3, h4, h5{
