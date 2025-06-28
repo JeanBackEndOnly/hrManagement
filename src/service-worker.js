@@ -1,14 +1,13 @@
-/* ---------- /service-worker.js ------------------------------ */
 const CACHE_NAME = 'pueri-cache-v1';
 const urlsToCache = [
-  './installer/index.php',
+  './src/index.php',
   './main.js',
   './webApp/manifest.json',
   './webApp/images/icon-192x192.png',
   './webApp/images/icon-512x512.png'
 ];
 
-/* Install */
+/* ---------- Install ---------- */
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -17,7 +16,7 @@ self.addEventListener('install', event => {
   );
 });
 
-/* Activate */
+/* ---------- Activate ---------- */
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -28,12 +27,10 @@ self.addEventListener('activate', event => {
   );
 });
 
-/* Fetch – network‑first, cache‑fallback */
+/* ---------- Fetch (network‑first, cache fallback) ---------- */
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
-
-

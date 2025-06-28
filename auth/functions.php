@@ -1,24 +1,48 @@
 <?php
 include __DIR__ . '/../installer/config.php';
+/* ---------- 0. Force remote clients onto the LAN HTTPS host ---------- */
+function force_lan_redirect(): void
+{
+    // Accept 'localhost' and '127.0.0.1' for local dev; everything else = LAN IP
+    $currentHost = $_SERVER['HTTP_HOST'] ?? '';
+    $isLocal     = in_array($currentHost, ['localhost', '127.0.0.1'], true);
 
+    // If not local AND not already on the LAN IP, redirect
+    if (!$isLocal && $currentHost !== '192.168.1.21') {
+        $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        // Preserve the path/query so deep links still work
+        $target = "{$proto}://192.168.1.21" . $_SERVER['REQUEST_URI'];
+        header("Location: {$target}", true, 301);      // 301 = permanent
+        exit;
+    }
+}
+
+/* ---------- Call the redirect helper immediately ---------- */
+force_lan_redirect();
+
+/* ---------- 1. Base URL helper (always ends with a slash) ---------- */
 function base_url(): string
 {
+    // After force_lan_redirect(), host is guaranteed to be correct
     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host  = $_SERVER['HTTP_HOST']; 
+    $host  = $_SERVER['HTTP_HOST'];                     // may now be 192.168.1.21
     return "{$proto}://{$host}/github/hrManagement/";
 }
 
-/* ---------- current page (debug helper) --------------------- */
+/* ---------- 2. Current page (debug helper) -------------------------- */
 function get_current_page(): string
 {
     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 }
 
+/* ---------- 3. Installer redirect logic ---------------------------- */
 function initInstaller(): void
 {
-    $pdo = db_connection();
-    $hasAdmin = (bool)$pdo->query("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1")->fetchColumn();
+    $pdo       = db_connection();
+    $hasAdmin  = (bool)$pdo->query(
+        "SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1"
+    )->fetchColumn();
 
     $installer = '/github/hrManagement/installer/';
     $here      = $_SERVER['REQUEST_URI'];
@@ -32,6 +56,39 @@ function initInstaller(): void
         exit;
     }
 }
+
+
+// function base_url(): string
+// {
+//     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+//     $host  = $_SERVER['HTTP_HOST']; 
+//     return "{$proto}://{$host}/github/hrManagement/";
+// }
+
+// /* ---------- current page (debug helper) --------------------- */
+// function get_current_page(): string
+// {
+//     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+//     return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+// }
+
+// function initInstaller(): void
+// {
+//     $pdo = db_connection();
+//     $hasAdmin = (bool)$pdo->query("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1")->fetchColumn();
+
+//     $installer = '/github/hrManagement/installer/';
+//     $here      = $_SERVER['REQUEST_URI'];
+
+//     if (!$hasAdmin && $here !== $installer) {
+//         header('Location: ' . base_url() . 'installer/');
+//         exit;
+//     }
+//     if ($hasAdmin && $here === $installer) {
+//         header('Location: ' . base_url() . 'src/');
+//         exit;
+//     }
+// }
 
 /* ---------- CSS & manifest tags ----------------------------- */
 function render_styles(): void
