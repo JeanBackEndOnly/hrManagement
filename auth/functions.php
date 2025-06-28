@@ -1,14 +1,10 @@
 <?php
-/* -------------------------------------------------------------
-   auth/functions.php – clean helper set (no more bad paths)
--------------------------------------------------------------- */
 include __DIR__ . '/../installer/config.php';
 
-/* ---------- base_url()  — always ending in a slash ---------- */
 function base_url(): string
 {
     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host  = $_SERVER['HTTP_HOST']; // includes port if any
+    $host  = $_SERVER['HTTP_HOST']; 
     return "{$proto}://{$host}/github/hrManagement/";
 }
 
@@ -19,7 +15,6 @@ function get_current_page(): string
     return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 }
 
-/* ---------- installer redirect logic ------------------------ */
 function initInstaller(): void
 {
     $pdo = db_connection();
@@ -41,7 +36,7 @@ function initInstaller(): void
 /* ---------- CSS & manifest tags ----------------------------- */
 function render_styles(): void
 {
-    $base = '../';  // ← one level up from /src/
+    $base = '../';  
     foreach ([
         'assets/css/all.min.css',
         'assets/css/custom-bs.min.css',
@@ -53,12 +48,12 @@ function render_styles(): void
     echo '<link rel="manifest" href="' . $base . 'webApp/manifest.json">' . PHP_EOL;
 }
 
-/* ---------- JS tags (no SW here) ----------------------------- */
 function render_scripts(): void
 {
-    $base = '../';  // ← one level up from /src/
+    $base = '../';  
     foreach ([
         'assets/js/jquery.min.js',
+        'assets/js/main.js',
         'assets/js/perfect-scrollbar.min.js',
         'assets/js/smooth-scrollbar.min.js',
         'assets/js/sweetalert.min.js',
