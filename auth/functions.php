@@ -1,83 +1,63 @@
 <?php
 /* -------------------------------------------------------------
-   auth/functions.php  – cleaned‑up helpers
-   ------------------------------------------------------------- */
-
+   auth/functions.php – clean helper set (no more bad paths)
+-------------------------------------------------------------- */
 include __DIR__ . '/../installer/config.php';
 
-/* ---------- base_url() -------------------------------------- */
-/* Always ends with a slash, always returns the project root.   */
+/* ---------- base_url()  — always ending in a slash ---------- */
 function base_url(): string
 {
-    $isHttps = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
-    $protocol = $isHttps ? 'https' : 'http';
-    $host = $_SERVER['SERVER_NAME'];
-
-    // Local dev: 127.0.0.1, ::1, localhost, 192.168.*.*, etc.
-    if (preg_match('/^(localhost|(\d+\.){3}\d+|::1)$/', $host)) {
-        return "{$protocol}://{$host}/github/hrManagement/"; // ← YOUR project folder
-    }
-
-    // Production (e.g. mysite.com) – adjust if you’ll deploy elsewhere
-    return "{$protocol}://{$host}/";
+    $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host  = $_SERVER['HTTP_HOST']; // includes port if any
+    return "{$proto}://{$host}/github/hrManagement/";
 }
 
-/* ---------- get_current_page() ------------------------------ */
+/* ---------- current page (debug helper) --------------------- */
 function get_current_page(): string
 {
     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 }
 
-/* ---------- initInstaller() -------------------------------- */
+/* ---------- installer redirect logic ------------------------ */
 function initInstaller(): void
 {
     $pdo = db_connection();
+    $hasAdmin = (bool)$pdo->query("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1")->fetchColumn();
 
-    try {
-        $stmt = $pdo->prepare("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1");
-        $stmt->execute();
-        $hasAdmin = (bool)$stmt->fetchColumn();
+    $installer = '/github/hrManagement/installer/';
+    $here      = $_SERVER['REQUEST_URI'];
 
-        $installerPath = '/github/hrManagement/installer/';
-        $here          = $_SERVER['REQUEST_URI'];
-
-        if (!$hasAdmin && $here !== $installerPath) {
-            header('Location: ' . base_url() . 'installer/');
-            exit;
-        }
-
-        if ($hasAdmin && $here === $installerPath) {
-            header('Location: ' . base_url() . 'src/');  // lower‑case “src”
-            exit;
-        }
-    } catch (PDOException $e) {
-        die('Installer check failed: ' . $e->getMessage());
+    if (!$hasAdmin && $here !== $installer) {
+        header('Location: ' . base_url() . 'installer/');
+        exit;
+    }
+    if ($hasAdmin && $here === $installer) {
+        header('Location: ' . base_url() . 'src/');
+        exit;
     }
 }
 
-/* ---------- render_styles() -------------------------------- */
+/* ---------- CSS & manifest tags ----------------------------- */
 function render_styles(): void
 {
-    $styles = [
+    $base = '../';  // ← one level up from /src/
+    foreach ([
         'assets/css/all.min.css',
         'assets/css/custom-bs.min.css',
         'assets/css/main_frontend.css',
         'assets/css/main.css',
-    ];
-
-    foreach ($styles as $css) {
-        echo '<link rel="stylesheet" href="' . base_url() . $css . '">' . PHP_EOL;
+    ] as $css) {
+        echo '<link rel="stylesheet" href="' . $base . $css . '">' . PHP_EOL;
     }
-
-    // Manifest tag (only once, in <head>)
-    echo '<link rel="manifest" href="' . base_url() . 'webApp/manifest.json">' . PHP_EOL;
+    echo '<link rel="manifest" href="' . $base . 'webApp/manifest.json">' . PHP_EOL;
 }
 
-/* ---------- render_scripts() ------------------------------- */
+/* ---------- JS tags (no SW here) ----------------------------- */
 function render_scripts(): void
 {
-    $scripts = [
+    $base = '../';  // ← one level up from /src/
+    foreach ([
         'assets/js/jquery.min.js',
         'assets/js/perfect-scrollbar.min.js',
         'assets/js/smooth-scrollbar.min.js',
@@ -85,19 +65,14 @@ function render_scripts(): void
         'assets/js/all.min.js',
         'assets/js/bootstrap.min.js',
         'assets/js/custom-bs.js',
-
-        // Page‑specific bundles
         'assets/js/hr/hrmain.js',
         'assets/js/EmpRes.js',
-
-        // Main bootstrap script – include **AFTER** the vendor libs
-        'main.js',
-    ];
-
-    foreach ($scripts as $js) {
-        echo '<script src="' . base_url() . $js . '"></script>' . PHP_EOL;
+        'main.js',                     // main bootstrap
+    ] as $js) {
+        echo '<script src="' . $base . $js . '"></script>' . PHP_EOL;
     }
 }
+
 
 
 function save_user($args = [], $user_id = 0) {

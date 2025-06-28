@@ -1,33 +1,33 @@
-/* ---------- /main.js ----------------------------------------- */
+/* ---------- /main.js ---------------------------------------- */
 (() => {
-  /* 1) Register the Service Worker */
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-      .register('/service-worker.js', { scope: '/' })   // controls entire site
+  /* Register service worker (one level up from /src/) */
+ 
+// ✅ Final working version for index.php inside src/
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
       .then(reg => console.log('✅ SW registered ➜', reg.scope))
-      .catch(err => console.error('❌ SW registration failed ➜', err));
-  }
+      .catch(err => console.error('❌ SW registration failed:', err));
+  });
+}
 
-  /* 2) Optional "Add to Home Screen" prompt */
+
+
+  /* Handle beforeinstallprompt (optional install button) */
   let deferredPrompt;
   const installBtn = document.getElementById('installPwaBtn');
 
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
     deferredPrompt = e;
-    if (installBtn) installBtn.style.display = 'block';
+    installBtn?.classList.remove('d-none');
   });
 
-  if (installBtn) {
-    installBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log('A2HS outcome ➜', outcome);
-      deferredPrompt = null;
-      installBtn.style.display = 'none';
-    });
-  }
-
-  /* 3) Place any page‑specific JS below … */
+  installBtn?.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBtn.classList.add('d-none');
+  });
 })();

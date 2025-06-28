@@ -2003,7 +2003,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 echo "<pre>";
                 print_r($_SESSION);
                 echo "</pre>";
-                echo $employeeId = $_SESSION["pending_user_id"] ?? 'Wala   ';
+                echo $employeeId = $_SESSION["idNgEmployee"] ?? 'Wala   ';
 
                 if($new_password !== $confirm_password){
                     header("Location: ../src/functions/changePass.php?password=notMatch");
