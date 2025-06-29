@@ -28,5 +28,5 @@
         <?php endif; ?>
     </div>
 </main>
-<script src="../assets/js/hr/EmpRes.js" defer></script>
+<!-- <script src="../assets/js/hr/EmpRes.js" defer></script> -->
 <?php include '../templates/RLfooter.php'?>

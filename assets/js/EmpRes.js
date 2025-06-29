@@ -51,7 +51,7 @@ function showLoaderThen(callback) {
 
     document.addEventListener('DOMContentLoaded', function () {
         const jobTitleSelect = document.getElementById('JobTitle');
-        console.log("heheWorking!");
+        console.log("heheWorkingOnIt!");
         if (!jobTitleSelect) {
             console.error("JobTitle select element not found!");
             return;

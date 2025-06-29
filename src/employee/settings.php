@@ -11,7 +11,7 @@
 
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
-                <a href="../logout.php"><i class="fa-solid fa-right-from-bracket mx-2 ms-3"></i></a>
+                <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3 me-1"></i></a>
                 <a href="profile.php" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
                     <img src="../../assets/image/upload/<?php echo htmlspecialchars($employeeInfo["user_profile"]) ?>" class="rounded-circle me-0 ms-4" style="height: 35px; width: 35px;">
                     <span class="fw-bold"><?php echo isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) . ", " . htmlspecialchars($employeeInfo["fname"]) : "N/A" ?></span>
@@ -136,10 +136,10 @@
                     </div>
                 </div>
                 <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:63vh;">
-                    <div class="container shadow p-5 cold-md-12 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
+                    <div class="container shadow p-2 cold-md-12 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
                         <?php if($employeeHistory): ?>
                             <div class="w-50">
-                                <h3 class="text-center fw-bold col-md-5 col-8">Login Time</h3>
+                                <h4 class="text-center fw-bold col-md-5 col-9">Login Time</h4>
                                 <?php foreach($employeeHistory as $history): ?>
                                     <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
                                         <?= date('F j, Y h:i A', strtotime($history['login_time'])) ?>
@@ -147,10 +147,10 @@
                                 <?php endforeach ?>
                             </div>
                             <div class="w-50">
-                                <h3 class="text-center fw-bold col-md-5 col-8" style="width: 98% !important;">Logout Time</h3>
+                                <h4 class="text-center fw-bold col-md-5 col-8" style="width: 98% !important;">Logout Time</h4>
                                 <?php foreach($employeeHistory as $history): ?>
                                     <p class="text-center my-1 p-2 bg-light border border-secondary-subtle rounded" style="width: 98% !important;">
-                                        <?= isset($history['logout_time']) ? date('F j, Y h:i A', strtotime($history['logout_time'])) : 'Not logged out' ?>
+                                        <?= isset($history['logout_time']) ? date('F j, Y h:i A', strtotime($history['logout_time'])) : 'User not logged out' ?>
                                     </p>
                                 <?php endforeach ?>
                             </div>

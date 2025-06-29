@@ -1,6 +1,9 @@
 <?php include '../../templates/funcHeader.php'; ?>
 <div class="hehe h-75 w-100 d-flex justify-content-start align-items-start">
     <div class="heh w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-2" style="background-color: #f0f0f0;">
+        <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start pt-1 m-0" style="width: 95%; height: 2rem !important;">
+            <a href="../index.php" style="text-decoration: none;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>Go back to Login</a>
+        </div>
         <form method="POST" action="../../auth/authentications.php" class="modal-content">
              <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">

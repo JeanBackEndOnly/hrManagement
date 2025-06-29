@@ -397,7 +397,7 @@ transform: translateX(.9rem);
     .usersButton {
         width: 25%;
         justify-content: end;
-        margin-left: 2rem;
+        margin-left: 1rem;
     }
     .align-items-center img{
         margin-left: 5px !important;
