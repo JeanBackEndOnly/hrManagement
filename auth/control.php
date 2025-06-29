@@ -508,6 +508,17 @@ function getProfileEinfo(){
     $reqProfInfo = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return ['reqProfInfo' => $reqProfInfo];
 }
+function getUSersId(){
+    $pdo = db_connection();
+    isset($_GET["users_id"]) ? $users_id = $_GET["users_id"] : null;
+    $query = "SELECT id FROM users
+    WHERE id = :id ";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":id", $users_id);
+    $stmt->execute();
+    $get_users_id = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['get_users_id' => $get_users_id];
+}
 
 function getFamilyBG() {
     $pdo = db_connection();

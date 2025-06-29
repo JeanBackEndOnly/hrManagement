@@ -73,7 +73,12 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                
+                <div class="h1 col-md-11 d-flex justify-content-start align-items-center p-0 m-0" style="height: 7rem;">
+                    <h3 class="h3-employee" style="margin-left: 0;">PERSONAL DATA SHEET</h3>
+                </div>
+                <div class="contents col-md-11 col-11 shadow rounded-2 h-auto p-3 m-0">
+                    
+                </div>
             </div>
         </div>
     </div>

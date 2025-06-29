@@ -10,6 +10,7 @@
             </div>
 
             <div class="usersButton d-flex align-items-center">
+                <a href="pds.php?users_id=<?php echo $get_users_id["id"]; ?>"><i class="fa-solid fa-arrow-up-right-from-square mx-3"></i></a>
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
                 <button class="align-items-center" type="button" onclick="userButton()">
@@ -569,7 +570,7 @@
                                     <input type="hidden" name="users_id" value="<?= htmlspecialchars($row["users_id"]) ?>">
                                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? '') ?>">
                                     <input type="hidden" name="educationalUpdate" value="true">
-
+                                    
                                     <div class="profilePict w-100 mt-2 d-flex justify-content-center align-items-center h-50">
                                         <img src="../../assets/image/upload/<?= isset($row["user_profile"]) ? htmlspecialchars($row["user_profile"]) : "N/A" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
                                     </div>

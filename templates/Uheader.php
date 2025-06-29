@@ -24,6 +24,8 @@ $adminHistory = $historyADmin["adminHistory"];
 // $report = $reports["report"];
 $reportsC = getReportCount();
 $reportCount = $reportsC["reportCount"];
+$idUsers = getUSersId();
+$get_users_id = $idUsers["get_users_id"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];
