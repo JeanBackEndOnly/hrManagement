@@ -293,10 +293,6 @@ function emp_info(
     $lname, 
     $fname, 
     $mname, 
-    $employeeID, 
-    $department, 
-    $jobTitle, 
-    $slary_rate, 
     $citizenship, 
     $gender, 
     $civil_status, 
@@ -305,23 +301,14 @@ function emp_info(
     $birthday, 
     $birthPlace, 
     $contact, 
-    $email, 
-    $secheduleFrom, 
-    $scheduleTo, 
-    $houseBlock, 
-    $street, 
-    $subdivision, 
-    $barangay, 
-    $city_muntinlupa, 
-    $province, 
-    $zipCode, 
+    $email
     ) {
     $query = "INSERT INTO userInformations (
         users_id, lname, fname, mname, citizenship, gender, civil_status, 
-        religion, age, birthday, birthPlace, contact, email,
+        religion, age, birthday, birthPlace, contact, email
     ) VALUES (
         :users_id, :lname, :fname, :mname, :citizenship, :gender, :civil_status, 
-        :religion, :age, :birthday, :birthPlace, :contact, :email,
+        :religion, :age, :birthday, :birthPlace, :contact, :email
     );";
 
     $stmt = $pdo->prepare($query);
@@ -330,7 +317,6 @@ function emp_info(
     $stmt->bindParam(":lname", $lname);
     $stmt->bindParam(":fname", $fname);
     $stmt->bindParam(":mname", $mname);
-    $stmt->bindParam(":slary_rate", $slary_rate);
     $stmt->bindParam(":citizenship", $citizenship);
     $stmt->bindParam(":gender", $gender);
     $stmt->bindParam(":civil_status", $civil_status);
@@ -346,13 +332,31 @@ function emp_info(
     } else {
         echo json_encode(["success" => false, "message" => "Failed to add employee."]);
     }
-
+}
+function emp_infoHr(
+    $pdo, 
+    $id, 
+    $slary_rate, 
+    $employeeID, 
+    $department, 
+    $jobTitle, 
+    $scheduleFrom, 
+    $scheduleTo, 
+    $houseBlock, 
+    $street, 
+    $subdivision, 
+    $barangay, 
+    $city_muntinlupa, 
+    $province, 
+    $zipCode
+    ) {
+    
     $query = "INSERT INTO userHr_Informations (
-        users_id, employeeID, department, jobTitle, slary_rate, secheduleFrom, scheduleTo, 
-        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code, 
+        users_id, employeeID, department, jobTitle, slary_rate, scheduleFrom, scheduleTo, 
+        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code
     ) VALUES (
-        :users_id, :employeeID, :department, :jobTitle, :slary_rate, :secheduleFrom, :scheduleTo, 
-        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code, 
+        :users_id, :employeeID, :department, :jobTitle, :slary_rate, :scheduleFrom, :scheduleTo, 
+        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code
     );";
 
     $stmt = $pdo->prepare($query);
@@ -362,7 +366,7 @@ function emp_info(
     $stmt->bindParam(":department", $department);
     $stmt->bindParam(":jobTitle", $jobTitle);
     $stmt->bindParam(":slary_rate", $slary_rate);
-    $stmt->bindParam(":secheduleFrom", $secheduleFrom);
+    $stmt->bindParam(":scheduleFrom", $scheduleFrom);
     $stmt->bindParam(":scheduleTo", $scheduleTo);
     $stmt->bindParam(":houseBlock", $houseBlock);
     $stmt->bindParam(":street", $street);
@@ -640,10 +644,6 @@ function employeeRegistration(
     string $lname,
     string $fname,
     string $mname,
-    string $employeeID,
-    string $department,
-    string $jobTitle,
-    string $slary_rate,
     string $citizenship,
     string $gender,
     string $civil_status,
@@ -653,7 +653,11 @@ function employeeRegistration(
     string $birthPlace,
     string $contact,
     string $email,
-    string $secheduleFrom,
+    string $slary_rate,
+    string $employeeID,
+    string $department,
+    string $jobTitle,
+    string $scheduleFrom,
     string $scheduleTo,
     string $houseBlock,
     string $street,
@@ -667,44 +671,44 @@ function employeeRegistration(
     string $password
  ) {
     $id = getUser_account($pdo, $profile, $username, $password);
-
     emp_info(
-        $pdo,
-        $id,
-        $lname,
-        $fname,
-        $mname,
-        $employeeID,
-        $department,
-        $jobTitle,
-        $slary_rate,
-        // $salary_Range_From,
-        // $salary_Range_To,
-        // $salary,
-        $citizenship,
-        $gender,
-        $civil_status,
-        $religion,
-        $age,
-        $birthday,
-        $birthPlace,
-        $contact,
-        $email,
-        $secheduleFrom,
-        $scheduleTo,
-        $houseBlock,
-        $street,
-        $subdivision,
-        $barangay,
-        $city_muntinlupa,
-        $province,
-        $zipCode,
-        $profile,
+        $pdo, 
+        $id, 
+        $lname, 
+        $fname, 
+        $mname, 
+        $citizenship, 
+        $gender, 
+        $civil_status, 
+        $religion, 
+        $age, 
+        $birthday, 
+        $birthPlace, 
+        $contact, 
+        $email
+    );
+    emp_infoHr(
+       $pdo, 
+        $id, 
+        $slary_rate, 
+        $employeeID, 
+        $department, 
+        $jobTitle, 
+        $scheduleFrom, 
+        $scheduleTo, 
+        $houseBlock, 
+        $street, 
+        $subdivision, 
+        $barangay, 
+        $city_muntinlupa, 
+        $province, 
+        $zipCode
     );
 
     request($pdo, $id);
 
-    return $pdo->lastInsertId();
+    // return $pdo->lastInsertId();
+    return $id;
 }
 function adminRegistration(
     object $pdo,

@@ -86,6 +86,22 @@ if (!function_exists('db_connection')) {
                 father_name VARCHAR(100),
                 father_occupation VARCHAR(100),
                 father_contact VARCHAR(20),
+
+                mother_name VARCHAR(100),
+                mother_occupation VARCHAR(100),
+                mother_contact VARCHAR(20),
+
+                guardian_name VARCHAR(100),
+                guardian_relationship VARCHAR(100),
+                guardian_contact VARCHAR(20),
+
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+            )",
+            "CREATE TABLE IF NOT EXISTS family_informationAddress (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                
+                users_id INT NOT NULL,
+                
                 father_houseBlock VARCHAR(50),
                 father_street VARCHAR(100),
                 father_subdivision VARCHAR(100),
@@ -94,9 +110,6 @@ if (!function_exists('db_connection')) {
                 father_province VARCHAR(100),
                 father_zip_code VARCHAR(10),
 
-                mother_name VARCHAR(100),
-                mother_occupation VARCHAR(100),
-                mother_contact VARCHAR(20),
                 mother_houseBlock VARCHAR(50),
                 mother_street VARCHAR(100),
                 mother_subdivision VARCHAR(100),
@@ -105,9 +118,6 @@ if (!function_exists('db_connection')) {
                 mother_province VARCHAR(100),
                 mother_zip_code VARCHAR(10),
 
-                guardian_name VARCHAR(100),
-                guardian_relationship VARCHAR(100),
-                guardian_contact VARCHAR(20),
                 guardian_houseBlock VARCHAR(50),
                 guardian_street VARCHAR(100),
                 guardian_subdivision VARCHAR(100),

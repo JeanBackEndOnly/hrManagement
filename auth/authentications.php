@@ -206,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $birthPlace = $_POST["birthPlace"];
         $contact = $_POST["contact"];
         $email = $_POST["email"];
-        $secheduleFrom = $_POST["secheduleFrom"];
+        $scheduleFrom = $_POST["scheduleFrom"];
         $scheduleTo = $_POST["scheduleTo"];
         $houseBlock = $_POST["houseBlock"];
         $street = $_POST["street"];
@@ -269,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, 
-            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $secheduleFrom, $scheduleTo,
+            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $scheduleFrom, $scheduleTo,
             $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)){
                 $errors["empty_inputs"] = "Please fill out all fields!.";
             }
@@ -312,7 +312,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     "birthPlace" => $birthPlace,
                     "contact" => $contact,
                     "email" => $email,
-                    "secheduleFrom" => $secheduleFrom,
+                    "scheduleFrom" => $scheduleFrom,
                     "scheduleTo" => $scheduleTo,
                     "houseBlock" => $houseBlock,
                     "street" => $street,
@@ -336,10 +336,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $lname,
                 $fname,
                 $mname,
-                $employeeID,
-                $department,
-                $jobTitle,
-                $slary_rate,
                 $citizenship,
                 $gender,
                 $civil_status,
@@ -349,7 +345,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $birthPlace,
                 $contact,
                 $email,
-                $secheduleFrom,
+                $slary_rate,
+                $employeeID,
+                $department,
+                $jobTitle,
+                $scheduleFrom,
                 $scheduleTo,
                 $houseBlock,
                 $street,
@@ -366,7 +366,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($query); 
             $stmt->bindParam(":users_id", $usersID);
             $stmt->execute();
-
+            // echo $usersID;
             header("Location: ../src/index.php?signup=success");
     
             $stmt = null;

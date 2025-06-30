@@ -10,7 +10,7 @@ if (!isset($_POST['employeeID'])) {
 $employeeID = trim($_POST['employeeID']);
 $pdo = db_connection();
 
-$query = "SELECT COUNT(*) FROM userHr_Informations WHERE employeeID = ?";
+$query = "SELECT COUNT(*) FROM userhr_informations WHERE employeeID = ?";
 $stmt = $pdo->prepare($query);
 $stmt->execute([$employeeID]);
 $count = $stmt->fetchColumn();
