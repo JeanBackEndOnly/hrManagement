@@ -36,7 +36,7 @@ if (!function_exists('db_connection')) {
                 department VARCHAR(50) NOT NULL,
                 jobTitle VARCHAR(50) NOT NULL,
                 slary_rate VARCHAR(10) NOT NULL,
-                salary_Range_From DECIMAL(10,2) NOT NULL,
+                salary_Range_From DECIMAL(12,2) NOT NULL,
                 salary_Range_To DECIMAL(10,2) NOT NULL,
                 salary DECIMAL(10,2) NOT NULL,
                 citizenship VARCHAR(50) NOT NULL,
