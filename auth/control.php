@@ -157,6 +157,7 @@ function validatedEmployee(){
     $pdo = db_connection();
     $query = "SELECT * FROM users
     INNER JOIN userinformations ON users.id = userinformations.users_id
+    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
     INNER JOIN userrequest ON users.id = userrequest.users_id
     WHERE userrequest.status = 'validated'";
     $stmt = $pdo->prepare($query);
@@ -190,9 +191,10 @@ function getValidatedEmployees(int $limit, int $offset, string $sort, string $or
     $pdo = db_connection();
 
     $query = "
-        SELECT users.*, userinformations.*, userrequest.*
-        FROM users
-        INNER JOIN userinformations ON users.id = userinformations.users_id
+        SELECT *
+        FROM users 
+        INNER JOIN userInformations ON users.id = userInformations.users_id
+        INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
         INNER JOIN userrequest ON users.id = userrequest.users_id
         WHERE userrequest.status = 'validated'
         ORDER BY {$sort} {$order}
@@ -264,8 +266,9 @@ function renderValidatedPaginationControls(
 // ====================== Employees Request ======================== //
 function requestEmployee(){
     $pdo = db_connection();
-    $query = "SELECT * FROM users
+    $query = "SELECT * FROM users 
     INNER JOIN userinformations ON users.id = userinformations.users_id
+    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
     INNER JOIN userrequest ON users.id = userrequest.users_id
     WHERE userrequest.status = 'pending'";
     $stmt = $pdo->prepare($query);
@@ -298,9 +301,10 @@ function getRequestEmployees(int $limit, int $offset, string $sort, string $orde
     $pdo = db_connection();
 
     $query = "
-        SELECT users.*, userinformations.*, userrequest.*
-        FROM users
+        SELECT *
+        FROM users 
         INNER JOIN userinformations ON users.id = userinformations.users_id
+        INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
         INNER JOIN userrequest ON users.id = userrequest.users_id
         WHERE userrequest.status = 'pending'
         ORDER BY {$sort} {$order}
@@ -371,8 +375,9 @@ function renderRequestPaginationControls(
 // ====================== Employees Rejected ======================== //
 function rejectEmployee(){
     $pdo = db_connection();
-    $query = "SELECT * FROM users
+    $query = "SELECT * FROM users 
     INNER JOIN userinformations ON users.id = userinformations.users_id
+    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
     INNER JOIN userrequest ON users.id = userrequest.users_id
     WHERE userrequest.status = 'rejected'";
     $stmt = $pdo->prepare($query);
@@ -405,9 +410,10 @@ function getRejectedEmployees(int $limit, int $offset, string $sort, string $ord
     $pdo = db_connection();
 
     $query = "
-        SELECT users.*, userinformations.*, userrequest.*
-        FROM users
+        SELECT *
+        FROM users 
         INNER JOIN userinformations ON users.id = userinformations.users_id
+        INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
         INNER JOIN userrequest ON users.id = userrequest.users_id
         WHERE userrequest.status = 'rejected'
         ORDER BY {$sort} {$order}
@@ -498,8 +504,9 @@ function toggleOrder(string $currentOrder): string {
 function getProfileEinfo(){
     $pdo = db_connection();
     isset($_GET["users_id"]) ? $users_id = $_GET["users_id"] : null;
-    $query = " SELECT * FROM users
+    $query = " SELECT * FROM users 
     INNER JOIN userinformations ON users.id = userinformations.users_id
+    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
     INNER JOIN userrequest ON users.id = userrequest.users_id
     WHERE users.id = :id ";
     $stmt = $pdo->prepare($query);
@@ -575,8 +582,9 @@ function getEmployee() {         // make sure the session is open
 
     $user_id = $_SESSION['user_id'] ?? null;  //  <-- permanent key
 
-    $query = "SELECT * FROM users
+    $query = "SELECT * FROM users 
               INNER JOIN userinformations ON users.id = userinformations.users_id
+              INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
               LEFT JOIN family_information ON users.id = family_information.users_id
               LEFT JOIN userrequest ON users.id = userrequest.users_id
               WHERE users.id = :id";
@@ -707,8 +715,9 @@ function getReports(int $limit, int $offset, string $sortColumn, string $sortOrd
     $sql = "
         SELECT *
         FROM reports
-        LEFT JOIN users ON reports.users_id = users.id
+        LEFT JOIN users ON reports.users_id = users.id 
         LEFT JOIN userinformations ON users.id = userinformations.users_id
+        LEFT JOIN userHr_Informations ON users.id = userHr_Informations.users_id
         $whereClause
         ORDER BY $sortColumn $sortOrder
         LIMIT :limit OFFSET :offset

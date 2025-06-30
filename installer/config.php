@@ -19,6 +19,7 @@ if (!function_exists('db_connection')) {
             $tableQueries = [
                 "CREATE TABLE IF NOT EXISTS users (
                     id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    user_profile VARCHAR(255),
                     username VARCHAR(100) NOT NULL,
                     password VARCHAR(255) NOT NULL,
                     email VARCHAR(100),
@@ -32,13 +33,6 @@ if (!function_exists('db_connection')) {
                 fname VARCHAR(150) NOT NULL,
                 mname VARCHAR(150) NOT NULL,
                 suffix VARCHAR(6),
-                employeeID VARCHAR(150) NOT NULL,
-                department VARCHAR(50) NOT NULL,
-                jobTitle VARCHAR(50) NOT NULL,
-                slary_rate VARCHAR(10) NOT NULL,
-                salary_Range_From DECIMAL(12,2) NOT NULL,
-                salary_Range_To DECIMAL(10,2) NOT NULL,
-                salary DECIMAL(10,2) NOT NULL,
                 citizenship VARCHAR(50) NOT NULL,
                 gender VARCHAR(50) NOT NULL,
                 civil_status VARCHAR(50) NOT NULL,
@@ -48,7 +42,20 @@ if (!function_exists('db_connection')) {
                 birthPlace VARCHAR(50),
                 contact VARCHAR(50) NOT NULL,
                 email VARCHAR(50) NOT NULL,
-                secheduleFrom VARCHAR(255) NOT NULL,
+                add_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+            )",
+            "CREATE TABLE IF NOT EXISTS userHr_Informations(
+                id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                users_id INT(11) NOT NULL,
+                slary_rate VARCHAR(10) NOT NULL,
+                salary_Range_From DECIMAL(12,2) NOT NULL,
+                salary_Range_To DECIMAL(10,2) NOT NULL,
+                employeeID VARCHAR(150) NOT NULL,
+                department VARCHAR(50) NOT NULL,
+                jobTitle VARCHAR(50) NOT NULL,
+                salary DECIMAL(10,2) NOT NULL,
+                scheduleFrom VARCHAR(255) NOT NULL,
                 scheduleTo VARCHAR(50) NOT NULL,
                 houseBlock VARCHAR(50),
                 street VARCHAR(50) NOT NULL,
@@ -57,8 +64,6 @@ if (!function_exists('db_connection')) {
                 city_muntinlupa VARCHAR(50) NOT NULL,
                 province VARCHAR(50) NOT NULL,
                 zip_code VARCHAR(10) NOT NULL,
-                user_profile VARCHAR(255),
-                add_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS userRequest(

@@ -1,7 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 require '../vendor/autoload.php';
 
 require_once '../installer/config.php';
@@ -464,7 +464,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $salary_Range_To = $_POST["salary_Range_To"];
         $salary = $_POST["salary"];
 
-        $query = "SELECT * FROM userinformations WHERE users_id = :users_id";
+        $query = "SELECT * FROM userHr_Informations
+        WHERE users_id = :users_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":users_id", $users_id_job);
         $stmt->execute();
@@ -473,7 +474,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $jobtitleRecent = $getJob["jobTitle"];
         }
 
-        $query = "UPDATE userinformations SET jobTitle = :jobTitle, salary_Range_From = :salary_Range_From, salary_Range_To = :salary_Range_To, salary = :salary WHERE users_id = :users_id";
+        $query = "UPDATE userHr_Informations SET jobTitle = :jobTitle, salary_Range_From = :salary_Range_From, salary_Range_To = :salary_Range_To, salary = :salary WHERE users_id = :users_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":users_id", $users_id_job);
         $stmt->bindParam(":jobTitle", $job_title);
@@ -511,7 +512,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $salary_Range_To = $_POST["salary_Range_To"];
         $salary = $_POST["salary"];
 
-        $query = "UPDATE userinformations SET jobTitle = :jobTitle, salary_Range_From = :salary_Range_From, salary_Range_To = :salary_Range_To, salary = :salary WHERE users_id = :users_id";
+        $query = "UPDATE userHr_Informations SET jobTitle = :jobTitle, salary_Range_From = :salary_Range_From, salary_Range_To = :salary_Range_To, salary = :salary WHERE users_id = :users_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":users_id", $users_id_job);
         $stmt->bindParam(":jobTitle", $job_title);
@@ -1291,7 +1292,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $birthPlace = $_POST["birthPlace"];
         $contact = $_POST["contact"];
         $email = $_POST["email"];
-        $secheduleFrom = $_POST["secheduleFrom"];
+        $scheduleFrom = $_POST["scheduleFrom"];
         $scheduleTo = $_POST["scheduleTo"];
         $houseBlock = $_POST["houseBlock"];
         $street = $_POST["street"];
@@ -1355,7 +1356,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, $salary_Range_From, $salary_Range_To, $salary,
-            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $secheduleFrom, $scheduleTo,
+            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $scheduleFrom, $scheduleTo,
             $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)){
                 $errors["empty_inputs"] = "Please fill out all fields!.";
             }
@@ -1401,7 +1402,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     "birthPlace" => $birthPlace,
                     "contact" => $contact,
                     "email" => $email,
-                    "secheduleFrom" => $secheduleFrom,
+                    "scheduleFrom" => $scheduleFrom,
                     "scheduleTo" => $scheduleTo,
                     "houseBlock" => $houseBlock,
                     "street" => $street,
@@ -1425,13 +1426,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $lname,
                 $fname,
                 $mname,
-                $employeeID,
-                $department,
-                $jobTitle,
-                $slary_rate,
-                $salary_Range_From,
-                $salary_Range_To,
-                $salary,
                 $citizenship,
                 $gender,
                 $civil_status,
@@ -1441,7 +1435,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $birthPlace,
                 $contact,
                 $email,
-                $secheduleFrom,
+                $slary_rate,
+                $salary_Range_From,
+                $salary_Range_To,
+                $employeeID,
+                $department,
+                $jobTitle,
+                $salary,
+                $scheduleFrom,
                 $scheduleTo,
                 $houseBlock,
                 $street,

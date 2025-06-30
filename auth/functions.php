@@ -271,11 +271,12 @@ function password_security(string $password){
         return true;
     }
 }
-function getUser_account(object $pdo, string $username, string $password) {
+function getUser_account(object $pdo, string $profile, string $username, string $password) {
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
     $userRole = "employee";
-    $query = "INSERT INTO users (username, password, user_role) VALUES (:username, :password, :user_role);";
+    $query = "INSERT INTO users (user_profile, username, password, user_role) VALUES (:user_profile, :username, :password, :user_role);";
     $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':user_profile', $profile);
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':password', $hashedPassword);
     $stmt->bindParam(':user_role', $userRole);
@@ -296,9 +297,6 @@ function emp_info(
     $department, 
     $jobTitle, 
     $slary_rate, 
-    // $salary_Range_From, 
-    // $salary_Range_To, 
-    // $salary, 
     $citizenship, 
     $gender, 
     $civil_status, 
@@ -317,22 +315,13 @@ function emp_info(
     $city_muntinlupa, 
     $province, 
     $zipCode, 
-    $profile
     ) {
     $query = "INSERT INTO userInformations (
-        users_id, lname, fname, mname, employeeID, department, jobTitle, slary_rate, 
-        -- salary_Range_From, salary_Range_To, salary, 
-        citizenship, gender, civil_status, 
-        religion, age, birthday, birthPlace, contact, email, secheduleFrom, scheduleTo, 
-        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code, 
-        user_profile
+        users_id, lname, fname, mname, citizenship, gender, civil_status, 
+        religion, age, birthday, birthPlace, contact, email,
     ) VALUES (
-        :users_id, :lname, :fname, :mname, :employeeID, :department, :jobTitle, :slary_rate, 
-        -- :salary_Range_From, :salary_Range_To, :salary,
-        :citizenship, :gender, :civil_status, 
-        :religion, :age, :birthday, :birthPlace, :contact, :email, :secheduleFrom, :scheduleTo, 
-        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code, 
-        :user_profile
+        :users_id, :lname, :fname, :mname, :citizenship, :gender, :civil_status, 
+        :religion, :age, :birthday, :birthPlace, :contact, :email,
     );";
 
     $stmt = $pdo->prepare($query);
@@ -341,13 +330,7 @@ function emp_info(
     $stmt->bindParam(":lname", $lname);
     $stmt->bindParam(":fname", $fname);
     $stmt->bindParam(":mname", $mname);
-    $stmt->bindParam(":employeeID", $employeeID);
-    $stmt->bindParam(":department", $department);
-    $stmt->bindParam(":jobTitle", $jobTitle);
     $stmt->bindParam(":slary_rate", $slary_rate);
-    // $stmt->bindParam(":salary_Range_From", $salary_Range_From);
-    // $stmt->bindParam(":salary_Range_To", $salary_Range_To);
-    // $stmt->bindParam(":salary", $salary);
     $stmt->bindParam(":citizenship", $citizenship);
     $stmt->bindParam(":gender", $gender);
     $stmt->bindParam(":civil_status", $civil_status);
@@ -357,6 +340,28 @@ function emp_info(
     $stmt->bindParam(":birthPlace", $birthPlace);
     $stmt->bindParam(":contact", $contact);
     $stmt->bindParam(":email", $email);
+
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true, "message" => "Employee added successfully."]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Failed to add employee."]);
+    }
+
+    $query = "INSERT INTO userHr_Informations (
+        users_id, employeeID, department, jobTitle, slary_rate, secheduleFrom, scheduleTo, 
+        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code, 
+    ) VALUES (
+        :users_id, :employeeID, :department, :jobTitle, :slary_rate, :secheduleFrom, :scheduleTo, 
+        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code, 
+    );";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":users_id", $id);
+    $stmt->bindParam(":employeeID", $employeeID);
+    $stmt->bindParam(":department", $department);
+    $stmt->bindParam(":jobTitle", $jobTitle);
+    $stmt->bindParam(":slary_rate", $slary_rate);
     $stmt->bindParam(":secheduleFrom", $secheduleFrom);
     $stmt->bindParam(":scheduleTo", $scheduleTo);
     $stmt->bindParam(":houseBlock", $houseBlock);
@@ -366,7 +371,6 @@ function emp_info(
     $stmt->bindParam(":city_muntinlupa", $city_muntinlupa);
     $stmt->bindParam(":province", $province);
     $stmt->bindParam(":zip_code", $zipCode);
-    $stmt->bindParam(":user_profile", $profile);
 
     if ($stmt->execute()) {
         echo json_encode(["success" => true, "message" => "Employee added successfully."]);
@@ -380,13 +384,6 @@ function emp_infoAdmin(
     $lname, 
     $fname, 
     $mname, 
-    $employeeID, 
-    $department, 
-    $jobTitle, 
-    $slary_rate, 
-    $salary_Range_From, 
-    $salary_Range_To, 
-    $salary, 
     $citizenship, 
     $gender, 
     $civil_status, 
@@ -396,7 +393,44 @@ function emp_infoAdmin(
     $birthPlace, 
     $contact, 
     $email, 
-    $secheduleFrom, 
+    ) {
+    $query = "INSERT INTO userInformations (
+        users_id, lname, fname, mname, citizenship, gender, civil_status, 
+        religion, age, birthday, birthPlace, contact, email
+        ) VALUES (
+            :users_id, :lname, :fname, :mname, :citizenship, :gender, :civil_status, 
+            :religion, :age, :birthday, :birthPlace, :contact, :email
+        );";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(":users_id", $id);
+        $stmt->bindParam(":lname", $lname);
+        $stmt->bindParam(":fname", $fname);
+        $stmt->bindParam(":mname", $mname);
+        $stmt->bindParam(":citizenship", $citizenship);
+        $stmt->bindParam(":gender", $gender);
+        $stmt->bindParam(":civil_status", $civil_status);
+        $stmt->bindParam(":religion", $religion);
+        $stmt->bindParam(":age", $age);
+        $stmt->bindParam(":birthday", $birthday);
+        $stmt->bindParam(":birthPlace", $birthPlace);
+        $stmt->bindParam(":contact", $contact);
+        $stmt->bindParam(":email", $email);
+
+        $stmt->execute();
+}
+function emp_infoAdminHr(
+    $pdo, 
+    $id, 
+    $employeeID, 
+    $department, 
+    $jobTitle, 
+    $slary_rate, 
+    $salary_Range_From, 
+    $salary_Range_To, 
+    $salary, 
+    $scheduleFrom, 
     $scheduleTo, 
     $houseBlock, 
     $street, 
@@ -405,30 +439,23 @@ function emp_infoAdmin(
     $city_muntinlupa, 
     $province, 
     $zipCode, 
-    $profile
     ) {
-    $query = "INSERT INTO userInformations (
-        users_id, lname, fname, mname, employeeID, department, jobTitle, slary_rate, 
-        salary_Range_From, salary_Range_To, salary, 
-        citizenship, gender, civil_status, 
-        religion, age, birthday, birthPlace, contact, email, secheduleFrom, scheduleTo, 
-        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code, 
-        user_profile
+
+    $query = "INSERT INTO userHr_Informations (
+        users_id, employeeID, department, jobTitle, slary_rate, 
+        salary_Range_From, salary_Range_To, salary, scheduleFrom, scheduleTo, 
+        houseBlock, street, subdivision, barangay, city_muntinlupa, province, zip_code
+
     ) VALUES (
-        :users_id, :lname, :fname, :mname, :employeeID, :department, :jobTitle, :slary_rate, 
-        :salary_Range_From, :salary_Range_To, :salary,
-        :citizenship, :gender, :civil_status, 
-        :religion, :age, :birthday, :birthPlace, :contact, :email, :secheduleFrom, :scheduleTo, 
-        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code, 
-        :user_profile
+        :users_id, :employeeID, :department, :jobTitle, :slary_rate, 
+        :salary_Range_From, :salary_Range_To, :salary, :scheduleFrom, :scheduleTo, 
+        :houseBlock, :street, :subdivision, :barangay, :city_muntinlupa, :province, :zip_code
+
     );";
 
     $stmt = $pdo->prepare($query);
 
     $stmt->bindParam(":users_id", $id);
-    $stmt->bindParam(":lname", $lname);
-    $stmt->bindParam(":fname", $fname);
-    $stmt->bindParam(":mname", $mname);
     $stmt->bindParam(":employeeID", $employeeID);
     $stmt->bindParam(":department", $department);
     $stmt->bindParam(":jobTitle", $jobTitle);
@@ -436,16 +463,7 @@ function emp_infoAdmin(
     $stmt->bindParam(":salary_Range_From", $salary_Range_From);
     $stmt->bindParam(":salary_Range_To", $salary_Range_To);
     $stmt->bindParam(":salary", $salary);
-    $stmt->bindParam(":citizenship", $citizenship);
-    $stmt->bindParam(":gender", $gender);
-    $stmt->bindParam(":civil_status", $civil_status);
-    $stmt->bindParam(":religion", $religion);
-    $stmt->bindParam(":age", $age);
-    $stmt->bindParam(":birthday", $birthday);
-    $stmt->bindParam(":birthPlace", $birthPlace);
-    $stmt->bindParam(":contact", $contact);
-    $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":secheduleFrom", $secheduleFrom);
+    $stmt->bindParam(":scheduleFrom", $scheduleFrom);
     $stmt->bindParam(":scheduleTo", $scheduleTo);
     $stmt->bindParam(":houseBlock", $houseBlock);
     $stmt->bindParam(":street", $street);
@@ -454,13 +472,7 @@ function emp_infoAdmin(
     $stmt->bindParam(":city_muntinlupa", $city_muntinlupa);
     $stmt->bindParam(":province", $province);
     $stmt->bindParam(":zip_code", $zipCode);
-    $stmt->bindParam(":user_profile", $profile);
-
-    if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Employee added successfully."]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Failed to add employee."]);
-    }
+    $stmt->execute();
 }
 function emp_infoReqUpdate(
     $pdo,
@@ -469,13 +481,6 @@ function emp_infoReqUpdate(
     $fname,
     $mname,
     $suffix,
-    $employeeID,
-    $department,
-    $jobTitle,
-    $salary_rate,
-    $salary_Range_From,
-    $salary_Range_To,
-    $salary,
     $citizenship,
     $gender,
     $civil_status,
@@ -484,30 +489,13 @@ function emp_infoReqUpdate(
     $birthday,
     $birthPlace,
     $contact,
-    $email,
-    $scheduleFrom,
-    $scheduleTo,
-    $houseBlock,
-    $street,
-    $subdivision,
-    $barangay,
-    $city_muntinlupa,
-    $province,
-    $zipCode,
-    $profile
+    $email
     ) {
     $query = "UPDATE userInformations SET
         lname = :lname,
         fname = :fname,
         mname = :mname,
         suffix = :suffix,
-        employeeID = :employeeID,
-        department = :department,
-        jobTitle = :jobTitle,
-        slary_rate = :slary_rate,
-        salary_Range_From = :salary_Range_From,
-        salary_Range_To = :salary_Range_To,
-        salary = :salary,
         citizenship = :citizenship,
         gender = :gender,
         civil_status = :civil_status,
@@ -516,17 +504,7 @@ function emp_infoReqUpdate(
         birthday = :birthday,
         birthPlace = :birthPlace,
         contact = :contact,
-        email = :email,
-        secheduleFrom = :secheduleFrom,
-        scheduleTo = :scheduleTo,
-        houseBlock = :houseBlock,
-        street = :street,
-        subdivision = :subdivision,
-        barangay = :barangay,
-        city_muntinlupa = :city_muntinlupa,
-        province = :province,
-        zip_code = :zip_code,
-        user_profile = :user_profile
+        email = :email
         WHERE users_id = :users_id";
 
     $stmt = $pdo->prepare($query);
@@ -536,13 +514,6 @@ function emp_infoReqUpdate(
     $stmt->bindParam(":fname", $fname);
     $stmt->bindParam(":mname", $mname);
     $stmt->bindParam(":suffix", $suffix);
-    $stmt->bindParam(":employeeID", $employeeID);
-    $stmt->bindParam(":department", $department);
-    $stmt->bindParam(":jobTitle", $jobTitle);
-    $stmt->bindParam(":slary_rate", $salary_rate);
-    $stmt->bindParam(":salary_Range_From", $salary_Range_From);
-    $stmt->bindParam(":salary_Range_To", $salary_Range_To);
-    $stmt->bindParam(":salary", $salary);
     $stmt->bindParam(":citizenship", $citizenship);
     $stmt->bindParam(":gender", $gender);
     $stmt->bindParam(":civil_status", $civil_status);
@@ -552,7 +523,59 @@ function emp_infoReqUpdate(
     $stmt->bindParam(":birthPlace", $birthPlace);
     $stmt->bindParam(":contact", $contact);
     $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":secheduleFrom", $scheduleFrom);
+
+    $stmt->execute();
+}
+function emp_infoReqUpdateHr(
+    $pdo,
+    $users_id,
+    $employeeID,
+    $department,
+    $jobTitle,
+    $salary_rate,
+    $salary_Range_From,
+    $salary_Range_To,
+    $salary,
+    $scheduleFrom,
+    $scheduleTo,
+    $houseBlock,
+    $street,
+    $subdivision,
+    $barangay,
+    $city_muntinlupa,
+    $province,
+    $zipCode,
+    ) {
+
+    $query = "UPDATE userHr_Informations SET
+        employeeID = :employeeID,
+        department = :department,
+        jobTitle = :jobTitle,
+        slary_rate = :slary_rate,
+        salary_Range_From = :salary_Range_From,
+        salary_Range_To = :salary_Range_To,
+        salary = :salary,
+        scheduleFrom = :scheduleFrom,
+        scheduleTo = :scheduleTo,
+        houseBlock = :houseBlock,
+        street = :street,
+        subdivision = :subdivision,
+        barangay = :barangay,
+        city_muntinlupa = :city_muntinlupa,
+        province = :province,
+        zip_code = :zip_code
+        WHERE users_id = :users_id";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->bindParam(":employeeID", $employeeID);
+    $stmt->bindParam(":department", $department);
+    $stmt->bindParam(":jobTitle", $jobTitle);
+    $stmt->bindParam(":slary_rate", $salary_rate);
+    $stmt->bindParam(":salary_Range_From", $salary_Range_From);
+    $stmt->bindParam(":salary_Range_To", $salary_Range_To);
+    $stmt->bindParam(":salary", $salary);
+    $stmt->bindParam(":scheduleFrom", $scheduleFrom);
     $stmt->bindParam(":scheduleTo", $scheduleTo);
     $stmt->bindParam(":houseBlock", $houseBlock);
     $stmt->bindParam(":street", $street);
@@ -561,8 +584,18 @@ function emp_infoReqUpdate(
     $stmt->bindParam(":city_muntinlupa", $city_muntinlupa);
     $stmt->bindParam(":province", $province);
     $stmt->bindParam(":zip_code", $zipCode);
-    $stmt->bindParam(":user_profile", $profile);
 
+    $stmt->execute();
+}
+function emp_infoReqUpdatePp(
+    $pdo,
+    $users_id,
+    $profile
+    ) {
+    $query = "UPDATE users SET user_profile = :user_profile WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":id", $users_id);
+    $stmt->bindParam(":user_profile", $profile);
     $stmt->execute();
 }
 function request(object $pdo, int $id) {
@@ -611,9 +644,6 @@ function employeeRegistration(
     string $department,
     string $jobTitle,
     string $slary_rate,
-    // string $salary_Range_From,
-    // string $salary_Range_To,
-    // string $salary,
     string $citizenship,
     string $gender,
     string $civil_status,
@@ -636,9 +666,7 @@ function employeeRegistration(
     string $username,
     string $password
  ) {
-    // $salary_Range_From = (int)$salary_Range_From;
-    // $salary_Range_To = (int)$salary_Range_To;
-    $id = getUser_account($pdo, $username, $password);
+    $id = getUser_account($pdo, $profile, $username, $password);
 
     emp_info(
         $pdo,
@@ -683,13 +711,6 @@ function adminRegistration(
     string $lname,
     string $fname,
     string $mname,
-    string $employeeID,
-    string $department,
-    string $jobTitle,
-    string $slary_rate,
-    string $salary_Range_From,
-    string $salary_Range_To,
-    string $salary,
     string $citizenship,
     string $gender,
     string $civil_status,
@@ -699,7 +720,14 @@ function adminRegistration(
     string $birthPlace,
     string $contact,
     string $email,
-    string $secheduleFrom,
+    string $slary_rate,
+    string $salary_Range_From,
+    string $salary_Range_To,
+    string $employeeID,
+    string $department,
+    string $jobTitle,
+    string $salary,
+    string $scheduleFrom,
     string $scheduleTo,
     string $houseBlock,
     string $street,
@@ -714,40 +742,43 @@ function adminRegistration(
  ) {
     $salary_Range_From = (int)$salary_Range_From;
     $salary_Range_To = (int)$salary_Range_To;
-    $id = getUser_account($pdo, $username, $password);
+    $id = getUser_account($pdo, $profile, $username, $password);
 
     emp_infoAdmin(
-        $pdo,
-        $id,
-        $lname,
-        $fname,
-        $mname,
-        $employeeID,
-        $department,
-        $jobTitle,
-        $slary_rate,
-        $salary_Range_From,
-        $salary_Range_To,
-        $salary,
-        $citizenship,
-        $gender,
-        $civil_status,
-        $religion,
-        $age,
-        $birthday,
-        $birthPlace,
-        $contact,
-        $email,
-        $secheduleFrom,
-        $scheduleTo,
-        $houseBlock,
-        $street,
-        $subdivision,
-        $barangay,
-        $city_muntinlupa,
-        $province,
-        $zipCode,
-        $profile,
+        $pdo, 
+        $id, 
+        $lname, 
+        $fname, 
+        $mname, 
+        $citizenship, 
+        $gender, 
+        $civil_status, 
+        $religion, 
+        $age, 
+        $birthday, 
+        $birthPlace, 
+        $contact, 
+        $email,  
+    );
+    emp_infoAdminHr(
+        $pdo, 
+        $id, 
+        $employeeID, 
+        $department, 
+        $jobTitle, 
+        $slary_rate, 
+        $salary_Range_From, 
+        $salary_Range_To, 
+        $salary, 
+        $scheduleFrom, 
+        $scheduleTo, 
+        $houseBlock, 
+        $street, 
+        $subdivision, 
+        $barangay, 
+        $city_muntinlupa, 
+        $province, 
+        $zipCode, 
     );
 
     requestAdmin($pdo, $id);
@@ -795,13 +826,6 @@ function updateReq(
         $fname,
         $mname,
         $suffix,
-        $employeeID,
-        $department,
-        $jobTitle,
-        $salary_rate,
-        (int)$salary_Range_From,
-        (int)$salary_Range_To,
-        $salary,
         $citizenship,
         $gender,
         $civil_status,
@@ -811,6 +835,17 @@ function updateReq(
         $birthPlace,
         $contact,
         $email,
+    );
+    emp_infoReqUpdateHr(
+        $pdo,
+        $users_id,
+        $employeeID,
+        $department,
+        $jobTitle,
+        $salary_rate,
+        $salary_Range_From,
+        $salary_Range_To,
+        $salary,
         $scheduleFrom,
         $scheduleTo,
         $houseBlock,
@@ -820,6 +855,10 @@ function updateReq(
         $city_muntinlupa,
         $province,
         $zipCode,
+    );
+    emp_infoReqUpdatePp(
+        $pdo,
+        $users_id,
         $profile
     );
 }

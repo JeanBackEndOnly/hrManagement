@@ -129,7 +129,7 @@
                                         <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["secheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                             </div>
                             <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" style="height: 100%; display: flex;" id="personalInformation">
@@ -235,7 +235,7 @@
                                 <div class="inputInfo my-2 row w-100">
                                     <div class="col-md-4">
                                         <label for="city_muntinlupa" class="fw-bold">Schedule From</label>
-                                        <input type="text" name="scheduleFrom" class="form-control" id="city_muntinlupa" value="<?= isset($row["secheduleFrom"]) ? htmlspecialchars($row["secheduleFrom"]) : "N/A" ?>">
+                                        <input type="text" name="scheduleFrom" class="form-control" id="city_muntinlupa" value="<?= isset($row["scheduleFrom"]) ? htmlspecialchars($row["scheduleFrom"]) : "N/A" ?>">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="ScheduleTo" class="fw-bold">Schedule To</label>
@@ -266,7 +266,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="city_muntinlupa" class="fw-bold">City Muntinlupa</label>
-                                        <input type="text" name="city_muntinlupa" class="form-control" id="city_muntinlupa" value="<?= isset($row["secheduleFrom"]) ? htmlspecialchars($row["secheduleFrom"]) : "N/A" ?>">
+                                        <input type="text" name="city_muntinlupa" class="form-control" id="city_muntinlupa" value="<?= isset($row["scheduleFrom"]) ? htmlspecialchars($row["scheduleFrom"]) : "N/A" ?>">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="province" class="fw-bold">Province</label>
@@ -321,7 +321,7 @@
                                         <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["secheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -581,7 +581,7 @@
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["jobTitle"] ?? "N/A") ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
                                         <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"] ?? "N/A") ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["secheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
+                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
