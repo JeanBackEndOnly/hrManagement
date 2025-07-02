@@ -30,6 +30,7 @@ require_once '../../auth/view.php';
     $passwordChange = false;
     $code = false;
     $passwordFailed = false;
+    $leaveRequest = false;
 
     // =========================== JOB TITLES =========================== //
 function getJobTitlesCount(): int {
@@ -765,4 +766,30 @@ function getReports(int $limit, int $offset, string $sortColumn, string $sortOrd
         error_log("DB error in getReports: " . $e->getMessage());
         return [];
     }
+}
+
+// ======================= LEAVE ADMIN SIDE ======================= //
+
+function getEmployeeNames(){
+    $pdo = db_connection();
+    $users_id = $_GET["users_id"] ?? '';
+    $sql = "SELECT * FROM users
+    INNER JOIN userInformations ON users.id = userinformations.users_id
+    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
+    WHERE users.id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(":id", $users_id);
+    $stmt->execute();
+    $employeeName = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['employeeName' => $employeeName];
+}
+function getLeaveRequest(){
+    $pdo = db_connection();
+    $users_id = $_GET["users_id"] ?? '';
+    $sql = "SELECT * FROM leavereq WHERE users_id = :users_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $employeeLeave = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['employeeLeave' => $employeeLeave];
 }

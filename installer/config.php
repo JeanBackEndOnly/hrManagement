@@ -50,7 +50,7 @@ if (!function_exists('db_connection')) {
                 users_id INT(11) NOT NULL,
                 slary_rate VARCHAR(10) NOT NULL,
                 salary_Range_From DECIMAL(12,2) NOT NULL,
-                salary_Range_To DECIMAL(10,2) NOT NULL,
+                salary_Range_To DECIMAL(12,2) NOT NULL,
                 employeeID VARCHAR(150) NOT NULL,
                 department VARCHAR(50) NOT NULL,
                 jobTitle VARCHAR(50) NOT NULL,
@@ -167,8 +167,38 @@ if (!function_exists('db_connection')) {
                 report_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
             )",
+            "CREATE TABLE IF NOT EXISTS leaveReq (
+                leave_id INT AUTO_INCREMENT PRIMARY KEY,
+                users_id INT NOT NULL,
+                leaveStatus VARCHAR(10) NOT NULL,
+                leaveType VARCHAR(20) NOT NULL,
+                leaveDate date NOT NULL,
+                Others VARCHAR(255),
+                Purpose VARCHAR(255) NOT NULL,
+                InclusiveFrom date NOT NULL,
+                InclusiveTo date NOT NULL,
+                numberOfDays INT NOT NULL,
+                contact VARCHAR(13) NOT NULL,
+                sectionHead VARCHAR(120) NOT NULL,
+                departmentHead VARCHAR(120) NOT NULL,
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
+            "CREATE TABLE IF NOT EXISTS leave_details (
+                leaveDetails_id INT AUTO_INCREMENT PRIMARY KEY,
+                leaveID INT NOT NULL,
+                balance INT NOT NULL,
+                earned DECIMAL(5,2) NOT NULL,
+                credits DECIMAL(5,2) NOT NULL, 
+                lessLeave DECIMAL(5,2) NOT NULL,
+                balanceToDate DECIMAL(5,2) NOT NULL, 
+                disapprovalDetails TEXT,
+                approved_at date NULL,
+                disapproved_at date NULL,
+                FOREIGN KEY (leaveID) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
+            )",
             ];
-
+// earned + balance = credits
+// earned - lessLeave = balanceToDate
             foreach ($tableQueries as $query) {
                 $pdo->exec($query);
             }

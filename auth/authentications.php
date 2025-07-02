@@ -1574,193 +1574,193 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (isset($_POST["familyEmployeeUpdate"]) && $_POST["familyEmployeeUpdate"] === "true") {
-    $users_id = $_POST['users_id'] ?? null;
-    
-    $father_name = $_POST['father_name'] ?? '';
-    $father_occupation = $_POST['father_occupation'] ?? '';
-    $father_contact = $_POST['father_contact'] ?? '';
-    $mother_name = $_POST['mother_name'] ?? '';
-    $mother_occupation = $_POST['mother_occupation'] ?? '';
-    $mother_contact = $_POST['mother_contact'] ?? '';
-    $guardian_name = $_POST['guardian_name'] ?? '';
-    $guardian_relationship = $_POST['guardian_relationship'] ?? '';
-    $guardian_contact = $_POST['guardian_contact'] ?? '';
+        $users_id = $_POST['users_id'] ?? null;
+        
+        $father_name = $_POST['father_name'] ?? '';
+        $father_occupation = $_POST['father_occupation'] ?? '';
+        $father_contact = $_POST['father_contact'] ?? '';
+        $mother_name = $_POST['mother_name'] ?? '';
+        $mother_occupation = $_POST['mother_occupation'] ?? '';
+        $mother_contact = $_POST['mother_contact'] ?? '';
+        $guardian_name = $_POST['guardian_name'] ?? '';
+        $guardian_relationship = $_POST['guardian_relationship'] ?? '';
+        $guardian_contact = $_POST['guardian_contact'] ?? '';
 
-    $father_houseBlock = $_POST['father_houseBlock'] ?? '';
-    $father_street = $_POST['father_street'] ?? '';
-    $father_subdivision = $_POST['father_subdivision'] ?? '';
-    $father_barangay = $_POST['father_barangay'] ?? '';
-    $father_city_muntinlupa = $_POST['father_city_muntinlupa'] ?? '';
-    $father_province = $_POST['father_province'] ?? '';
-    $father_zip_code = $_POST['father_zip_code'] ?? '';
+        $father_houseBlock = $_POST['father_houseBlock'] ?? '';
+        $father_street = $_POST['father_street'] ?? '';
+        $father_subdivision = $_POST['father_subdivision'] ?? '';
+        $father_barangay = $_POST['father_barangay'] ?? '';
+        $father_city_muntinlupa = $_POST['father_city_muntinlupa'] ?? '';
+        $father_province = $_POST['father_province'] ?? '';
+        $father_zip_code = $_POST['father_zip_code'] ?? '';
 
-    $mother_houseBlock = $_POST['mother_houseBlock'] ?? '';
-    $mother_street = $_POST['mother_street'] ?? '';
-    $mother_subdivision = $_POST['mother_subdivision'] ?? '';
-    $mother_barangay = $_POST['mother_barangay'] ?? '';
-    $mother_city_muntinlupa = $_POST['mother_city_muntinlupa'] ?? '';
-    $mother_province = $_POST['mother_province'] ?? '';
-    $mother_zip_code = $_POST['mother_zip_code'] ?? '';
+        $mother_houseBlock = $_POST['mother_houseBlock'] ?? '';
+        $mother_street = $_POST['mother_street'] ?? '';
+        $mother_subdivision = $_POST['mother_subdivision'] ?? '';
+        $mother_barangay = $_POST['mother_barangay'] ?? '';
+        $mother_city_muntinlupa = $_POST['mother_city_muntinlupa'] ?? '';
+        $mother_province = $_POST['mother_province'] ?? '';
+        $mother_zip_code = $_POST['mother_zip_code'] ?? '';
 
-    $guardian_houseBlock = $_POST['guardian_houseBlock'] ?? '';
-    $guardian_street = $_POST['guardian_street'] ?? '';
-    $guardian_subdivision = $_POST['guardian_subdivision'] ?? '';
-    $guardian_barangay = $_POST['guardian_barangay'] ?? '';
-    $guardian_city_muntinlupa = $_POST['guardian_city_muntinlupa'] ?? '';
-    $guardian_province = $_POST['guardian_province'] ?? '';
-    $guardian_zip_code = $_POST['guardian_zip_code'] ?? '';
+        $guardian_houseBlock = $_POST['guardian_houseBlock'] ?? '';
+        $guardian_street = $_POST['guardian_street'] ?? '';
+        $guardian_subdivision = $_POST['guardian_subdivision'] ?? '';
+        $guardian_barangay = $_POST['guardian_barangay'] ?? '';
+        $guardian_city_muntinlupa = $_POST['guardian_city_muntinlupa'] ?? '';
+        $guardian_province = $_POST['guardian_province'] ?? '';
+        $guardian_zip_code = $_POST['guardian_zip_code'] ?? '';
 
-    if (!$users_id) {
-        header("Location: ../src/employee/profile.php?upsert=failed&tab=family");
-        exit;
-    }
-
-    try {
-        $checkStmt = $pdo->prepare("SELECT id FROM family_information WHERE users_id = :users_id");
-        $checkStmt->execute([':users_id' => $users_id]);
-        $existingFamily = $checkStmt->fetch(PDO::FETCH_ASSOC);
-
-        $params = [
-            ':users_id' => $users_id,
-            ':father_name' => $father_name,
-            ':father_occupation' => $father_occupation,
-            ':father_contact' => $father_contact,
-            ':mother_name' => $mother_name,
-            ':mother_occupation' => $mother_occupation,
-            ':mother_contact' => $mother_contact,
-            ':guardian_name' => $guardian_name,
-            ':guardian_relationship' => $guardian_relationship,
-            ':guardian_contact' => $guardian_contact
-        ];
-
-        if ($existingFamily) {
-            $sqlFamily = "UPDATE family_information SET
-                father_name = :father_name,
-                father_occupation = :father_occupation,
-                father_contact = :father_contact,
-                mother_name = :mother_name,
-                mother_occupation = :mother_occupation,
-                mother_contact = :mother_contact,
-                guardian_name = :guardian_name,
-                guardian_relationship = :guardian_relationship,
-                guardian_contact = :guardian_contact
-                WHERE users_id = :users_id";
-            
-            $stmtFamily = $pdo->prepare($sqlFamily);
-            $stmtFamily->execute($params);
-
-            $sqlAddress = "UPDATE family_informationAddress SET
-                father_houseBlock = :father_houseBlock,
-                father_street = :father_street,
-                father_subdivision = :father_subdivision,
-                father_barangay = :father_barangay,
-                father_city_muntinlupa = :father_city_muntinlupa,
-                father_province = :father_province,
-                father_zip_code = :father_zip_code,
-                mother_houseBlock = :mother_houseBlock,
-                mother_street = :mother_street,
-                mother_subdivision = :mother_subdivision,
-                mother_barangay = :mother_barangay,
-                mother_city_muntinlupa = :mother_city_muntinlupa,
-                mother_province = :mother_province,
-                mother_zip_code = :mother_zip_code,
-                guardian_houseBlock = :guardian_houseBlock,
-                guardian_street = :guardian_street,
-                guardian_subdivision = :guardian_subdivision,
-                guardian_barangay = :guardian_barangay,
-                guardian_city_muntinlupa = :guardian_city_muntinlupa,
-                guardian_province = :guardian_province,
-                guardian_zip_code = :guardian_zip_code
-                WHERE users_id = :users_id";
-
-            $stmtAddress = $pdo->prepare($sqlAddress);
-            $stmtAddress->execute([
-                ':users_id' => $users_id,
-                ':father_houseBlock' => $father_houseBlock,
-                ':father_street' => $father_street,
-                ':father_subdivision' => $father_subdivision,
-                ':father_barangay' => $father_barangay,
-                ':father_city_muntinlupa' => $father_city_muntinlupa,
-                ':father_province' => $father_province,
-                ':father_zip_code' => $father_zip_code,
-                ':mother_houseBlock' => $mother_houseBlock,
-                ':mother_street' => $mother_street,
-                ':mother_subdivision' => $mother_subdivision,
-                ':mother_barangay' => $mother_barangay,
-                ':mother_city_muntinlupa' => $mother_city_muntinlupa,
-                ':mother_province' => $mother_province,
-                ':mother_zip_code' => $mother_zip_code,
-                ':guardian_houseBlock' => $guardian_houseBlock,
-                ':guardian_street' => $guardian_street,
-                ':guardian_subdivision' => $guardian_subdivision,
-                ':guardian_barangay' => $guardian_barangay,
-                ':guardian_city_muntinlupa' => $guardian_city_muntinlupa,
-                ':guardian_province' => $guardian_province,
-                ':guardian_zip_code' => $guardian_zip_code
-            ]);
-        } else {
-            $sqlFamily = "INSERT INTO family_information (
-                users_id,
-                father_name, father_occupation, father_contact,
-                mother_name, mother_occupation, mother_contact,
-                guardian_name, guardian_relationship, guardian_contact
-            ) VALUES (
-                :users_id,
-                :father_name, :father_occupation, :father_contact,
-                :mother_name, :mother_occupation, :mother_contact,
-                :guardian_name, :guardian_relationship, :guardian_contact
-            )";
-
-            $stmtFamily = $pdo->prepare($sqlFamily);
-            $stmtFamily->execute($params);
-
-            $sqlAddress = "INSERT INTO family_informationAddress (
-                users_id,
-                father_houseBlock, father_street, father_subdivision, father_barangay, father_city_muntinlupa, father_province, father_zip_code,
-                mother_houseBlock, mother_street, mother_subdivision, mother_barangay, mother_city_muntinlupa, mother_province, mother_zip_code,
-                guardian_houseBlock, guardian_street, guardian_subdivision, guardian_barangay, guardian_city_muntinlupa, guardian_province, guardian_zip_code
-            ) VALUES (
-                :users_id,
-                :father_houseBlock, :father_street, :father_subdivision, :father_barangay, :father_city_muntinlupa, :father_province, :father_zip_code,
-                :mother_houseBlock, :mother_street, :mother_subdivision, :mother_barangay, :mother_city_muntinlupa, :mother_province, :mother_zip_code,
-                :guardian_houseBlock, :guardian_street, :guardian_subdivision, :guardian_barangay, :guardian_city_muntinlupa, :guardian_province, :guardian_zip_code
-            )";
-
-            $stmtAddress = $pdo->prepare($sqlAddress);
-            $stmtAddress->execute([
-                ':users_id' => $users_id,
-                ':father_houseBlock' => $father_houseBlock,
-                ':father_street' => $father_street,
-                ':father_subdivision' => $father_subdivision,
-                ':father_barangay' => $father_barangay,
-                ':father_city_muntinlupa' => $father_city_muntinlupa,
-                ':father_province' => $father_province,
-                ':father_zip_code' => $father_zip_code,
-                ':mother_houseBlock' => $mother_houseBlock,
-                ':mother_street' => $mother_street,
-                ':mother_subdivision' => $mother_subdivision,
-                ':mother_barangay' => $mother_barangay,
-                ':mother_city_muntinlupa' => $mother_city_muntinlupa,
-                ':mother_province' => $mother_province,
-                ':mother_zip_code' => $mother_zip_code,
-                ':guardian_houseBlock' => $guardian_houseBlock,
-                ':guardian_street' => $guardian_street,
-                ':guardian_subdivision' => $guardian_subdivision,
-                ':guardian_barangay' => $guardian_barangay,
-                ':guardian_city_muntinlupa' => $guardian_city_muntinlupa,
-                ':guardian_province' => $guardian_province,
-                ':guardian_zip_code' => $guardian_zip_code
-            ]);
+        if (!$users_id) {
+            header("Location: ../src/employee/profile.php?upsert=failed&tab=family");
+            exit;
         }
 
-        header("Location: ../src/employee/profile.php?upsert=success&tab=family");
-        exit;
+        try {
+            $checkStmt = $pdo->prepare("SELECT id FROM family_information WHERE users_id = :users_id");
+            $checkStmt->execute([':users_id' => $users_id]);
+            $existingFamily = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
-    } catch (PDOException $e) {
-        header("Location: ../src/employee/profile.php?upsert=failed&tab=family");
-        exit;
+            $params = [
+                ':users_id' => $users_id,
+                ':father_name' => $father_name,
+                ':father_occupation' => $father_occupation,
+                ':father_contact' => $father_contact,
+                ':mother_name' => $mother_name,
+                ':mother_occupation' => $mother_occupation,
+                ':mother_contact' => $mother_contact,
+                ':guardian_name' => $guardian_name,
+                ':guardian_relationship' => $guardian_relationship,
+                ':guardian_contact' => $guardian_contact
+            ];
+
+            if ($existingFamily) {
+                $sqlFamily = "UPDATE family_information SET
+                    father_name = :father_name,
+                    father_occupation = :father_occupation,
+                    father_contact = :father_contact,
+                    mother_name = :mother_name,
+                    mother_occupation = :mother_occupation,
+                    mother_contact = :mother_contact,
+                    guardian_name = :guardian_name,
+                    guardian_relationship = :guardian_relationship,
+                    guardian_contact = :guardian_contact
+                    WHERE users_id = :users_id";
+                
+                $stmtFamily = $pdo->prepare($sqlFamily);
+                $stmtFamily->execute($params);
+
+                $sqlAddress = "UPDATE family_informationAddress SET
+                    father_houseBlock = :father_houseBlock,
+                    father_street = :father_street,
+                    father_subdivision = :father_subdivision,
+                    father_barangay = :father_barangay,
+                    father_city_muntinlupa = :father_city_muntinlupa,
+                    father_province = :father_province,
+                    father_zip_code = :father_zip_code,
+                    mother_houseBlock = :mother_houseBlock,
+                    mother_street = :mother_street,
+                    mother_subdivision = :mother_subdivision,
+                    mother_barangay = :mother_barangay,
+                    mother_city_muntinlupa = :mother_city_muntinlupa,
+                    mother_province = :mother_province,
+                    mother_zip_code = :mother_zip_code,
+                    guardian_houseBlock = :guardian_houseBlock,
+                    guardian_street = :guardian_street,
+                    guardian_subdivision = :guardian_subdivision,
+                    guardian_barangay = :guardian_barangay,
+                    guardian_city_muntinlupa = :guardian_city_muntinlupa,
+                    guardian_province = :guardian_province,
+                    guardian_zip_code = :guardian_zip_code
+                    WHERE users_id = :users_id";
+
+                $stmtAddress = $pdo->prepare($sqlAddress);
+                $stmtAddress->execute([
+                    ':users_id' => $users_id,
+                    ':father_houseBlock' => $father_houseBlock,
+                    ':father_street' => $father_street,
+                    ':father_subdivision' => $father_subdivision,
+                    ':father_barangay' => $father_barangay,
+                    ':father_city_muntinlupa' => $father_city_muntinlupa,
+                    ':father_province' => $father_province,
+                    ':father_zip_code' => $father_zip_code,
+                    ':mother_houseBlock' => $mother_houseBlock,
+                    ':mother_street' => $mother_street,
+                    ':mother_subdivision' => $mother_subdivision,
+                    ':mother_barangay' => $mother_barangay,
+                    ':mother_city_muntinlupa' => $mother_city_muntinlupa,
+                    ':mother_province' => $mother_province,
+                    ':mother_zip_code' => $mother_zip_code,
+                    ':guardian_houseBlock' => $guardian_houseBlock,
+                    ':guardian_street' => $guardian_street,
+                    ':guardian_subdivision' => $guardian_subdivision,
+                    ':guardian_barangay' => $guardian_barangay,
+                    ':guardian_city_muntinlupa' => $guardian_city_muntinlupa,
+                    ':guardian_province' => $guardian_province,
+                    ':guardian_zip_code' => $guardian_zip_code
+                ]);
+            } else {
+                $sqlFamily = "INSERT INTO family_information (
+                    users_id,
+                    father_name, father_occupation, father_contact,
+                    mother_name, mother_occupation, mother_contact,
+                    guardian_name, guardian_relationship, guardian_contact
+                ) VALUES (
+                    :users_id,
+                    :father_name, :father_occupation, :father_contact,
+                    :mother_name, :mother_occupation, :mother_contact,
+                    :guardian_name, :guardian_relationship, :guardian_contact
+                )";
+
+                $stmtFamily = $pdo->prepare($sqlFamily);
+                $stmtFamily->execute($params);
+
+                $sqlAddress = "INSERT INTO family_informationAddress (
+                    users_id,
+                    father_houseBlock, father_street, father_subdivision, father_barangay, father_city_muntinlupa, father_province, father_zip_code,
+                    mother_houseBlock, mother_street, mother_subdivision, mother_barangay, mother_city_muntinlupa, mother_province, mother_zip_code,
+                    guardian_houseBlock, guardian_street, guardian_subdivision, guardian_barangay, guardian_city_muntinlupa, guardian_province, guardian_zip_code
+                ) VALUES (
+                    :users_id,
+                    :father_houseBlock, :father_street, :father_subdivision, :father_barangay, :father_city_muntinlupa, :father_province, :father_zip_code,
+                    :mother_houseBlock, :mother_street, :mother_subdivision, :mother_barangay, :mother_city_muntinlupa, :mother_province, :mother_zip_code,
+                    :guardian_houseBlock, :guardian_street, :guardian_subdivision, :guardian_barangay, :guardian_city_muntinlupa, :guardian_province, :guardian_zip_code
+                )";
+
+                $stmtAddress = $pdo->prepare($sqlAddress);
+                $stmtAddress->execute([
+                    ':users_id' => $users_id,
+                    ':father_houseBlock' => $father_houseBlock,
+                    ':father_street' => $father_street,
+                    ':father_subdivision' => $father_subdivision,
+                    ':father_barangay' => $father_barangay,
+                    ':father_city_muntinlupa' => $father_city_muntinlupa,
+                    ':father_province' => $father_province,
+                    ':father_zip_code' => $father_zip_code,
+                    ':mother_houseBlock' => $mother_houseBlock,
+                    ':mother_street' => $mother_street,
+                    ':mother_subdivision' => $mother_subdivision,
+                    ':mother_barangay' => $mother_barangay,
+                    ':mother_city_muntinlupa' => $mother_city_muntinlupa,
+                    ':mother_province' => $mother_province,
+                    ':mother_zip_code' => $mother_zip_code,
+                    ':guardian_houseBlock' => $guardian_houseBlock,
+                    ':guardian_street' => $guardian_street,
+                    ':guardian_subdivision' => $guardian_subdivision,
+                    ':guardian_barangay' => $guardian_barangay,
+                    ':guardian_city_muntinlupa' => $guardian_city_muntinlupa,
+                    ':guardian_province' => $guardian_province,
+                    ':guardian_zip_code' => $guardian_zip_code
+                ]);
+            }
+
+            header("Location: ../src/employee/profile.php?upsert=success&tab=family");
+            exit;
+
+        } catch (PDOException $e) {
+            header("Location: ../src/employee/profile.php?upsert=failed&tab=family");
+            exit;
+        }
     }
-}
 
 
     if (isset($_POST["educationalEmployeeUpdate"]) && $_POST["educationalEmployeeUpdate"] === "true") {
@@ -1910,6 +1910,61 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
+    if (isset($_POST["LeaveEmployee"]) && $_POST["LeaveEmployee"] === "true"){
+        $users_id = $_SESSION["user_id"] ?? ''; //check! 
+        $dateLeave = $_POST["dateLeave"];
+        $position = $_POST["position"];
+        $department = $_POST["department"];
+        $leaveType = $_POST["leaveType"];
+        $others = $_POST["others"] ?? '';
+        $purpose = $_POST["purpose"];
+        $inclusiveDateFrom = $_POST["inclusiveDateFrom"];
+        $inclusiveDateTo = $_POST["inclusiveDateTo"];
+        $daysOfLeave = intval($_POST["daysOfLeave"]);
+        $contact = $_POST["contact"];
+        $sectionHead = $_POST["sectionHead"];
+        $departmentHead = $_POST["departmentHead"];
+
+        try {
+            if(empty($dateLeave) || empty($position) || empty($department) || empty($leaveType) || empty($purpose) || 
+            empty($inclusiveDateFrom) || empty($inclusiveDateTo) || empty($daysOfLeave) || empty($contact) || 
+            empty($sectionHead) || empty($departmentHead)){
+                header("Location: ../src/employee/leave.php?empty=fields");
+                die();
+            }
+
+            $query = "INSERT INTO leavereq (users_id, leaveStatus, leaveType, leaveDate, Others, Purpose, InclusiveFrom,
+                InclusiveTo, numberOfDays, contact, sectionHead, departmentHead
+                ) VALUES (
+                :users_id, 'pending', :leaveType, :leaveDate, :Others, :Purpose, :InclusiveFrom,
+                :InclusiveTo, :numberOfDays, :contact, :sectionHead, :departmentHead);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $users_id);
+            $stmt->bindParam(":leaveType", $leaveType);
+            $stmt->bindParam(":leaveDate", $dateLeave);
+            $stmt->bindParam(":Others", $others);
+            $stmt->bindParam(":Purpose", $purpose);
+            $stmt->bindParam(":InclusiveFrom", $inclusiveDateFrom);
+            $stmt->bindParam(":InclusiveTo", $inclusiveDateTo);
+            $stmt->bindParam(":numberOfDays", $daysOfLeave);
+            $stmt->bindParam(":contact", $contact);
+            $stmt->bindParam(":sectionHead", $sectionHead);
+            $stmt->bindParam(":departmentHead", $departmentHead);
+            $stmt->execute();
+
+            $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'PendingLeave')";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $users_id);
+            $stmt->execute();
+            
+            header("Location: ../src/employee/leave.php?success=leave");
+            $stmt = null;
+            $pdo = null;
+            die();
+        } catch (PDOException $e) {
+            die("Query Failed: " . $e->getMessage());
+        }
+    }
     // ============================== FORGOT PASSWORD ============================== //
     if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true"){
         $usernameForgot = $_POST["usernameAuth"] ?? null;

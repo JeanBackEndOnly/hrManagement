@@ -1,4 +1,5 @@
 <?php include '../../templates/Uheader.php';?>
+
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
@@ -10,11 +11,11 @@
 
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
-                <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3 me-1"></i></a>
-                <a href="profile.php?users_id=<?php echo $employeeInfo["users_id"]; ?>" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
-                    <img src="../../assets/image/upload/<?php echo htmlspecialchars($employeeInfo["user_profile"]) ?>" class="rounded-circle me-0 ms-4" style="height: 35px; width: 35px;">
-                    <span class="fw-bold"><?php echo isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) . ", " . htmlspecialchars($employeeInfo["fname"]) : "N/A" ?></span>
-                </a>
+                <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
+                <button class="align-items-center" type="button" onclick="userButton()">
+                    <img src="../../assets/image/users.png" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
+                    <span class="fw-bold">ADMIN</span>
+                </button>
             </div>
         </div>
 
@@ -37,9 +38,10 @@
                     </li>
 
                     <ul id="hrUl" class="flex-column" style="display:none;">
+                       <li class="my-1"><a href="employee.php" class="d-flex justify-content-start"><i class="fa-solid me-1 fa-users-gear d-flex align-items-center"></i><p style="display:flex;" id="pNone" class="text-start">RECRUITMENTS</p></a></li>
                         <li class="my-1"><a href="leave.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">LEAVE REQUEST</p></a></li>
-                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">REPORTS</p></a></li>
-                        <li class="my-1"><a href="pds.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">PDS</p></a></li>
+                        <li class="my-1"><a href="job.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-briefcase"></i><p style="display:flex;" id="pNone" class="text-start">JOB & SALARY</p></a></li>
+                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 fa-flag" d-flex align-items-center></i><p style="display:flex;" id="pNone" class="text-start">Reports</p></a></li>
                     </ul>
 
                     <li class="payrollLi d-flex align-items-center p-2 mb-2">
@@ -51,9 +53,11 @@
                     </li>
 
                     <ul id="payrollUl" class="flex-column" style="display:none;">
-                        <li class="my-1"><a href="employee.php"><i class="fa-solid me-1 fa-users-gear"></i>RECRUITMENTS</a></li>
-                        <li class="my-1"><a href="leave.php"><i class="fa-solid me-1 fa-file-export"></i>LEAVE REQUEST</a></li>
-                        <li class="my-1"><a href="job.php"><i class="fa-solid me-1 fa-briefcase"></i>JOB TITLES</a></li>
+                        <li class="my-1"><a href="payroll/process.php"><i class="fa-solid me-1 fa-users-gear"></i>PROCESS</a></li>
+                        <li class="my-1"><a href="payroll/Config.php"><i class="fa-solid me-1 fa-file-export"></i>CONFIG</a></li>
+                        <li class="my-1"><a href="payroll/Reports.php"><i class="fa-solid me-1 fa-briefcase"></i>REPORTS</a></li>
+                        <li class="my-1"><a href="payroll/Deduction Slip.php"><i class="fa-solid me-1 fa-file-export"></i>DEDUCTION SLIP</a></li>
+                        <li class="my-1"><a href="payroll/Loan Request.php"><i class="fa-solid me-1 fa-briefcase"></i>LOAN REQUEST</a></li>
                     </ul>
 
                     <li class="attendanceLi d-flex align-items-center p-2 mb-2">
@@ -64,7 +68,7 @@
                     </li>
 
                     <li class="settingsLi d-flex align-items-center p-2 mb-2">
-                        <a href="#" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
+                        <a href="settings.php" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
                             <i class="fa-solid me-2 fa-gear"></i>
                             <p class="text-start side-text" id="ps">Settings</p>
                         </a>
@@ -73,7 +77,7 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee col-md-11 d-flex flex-wrap flex-row justify-content-between align-items-center" style="width: 95%; height: 7rem;">
+               <div class="header-employee col-md-12 d-flex flex-wrap flex-row justify-content-between align-items-center" style="width: 95%; height: 7rem;">
                     <div class="h1 col-md-3 col-10">
                         <h3 class="h3-employee" style="margin-left: 0;">LEAVE FILLING</h3>
                     </div>
@@ -87,35 +91,35 @@
                         <form action="../../auth/authentications.php" method="post" clas="d-flex justify-content-center align-items-center py-3 m-0 w-100 mt-1">
                             <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                            <input type="hidden" name="LeaveEmployee" value="true">
+                            <input type="hidden" name="LeaveAdminApproval" value="true">
                             <div class="col-md-12 d-flex flex-row justify-content-center align-items-center flex-wrap">
                                 <div class="col-md-10 col-11 d-flex flex-row justify-content-between flex-wrap">
                                     <div class="col-md-4 d-flex flex-column col-12">
                                         <label class="ms-1" for="lname">Last Name</label>
-                                        <input type="text" name="lname" id="lname" class="form-control" value="<?php echo $employeeInfo["lname"] ?>">
+                                        <input type="text" name="lname" id="lname" class="form-control" value="<?php echo $employeeName["lname"] ?>">
                                     </div>
                                     <div class="col-md-4 col-11 d-flex flex-column col-12">
                                         <label class="ms-1" for="fname">First Name</label>
-                                        <input type="text" name="fname" id="fname" class="form-control" value="<?php echo $employeeInfo["fname"] ?>">
+                                        <input type="text" name="fname" id="fname" class="form-control" value="<?php echo $employeeName["fname"] ?>">
                                     </div>
                                     <div class="col-md-4 col-11 d-flex flex-column col-12">
                                         <label class="ms-1" for="mname">M.I.</label>
-                                        <input type="text" name="mname" id="mname" class="form-control" value="<?php echo $employeeInfo["mname"] ?>">
+                                        <input type="text" name="mname" id="mname" class="form-control" value="<?php echo $employeeName["mname"] ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-11 d-flex flex-column justify-content-center">
                                     <label class="ms-1" for="dateLeave">DATE OF FILING</label>
-                                    <input required type="date" name="dateLeave" id="dateLeave" class="form-control">
+                                    <input required type="date" name="dateLeave" id="dateLeave" class="form-control"  value="<?php echo $employeeLeave["leaveDate"] ?>" value="<?php echo $employeeLeave["leaveDate"] ?>">
                                 </div>
                             </div>
                             <div class="positionDept col-md-12 col-12 d-flex flex-row justify-content-center align-items-center p-0 m-0 mt-3 flex-wrap">
                                 <div class="position col-md-6 d-flex flex-column col-11">
                                     <label class="ms-1" for="position">POSITION</label>
-                                    <input required type="text" name="position" class="form-control" id="position">
+                                    <input required type="text" name="position" class="form-control"  value="<?php echo $employeeName["jobTitle"] ?>" id="position">
                                 </div>
                                 <div class="position col-md-6 d-flex flex-column col-11">
                                     <label class="ms-1" for="Dept">DEPARTMENT/SECTION</label>
-                                    <input required type="text" name="department" class="form-control" id="Dept">
+                                    <input required type="text" name="department" class="form-control"  value="<?php echo $employeeName["department"] ?>" id="Dept">
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
@@ -123,38 +127,38 @@
                                     <label for="" class="fw-bold">LEAVE APPLIED FOR</label>
                                 </div>
                                 <div class="row col-md-2 col-11 d-flex flex-row">
-                                    <label for="vacation"><input required type="radio" class="me-1" id="vacation" name="leaveType" value="vacation">Vacation Leave</label>
+                                    <label for="vacation"><input required type="radio" class="me-1" id="vacation" name="leaveType" value="<?php echo $employeeLeave["leaveType"]; ?>">Vacation Leave</label>
                                 </div>
                                 <div class="row col-md-2 col-11 d-flex flex-row">
-                                    <label for="sick"><input required type="radio" class="me-1" id="sick" name="leaveType" value="sick">Sick Leave</label>
+                                    <label for="sick"><input required type="radio" class="me-1" id="sick" name="leaveType"  value="<?php echo $employeeLeave["leaveType"]; ?>">Sick Leave</label>
                                 </div>
                                 <div class="row col-md-2 col-11 d-flex flex-row">
-                                    <label for="special"><input required type="radio" class="me-1" id="special" name="leaveType" value="special">Special Leave</label>
+                                    <label for="special"><input required type="radio" class="me-1" id="special" name="leaveType"  value="<?php echo $employeeLeave["leaveType"]; ?>">Special Leave</label>
                                 </div>
                                 <div class="row col-md-12 col-11 d-flex flex-row">
                                     <label for="others">Others Specify</label>
-                                    <input type="text" class="form-control me-1" id="others" name="others">
+                                    <input type="text" class="form-control me-1"  value="<?php echo $employeeLeave["Others"] ?>" id="others" name="others">
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <label for="cp" class="fw-bold col-md-12 col-11">COURSE/PURPOSE<input required type="text" class="form-control col-11 col-md-11" id="cp" name="purpose"></label>
+                                <label for="cp" class="fw-bold col-md-12 col-11">COURSE/PURPOSE<input required type="text" class="form-control col-11 col-md-11"  value="<?php echo $employeeLeave["Purpose"] ?>" id="cp" name="purpose"></label>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-3 flex-wrap">
                                 <div class="inclusiveDateFrom d-flex flex-column col-md-3 col-11">
                                     <label for="inclusiveDates">INCLUSIVE DATE FROM:</label>
-                                    <input required type="date" name="inclusiveDateFrom" id="inclusiveDateFrom" class="form-control">
+                                    <input required type="date" name="inclusiveDateFrom" id="inclusiveDateFrom" class="form-control" value="<?php echo $employeeLeave["InclusiveFrom"] ?>">  
                                 </div>
                                 <div class="inclusiveDates d-flex flex-column col-md-3 col-11">
                                     <label for="inclusiveDateTo">INCLUSIVE DATES TO:</label>
-                                    <input required type="date" name="inclusiveDateTo" id="inclusiveDateTo" class="form-control">
+                                    <input required type="date" name="inclusiveDateTo" id="inclusiveDateTo" class="form-control" value="<?php echo $employeeLeave["InclusiveTo"] ?>">  
                                 </div>
                                 <div class="noDays d-flex flex-column col-md-6 col-11">
                                     <label for="daysOfLeave">NO. OF DAYS</label>
-                                    <input required type="number" name="daysOfLeave" id="daysOfLeave" class="form-control">
+                                    <input required type="number" name="daysOfLeave" id="daysOfLeave" class="form-control" value="<?php echo $employeeLeave["numberOfDays"] ?>">  
                                 </div>   
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE<input required type="text" class="form-control col-11 col-md-11" id="cp" name="contact"></label>
+                                <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE<input required type="text" class="form-control col-11 col-md-11"  value="<?php echo $employeeLeave["contact"] ?>" id="cp" name="contact"></label>
                             </div>
                             <div class="text col-md-12 col-11">
                                 <p class="text-start">
@@ -172,11 +176,11 @@
                             <div class="recommending col-md-12 col-11 d-flex flex-row justify-content-start m-0 mt-4 p-0 flex-wrap gap-2">
                                 <div class="sectionHEad col-md-4 col-11">
                                     <label class="fw-bold" for="sectionHead">Section Head</label>
-                                    <input required type="text" class="form-control" id="sectionHead" name="sectionHead">
+                                    <input required type="text" class="form-control"  value="<?php echo $employeeLeave["sectionHead"] ?>" id="sectionHead" name="sectionHead">
                                 </div>
                                 <div class="departmentHead col-md-4 col-11">
                                     <label class="fw-bold" for="departmentHead">Department Head</label>
-                                    <input required type="text" class="form-control" id="departmentHead" name="departmentHead">
+                                    <input required type="text" class="form-control"  value="<?php echo $employeeLeave["departmentHead"] ?>" id="departmentHead" name="departmentHead">
                                 </div>
                             </div>
                             <!-- ================================ ADMIN ONLY ================================ -->
@@ -196,33 +200,33 @@
                                         <div class="Attributes d-flex flex-column justify-content-center align-items-center col-md-12 col-12">
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row justify-content-center align-items-center">
                                                 <p class="col-md-3 col-3 p-0 m-0">Balance as of: </p>
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 non-editable p-0 m-0">Leave Earned: </p>
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
+                                                <p class="col-md-3 col-3 p-0 m-0">Leave Earned: </p>
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 non-editable p-0 m-0">Total Leave Credits as of: </p>
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
+                                                <p class="col-md-3 col-3 p-0 m-0">Total Leave Credits as of: </p>
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 non-editable p-0 m-0">Less this Leave: </p>
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
+                                                <p class="col-md-3 col-3 p-0 m-0">Less this Leave: </p>
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 non-editable p-0 m-0">Balance to Date: </p>
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
-                                                <input type="text" class="col-md-3 col-3 non-editable">
+                                                <p class="col-md-3 col-3 p-0 m-0">Balance to Date: </p>
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="text" class="col-md-3 col-3">
                                             </div>
                                         </div>
                                     </div>
@@ -230,13 +234,13 @@
                                         <div class="d-flex flex-column col-md-12 col-11">
                                             <label for="" class="fw-bold">Reommendation for:</label>
                                             <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                                <input type="radio" class="col-md-1 col-1 non-editable" id="approved" name="approved">
-                                                <label class="col-md-1 col-1 non-editable text-start" for="approved">Approved</label>
+                                                <input type="radio" class="col-md-1 col-1" id="approved" name="leaveType" value="approved">
+                                                <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
                                             </div>
                                             <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                                <input type="radio" class="col-md-1 col-1 non-editable" id="Disapproval">
-                                                <label class="col-md-7 col-9 text-start non-editable" for="Disapproval">Disapproval due to:</label>
-                                                <textarea name="Disapproval" id="" class="non-editable"></textarea>
+                                                <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveType" value="Disapproved">
+                                                <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
+                                                <textarea name="Disapproval" id="" class="form-control"></textarea>
                                             </div>
                                             <div class="admin mt-5">
                                                 <p style="border-bottom: solid 1px #000" class="m-0"></p>
@@ -275,27 +279,4 @@
         </div>
     </div>
 </main>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (leaveRequest) {
-            console.log("Showing updateReq toast");
-            Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'Leave Request Successfully send!.',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: { popup: 'swal2-row-toast' }
-            });
-            removeUrlParams(['success']);
-        }
-        function removeUrlParams(params) {
-            const url = new URL(window.location);
-            params.forEach(param => url.searchParams.delete(param));
-            window.history.replaceState({}, document.title, url.toString());
-        }
-    });
-</script>
 <?php include '../../templates/Ufooter.php'?>

@@ -26,6 +26,10 @@ $reportsC = getReportCount();
 $reportCount = $reportsC["reportCount"];
 $idUsers = getUSersId();
 $get_users_id = $idUsers["get_users_id"];
+$empName = getEmployeeNames();
+$employeeName = $empName["employeeName"];
+$empReq = getLeaveRequest();
+$employeeLeave = $empReq["employeeLeave"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];
@@ -196,6 +200,8 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         $code = true;
     }elseif(isset($_GET['password']) && $_GET['password'] === 'failed'){
         $passwordFailed = true;
+    }elseif(isset($_GET['success']) && $_GET['success'] === 'leave'){
+        $leaveRequest = true;
     }
 
 ?>
@@ -252,6 +258,7 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         const passwordChange = <?php echo json_encode($passwordChange); ?>;
         const code = <?php echo json_encode($code); ?>;
         const passwordFailed = <?php echo json_encode($passwordFailed); ?>;
+        const leaveRequest = <?php echo json_encode($leaveRequest); ?>;
     </script>
 
 </head>

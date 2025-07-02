@@ -154,16 +154,25 @@
                                         <td style="width: 25%;"><?= htmlspecialchars($row['lname']) . ", " . htmlspecialchars($row['fname']) ?></td>
                                         <td style="width: 25%;">
                                             <?php 
-                                                if($row['report_type'] == "employeeRegistration") {
-                                                    echo "Requesting for validation!";
-                                                } elseif ($row['report_type'] == "employeePromotion") {
-                                                    echo "Got Promoted to " . htmlspecialchars($row['jobTitle']);
-                                                } elseif ($row['report_type'] == "leaveRequest") {
-                                                    echo "Leave Request";
-                                                } elseif ($row['report_type'] == "employeeValidated") {
-                                                    echo "Employee Validated!";
-                                                } elseif ($row['report_type'] == "employeeRejected") {
-                                                    echo "Employee Rejected!";
+                                                switch ($row['report_type']) {
+                                                    case 'employeeRegistration':
+                                                        echo "Requesting for validation!";
+                                                        break;
+                                                    case 'employeePromotion':
+                                                        echo "Got Promoted to " . htmlspecialchars($row['jobTitle']);
+                                                        break;
+                                                    case 'employeeRejected':
+                                                        echo "Employee Rejected!";
+                                                        break;
+                                                    case 'PendingLeave':
+                                                        echo "Requesting for leave!";
+                                                        break;
+                                                    case 'employeeValidated':
+                                                        echo "Employee Validated!";;
+                                                        break;
+                                                    default:
+                                                        echo "No valid variable found!";
+                                                        break;
                                                 }
                                             ?>
                                         </td>
@@ -171,15 +180,26 @@
                                         <td style="width: 20%;"><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
                                         <td style="width: 10%;">
                                             <?php 
-                                                if($row['report_type'] == "employeeRegistration") {
-                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
-                                                } elseif ($row['report_type'] == "employeePromotion") {
-                                                    echo '<a class="btn btn-sm btn-primary" href="job.php?tab=salaryManage">View</a>';
-                                                }  elseif ($row['report_type'] == "employeeValidated") {
-                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';
-                                                }   elseif ($row['report_type'] == "employeeRejected") {
-                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=reject">View</a>';
-                                                } 
+                                                switch ($row['report_type']) {
+                                                    case 'employeeRegistration':
+                                                        echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
+                                                        break;
+                                                    case 'employeePromotion':
+                                                        echo '<a class="btn btn-sm btn-primary" href="job.php?tab=salaryManage">View</a>';
+                                                        break;
+                                                    case 'employeeRejected':
+                                                        echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=reject">View</a>';
+                                                        break;
+                                                    case 'PendingLeave':
+                                                        echo '<a class="btn btn-sm btn-primary" href="employeeLeaveReq.php?users_id=' . $row["users_id"] . '">View</a>';
+                                                        break;
+                                                    case 'employeeValidated':
+                                                        echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';
+                                                        break;
+                                                    default:
+                                                        echo "No valid variable found!";
+                                                        break;
+                                                }
                                             ?>
                                         </td>
                                     </tr>
