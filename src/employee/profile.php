@@ -11,7 +11,7 @@
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3 me-1"></i></a>
-                <a href="profile.php" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
+                <a href="profile.php?users_id=<?php echo $employeeInfo["users_id"]; ?>" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
                     <img src="../../assets/image/upload/<?php echo htmlspecialchars($employeeInfo["user_profile"]) ?>" class="rounded-circle me-0 ms-4" style="height: 35px; width: 35px;">
                     <span class="fw-bold"><?php echo isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) . ", " . htmlspecialchars($employeeInfo["fname"]) : "N/A" ?></span>
                 </a>
@@ -111,7 +111,6 @@
                                         <h5 class="text-center fs-6 fw-bold"><?= isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) : "N/A" ?>, <?= isset($employeeInfo["fname"]) ? htmlspecialchars($employeeInfo["fname"]) : "N/A" ?> <?= isset($employeeInfo["mname"]) ? htmlspecialchars($employeeInfo["mname"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= isset($employeeInfo["jobTitle"]) ? htmlspecialchars($employeeInfo["jobTitle"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($employeeInfo["status"]) ?></h5>
                                     </div>
                                 </div>
                                 <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" style="height: 100%; display: flex;" id="personalInformation">
@@ -300,7 +299,6 @@
                                         <h5 class="text-center fs-6 fw-bold"><?= isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) : "N/A" ?>, <?= isset($employeeInfo["fname"]) ? htmlspecialchars($employeeInfo["fname"]) : "N/A" ?> <?= isset($employeeInfo["mname"]) ? htmlspecialchars($employeeInfo["mname"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= isset($employeeInfo["jobTitle"]) ? htmlspecialchars($employeeInfo["jobTitle"]) : "N/A" ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($employeeInfo["status"]) ?></h5>
                                     </div>
                                 </div>
                                     
@@ -560,7 +558,6 @@
                                         </h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["jobTitle"] ?? "N/A") ?></h5>
                                         <h5 class="fs-6 fw-bold"><?= htmlspecialchars($employeeInfo["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold">Status: <?= htmlspecialchars($employeeInfo["status"] ?? "N/A") ?></h5>
                                     </div>
                                 </div>
 

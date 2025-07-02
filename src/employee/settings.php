@@ -12,7 +12,7 @@
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3 me-1"></i></a>
-                <a href="profile.php" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
+                <a href="profile.php?users_id=<?php echo $employeeInfo["users_id"]; ?>" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
                     <img src="../../assets/image/upload/<?php echo htmlspecialchars($employeeInfo["user_profile"]) ?>" class="rounded-circle me-0 ms-4" style="height: 35px; width: 35px;">
                     <span class="fw-bold"><?php echo isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) . ", " . htmlspecialchars($employeeInfo["fname"]) : "N/A" ?></span>
                 </a>

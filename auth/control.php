@@ -529,16 +529,24 @@ function getUSersId(){
 
 function getFamilyBG() {
     $pdo = db_connection();
-    isset($_GET["users_id"]) ? $users_id = $_GET["users_id"] : null;
-    $query = " SELECT * FROM users
-    INNER JOIN family_information ON users.id = family_information.users_id
-    WHERE users.id = :id ";
+    if (isset($_GET["users_id"])) {
+        $users_id = $_GET["users_id"];
+    } else {
+        return ['getFam' => []]; 
+    }
+
+    $query = "SELECT * FROM users
+        LEFT JOIN family_information ON users.id = family_information.users_id
+        LEFT JOIN family_informationaddress ON users.id = family_informationaddress.users_id
+        WHERE users.id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":id", $users_id);
     $stmt->execute();
     $getFam = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
     return ['getFam' => $getFam];
 }
+
 function getEducationalBG() {
     $pdo = db_connection();
 
@@ -577,31 +585,57 @@ function getEducationalBG() {
 }
 
 // ===================== EMPLOYEE ===================== //
-function getEmployee() {         // make sure the session is open
-    $pdo = db_connection();
+function getEmployee(): array
+    {
+    $pdo     = db_connection();
+    $user_id = $_SESSION['user_id'] ?? null;
+    if (!$user_id) {
+        return [];                           
+    }
 
-    $user_id = $_SESSION['user_id'] ?? null;  //  <-- permanent key
+    $sql = "
+        SELECT
+            u.*,              -- users
+            ui.*,             -- userInformations
+            uhr.*,            -- userHr_Informations
+            fi.*,             -- family_information
+            fia.*             -- family_informationAddress
+        FROM users                     AS u
+        INNER JOIN userInformations    AS ui  ON ui.users_id  = u.id
+        INNER JOIN userHr_Informations AS uhr ON uhr.users_id = u.id
+        LEFT  JOIN family_information  AS fi  ON fi.users_id  = u.id
+        LEFT  JOIN family_informationAddress AS fia
+                                             ON fia.users_id = u.id
+        WHERE u.id = :id
+        LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $user_id]);
+    $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
-    $query = "SELECT * FROM users 
-              INNER JOIN userinformations ON users.id = userinformations.users_id
-              INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
-              LEFT JOIN family_information ON users.id = family_information.users_id
-              LEFT JOIN userrequest ON users.id = userrequest.users_id
-              WHERE users.id = :id";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare(
+        "SELECT level,
+                school_name,
+                course_or_strand,
+                year_started,
+                year_ended,
+                honors
+         FROM educational_background
+         WHERE users_id = :id"
+    );
+    $stmt->execute([':id' => $user_id]);
+    $educRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $queryEduc = 'SELECT * FROM educational_background WHERE users_id = :id';
-    $stmtEduc = $pdo->prepare($queryEduc);
-    $stmtEduc->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $stmtEduc->execute();
-    $educData = $stmtEduc->fetchAll(PDO::FETCH_ASSOC);
+    $levels   = ['elementary', 'high_school', 'senior_high', 'college', 'graduate'];
+    $getEduc  = array_fill_keys($levels, [
+        'school_name'       => '',
+        'course_or_strand'  => '',
+        'year_started'      => '',
+        'year_ended'        => '',
+        'honors'            => ''
+    ]);
 
-    $getEduc = [];
-    foreach ($educData as $row) {
-        $getEduc[$row['level']] = $row;
+    foreach ($educRows as $row) {
+        $getEduc[$row['level']] = $row;        
     }
 
     return [
@@ -609,8 +643,6 @@ function getEmployee() {         // make sure the session is open
         'getEduc'      => $getEduc
     ];
 }
-
-
 
 // ===================== DASHBOARD ===================== //
 function getValidatedCountDashboard() {

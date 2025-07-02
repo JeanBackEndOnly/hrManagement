@@ -387,38 +387,38 @@
                                         </div>
 
                                         <h6 class="text-primary fw-bold mt-4">Father's Address</h6>
-                                        <div class="row g-3 mt-2">
+                                       <div class="row g-3 mt-2">
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">House Block</label>
-                                                <input type="text" name="father_houseBlock" class="form-control" value="<?= htmlspecialchars($row['father_houseBlock']) ?>">
+                                                <input type="text" name="father_houseBlock" class="form-control" value="<?= isset($row['father_houseBlock']) ? htmlspecialchars($row['father_houseBlock']) : '' ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">Street</label>
-                                                <input type="text" name="father_street" class="form-control" value="<?= htmlspecialchars($row['father_street']) ?>">
+                                                <input type="text" name="father_street" class="form-control" value="<?= isset($row['father_street']) ? htmlspecialchars($row['father_street']) : '' ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">Subdivision</label>
-                                                <input type="text" name="father_subdivision" class="form-control" value="<?= htmlspecialchars($row['father_subdivision']) ?>">
+                                                <input type="text" name="father_subdivision" class="form-control" value="<?= isset($row['father_subdivision']) ? htmlspecialchars($row['father_subdivision']) : '' ?>">
                                             </div>
                                         </div>
                                         <div class="row g-3 mt-2">
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">Barangay</label>
-                                                <input type="text" name="father_barangay" class="form-control" value="<?= htmlspecialchars($row['father_barangay']) ?>">
+                                                <input type="text" name="father_barangay" class="form-control" value="<?= isset($row['father_barangay']) ? htmlspecialchars($row['father_barangay']) : '' ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">City</label>
-                                                <input type="text" name="father_city_muntinlupa" class="form-control" value="<?= htmlspecialchars($row['father_city_muntinlupa']) ?>">
+                                                <input type="text" name="father_city_muntinlupa" class="form-control" value="<?= isset($row['father_city_muntinlupa']) ? htmlspecialchars($row['father_city_muntinlupa']) : '' ?>">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">Province</label>
-                                                <input type="text" name="father_province" class="form-control" value="<?= htmlspecialchars($row['father_province']) ?>">
+                                                <input type="text" name="father_province" class="form-control" value="<?= isset($row['father_province']) ? htmlspecialchars($row['father_province']) : '' ?>">
                                             </div>
                                         </div>
                                         <div class="row g-3 mt-2">
                                             <div class="col-md-4">
                                                 <label class="form-label fw-bold">Zip Code</label>
-                                                <input type="text" name="father_zip_code" class="form-control" value="<?= htmlspecialchars($row['father_zip_code']) ?>">
+                                                <input type="text" name="father_zip_code" class="form-control" value="<?= isset($row['father_zip_code']) ? htmlspecialchars($row['father_zip_code']) : '' ?>">
                                             </div>
                                         </div>
                                     </div>
