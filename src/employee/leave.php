@@ -111,11 +111,11 @@
                             <div class="positionDept col-md-12 col-12 d-flex flex-row justify-content-center align-items-center p-0 m-0 mt-3 flex-wrap">
                                 <div class="position col-md-6 d-flex flex-column col-11">
                                     <label class="ms-1" for="position">POSITION</label>
-                                    <input required type="text" name="position" class="form-control" id="position">
+                                    <input required type="text" name="position" class="form-control" id="position" value="<?php echo $employeeInfo["jobTitle"] ?>">
                                 </div>
                                 <div class="position col-md-6 d-flex flex-column col-11">
                                     <label class="ms-1" for="Dept">DEPARTMENT/SECTION</label>
-                                    <input required type="text" name="department" class="form-control" id="Dept">
+                                    <input required type="text" name="department" class="form-control" id="Dept" value="<?php echo $employeeInfo["department"] . " DEPARTMENT" ?>">
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">

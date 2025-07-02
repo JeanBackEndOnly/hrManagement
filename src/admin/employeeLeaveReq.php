@@ -1,4 +1,18 @@
 <?php include '../../templates/Uheader.php';?>
+<style>
+/* Hide screen controls when printing & show the table */
+@media print {
+    #admin-screen-controls      { display:none!important; }
+    #admin-print-table          { display:table!important; width:100%; }
+}
+
+/* Optional: hide the rest of the page while printing */
+@media print {
+    body *                      { visibility:hidden; }
+    #approvalContent, #approvalContent * { visibility:visible; }
+    #approvalContent            { position:absolute; left:0; top:0; }
+}
+</style>
 
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
@@ -78,8 +92,8 @@
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                <div class="header-employee col-md-12 d-flex flex-wrap flex-row justify-content-between align-items-center" style="width: 95%; height: 7rem;">
-                    <div class="h1 col-md-3 col-10">
-                        <h3 class="h3-employee" style="margin-left: 0;">LEAVE FILLING</h3>
+                    <div class="h1 col-md-7 col-10">
+                        <h3 class="h3-employee" style="margin-left: 0;">EMPLOYEE LEAVE REQUEST</h3>
                     </div>
                 </div>
                 <div class="container rounded-2 shadow py-3">
@@ -92,6 +106,8 @@
                             <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                             <input type="hidden" name="LeaveAdminApproval" value="true">
+                            <input type="hidden" name="users_id" value="<?php echo $employeeName["users_id"] ?>">
+                            <input type="hidden" name="leave_id" value="<?php echo $employeeLeave["leave_id"]; ?>">
                             <div class="col-md-12 d-flex flex-row justify-content-center align-items-center flex-wrap">
                                 <div class="col-md-10 col-11 d-flex flex-row justify-content-between flex-wrap">
                                     <div class="col-md-4 d-flex flex-column col-12">
@@ -119,25 +135,86 @@
                                 </div>
                                 <div class="position col-md-6 d-flex flex-column col-11">
                                     <label class="ms-1" for="Dept">DEPARTMENT/SECTION</label>
-                                    <input required type="text" name="department" class="form-control"  value="<?php echo $employeeName["department"] ?>" id="Dept">
+                                    <input required type="text" name="department" class="form-control"  value="<?php echo $employeeName["department"] . " DEPARTMENT" ?>" id="Dept">
                                 </div>
                             </div>
-                            <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <div class="label col-md-2 ms-2">
+                            <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-between align-items-center p-0 m-0 mt-2 flex-wrap">
+                                <div class="label col-md-2">
                                     <label for="" class="fw-bold">LEAVE APPLIED FOR</label>
                                 </div>
-                                <div class="row col-md-2 col-11 d-flex flex-row">
-                                    <label for="vacation"><input required type="radio" class="me-1" id="vacation" name="leaveType" value="<?php echo $employeeLeave["leaveType"]; ?>">Vacation Leave</label>
+                                <style>
+                                    .radio-selected   { background:#e7f3ff; font-weight:600; border-radius:4px; }
+                                    .others-selected  { border:2px solid #0d6efd; }
+                                </style>
+                                <?php
+                                    $currentType  = $employeeLeave['leaveType'] ?? '';
+                                    $currentOther = $employeeLeave['Others']     ?? '';
+                                    $isOther = $currentOther && !in_array($currentType, ['vacation', 'sick', 'special'], true);
+                                ?>
+                                <div class="row col-md-10 col-12">
+                                    <div class="col-md-3 col-11 d-flex flex-row">
+                                        <label
+                                            for="vacation"
+                                            class="<?php echo $currentType === 'vacation' ? 'radio-selected' : '';?>"
+                                        >
+                                            <input
+                                                required
+                                                type="radio"
+                                                class="me-1"
+                                                id="vacation"
+                                                name="leaveType"
+                                                value="vacation"
+                                                <?php echo $currentType === 'vacation' ? 'checked' : '';?>
+                                            >
+                                            Vacation Leave
+                                        </label>
+                                    </div>
+
+                                    <div class="col-md-3 col-11 d-flex flex-row">
+                                        <label
+                                            for="sick"
+                                            class="<?php echo $currentType === 'sick' ? 'radio-selected' : '';?>"
+                                        >
+                                            <input
+                                                required
+                                                type="radio"
+                                                class="me-1"
+                                                id="sick"
+                                                name="leaveType"
+                                                value="sick"
+                                                <?php echo $currentType === 'sick' ? 'checked' : '';?>
+                                            >
+                                            Sick Leave
+                                        </label>
+                                    </div>
+
+                                    <div class="col-md-3 col-11 d-flex flex-row">
+                                        <label
+                                            for="special"
+                                            class="<?php echo $currentType === 'special' ? 'radio-selected' : '';?>"
+                                        >
+                                            <input
+                                                required
+                                                type="radio"
+                                                class="me-1"
+                                                id="special"
+                                                name="leaveType"
+                                                value="special"
+                                                <?php echo $currentType === 'special' ? 'checked' : '';?>
+                                            >
+                                            Special Leave
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="row col-md-2 col-11 d-flex flex-row">
-                                    <label for="sick"><input required type="radio" class="me-1" id="sick" name="leaveType"  value="<?php echo $employeeLeave["leaveType"]; ?>">Sick Leave</label>
-                                </div>
-                                <div class="row col-md-2 col-11 d-flex flex-row">
-                                    <label for="special"><input required type="radio" class="me-1" id="special" name="leaveType"  value="<?php echo $employeeLeave["leaveType"]; ?>">Special Leave</label>
-                                </div>
-                                <div class="row col-md-12 col-11 d-flex flex-row">
-                                    <label for="others">Others Specify</label>
-                                    <input type="text" class="form-control me-1"  value="<?php echo $employeeLeave["Others"] ?>" id="others" name="others">
+                                <div class="col-md-12 col-12 d-flex flex-column mt-2">
+                                    <label for="others">Others specify</label>
+                                    <input
+                                        type="text"
+                                        class="form-control me-1 <?php echo $isOther ? 'others-selected' : '';?>"
+                                        id="others"
+                                        name="others"
+                                        value="<?php echo htmlspecialchars($currentOther, ENT_QUOTES); ?>"
+                                    >
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
@@ -183,6 +260,62 @@
                                     <input required type="text" class="form-control"  value="<?php echo $employeeLeave["departmentHead"] ?>" id="departmentHead" name="departmentHead">
                                 </div>
                             </div>
+                            <!-- ======================  ADMIN ONLY  ====================== -->
+                            <div id="approvalContent" class="approvalContent col-md-12 col-11 p-0 m-0 mt-4 d-none flex-column h-auto"
+                                style="border:solid 1px #000;">
+
+                                <h5 class="text-center my-1" style="border-bottom:solid 1px #000;">DETAILS OF ACTION ON APPLICATION</h5>
+
+                                <!-- ❶  Printable table  -->
+                                <table id="admin-print-table" class="table table-bordered table-sm mb-0 d-none">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th></th>
+                                            <th>VACATION</th>
+                                            <th>SICK</th>
+                                            <th>SPECIAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Balance&nbsp;as&nbsp;of</td>
+                                            <td><input type="number" name="vacationBalance"        class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="sickBalance"            class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="specialBalance"         class="form-control-plaintext p-1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Leave&nbsp;Earned</td>
+                                            <td><input type="number" name="vacationEarned"         class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="sickEarned"             class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="specialEarned"          class="form-control-plaintext p-1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total&nbsp;Leave&nbsp;Credits&nbsp;as&nbsp;of</td>
+                                            <td><input type="number" name="vacationCredits"        class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="sickCredits"            class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="specialCredits"         class="form-control-plaintext p-1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Less&nbsp;this&nbsp;Leave</td>
+                                            <td><input type="number" name="vacationLessLeave"      class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="sickLessLeave"          class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="specialLessLeave"       class="form-control-plaintext p-1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Balance&nbsp;to&nbsp;Date</td>
+                                            <td><input type="number" name="vacationBalanceToDate"  class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="sickBalanceToDate"      class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="specialBalanceToDate"   class="form-control-plaintext p-1"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- ❷  Screen‑only recommendation area (unchanged) -->
+                                <div id="admin-screen-controls" class="recommendation col-md-12 col-12 mt-4">
+                                    <!-- … keep your existing “Recommendation for:” radios & textarea … -->
+                                </div>
+                            </div>
+
                             <!-- ================================ ADMIN ONLY ================================ -->
                             <div class="approvalContent col-md-12 col-11 p-0 m-0 mt-4 d-flex flex-column h-auto" 
                                 style="border: solid 1px #000;">
@@ -200,33 +333,33 @@
                                         <div class="Attributes d-flex flex-column justify-content-center align-items-center col-md-12 col-12">
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row justify-content-center align-items-center">
                                                 <p class="col-md-3 col-3 p-0 m-0">Balance as of: </p>
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="number" class="col-md-3 col-3" name="vacationBalance">
+                                                <input type="number" class="col-md-3 col-3" name="sickBalance">
+                                                <input type="number" class="col-md-3 col-3" name="specialBalance">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
                                                 <p class="col-md-3 col-3 p-0 m-0">Leave Earned: </p>
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="number" class="col-md-3 col-3" name="vacationEarned">
+                                                <input type="number" class="col-md-3 col-3" name="sickEarned">
+                                                <input type="number" class="col-md-3 col-3" name="specialEarned">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
                                                 <p class="col-md-3 col-3 p-0 m-0">Total Leave Credits as of: </p>
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="number" class="col-md-3 col-3" name="vacationCredits">
+                                                <input type="number" class="col-md-3 col-3" name="sickCredits">
+                                                <input type="number" class="col-md-3 col-3" name="specialCredits">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
                                                 <p class="col-md-3 col-3 p-0 m-0">Less this Leave: </p>
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="number" class="col-md-3 col-3" name="vacationLessLeave">
+                                                <input type="number" class="col-md-3 col-3" name="sickLessLeave">
+                                                <input type="number" class="col-md-3 col-3" name="specialLessLeave">
                                             </div>
                                             <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
                                                 <p class="col-md-3 col-3 p-0 m-0">Balance to Date: </p>
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
-                                                <input type="text" class="col-md-3 col-3">
+                                                <input type="number" class="col-md-3 col-3" name="vacationBalanceToDate">
+                                                <input type="number" class="col-md-3 col-3" name="sickBalanceToDate">
+                                                <input type="number" class="col-md-3 col-3" name="specialBalanceToDate">
                                             </div>
                                         </div>
                                     </div>
@@ -234,13 +367,13 @@
                                         <div class="d-flex flex-column col-md-12 col-11">
                                             <label for="" class="fw-bold">Reommendation for:</label>
                                             <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                                <input type="radio" class="col-md-1 col-1" id="approved" name="leaveType" value="approved">
+                                                <input type="radio" class="col-md-1 col-1" id="approved" name="leaveStatus" value="approved">
                                                 <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
                                             </div>
                                             <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                                <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveType" value="Disapproved">
+                                                <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="Disapproved">
                                                 <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                                                <textarea name="Disapproval" id="" class="form-control"></textarea>
+                                                <textarea name="Disapproval" id="" class="form-control" name="disapprovalDetails"></textarea>
                                             </div>
                                             <div class="admin mt-5">
                                                 <p style="border-bottom: solid 1px #000" class="m-0"></p>
@@ -279,4 +412,47 @@
         </div>
     </div>
 </main>
+<script>
+(() => {
+    const form = document.querySelector('form');
+
+    /* A. Remember that we want to print after the redirect */
+    form.addEventListener('submit', () => {
+        sessionStorage.setItem('printAfterLeaveSubmit', '1');
+    });
+
+    /* B. On load, fire the print dialog if the flag is set */
+    window.addEventListener('DOMContentLoaded', () => {
+        if (sessionStorage.getItem('printAfterLeaveSubmit') === '1') {
+            sessionStorage.removeItem('printAfterLeaveSubmit');
+            /* Allow the page to finish painting first */
+            setTimeout(() => window.print(), 300);
+        }
+    });
+})();
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (leaveRequest) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Leave Request Successfully send!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['success']);
+        }
+        function removeUrlParams(params) {
+            const url = new URL(window.location);
+            params.forEach(param => url.searchParams.delete(param));
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    });
+</script>
 <?php include '../../templates/Ufooter.php'?>

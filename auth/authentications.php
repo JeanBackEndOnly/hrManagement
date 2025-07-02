@@ -1965,6 +1965,99 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die("Query Failed: " . $e->getMessage());
         }
     }
+
+    if (isset($_POST['LeaveAdminApproval']) && $_POST['LeaveAdminApproval'] === 'true') {
+
+        $users_id  = $_POST['users_id'];
+        $leave_id  = $_POST['leave_id'];
+
+        $vacationBalance        = $_POST['vacationBalance']        ?? '';
+        $vacationEarned         = $_POST['vacationEarned']         ?? '';
+        $vacationCredits        = $_POST['vacationCredits']        ?? '';
+        $vacationLessLeave      = $_POST['vacationLessLeave']      ?? '';
+        $vacationBalanceToDate  = $_POST['vacationBalanceToDate']  ?? '';
+
+        $sickBalance            = $_POST['sickBalance']            ?? '';
+        $sickEarned             = $_POST['sickEarned']             ?? '';
+        $sickCredits            = $_POST['sickCredits']            ?? '';
+        $sickLessLeave          = $_POST['sickLessLeave']          ?? '';
+        $sickBalanceToDate      = $_POST['sickBalanceToDate']      ?? '';
+
+        $specialBalance         = $_POST['specialBalance']         ?? '';
+        $specialEarned          = $_POST['specialEarned']          ?? '';
+        $specialCredits         = $_POST['specialCredits']         ?? '';
+        $specialLessLeave       = $_POST['specialLessLeave']       ?? '';
+        $specialBalanceToDate   = $_POST['specialBalanceToDate']   ?? '';
+
+        $leaveStatus = $_POST['leaveStatus'] ?? '';
+
+        $balance       = $vacationBalance       !== '' ? $vacationBalance       : ($sickBalance       !== '' ? $sickBalance       : $specialBalance);
+        $earned        = $vacationEarned        !== '' ? $vacationEarned        : ($sickEarned        !== '' ? $sickEarned        : $specialEarned);
+        $credits       = $vacationCredits       !== '' ? $vacationCredits       : ($sickCredits       !== '' ? $sickCredits       : $specialCredits);
+        $lessLeave     = $vacationLessLeave     !== '' ? $vacationLessLeave     : ($sickLessLeave     !== '' ? $sickLessLeave     : $specialLessLeave);
+        $balanceToDate = $vacationBalanceToDate !== '' ? $vacationBalanceToDate : ($sickBalanceToDate !== '' ? $sickBalanceToDate : $specialBalanceToDate);
+
+        try {
+            $pdo->beginTransaction(); 
+
+            $q  = "UPDATE leavereq
+                SET    leaveStatus = :leaveStatus
+                WHERE  users_id    = :users_id;";
+            $st = $pdo->prepare($q);
+            $st->bindParam(':leaveStatus', $leaveStatus);
+            $st->bindParam(':users_id',    $users_id, PDO::PARAM_INT);
+            $st->execute();
+
+            $q  = "INSERT INTO leave_details
+                (leaveID, balance, earned, credits, lessLeave, balanceToDate)
+                VALUES
+                (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate)";
+            $st = $pdo->prepare($q);
+            $st->bindParam(':leaveID',       $leave_id,     PDO::PARAM_INT);
+            $st->bindParam(':balance',       $balance);
+            $st->bindParam(':earned',        $earned);
+            $st->bindParam(':credits',       $credits);
+            $st->bindParam(':lessLeave',     $lessLeave);
+            $st->bindParam(':balanceToDate', $balanceToDate);
+            $st->execute();
+
+            if ($leaveStatus === 'approved') {
+                $q  = "UPDATE leave_details
+                    SET    approved_at = NOW()
+                    WHERE  leaveID = :leaveID";
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                $st->execute();
+
+                $pdo->commit();
+                header('Location: ../src/admin/employeeLeaveReq.php?leave=approved&users_id=' . $users_id);
+                exit;
+            }
+
+            if ($leaveStatus === 'disapproved') {
+                $q  = "UPDATE leave_details
+                    SET    disapproved_at = NOW()
+                    WHERE  leaveID = :leaveID
+                    AND    disapproved_at IS NULL";
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                $st->execute();
+
+                $pdo->commit();
+                header('Location: ../src/admin/employeeLeaveReq.php?leave=disapproved&users_id=' . $users_id);
+                exit;
+            }
+
+            $pdo->rollBack();
+            header('Location: ../src/admin/employeeLeaveReq.php?leave=failed&users_id=' . $users_id);
+            exit;
+
+        } catch (PDOException $e) {      
+            $pdo->rollBack();
+            die('Query failed: ' . $e->getMessage());
+        }
+    }
+
     // ============================== FORGOT PASSWORD ============================== //
     if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true"){
         $usernameForgot = $_POST["usernameAuth"] ?? null;

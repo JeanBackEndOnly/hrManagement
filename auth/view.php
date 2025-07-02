@@ -459,12 +459,12 @@ function registerEmployeeAdmin() {
                         echo '<div class="col-md-12 d-flex flex-wrap w-100 px-0 justify-content-center">';
                             echo '<div class="col-12 col-md-6 px-1">';
                                 echo '<label for="salary_Range_From" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="salary_Range_From" id="salary_Range_From" class="form-control p-1 py-2 rounded-1" placeholder="Salary Range From:" value="' . (isset($signup_data['salary_Range_From']) ? $signup_data['salary_Range_From'] : '') . '">';
+                                echo '<input type="number" name="salary_Range_From" id="salary_Range_From" class="form-control p-1 py-2 rounded-1" placeholder="Salary Range From:" value="' . (isset($signup_data['salary_Range_From']) ? $signup_data['salary_Range_From'] : '') . '">';
                             echo '</div>';
 
                             echo '<div class="col-12 col-md-6 px-1">';
                                 echo '<label for="salary_Range_To" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="salary_Range_To" id="salary_Range_To" class="form-control p-1 py-2 rounded-1" placeholder="Salary Range To:" value="' . (isset($signup_data['salary_Range_To']) ? $signup_data['salary_Range_To'] : '') . '">';
+                                echo '<input type="number" name="salary_Range_To" id="salary_Range_To" class="form-control p-1 py-2 rounded-1" placeholder="Salary Range To:" value="' . (isset($signup_data['salary_Range_To']) ? $signup_data['salary_Range_To'] : '') . '">';
                             echo '</div>';
                         echo '</div>';
                     echo '</div>';
@@ -504,7 +504,7 @@ function registerEmployeeAdmin() {
                             echo '</div>';
                             echo '<div class="col-12 col-md-6 px-1">';
                                 echo '<label for="salary" class="mb-0" style="color:red; font-weight:400 !important;">Required</label>';
-                                echo '<input type="text" name="salary" id="salary" class="form-control p-1 py-2 rounded-1" placeholder="Official Salary:" value="' . (isset($signup_data['salary']) ? $signup_data['salary'] : '') . '">';
+                                echo '<input type="number" name="salary" id="salary" class="form-control p-1 py-2 rounded-1" placeholder="Official Salary:" value="' . (isset($signup_data['salary']) ? $signup_data['salary'] : '') . '">';
                             echo '</div>';
                         echo '</div>';
                         echo '<div class="col-md-12 d-flex flex-wrap w-100 px-0 justify-content-center">';
