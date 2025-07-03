@@ -18,10 +18,10 @@
                         <h3 class="text-center">ZAMBOANGA PUERICULTURE CENTER</h3>
                     </div>
                 </div>
-                <div class="p-0 w-100 ms-1">
-                    <h4 class="fs-4 text-start p-0" style="box-shadow: none !important;">Login</h4>
+                <div class="p-0 w-100 ms-5">
+                    <h4 class="fs-4 text-start ms-2 mt-2 p-0" style="box-shadow: none !important;">Login</h4>
                 </div>
-                <div class="card-body w-100 p-0 d-flex flex-column justify-content-center align-items-center mt-2">
+                <div class="card-body w-100 p-0 d-flex flex-column justify-content-center align-items-center mt-1">
                     <form action="../auth/authentications.php" class="col-md-11 col-11 h-auto" method="post">
                          <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">

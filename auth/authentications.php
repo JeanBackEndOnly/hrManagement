@@ -1453,7 +1453,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // =============================== EMPLOYEE AREA =============================== //
     if(isset($_POST["userUpdateProfile"]) && $_POST["userUpdateProfile"] === "true") {
-        $users_id = (int)$_POST["users_id"];
+       $users_id = (int)$_POST["users_id"];
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];
         $mname = $_POST["mname"];
@@ -1520,11 +1520,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             if (invalid_email($email)) {
-                $errors["invalid_email"] = "Your email is invalid!";
+                 header("Location: ../src/employee/profile.php?users_id=" . $users_id . "&InvalidEmail=failed");
+                 exit();
             }
-            if (email_registeredUpdate($pdo, $email, $users_id)) { 
-                $errors["email_registered"] = "Your email is already registered!";
-            }
+            // if (email_registeredUpdate($pdo, $email, $users_id)) { 
+            //      header("Location: ../src/employee/profile.php?users_id=" . $users_id . "&mail=failed");
+            //      exit();
+            // }
 
             if ($errors) {
                 header("Location: ../src/employee/profile.php?users_id=" . $users_id . "&updateValFailed=failed");
@@ -1565,13 +1567,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $zipCode,
                 $profile
             );
-
             header("Location: ../src/employee/profile.php?updateVal=success&users_id=" . $users_id . "&tab=personal");
             exit();
         } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
         }
     }
+
 
     if (isset($_POST["familyEmployeeUpdate"]) && $_POST["familyEmployeeUpdate"] === "true") {
         $users_id = $_POST['users_id'] ?? null;

@@ -4,9 +4,12 @@ include __DIR__ . '/../installer/config.php';
 
 function base_url(): string
 {
-    $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host  = $_SERVER['HTTP_HOST']; 
-    return "{$proto}://{$host}/github/hrManagement/";
+    $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+           ? 'https' : 'http';
+    $host  = $_SERVER['HTTP_HOST'];
+
+    $dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+    return "{$proto}://{$host}{$dir}/";
 }
 
 /* ---------- current page (debug helper) --------------------- */
@@ -501,7 +504,7 @@ function emp_infoReqUpdateHr(
     $barangay,
     $city_muntinlupa,
     $province,
-    $zipCode,
+    $zipCode
     ) {
 
     $query = "UPDATE userHr_Informations SET
@@ -544,6 +547,7 @@ function emp_infoReqUpdateHr(
 
     $stmt->execute();
 }
+
 function emp_infoReqUpdatePp(
     $pdo,
     $users_id,
@@ -742,6 +746,7 @@ function adminRegistration(
 
     return $pdo->lastInsertId();
 }
+
 function updateReq(
     object $pdo,
     int $users_id,
@@ -818,5 +823,7 @@ function updateReq(
         $users_id,
         $profile
     );
+
+     return true;
 }
 

@@ -218,6 +218,10 @@ function nextst() {
 
             document.getElementById("rd-step").style.display = "none";
             document.getElementById("rdButton").style.display = "none";
+
+            document.getElementById("button-signup-rd").style.display = "none";
+            document.getElementById("button-signups").style.display = "flex";
+            document.getElementById("button-signup").style.display = "none";
         });
     }
     }

@@ -596,11 +596,7 @@ function getEmployee(): array
 
     $sql = "
         SELECT
-            u.*,              -- users
-            ui.*,             -- userInformations
-            uhr.*,            -- userHr_Informations
-            fi.*,             -- family_information
-            fia.*             -- family_informationAddress
+            *
         FROM users                     AS u
         INNER JOIN userInformations    AS ui  ON ui.users_id  = u.id
         INNER JOIN userHr_Informations AS uhr ON uhr.users_id = u.id
@@ -612,7 +608,6 @@ function getEmployee(): array
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $user_id]);
     $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
-
     $stmt = $pdo->prepare(
         "SELECT level,
                 school_name,

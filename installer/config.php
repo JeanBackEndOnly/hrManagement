@@ -197,8 +197,8 @@ if (!function_exists('db_connection')) {
                 FOREIGN KEY (leaveID) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
             )",
             ];
-// earned + balance = credits
-// earned - lessLeave = balanceToDate
+        // earned + balance = credits
+        // earned - lessLeave = balanceToDate
             foreach ($tableQueries as $query) {
                 $pdo->exec($query);
             }
@@ -208,5 +208,8 @@ if (!function_exists('db_connection')) {
         } catch (PDOException $e) {
             die("Database error: " . $e->getMessage());
         }
+        // $scheme   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        //   ? 'https' : 'http';
+        // $BASE_URL = $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 }

@@ -11,7 +11,7 @@
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3 me-1"></i></a>
-                <a href="profile.php?users_id=<?php echo $employeeInfo["users_id"]; ?>" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
+                <a href="profile.php?users_id=<?php echo $_SESSION["user_id"]??'no'; ?>" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
                     <img src="../../assets/image/upload/<?php echo htmlspecialchars($employeeInfo["user_profile"]) ?>" class="rounded-circle me-0 ms-4" style="height: 35px; width: 35px;">
                     <span class="fw-bold"><?php echo isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) . ", " . htmlspecialchars($employeeInfo["fname"]) : "N/A" ?></span>
                 </a>
@@ -99,7 +99,7 @@
                             <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
                                 <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
                                     rounded-1 mb-1 mb-md-0" style="height: 80%; display: flex;" id="personalProfileInformation">
-                                    <input type="hidden" name="users_id" value="<?= $employeeInfo["users_id"] ?>">
+                                    <input type="hidden" name="users_id" value="<?php echo $_SESSION["user_id"]??'no'; ?>">
                                     <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                     <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                                     <input type="hidden" name="userUpdateProfile" value="true">
@@ -182,7 +182,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="civil_status" class="fw-bold">Civil Status</label>
-                                            <input type="text" name="civil_status" class="form-control" id="civil_status" value="<?= isset($employeeInfo["civil_status"]) ? htmlspecialchars($employeeInfo["age"]) : "N/A" ?>">
+                                            <input type="text" name="civil_status" class="form-control" id="civil_status" value="<?= isset($employeeInfo["civil_status"]) ? htmlspecialchars($employeeInfo["civil_status"]) : "N/A" ?>">
                                         </div>
                                     </div>
                                     <div class="inputInfo my-2 row w-100">
@@ -192,7 +192,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="age" class="fw-bold">Age</label>
-                                            <input type="text" name="age" class="form-control" id="age" value="<?= isset($employeeInfo["age"]) ? htmlspecialchars($employeeInfo["gender"]) : "N/A" ?>">
+                                            <input type="text" name="age" class="form-control" id="age" value="<?= isset($employeeInfo["age"]) ? htmlspecialchars($employeeInfo["age"]) : "N/A" ?>">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="Birthday" class="fw-bold">Birthday</label>
@@ -216,7 +216,7 @@
                                     <div class="inputInfo my-2 row w-100">
                                         <div class="col-md-4">
                                             <label for="city_muntinlupa" class="fw-bold">Schedule From</label>
-                                            <input type="text" name="scheduleFrom" class="form-control" id="city_muntinlupa" value="<?= isset($employeeInfo["secheduleFrom"]) ? htmlspecialchars($employeeInfo["secheduleFrom"]) : "N/A" ?>">
+                                            <input type="text" name="scheduleFrom" class="form-control" id="city_muntinlupa" value="<?= isset($employeeInfo["scheduleFrom"]) ? htmlspecialchars($employeeInfo["scheduleFrom"]) : "N/A" ?>">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="ScheduleTo" class="fw-bold">Schedule To</label>

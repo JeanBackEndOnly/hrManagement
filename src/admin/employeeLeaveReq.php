@@ -261,7 +261,7 @@
                                 </div>
                             </div>
                             <!-- ======================  ADMIN ONLY  ====================== -->
-                            <div id="approvalContent" class="approvalContent col-md-12 col-11 p-0 m-0 mt-4 d-none flex-column h-auto"
+                            <div id="approvalContent" class="approvalContent col-md-12 col-11 p-0 m-0 mt-4 d-flex flex-column h-auto"
                                 style="border:solid 1px #000;">
 
                                 <h5 class="text-center my-1" style="border-bottom:solid 1px #000;">DETAILS OF ACTION ON APPLICATION</h5>
@@ -312,73 +312,20 @@
 
                                 <!-- ❷  Screen‑only recommendation area (unchanged) -->
                                 <div id="admin-screen-controls" class="recommendation col-md-12 col-12 mt-4">
-                                    <!-- … keep your existing “Recommendation for:” radios & textarea … -->
-                                </div>
-                            </div>
-
-                            <!-- ================================ ADMIN ONLY ================================ -->
-                            <div class="approvalContent col-md-12 col-11 p-0 m-0 mt-4 d-flex flex-column h-auto" 
-                                style="border: solid 1px #000;">
-                                <div class="detailsTitle col-md-12 col-12" style="border-bottom: solid 1px #000;">
-                                    <h5 class="text-center my-1">DETAILS OF ACTION ON APPLICATION</h5>
-                                </div>
-                                <div class="row col-md-12 col-12 d-flex flex-row justify-content-center align-items-center h-auto flex-wrap p-2 m-0">
-                                    <div class="titleContents col-md-7 col-12 d-flex flex-column p-0 m-0">
-                                        <div class="entities d-flex col-12 flex-row justify-content-center align-items-center">
-                                            <p class="col-md-3 col-3 m-0 mt-3"></p>
-                                            <label class="col-md-3 col-3 text-center" for="">VACATION</label>
-                                            <label class="col-md-3 col-3 text-center" for="">SICK</label>
-                                            <label class="col-md-3 col-3 text-center" for="">SPECIAL</label>
+                                    <div class="d-flex flex-column col-md-12 col-11">
+                                        <label for="" class="fw-bold">Reommendation for:</label>
+                                        <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
+                                            <input type="radio" class="col-md-1 col-1" id="approved" name="leaveStatus" value="approved">
+                                            <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
                                         </div>
-                                        <div class="Attributes d-flex flex-column justify-content-center align-items-center col-md-12 col-12">
-                                            <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 p-0 m-0">Balance as of: </p>
-                                                <input type="number" class="col-md-3 col-3" name="vacationBalance">
-                                                <input type="number" class="col-md-3 col-3" name="sickBalance">
-                                                <input type="number" class="col-md-3 col-3" name="specialBalance">
-                                            </div>
-                                            <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 p-0 m-0">Leave Earned: </p>
-                                                <input type="number" class="col-md-3 col-3" name="vacationEarned">
-                                                <input type="number" class="col-md-3 col-3" name="sickEarned">
-                                                <input type="number" class="col-md-3 col-3" name="specialEarned">
-                                            </div>
-                                            <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 p-0 m-0">Total Leave Credits as of: </p>
-                                                <input type="number" class="col-md-3 col-3" name="vacationCredits">
-                                                <input type="number" class="col-md-3 col-3" name="sickCredits">
-                                                <input type="number" class="col-md-3 col-3" name="specialCredits">
-                                            </div>
-                                            <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 p-0 m-0">Less this Leave: </p>
-                                                <input type="number" class="col-md-3 col-3" name="vacationLessLeave">
-                                                <input type="number" class="col-md-3 col-3" name="sickLessLeave">
-                                                <input type="number" class="col-md-3 col-3" name="specialLessLeave">
-                                            </div>
-                                            <div class="row col-md-12 col-12 m-0 mt-2 d-flex flex-row  justify-content-center align-items-center">
-                                                <p class="col-md-3 col-3 p-0 m-0">Balance to Date: </p>
-                                                <input type="number" class="col-md-3 col-3" name="vacationBalanceToDate">
-                                                <input type="number" class="col-md-3 col-3" name="sickBalanceToDate">
-                                                <input type="number" class="col-md-3 col-3" name="specialBalanceToDate">
-                                            </div>
+                                        <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
+                                            <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="Disapproved">
+                                            <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
+                                            <textarea name="Disapproval" id="" class="form-control" name="disapprovalDetails"></textarea>
                                         </div>
-                                    </div>
-                                    <div class="recommendation col-md-5 col-12 mt-4">
-                                        <div class="d-flex flex-column col-md-12 col-11">
-                                            <label for="" class="fw-bold">Reommendation for:</label>
-                                            <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                                <input type="radio" class="col-md-1 col-1" id="approved" name="leaveStatus" value="approved">
-                                                <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
-                                            </div>
-                                            <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                                <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="Disapproved">
-                                                <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                                                <textarea name="Disapproval" id="" class="form-control" name="disapprovalDetails"></textarea>
-                                            </div>
-                                            <div class="admin mt-5">
-                                                <p style="border-bottom: solid 1px #000" class="m-0"></p>
-                                                <p class="text-center">Administrator</p>
-                                            </div>
+                                        <div class="admin mt-5">
+                                            <p style="border-bottom: solid 1px #000" class="m-0"></p>
+                                            <p class="text-center">Administrator</p>
                                         </div>
                                     </div>
                                 </div>

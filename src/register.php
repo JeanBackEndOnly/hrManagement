@@ -1,13 +1,13 @@
 <?php include '../templates/RLheader.php'; ?>
  <style>
-    @media (max-width: 576px) {
+    /* @media (max-width: 576px) {
         #signupFormEmp{
             padding-top: 30rem !important;
         }
         form{
             padding-top: 30rem !important;
         }
-    }
+    } */
  </style>
  <main id="main" class="login-page">
     <?php

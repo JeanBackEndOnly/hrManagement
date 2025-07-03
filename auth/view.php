@@ -29,7 +29,7 @@ function signup_inputs(){
                         echo '</div>';
                     }
                     // ================= 1st step ============================ //
-                    echo '<div class="form-group row w-100 d-flex justify-content-center align-items-start" id="st-step">';
+                    echo '<div class="form-group row w-100 justify-content-center align-items-start" id="st-step" style="display: flex;">';
                         echo '<div class="stepper mb-1">';
                             echo '<div class="step active">1</div>';
                             echo '<div class="line"></div>';
@@ -289,7 +289,7 @@ function signup_inputs(){
                     echo '</div>';
                 echo '</form>';
             //====================== FIRST PAGE BUTTONS =============== //
-            echo '<div class="buttons-div col-md-12 mt-1 d-flex flex-column justify-content-center align-items-center" id="stButton">';
+            echo '<div class="buttons-div col-md-12 mt-1  flex-column justify-content-center align-items-center" id="stButton" style="display: flex;">';
                 echo '<div class="firstPage-button col-md-12 col-12 d-flex justify-content-center align-items-center gap-1" id="stButton">';
                     echo '<button type="button" id="backs" onclick="backst()" class="border-0 p-0 py-1 col-md-6 col-6">BACK</button>';
                     echo '<button type="button" id="next" onclick="nextst()" class="border-0 p-0 py-1 col-md-6 col-6">NEXT</button>';
