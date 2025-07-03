@@ -1,19 +1,27 @@
 <?php include '../../templates/funcHeader.php'; ?>
-<div class="hehe h-75 w-100 d-flex justify-content-start align-items-start">
-    <div class="heh w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-2" style="background-color: #f0f0f0;">
-        <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start pt-1 m-0" style="width: 95%; height: 2rem !important;">
-            <a href="../index.php" style="text-decoration: none;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>Go back to Login</a>
+<div class="hehe h-75 w-75 d-flex justify-content-start align-items-start">
+    <div class="heh w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4" style="background-color: #f0f0f0;">
+        <div class="headerCode w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:rgb(205, 205, 205);">
+            <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start pt-1 m-0" style="width: 95%; height: 2rem !important;">
+                <a href="../index.php" style="text-decoration: none; color: #000;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i></a>
+            </div>
+            <div class="logo w-100 d-flex justify-content-center">
+                <img src="../../assets/image/pueri-logo.png" alt="" style="width: 100px; height: 100px;">
+            </div>
+            <div class="title">
+                <h5>ZAMBOANGA PUERICULTURE CENTER</h5>
+            </div>
         </div>
         <form method="POST" action="../../auth/authentications.php" class="modal-content">
              <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
             <input type="hidden" name="loginAuth" value="true">    
-            <div class="emailAuth w-100 d-flex flex-column justify-content-start align-items-start m-0 py-3 px-4 rounded-2 shadow">
-                <label for="emailLabel" class="m-0 text-center me-1 fs-4">Enter Authentication Code:</label>
-                <input type="text" name="AdminMailCode" id="emailLabel" class="form-control w-100" placeholder="Authentication Code" required>
+            <div class="emailAuth w-100 d-flex flex-column justify-content-start align-items-start m-0 py-3 px-4 rounded-2">
+                <p class="text-center w-100 mt-2 mb-1 fs-7 fw-bold">Email verification code</p>
+                <input type="text" name="AdminMailCode" id="emailLabel" class="form-control w-100 text-center fw-bold p-2 fs-6" placeholder="Authentication Code" required>
             </div>
             <div class="button w-100 d-flex justify-content-center">
-                <button class="btn btn-primary w-100 p-2 rounded-0">Confirm</button>
+                <button class="btn btn-danger p-1 rounded-0 col-md-11 rounded-2">Confirm</button>
             </div>
         </form>
         <div class="resendCode my-2">

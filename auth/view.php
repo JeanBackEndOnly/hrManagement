@@ -13,11 +13,11 @@ function signup_inputs(){
        
         echo '<div class="column-container h-100 w-100 rounded-1 p-2 px-4">';
             echo '<div class="col-md-12">';
-                echo '<div class="back-button w-100 mt-2">';
-                    echo '<a href="index.php" class="text-start "><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
+                echo '<div class="back-button w-100">';
+                    echo '<a href="index.php" class="text-start" style="z-index: 0;"><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
                 echo '</div>';
                echo '<form id="signupFormEmp" action="../auth/authentications.php" method="post" enctype="multipart/form-data"
-                    class="form-signup w-100 overflow-y-auto" style="max-height: 72.5vh; overflow-y: auto;">';
+                    class="form-signup w-100 overflow-y-auto d-flex flex-column justify-content-start align-items-center" style="max-height: 72.5vh; overflow-y: auto;">';
                     echo '<input type="hidden" name="csrf_token" value="' . $csrf_token . '">';
                     echo '<input type="hidden" name="register_user" value="true">';
                     // Display errors if they exist
@@ -29,7 +29,7 @@ function signup_inputs(){
                         echo '</div>';
                     }
                     // ================= 1st step ============================ //
-                    echo '<div class="form-group row w-100 ms-1" id="st-step">';
+                    echo '<div class="form-group row w-100 d-flex justify-content-center align-items-start" id="st-step">';
                         echo '<div class="stepper mb-1">';
                             echo '<div class="step active">1</div>';
                             echo '<div class="line"></div>';
@@ -37,17 +37,17 @@ function signup_inputs(){
                             echo '<div class="line"></div>';
                             echo '<div class="step">3</div>';
                         echo '</div>';
-                        echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2">';
+                        echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2 p-0">';
                             echo '<label for="surname" class="mb-0 text-start w-100" style="color:red; font-weight:400 !important;">Required</label>';
                             echo '<input type="text" name="lname" id="surname" class="form-control p-1 py-2 rounded-1" placeholder="Surname:" value="' . (isset($signup_data['lname']) ? htmlspecialchars($signup_data['lname']) : '') . '">';
                         echo '</div>';
 
-                        echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2">';
+                        echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2 p-0">';
                             echo '<label for="fname" class="mb-0 text-start w-100" style="color:red; font-weight:400 !important;">Required</label>';
                             echo '<input type="text" name="fname" id="fname" class="form-control p-1 py-2 rounded-1" placeholder="First Name:" value="' . (isset($signup_data['fname']) ? htmlspecialchars($signup_data['fname']) : '') . '">';
                         echo '</div>';
 
-                        echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2">';
+                        echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2 p-0">';
                             echo '<label for="mname" class="mb-0 text-start w-100" style="color:red; font-weight:400 !important;">Required</label>';
                             echo '<input type="text" name="mname" id="mname" class="form-control p-1 py-2 rounded-1" placeholder="Middle Name:" value="' . (isset($signup_data['mname']) ? htmlspecialchars($signup_data['mname']) : '') . '">';
                         echo '</div>';
@@ -232,7 +232,7 @@ function signup_inputs(){
                         echo '</div>';
                     echo '</div>';
                     // ================= 3rd step ============================ //
-                    echo '<div class="form-group row w-100 ms-1 mb-5" id="rd-step" style="display: none;">';
+                    echo '<div class="form-group row w-100 ms-1 mb-5" id="rd-step" style="display: none; z-index: 3 !important">';
                         echo '<div class="stepper">';
                             echo '<div class="step">1</div>';
                             echo '<div class="line"></div>';
@@ -281,31 +281,31 @@ function signup_inputs(){
 
                         echo '</div>';
                     echo '</div>';
-                    echo '<div class="col-md-12 w-100 ms-2" mb-1 style="height: 35px; display: flex;"  id="button-signup">';
-                        echo '<button class="w-100 border-0 mb-1 px-1 text-center" style="height: 100%;" onclick="disable_Button()" id="button-signups">Sign-up</button>';
+                    echo '<div class="col-md-12 w-100" mb-1 style="height: 35px; display: flex;"  id="button-signup">';
+                        echo '<button class="col-12 col-md-12 border-0 mb-1 text-center rounded-1" style="height: 100%;" onclick="disable_Button()" id="button-signups">Sign-up</button>';
                     echo '</div>';
-                    echo '<div class="col-md-12 w-100 ms-2" mb-1 style="height: 35px; display: none; margin-top: -1.5rem"  id="button-signup-rd">';
-                        echo '<button class="w-100 border-0 mb-1 px-1 text-center" onclick="signUP()" type="submit" style="height: 100%;" id="button-signup-rds">Sign-up</button>';
+                    echo '<div class="col-md-12 w-100" mb-1 style="height: 35px; display: none; margin-top: -1.5rem"  id="button-signup-rd">';
+                        echo '<button class="col-12 col-md-12 border-0 mb-1 px-1 text-center" onclick="signUP()" type="submit" style="height: 100%; transform: translateX(.5rem);" id="button-signup-rds">Sign-up</button>';
                     echo '</div>';
                 echo '</form>';
             //====================== FIRST PAGE BUTTONS =============== //
-            echo '<div class="buttons-div ms-2 col-md-12 mt-1 w=100 flex-column justify-content-center align-items-center" id="stButton">';
-                echo '<div class="firstPage-button col-md-6 w-100 justify-content-center gap-1" id="stButton" style="display: flex;">';
-                    echo '<button type="button" id="backs" onclick="backst()" class="border-0 p-0 py-1" style="width: 49.1%; margin-left: -.5rem">BACK</button>';
-                    echo '<button type="button" id="next" onclick="nextst()" class="border-0 p-0 py-1" style="width: 49.1%;">NEXT</button>';
+            echo '<div class="buttons-div col-md-12 mt-1 d-flex flex-column justify-content-center align-items-center" id="stButton">';
+                echo '<div class="firstPage-button col-md-12 col-12 d-flex justify-content-center align-items-center gap-1" id="stButton">';
+                    echo '<button type="button" id="backs" onclick="backst()" class="border-0 p-0 py-1 col-md-6 col-6">BACK</button>';
+                    echo '<button type="button" id="next" onclick="nextst()" class="border-0 p-0 py-1 col-md-6 col-6">NEXT</button>';
                 echo '</div>';
             echo '</div>';
             //====================== SECOND PAGE BUTTONS =============== //
-            echo '<div class="buttons-div-second ms-2 col-md-12 mt-1 w-100 flex-column justify-content-center align-items-center" style="display: none;" id="ndBUtton">';
-                    echo '<div class="firstPage-button col-md-6 w-100 justify-content-center gap-1" id="ndButton" style="display: flex;">';
+            echo '<div class="buttons-div-second col-md-12 mt-1 flex-column justify-content-center align-items-center" style="display: none;" id="ndBUtton">';
+                    echo '<div class="firstPage-button col-md-12 justify-content-center gap-1" id="ndButton" style="display: flex;">';
                         echo '<button type="button" id="back" onclick="backnd()" class="border-0 p-0 py-1" style="width: 49.1%; margin-left: -.5rem">BACK</button>';
                         echo '<button type="button" id="next" onclick="nextnd()" class="border-0 p-0 py-1" style="width: 49.1%;">NEXT</button>';
                     echo '</div>';
                 echo '</div>';
             echo '</div>';
             //====================== THIRD PAGE BUTTONS =============== //
-            echo '<div class="buttons-div-second ms-2 col-md-12 mt-1 w-100 flex-column justify-content-center align-items-center" style="display: none;" id="rdButton">';
-                    echo '<div class="firstPage-button col-md-6 w-100 d-flex justify-content-center gap-1">';
+            echo '<div class="buttons-div-second col-md-12 mt-1 flex-column justify-content-center align-items-center" style="display: none;" id="rdButton">';
+                    echo '<div class="firstPage-button col-md-12 d-flex justify-content-center gap-1">';
                         echo '<button type="button" id="back" onclick="backrd()" class="border-0 p-0 py-1" style="width: 49.1%; margin-left: -.5rem">BACK</button>';
                         echo '<button type="button" id="nexts" onclick="nextrd()" class="border-0 p-0 py-1" style="width: 49.1%;">NEXT</button>';
                     echo '</div>';

@@ -1,20 +1,28 @@
 <?php include '../templates/RLheader.php'; ?>
+<style>
+    @media (max-width: 576px) {
+        .login-page .card{
+            padding: 0 !important;
+        }
+    }
+</style>
 <main id="main" class="login-page mb-3 px-0">
-    <div class="container px-0 w-100">
+    <div class="container w-100">
         <div class="row">
-            <div class="card h-50 w-100 px-4 rounded-2">
-                <?php 
-                //loginErros(); ?>
-                <div class="body-header mb-1 mt-4 w-100">
-                    <h3 class="text-center">ZAMBOANGA PUERICULTURE CENTER</h3>
+            <div class="card h-50 w-100 rounded-2 p-0 rounded-4">
+                <div class="headerLogin mb-2 w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:rgb(205, 205, 205);">
+                    <div class="logo w-100 d-flex justify-content-center mt-4">
+                        <img src="../assets/image/pueri-logo.png" alt="" style="width: 100px; height: 100px;">
+                    </div>
+                    <div class="body-header mb-1 mt-2 w-100">
+                        <h3 class="text-center">ZAMBOANGA PUERICULTURE CENTER</h3>
+                    </div>
                 </div>
-                <div class="card-header p-0 w-100 mb-2">
-                    <h4 class="fs-4 text-start p-0">Login</h4>
+                <div class="p-0 w-100 ms-1">
+                    <h4 class="fs-4 text-start p-0" style="box-shadow: none !important;">Login</h4>
                 </div>
-                <?php
-                // if($_SESSION["user_id"] !== ''){ ?>
-                <div class="card-body w-100 p-0">
-                    <form action="../auth/authentications.php" method="post">
+                <div class="card-body w-100 p-0 d-flex flex-column justify-content-center align-items-center mt-2">
+                    <form action="../auth/authentications.php" class="col-md-11 col-11 h-auto" method="post">
                          <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                         <input type="hidden" name="loginAuth" value="true">
@@ -33,16 +41,14 @@
                             </li>
                         </div>
                         <div class="mb-3 mt-3 text-center w-100">
-                            <button type="submit" class="btn btn-primary w-100 p-2 mb-0">Login</button>
+                            <button type="submit" class="btn btn-danger w-100 p-2 mb-0">Login</button>
                         </div>
                     </form>
-                    <button class="btn btn-sm" style="background: none; box-shadow: none; color: blue;" data-bs-toggle="modal" data-bs-target="#changePassword">Forgot Password?</button>
+                    <button class="btn btn-sm mb-1" style="background: none; box-shadow: none; color: blue;" data-bs-toggle="modal" data-bs-target="#changePassword">Forgot Password?</button>
                     <div class="mb-3 text-center">
                         <a href="register.php" style="color: blue;">Register</a>
                     </div>
                 </div>
-                <?php 
-            // } ?>
             </div>
         </div>
     </div>
