@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-include '../functions.php';
+include './functions.php';
 
 $server_name = $_SERVER['SERVER_NAME'];
 $is_ip_access = filter_var($server_name, FILTER_VALIDATE_IP);

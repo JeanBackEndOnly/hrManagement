@@ -1,41 +1,88 @@
 <?php
 include __DIR__ . '/../installer/config.php';
 
+function initInstaller() {
+    $pdo = db_connection(); 
 
-function base_url(): string
-{
-    $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-           ? 'https' : 'http';
-    $host  = $_SERVER['HTTP_HOST'];
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE user_role = :user_role");
+        $stmt->execute(['user_role' => 'administrator']);
+        $admins = $stmt->fetchAll();
 
-    $dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-    return "{$proto}://{$host}{$dir}/";
-}
+        $currentUrl = $_SERVER['REQUEST_URI'];
+        $installerPath = "/github/hrManagement/installer/";
 
-/* ---------- current page (debug helper) --------------------- */
-function get_current_page(): string
-{
-    $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-}
+        if (count($admins) === 0) {
+            if ($currentUrl !== $installerPath) {
+                header("Location: " . base_url() . "installer/");
+                exit;
+            }
+        } else {
+            if ($currentUrl === $installerPath) {
+                header("Location: " . base_url()."SRC/");
+                exit;
+            }
+        }
 
-function initInstaller(): void
-{
-    $pdo = db_connection();
-    $hasAdmin = (bool)$pdo->query("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1")->fetchColumn();
-
-    $installer = '/github/hrManagement/installer/';
-    $here      = $_SERVER['REQUEST_URI'];
-
-    if (!$hasAdmin && $here !== $installer) {
-        header('Location: ' . base_url() . 'installer/');
-        exit;
+    } catch (PDOException $e) {
+        die("Installer check failed: " . $e->getMessage());
     }
-    if ($hasAdmin && $here === $installer) {
-        header('Location: ' . base_url() . 'src/');
-        exit;
-    }
+
+    $pdo = null;
 }
+
+function base_url() {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
+    
+    $server_name = $_SERVER['SERVER_NAME']; 
+    
+    if (in_array($server_name, ['127.0.0.1', '::1', 'localhost'])) {
+        return $protocol . '://' . $server_name . '/github/hrManagement/'; 
+    }
+    
+    return $protocol . '://' . $server_name . '/'; 
+}
+function get_current_page() {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'];
+    $uri = $_SERVER['REQUEST_URI'];
+
+    return $protocol . '://' . $host . $uri;
+}
+// function base_url(): string
+// {
+//     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+//            ? 'https' : 'http';
+//     $host  = $_SERVER['HTTP_HOST'];
+
+//     $dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+//     return "{$proto}://{$host}{$dir}/";
+// }
+
+// /* ---------- current page (debug helper) --------------------- */
+// function get_current_page(): string
+// {
+//     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+//     return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+// }
+
+// function initInstaller(): void
+// {
+//     $pdo = db_connection();
+//     $hasAdmin = (bool)$pdo->query("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1")->fetchColumn();
+
+//     $installer = '/github/hrManagement/installer/';
+//     $here      = $_SERVER['REQUEST_URI'];
+
+//     if (!$hasAdmin && $here !== $installer) {
+//         header('Location: ' . base_url() . 'installer/');
+//         exit;
+//     }
+//     if ($hasAdmin && $here === $installer) {
+//         header('Location: ' . base_url() . 'src/');
+//         exit;
+//     }
+// }
 
 /* ---------- CSS & manifest tags ----------------------------- */
 function render_styles(): void
