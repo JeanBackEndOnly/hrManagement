@@ -788,3 +788,13 @@ function getLeaveRequest(){
     $employeeLeave = $stmt->fetch(PDO::FETCH_ASSOC);
     return ['employeeLeave' => $employeeLeave];
 }
+function leavePending(){
+    $pdo = db_connection();
+    $users_id = $_GET["users_id"] ?? '';
+    $sql = "SELECT * FROM leavereq WHERE users_id = :users_id AND leaveStatus = 'pending' AND request_date = CURDATE();";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $leavePending = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['leavePending' => $leavePending];
+}

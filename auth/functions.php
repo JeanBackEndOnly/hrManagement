@@ -73,8 +73,6 @@ function render_scripts(): void
     }
 }
 
-
-
 function save_user($args = [], $user_id = 0) {
     $conn = db_connection();
 

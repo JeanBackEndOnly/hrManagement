@@ -92,7 +92,7 @@
                             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                             <input type="hidden" name="LeaveAdminApproval" value="true">
                             <input type="hidden" name="users_id" value="<?php echo $employeeName["users_id"] ?>">
-                            <input type="text" name="leave_id" value="<?php echo $employeeLeave["leave_id"]; ?>">
+                            <input type="hidden" name="leave_id" value="<?php echo $leavePending["leave_id"]; ?>">
                             <div class="col-md-12 d-flex flex-row justify-content-center align-items-center flex-wrap">
                                 <div class="col-md-10 col-11 d-flex flex-row justify-content-between flex-wrap">
                                     <div class="col-md-4 d-flex flex-column col-12">
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="col-md-2 col-11 d-flex flex-column justify-content-center">
                                     <label class="ms-1" for="dateLeave">DATE OF FILING</label>
-                                    <input required type="date" name="dateLeave" id="dateLeave" class="form-control"  value="<?php echo $employeeLeave["leaveDate"] ?>" value="<?php echo $employeeLeave["leaveDate"] ?>">
+                                    <input required type="date" name="dateLeave" id="dateLeave" class="form-control"  value="<?php echo $leavePending["leaveDate"] ?>" value="<?php echo $leavePending["leaveDate"] ?>">
                                 </div>
                             </div>
                             <div class="positionDept col-md-12 col-12 d-flex flex-row justify-content-center align-items-center p-0 m-0 mt-3 flex-wrap">
@@ -132,8 +132,8 @@
                                     .others-selected  { border:2px solid #0d6efd; }
                                 </style>
                                 <?php
-                                    $currentType  = $employeeLeave['leaveType'] ?? '';
-                                    $currentOther = $employeeLeave['Others']     ?? '';
+                                    $currentType  = $leavePending['leaveType'] ?? '';
+                                    $currentOther = $leavePending['Others']     ?? '';
                                     $isOther = $currentOther && !in_array($currentType, ['vacation', 'sick', 'special'], true);
                                 ?>
                                 <div class="row col-md-10 col-12">
@@ -203,24 +203,24 @@
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <label for="cp" class="fw-bold col-md-12 col-11">COURSE/PURPOSE<input required type="text" class="form-control col-11 col-md-11"  value="<?php echo $employeeLeave["Purpose"] ?>" id="cp" name="purpose"></label>
+                                <label for="cp" class="fw-bold col-md-12 col-11">COURSE/PURPOSE<input required type="text" class="form-control col-11 col-md-11"  value="<?php echo $leavePending["Purpose"] ?>" id="cp" name="purpose"></label>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-3 flex-wrap">
                                 <div class="inclusiveDateFrom d-flex flex-column col-md-3 col-11">
                                     <label for="inclusiveDates">INCLUSIVE DATE FROM:</label>
-                                    <input required type="date" name="inclusiveDateFrom" id="inclusiveDateFrom" class="form-control" value="<?php echo $employeeLeave["InclusiveFrom"] ?>">  
+                                    <input required type="date" name="inclusiveDateFrom" id="inclusiveDateFrom" class="form-control" value="<?php echo $leavePending["InclusiveFrom"] ?>">  
                                 </div>
                                 <div class="inclusiveDates d-flex flex-column col-md-3 col-11">
                                     <label for="inclusiveDateTo">INCLUSIVE DATES TO:</label>
-                                    <input required type="date" name="inclusiveDateTo" id="inclusiveDateTo" class="form-control" value="<?php echo $employeeLeave["InclusiveTo"] ?>">  
+                                    <input required type="date" name="inclusiveDateTo" id="inclusiveDateTo" class="form-control" value="<?php echo $leavePending["InclusiveTo"] ?>">  
                                 </div>
                                 <div class="noDays d-flex flex-column col-md-6 col-11">
                                     <label for="daysOfLeave">NO. OF DAYS</label>
-                                    <input required type="number" name="daysOfLeave" id="daysOfLeave" class="form-control" value="<?php echo $employeeLeave["numberOfDays"] ?>">  
+                                    <input required type="number" name="daysOfLeave" id="daysOfLeave" class="form-control" value="<?php echo $leavePending["numberOfDays"] ?>">  
                                 </div>   
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE<input required type="text" class="form-control col-11 col-md-11"  value="<?php echo $employeeLeave["contact"] ?>" id="cp" name="contact"></label>
+                                <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE<input required type="text" class="form-control col-11 col-md-11"  value="<?php echo $leavePending["contact"] ?>" id="cp" name="contact"></label>
                             </div>
                             <div class="text col-md-12 col-11">
                                 <p class="text-start">
@@ -238,11 +238,11 @@
                             <div class="recommending col-md-12 col-11 d-flex flex-row justify-content-start m-0 mt-4 p-0 flex-wrap gap-2">
                                 <div class="sectionHEad col-md-4 col-11">
                                     <label class="fw-bold" for="sectionHead">Section Head</label>
-                                    <input required type="text" class="form-control"  value="<?php echo $employeeLeave["sectionHead"] ?>" id="sectionHead" name="sectionHead">
+                                    <input required type="text" class="form-control"  value="<?php echo $leavePending["sectionHead"] ?>" id="sectionHead" name="sectionHead">
                                 </div>
                                 <div class="departmentHead col-md-4 col-11">
                                     <label class="fw-bold" for="departmentHead">Department Head</label>
-                                    <input required type="text" class="form-control"  value="<?php echo $employeeLeave["departmentHead"] ?>" id="departmentHead" name="departmentHead">
+                                    <input required type="text" class="form-control"  value="<?php echo $leavePending["departmentHead"] ?>" id="departmentHead" name="departmentHead">
                                 </div>
                             </div>
                             <!-- ======================  ADMIN ONLY  ====================== -->

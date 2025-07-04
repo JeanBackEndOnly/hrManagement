@@ -1912,8 +1912,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
+    // =============================== LEAVE AREA =============================== //
     if (isset($_POST["LeaveEmployee"]) && $_POST["LeaveEmployee"] === "true"){
-        $users_id = $_SESSION["user_id"] ?? ''; //check! 
+        $users_id = $_SESSION["user_id"] ?? ''; 
         $dateLeave = $_POST["dateLeave"];
         $position = $_POST["position"];
         $department = $_POST["department"];
@@ -1953,12 +1954,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam(":sectionHead", $sectionHead);
             $stmt->bindParam(":departmentHead", $departmentHead);
             $stmt->execute();
+            $leaveReportID = $pdo->lastInsertId(); 
 
             $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'PendingLeave')";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $users_id);
             $stmt->execute();
+            $reportLeaveID = $pdo->lastInsertId(); 
             
+            $query = "INSERT INTO reportLeave (users_id, reportLeaveID, leaveReportID) VALUES (:users_id, :reportLeaveID, :leaveReportID);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $users_id);
+            $stmt->bindParam(":reportLeaveID", $reportLeaveID);
+            $stmt->bindParam(":leaveReportID", $leaveReportID);
+            $stmt->execute();
+
             header("Location: ../src/employee/leave.php?success=leave");
             $stmt = null;
             $pdo = null;
@@ -2005,10 +2015,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $q  = "UPDATE leavereq
                 SET    leaveStatus = :leaveStatus
-                WHERE  users_id    = :users_id;";
+                WHERE  leave_id    = :leave_id;";
             $st = $pdo->prepare($q);
             $st->bindParam(':leaveStatus', $leaveStatus);
-            $st->bindParam(':users_id',    $users_id, PDO::PARAM_INT);
+            $st->bindParam(':leave_id',    $leave_id, PDO::PARAM_INT);
             $st->execute();
 
             $q  = "INSERT INTO leave_details
@@ -2026,31 +2036,75 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $st->execute();
 
             if ($leaveStatus === 'approved') {
-                $q  = "UPDATE leave_details
-                    SET    approved_at = NOW()
-                    WHERE  leaveID = :leaveID";
-                $st = $pdo->prepare($q);
-                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
-                $st->execute();
+                    $q = "
+                        UPDATE  leave_details
+                        SET     approved_at = NOW()
+                        WHERE   leaveID     = :leaveID
+                    ";
+                    $st = $pdo->prepare($q);
+                    $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                    $st->execute();
 
-                $pdo->commit();
-                header('Location: ../src/admin/leave.php?leave=approved&users_id=' . $users_id . '&leave_id=' . $leave_id . '&open_pdf=1');
-                exit;
+                    $query = "
+                        UPDATE  reports
+                        JOIN    users       ON reports.users_id  = users.id
+                        JOIN    leavereq    ON users.id          = leavereq.users_id
+                        JOIN    reportleave ON leavereq.leave_id = reportleave.leaveReportID
+                        SET     reports.report_type = 'approvedLeave'
+                        WHERE reportleave.reportLeaveID = :reportLeaveID
+                    ";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(':reportLeaveID', $leave_id, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                    $pdo->commit();
+
+                    header(
+                        'Location: ../src/admin/leave.php?leave=approved'
+                        . '&users_id=' . $users_id
+                        . '&leave_id=' . $leave_id
+                        . '&open_pdf=1'
+                    );
+                    exit;
             }
 
-            if ($leaveStatus === 'disapproved') {
-                $q  = "UPDATE leave_details
-                    SET    disapproved_at = NOW()
-                    WHERE  leaveID = :leaveID
-                    AND    disapproved_at IS NULL";
-                $st = $pdo->prepare($q);
-                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
-                $st->execute();
+            if ($leaveStatus === 'disapprove') {
 
-                $pdo->commit();
-                header('Location: ../src/admin/leave.php?leave=disapproved&users_id=' . $users_id . '&leave_id=' . $leave_id . '&open_pdf=1');
-                exit;
+                    $q = "
+                        UPDATE  leave_details
+                        SET     disapproved_at = NOW()
+                        WHERE   leaveID          = :leaveID
+                        AND   disapproved_at IS NULL
+                    ";
+                    $st = $pdo->prepare($q);
+                    $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                    $st->execute();
+
+                    $query = "
+                        UPDATE  reports
+                        JOIN    users       ON reports.users_id  = users.id
+                        JOIN    leavereq    ON users.id          = leavereq.users_id
+                        JOIN    reportleave ON leavereq.leave_id = reportleave.leaveReportID
+                        SET     reports.report_type = 'disapprovedLeave'
+                        WHERE  reportleave.leaveReportID   = :leaveReportID
+                    ";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(':leaveReportID', $leave_id, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                    $pdo->commit();
+
+                    header(
+                        'Location: ../src/admin/leave.php?leave=disapproved'
+                        . '&users_id=' . $users_id
+                        . '&leave_id=' . $leave_id
+                        . '&open_pdf=1'
+                    );
+                    exit;
+
             }
+
+
 
             $pdo->rollBack();
             header('Location: ../src/admin/employeeLeaveReq.php?leave=failed&users_id=' . $users_id);

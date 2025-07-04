@@ -19,7 +19,7 @@ if (!function_exists('db_connection')) {
             $tableQueries = [
                 "CREATE TABLE IF NOT EXISTS users (
                     id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    user_profile VARCHAR(255),
+                    user_profile BLOB,
                     username VARCHAR(100) NOT NULL,
                     password VARCHAR(255) NOT NULL,
                     email VARCHAR(100),
@@ -161,7 +161,7 @@ if (!function_exists('db_connection')) {
                 FOREIGN KEY (employee_id) REFERENCES users(id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS reports (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                reportID INT AUTO_INCREMENT PRIMARY KEY,
                 users_id INT NOT NULL,
                 report_type VARCHAR(255) NOT NULL,
                 report_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -181,7 +181,17 @@ if (!function_exists('db_connection')) {
                 contact VARCHAR(13) NOT NULL,
                 sectionHead VARCHAR(120) NOT NULL,
                 departmentHead VARCHAR(120) NOT NULL,
+                request_date DATE NOT NULL DEFAULT CURRENT_DATE,
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
+            "CREATE TABLE IF NOT EXISTS reportLeave(
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                users_id INT NOT NULL,
+                reportLeaveID INT NOT NULL,
+                leaveReportID INT NOT NULL,
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (reportLeaveID) REFERENCES reports(reportID) ON DELETE CASCADE,
+                FOREIGN KEY (leaveReportID) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS leave_details (
                 leaveDetails_id INT AUTO_INCREMENT PRIMARY KEY,

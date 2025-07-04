@@ -167,6 +167,12 @@
                                                     case 'PendingLeave':
                                                         echo "Requesting for leave!";
                                                         break;
+                                                    case 'approvedLeave':
+                                                        echo "Leave Request Approved!";
+                                                        break;
+                                                    case 'disapprovedLeave':
+                                                        echo "Leave Request Disapproved!";
+                                                        break;
                                                     case 'employeeValidated':
                                                         echo "Employee Validated!";;
                                                         break;
@@ -191,7 +197,13 @@
                                                         echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=reject">View</a>';
                                                         break;
                                                     case 'PendingLeave':
-                                                        echo '<a class="btn btn-sm btn-primary" href="employeeLeaveReq.php?users_id=' . $row["users_id"] . '">View</a>';
+                                                        echo '<a class="btn btn-sm btn-primary" href="employeeLeaveReq.php?users_id=' . $row["users_id"] . '&reportsID=' . $row["reportID"] . '">View</a>';
+                                                        break;
+                                                    case 'disapprovedLeave':
+                                                         echo '<a class="btn btn-sm btn-primary" href="employeeLeaveDis.php?users_id=' . $row["users_id"] . '">View</a>';
+                                                        break;
+                                                    case 'approvedLeave':
+                                                        echo '<a class="btn btn-sm btn-primary" href="employeeLeaveApp.php?users_id=' . $row["users_id"] . '">View</a>';
                                                         break;
                                                     case 'employeeValidated':
                                                         echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';

@@ -9,56 +9,6 @@ $(document).ready(function () {
       });
     });
   }
-  
-
-  // $("#systemLogo").on("change", function (event) {
-  //   const fileInput = event.target;
-  //   const preview = $(".preview");
-
-  //   preview.empty();
-
-  //   const files = fileInput.files;
-  //   for (const file of files) {
-  //     if (file.type.startsWith("image/")) {
-  //       const reader = new FileReader();
-  //       reader.onload = function (e) {
-  //         preview.attr("src", e.target.result);
-  //         $("input[name=system_logo]").attr("value", e.target.result);
-  //       };
-  //       reader.readAsDataURL(file);
-  //     } else {
-  //       const para = $("<p>").text(
-  //         `File ${file.name} is not a valid image file.`
-  //       );
-  //       preview.append(para);
-  //     }
-  //   }
-  // });
-
-  $("#profile").on("change", function (event) {
-    const fileInput = event.target;
-    const preview = $(".profilePict");
-
-    preview.empty();
-
-    const files = fileInput.files;
-    for (const file of files) {
-      if (file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          preview.attr("src", e.target.result);
-          $("input[name=user_profile]").attr("value", e.target.result);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        const para = $("<p>").text(
-          `File ${file.name} is not a valid image file.`
-        );
-        preview.append(para);
-      }
-    }
-  });
-
 
  $("body").on("submit", "#install-form", function (e) {
   e.preventDefault();

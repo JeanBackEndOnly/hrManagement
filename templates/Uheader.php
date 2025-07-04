@@ -30,6 +30,8 @@ $empName = getEmployeeNames();
 $employeeName = $empName["employeeName"];
 $empReq = getLeaveRequest();
 $employeeLeave = $empReq["employeeLeave"];
+$leaveP = leavePending();
+$leavePending = $leaveP["leavePending"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];

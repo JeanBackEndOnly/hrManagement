@@ -12,6 +12,7 @@
                 </div>
                     <div class="card-body w-100 p-0">
                         <form id="install-form">
+                            
                             <div class="mb-3 col-md-4 w-100">
                                 <input type="text" class="form-control rounded-1" name="email" placeholder="E-mail" required>
                             </div>
