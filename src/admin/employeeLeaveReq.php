@@ -1,13 +1,4 @@
 <?php include '../../templates/Uheader.php';?>
-<?php if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
-<script>
-    window.onload = function () {
-        // Automatically open the PDF in a new tab
-        window.open('pdfGenerator.php?users_id=<?php echo $_GET["users_id"]; ?>', '_blank');
-    };
-</script>
-<?php endif; ?>
-
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
@@ -101,7 +92,7 @@
                             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                             <input type="hidden" name="LeaveAdminApproval" value="true">
                             <input type="hidden" name="users_id" value="<?php echo $employeeName["users_id"] ?>">
-                            <input type="hidden" name="leave_id" value="<?php echo $employeeLeave["leave_id"]; ?>">
+                            <input type="text" name="leave_id" value="<?php echo $employeeLeave["leave_id"]; ?>">
                             <div class="col-md-12 d-flex flex-row justify-content-center align-items-center flex-wrap">
                                 <div class="col-md-10 col-11 d-flex flex-row justify-content-between flex-wrap">
                                     <div class="col-md-4 d-flex flex-column col-12">
@@ -314,7 +305,7 @@
                                         <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
                                             <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="disapproved">
                                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                                            <textarea name="Disapproval" id="" class="form-control ms-3" name="disapprovalDetails"></textarea>
+                                            <textarea id="" class="form-control ms-3" name="disapprovalDetails"></textarea>
                                         </div>
                                         <div class="admin mt-5">
                                             <p style="border-bottom: solid 1px #000" class="m-0"></p>

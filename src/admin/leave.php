@@ -1,5 +1,11 @@
 <?php include '../../templates/Uheader.php';?>
-
+<?php if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
+<script>
+    window.onload = function () {
+        window.open('pdfGenerator.php?users_id=<?php echo $_GET["users_id"]; ?>&leave_id=<?php echo $_GET["leave_id"]; ?>', '_blank');
+    };
+</script>
+<?php endif; ?>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">

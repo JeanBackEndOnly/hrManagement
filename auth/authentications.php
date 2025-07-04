@@ -1973,6 +1973,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $users_id  = $_POST['users_id'];
         $leave_id  = $_POST['leave_id'];
 
+        $disapprovalDetails  = $_POST['disapprovalDetails'];
         $vacationBalance        = $_POST['vacationBalance']        ?? '';
         $vacationEarned         = $_POST['vacationEarned']         ?? '';
         $vacationCredits        = $_POST['vacationCredits']        ?? '';
@@ -2011,9 +2012,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $st->execute();
 
             $q  = "INSERT INTO leave_details
-                (leaveID, balance, earned, credits, lessLeave, balanceToDate)
+                (leaveID, balance, earned, credits, lessLeave, balanceToDate, disapprovalDetails)
                 VALUES
-                (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate)";
+                (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate, :disapprovalDetails)";
             $st = $pdo->prepare($q);
             $st->bindParam(':leaveID',       $leave_id,     PDO::PARAM_INT);
             $st->bindParam(':balance',       $balance);
@@ -2021,6 +2022,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $st->bindParam(':credits',       $credits);
             $st->bindParam(':lessLeave',     $lessLeave);
             $st->bindParam(':balanceToDate', $balanceToDate);
+            $st->bindParam(':disapprovalDetails', $disapprovalDetails);
             $st->execute();
 
             if ($leaveStatus === 'approved') {
@@ -2032,7 +2034,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->execute();
 
                 $pdo->commit();
-                header('Location: ../src/admin/employeeLeaveReq.php?leave=approved&users_id=' . $users_id . '&open_pdf=1');
+                header('Location: ../src/admin/leave.php?leave=approved&users_id=' . $users_id . '&leave_id=' . $leave_id . '&open_pdf=1');
                 exit;
             }
 
@@ -2046,7 +2048,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->execute();
 
                 $pdo->commit();
-                header('Location: ../src/admin/employeeLeaveReq.php?leave=disapproved&users_id=' . $users_id);
+                header('Location: ../src/admin/leave.php?leave=disapproved&users_id=' . $users_id . '&leave_id=' . $leave_id . '&open_pdf=1');
                 exit;
             }
 
