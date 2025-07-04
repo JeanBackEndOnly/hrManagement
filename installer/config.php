@@ -184,15 +184,6 @@ if (!function_exists('db_connection')) {
                 request_date DATE NOT NULL DEFAULT CURRENT_DATE,
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
             )",
-            "CREATE TABLE IF NOT EXISTS reportLeave(
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                users_id INT NOT NULL,
-                reportLeaveID INT NOT NULL,
-                leaveReportID INT NOT NULL,
-                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (reportLeaveID) REFERENCES reports(reportID) ON DELETE CASCADE,
-                FOREIGN KEY (leaveReportID) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
-            )",
             "CREATE TABLE IF NOT EXISTS leave_details (
                 leaveDetails_id INT AUTO_INCREMENT PRIMARY KEY,
                 leaveID INT NOT NULL,

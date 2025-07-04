@@ -1982,6 +1982,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $users_id  = $_POST['users_id'];
         $leave_id  = $_POST['leave_id'];
+        $reportID  = $_POST['reportID'];
 
         $disapprovalDetails  = $_POST['disapprovalDetails'];
         $vacationBalance        = $_POST['vacationBalance']        ?? '';
@@ -2047,14 +2048,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     $query = "
                         UPDATE  reports
-                        JOIN    users       ON reports.users_id  = users.id
-                        JOIN    leavereq    ON users.id          = leavereq.users_id
-                        JOIN    reportleave ON leavereq.leave_id = reportleave.leaveReportID
-                        SET     reports.report_type = 'approvedLeave'
-                        WHERE reportleave.reportLeaveID = :reportLeaveID
+                        SET     report_type = 'approvedLeave'
+                        WHERE reportID  = :reportID 
                     ";
                     $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':reportLeaveID', $leave_id, PDO::PARAM_INT);
+                    $stmt->bindParam(':reportID', $reportID, PDO::PARAM_INT);
                     $stmt->execute();
 
                     $pdo->commit();
@@ -2082,14 +2080,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     $query = "
                         UPDATE  reports
-                        JOIN    users       ON reports.users_id  = users.id
-                        JOIN    leavereq    ON users.id          = leavereq.users_id
-                        JOIN    reportleave ON leavereq.leave_id = reportleave.leaveReportID
-                        SET     reports.report_type = 'disapprovedLeave'
-                        WHERE  reportleave.leaveReportID   = :leaveReportID
+                        SET     report_type = 'disapprovedLeave'
+                       WHERE reportID  = :reportID 
                     ";
                     $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':leaveReportID', $leave_id, PDO::PARAM_INT);
+                    $stmt->bindParam(':reportID', $reportID, PDO::PARAM_INT);
                     $stmt->execute();
 
                     $pdo->commit();

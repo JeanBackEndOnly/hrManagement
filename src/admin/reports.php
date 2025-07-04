@@ -147,8 +147,8 @@
                             </tr>
                         </thead>
                         <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
-                            <?php if (!empty($reportData)): // Corrected variable name?>
-                                <?php $num = $reportOffset + 1; foreach ($reportData as $row): // Corrected variable name?>
+                            <?php if (!empty($reportData)): ?>
+                                <?php $num = $reportOffset + 1; foreach ($reportData as $row): ?>
                                     <tr style="display: table; width: 100%; table-layout: fixed;">
                                         <td style="width: 5%;"><?= $num ?></td>
                                         <td style="width: 25%;"><?= htmlspecialchars($row['lname']) . ", " . htmlspecialchars($row['fname']) ?></td>
@@ -159,22 +159,22 @@
                                                         echo "Requesting for validation!";
                                                         break;
                                                     case 'employeePromotion':
-                                                        echo "Got Promoted to " . htmlspecialchars($row['jobTitle']);
+                                                        echo '<p style="color: green;" class="m-0 p-0">Got Promoted to ' . htmlspecialchars($row['jobTitle']). '</p>';
                                                         break;
                                                     case 'employeeRejected':
-                                                        echo "Employee Rejected!";
+                                                        echo '<p style="color: red;" class="m-0 p-0">Employee Rejected!</p>';
                                                         break;
                                                     case 'PendingLeave':
                                                         echo "Requesting for leave!";
                                                         break;
                                                     case 'approvedLeave':
-                                                        echo "Leave Request Approved!";
+                                                        echo '<p style="color: green;" class="m-0 p-0">Leave Request Approved!</p>';
                                                         break;
                                                     case 'disapprovedLeave':
-                                                        echo "Leave Request Disapproved!";
+                                                        echo '<p style="color: red;" class="m-0 p-0">Leave Request Disapproved!</p>';
                                                         break;
                                                     case 'employeeValidated':
-                                                        echo "Employee Validated!";;
+                                                        echo '<p style="color: green;" class="m-0 p-0">Employee got Validated Successfully!</p>';
                                                         break;
                                                     default:
                                                         echo "No valid variable found!";
@@ -200,10 +200,10 @@
                                                         echo '<a class="btn btn-sm btn-primary" href="employeeLeaveReq.php?users_id=' . $row["users_id"] . '&reportsID=' . $row["reportID"] . '">View</a>';
                                                         break;
                                                     case 'disapprovedLeave':
-                                                         echo '<a class="btn btn-sm btn-primary" href="employeeLeaveDis.php?users_id=' . $row["users_id"] . '">View</a>';
+                                                         echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&open_pdf=1">View</a>';
                                                         break;
                                                     case 'approvedLeave':
-                                                        echo '<a class="btn btn-sm btn-primary" href="employeeLeaveApp.php?users_id=' . $row["users_id"] . '">View</a>';
+                                                        echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&open_pdf=1">View</a>';
                                                         break;
                                                     case 'employeeValidated':
                                                         echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';

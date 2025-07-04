@@ -93,6 +93,7 @@
                             <input type="hidden" name="LeaveAdminApproval" value="true">
                             <input type="hidden" name="users_id" value="<?php echo $employeeName["users_id"] ?>">
                             <input type="hidden" name="leave_id" value="<?php echo $leavePending["leave_id"]; ?>">
+                            <input type="hidden" name="reportID" value="<?php echo $_GET["reportsID"] ?? ''; ?>">
                             <div class="col-md-12 d-flex flex-row justify-content-center align-items-center flex-wrap">
                                 <div class="col-md-10 col-11 d-flex flex-row justify-content-between flex-wrap">
                                     <div class="col-md-4 d-flex flex-column col-12">
@@ -303,7 +304,7 @@
                                             <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
                                         </div>
                                         <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                            <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="disapproved">
+                                            <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="disapprove">
                                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
                                             <textarea id="" class="form-control ms-3" name="disapprovalDetails"></textarea>
                                         </div>

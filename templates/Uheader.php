@@ -4,6 +4,14 @@ require_once '../../installer/session.php';
 require_once '../../auth/view.php';
 require_once '../../auth/control.php';
 
+if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
+<script>
+    window.onload = function () {
+        window.open('pdfGenerator.php?users_id=<?php echo $_GET["users_id"]; ?>&leave_id=<?php echo $_GET["leave_id"]; ?>', '_blank');
+    };
+</script>
+<?php endif; 
+
 $infoEmployeeV = validatedEmployee();
 $validated = $infoEmployeeV["valitedEmployee"];
 $infoEmployeeR = requestEmployee();
@@ -32,6 +40,8 @@ $empReq = getLeaveRequest();
 $employeeLeave = $empReq["employeeLeave"];
 $leaveP = leavePending();
 $leavePending = $leaveP["leavePending"];
+$leavesd = leaveID();
+$leaveID = $leavesd["leaveID"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"];

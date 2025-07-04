@@ -734,6 +734,11 @@ function getReportsCount(string $whereClause = ''): int {
 function getReports(int $limit, int $offset, string $sortColumn, string $sortOrder, string $whereClause = ''): array {
     $pdo = db_connection();
 
+    $sql = "SELECT * FROM leavereq";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $leaveID = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     $allowedColumns = ['lname', 'report_date'];
     $allowedOrder = ['asc', 'desc'];
 
@@ -797,4 +802,12 @@ function leavePending(){
     $stmt->execute();
     $leavePending = $stmt->fetch(PDO::FETCH_ASSOC);
     return ['leavePending' => $leavePending];
+}
+function leaveID(){
+    $pdo = db_connection();
+    $sql = "SELECT * FROM leavereq;";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $leaveID = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ['leaveID' => $leaveID];
 }
