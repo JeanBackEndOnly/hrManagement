@@ -2032,7 +2032,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->execute();
 
                 $pdo->commit();
-                header('Location: ../src/admin/employeeLeaveReq.php?leave=approved&users_id=' . $users_id);
+                header('Location: ../src/admin/employeeLeaveReq.php?leave=approved&users_id=' . $users_id . '&open_pdf=1');
                 exit;
             }
 

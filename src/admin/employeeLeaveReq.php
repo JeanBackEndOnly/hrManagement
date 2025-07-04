@@ -1,18 +1,12 @@
 <?php include '../../templates/Uheader.php';?>
-<style>
-/* Hide screen controls when printing & show the table */
-@media print {
-    #admin-screen-controls      { display:none!important; }
-    #admin-print-table          { display:table!important; width:100%; }
-}
-
-/* Optional: hide the rest of the page while printing */
-@media print {
-    body *                      { visibility:hidden; }
-    #approvalContent, #approvalContent * { visibility:visible; }
-    #approvalContent            { position:absolute; left:0; top:0; }
-}
-</style>
+<?php if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
+<script>
+    window.onload = function () {
+        // Automatically open the PDF in a new tab
+        window.open('pdfGenerator.php?users_id=<?php echo $_GET["users_id"]; ?>', '_blank');
+    };
+</script>
+<?php endif; ?>
 
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
@@ -267,21 +261,21 @@
                                 <h5 class="text-center my-1" style="border-bottom:solid 1px #000;">DETAILS OF ACTION ON APPLICATION</h5>
 
                                 <!-- ❶  Printable table  -->
-                                <table id="admin-print-table" class="table table-bordered table-sm mb-0 d-none">
-                                    <thead class="text-center">
-                                        <tr>
-                                            <th></th>
-                                            <th>VACATION</th>
-                                            <th>SICK</th>
-                                            <th>SPECIAL</th>
+                                <table id="admin-print-table" class="table table-bordered table-sm mb-0 d-flex flex-column">
+                                    <thead class="text-center w-100">
+                                        <tr class="w-100">
+                                            <th style="width: 20.1rem;"></th>
+                                            <th style="width:23%">VACATION</th>
+                                            <th style="width:23%">SICK</th>
+                                            <th style="width:23%">SPECIAL</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Balance&nbsp;as&nbsp;of</td>
-                                            <td><input type="number" name="vacationBalance"        class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="sickBalance"            class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="specialBalance"         class="form-control-plaintext p-1"></td>
+                                        <tr class="col-md-12">
+                                            <td style="width: 20.1rem;">Balance&nbsp;as&nbsp;of</td>
+                                            <td style="width:23%"><input type="number" name="vacationBalance"        class="form-control-plaintext p-1"></td>
+                                            <td style="width:23%"><input type="number" name="sickBalance"            class="form-control-plaintext p-1"></td>
+                                            <td style="width:23%"><input type="number" name="specialBalance"         class="form-control-plaintext p-1"></td>
                                         </tr>
                                         <tr>
                                             <td>Leave&nbsp;Earned</td>
@@ -310,18 +304,17 @@
                                     </tbody>
                                 </table>
 
-                                <!-- ❷  Screen‑only recommendation area (unchanged) -->
                                 <div id="admin-screen-controls" class="recommendation col-md-12 col-12 mt-4">
                                     <div class="d-flex flex-column col-md-12 col-11">
-                                        <label for="" class="fw-bold">Reommendation for:</label>
+                                        <label for="" class="fw-bold ms-3">Reommendation for:</label>
                                         <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
                                             <input type="radio" class="col-md-1 col-1" id="approved" name="leaveStatus" value="approved">
                                             <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
                                         </div>
                                         <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                                            <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="Disapproved">
+                                            <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="disapproved">
                                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                                            <textarea name="Disapproval" id="" class="form-control" name="disapprovalDetails"></textarea>
+                                            <textarea name="Disapproval" id="" class="form-control ms-3" name="disapprovalDetails"></textarea>
                                         </div>
                                         <div class="admin mt-5">
                                             <p style="border-bottom: solid 1px #000" class="m-0"></p>
@@ -359,26 +352,6 @@
         </div>
     </div>
 </main>
-<script>
-(() => {
-    const form = document.querySelector('form');
-
-    /* A. Remember that we want to print after the redirect */
-    form.addEventListener('submit', () => {
-        sessionStorage.setItem('printAfterLeaveSubmit', '1');
-    });
-
-    /* B. On load, fire the print dialog if the flag is set */
-    window.addEventListener('DOMContentLoaded', () => {
-        if (sessionStorage.getItem('printAfterLeaveSubmit') === '1') {
-            sessionStorage.removeItem('printAfterLeaveSubmit');
-            /* Allow the page to finish painting first */
-            setTimeout(() => window.print(), 300);
-        }
-    });
-})();
-</script>
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (leaveRequest) {

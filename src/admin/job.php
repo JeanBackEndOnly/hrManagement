@@ -462,34 +462,34 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-  populateJobTitles('#Job_Title');
-  populateJobTitles('#editJob_TitleEdit');
-});
+        populateJobTitles('#Job_Title');
+        populateJobTitles('#editJob_TitleEdit');
+        });
 
-function populateJobTitles(selector) {
-  const sel = document.querySelector(selector);
-  if (!sel) {
-    console.warn(`No <select> found for ${selector}`);
-    return;
-  }
+        function populateJobTitles(selector) {
+        const sel = document.querySelector(selector);
+        if (!sel) {
+            console.warn(`No <select> found for ${selector}`);
+            return;
+        }
 
-  fetch('../functions/api.php')            
-    .then(r => r.json())
-    .then(data => {
-      if (!Array.isArray(data.jobTitles)) {
-        console.error('Invalid data:', data);
-        return;
-      }
-      sel.innerHTML = '<option value="">Select Job Title</option>';
-      data.jobTitles.forEach(({ jobTitle }) => {
-        sel.insertAdjacentHTML(
-          'beforeend',
-          `<option value="${jobTitle}">${jobTitle}</option>`
-        );
-      });
-    })
-    .catch(err => console.error('Job titles:', err));
-}
+        fetch('../functions/api.php')            
+            .then(r => r.json())
+            .then(data => {
+            if (!Array.isArray(data.jobTitles)) {
+                console.error('Invalid data:', data);
+                return;
+            }
+            sel.innerHTML = '<option value="">Select Job Title</option>';
+            data.jobTitles.forEach(({ jobTitle }) => {
+                sel.insertAdjacentHTML(
+                'beforeend',
+                `<option value="${jobTitle}">${jobTitle}</option>`
+                );
+            });
+            })
+            .catch(err => console.error('Job titles:', err));
+        }
 </script>
 <script src="../../assets/js/hr/hrPromotion.js"></script>
 <?php include '../../templates/Ufooter.php'?>

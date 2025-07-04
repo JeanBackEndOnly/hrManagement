@@ -87,56 +87,7 @@
                         <h5 class="text-center">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
                         <h5 style="border-bottom: solid 1px #000;">APPLICATION FOR LEAVE</h5>
                     </div>
-                    <div class="form d-flex flex-row justify-content-between align-items-center p-0 m-0 w-100 mt-1 h-auto flex-wrap">
-                        <div class="col-md-11 d-flex flex-row flex-row justify-content-between align-items-center flex-wrap">
-                            <div class="col-md-10 col-11 d-flex flex-row justify-content-between flex-wrap">
-                                <div class="col-md-4 d-flex flex-column col-12">
-                                    <label class="ms-3" for="lname">Last Name</label>
-                                    <input type="text" name="lname" id="lname" class="form-control">
-                                </div>
-                                <div class="col-md-4 col-11 d-flex flex-column col-12">
-                                    <label class="ms-3" for="fname">First Name</label>
-                                    <input type="text" name="fname" id="fname" class="form-control">
-                                </div>
-                                <div class="col-md-4 col-11 d-flex flex-column col-12">
-                                    <label class="ms-3" for="mname">Middle Name</label>
-                                    <input type="text" name="mname" id="mname" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-2 d-flex flex-column">
-                                <label class="ms-1" for="dateLeave">DATE OF FILING</label>
-                                <input type="text" name="dateLeave" id="dateLeave" class="form-control">
-                            </div>
-                        </div>
-                        <div class="positionDept col-md-11 col-12 d-flex flex-row justify-content-between align-items-center p-0 m-0 mt-3 flex-wrap">
-                            <div class="position col-md-6 d-flex flex-column col-12">
-                                <label class="ms-1" for="position">POSITION</label>
-                                <input type="text" name="position" class="form-control" id="position">
-                            </div>
-                            <div class="position col-md-6 d-flex flex-column col-12">
-                                <label class="ms-1" for="Dept">DEPARTMENT/SECTION</label>
-                                <input type="text" name="department" class="form-control" id="Dept">
-                            </div>
-                        </div>
-                        <div class="applied col-md-11 col-12 d-flex flex-row h-auto justify-content-between align-items-center p-0 m-0 mt-2 flex-wrap">
-                            <div class="label col-md-2 ms-2">
-                                <label for="">LEAVE APPLIED FOR</label>
-                            </div>
-                            <div class="row col-md-2 d-flex flex-row">
-                                <label for="vacation"><input type="radio" class="me-1" id="vacation">Vacation Leave</label>
-                            </div>
-                            <div class="row col-md-2 d-flex flex-row">
-                                <label for="sick"><input type="radio" class="me-1" id="sick">Sick Leave</label>
-                            </div>
-                            <div class="row col-md-2 d-flex flex-row">
-                                <label for="special"><input type="radio" class="me-1" id="special">Special Leave</label>
-                            </div>
-                            <div class="row col-md-3 d-flex flex-row">
-                                <label for="others">Others Specify</label>
-                                <input type="text" class="form-control me-1" id="others">
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
