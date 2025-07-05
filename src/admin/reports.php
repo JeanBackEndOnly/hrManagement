@@ -200,10 +200,10 @@
                                                         echo '<a class="btn btn-sm btn-primary" href="employeeLeaveReq.php?users_id=' . $row["users_id"] . '&reportsID=' . $row["reportID"] . '">View</a>';
                                                         break;
                                                     case 'disapprovedLeave':
-                                                         echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&open_pdf=1">View</a>';
+                                                         echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&leave_id=' . $row["leave_id"] . '&open_pdf=1">View</a>';
                                                         break;
                                                     case 'approvedLeave':
-                                                        echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&open_pdf=1">View</a>';
+                                                        echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&leave_id=' . $row["leave_id"] . '&open_pdf=1">View</a>';
                                                         break;
                                                     case 'employeeValidated':
                                                         echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';

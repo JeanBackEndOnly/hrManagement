@@ -731,7 +731,14 @@ function getReportsCount(string $whereClause = ''): int {
     }
 }
 
-function getReports(int $limit, int $offset, string $sortColumn, string $sortOrder, string $whereClause = ''): array {
+function getReports(
+    int    $limit,
+    int    $offset,
+    string $sortColumn,
+    string $sortOrder,
+    string $whereClause = ''
+): array {
+
     $pdo = db_connection();
 
     $sql = "SELECT * FROM leavereq";
@@ -739,31 +746,72 @@ function getReports(int $limit, int $offset, string $sortColumn, string $sortOrd
     $stmt->execute();
     $leaveID = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $allowedColumns = ['lname', 'report_date'];
+    $columnMap = [
+        'lname'       => 'userInformations.lname',
+        'report_date' => 'reports.report_date'
+    ];
     $allowedOrder = ['asc', 'desc'];
 
-    if (!in_array($sortColumn, $allowedColumns)) $sortColumn = 'report_date';
-    if (!in_array(strtolower($sortOrder), $allowedOrder)) $sortOrder = 'desc';
+    $sortColumn = strtolower($sortColumn);
+    $sortOrder  = strtolower($sortOrder);
+
+    if (!isset($columnMap[$sortColumn])) $sortColumn = 'report_date';
+    if (!in_array($sortOrder, $allowedOrder, true)) $sortOrder = 'desc';
+
+    $sortColumnSQL = $columnMap[$sortColumn];
+    $sortOrderSQL  = strtoupper($sortOrder);  
 
     $sql = "
-        SELECT *
+        SELECT
+            reports.*,
+            users.*,
+            userInformations.*,
+            userHr_Informations.*,
+            leaveReq.leave_id,
+            leaveReq.leaveStatus,
+            leaveReq.leaveType,
+            leaveReq.leaveDate,
+            leaveReq.InclusiveFrom,
+            leaveReq.InclusiveTo,
+            leaveReq.numberOfDays,
+            leaveReq.Purpose,
+            leave_details.balance,
+            leave_details.earned,
+            leave_details.credits,
+            leave_details.lessLeave,
+            leave_details.balanceToDate,
+            leave_details.disapprovalDetails,
+            leave_details.approved_at,
+            leave_details.disapproved_at
         FROM reports
-        LEFT JOIN users ON reports.users_id = users.id 
-        LEFT JOIN userinformations ON users.id = userinformations.users_id
+        LEFT JOIN users               ON reports.users_id = users.id
+        LEFT JOIN userInformations    ON users.id = userInformations.users_id
         LEFT JOIN userHr_Informations ON users.id = userHr_Informations.users_id
+
+        /* report‑specific leave (no duplication) */
+        LEFT JOIN leaveReq
+               ON leaveReq.leave_id = reports.leave_id
+        LEFT JOIN leave_details
+               ON leave_details.leaveID = leaveReq.leave_id
+
         $whereClause
-        ORDER BY $sortColumn $sortOrder
-        LIMIT :limit OFFSET :offset
+
+        /* main sort + tiebreaker so order never flips unexpectedly */
+        ORDER BY $sortColumnSQL $sortOrderSQL,
+                 reports.reportID $sortOrderSQL
+
+        LIMIT  :limit
+        OFFSET :offset
     ";
 
     try {
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        error_log("DB error in getReports: " . $e->getMessage());
+        error_log('DB error in getReports: ' . $e->getMessage());
         return [];
     }
 }
@@ -810,4 +858,105 @@ function leaveID(){
     $stmt->execute();
     $leaveID = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return ['leaveID' => $leaveID];
+}
+
+/* ───────────────────────────────────────────────────────────────
+   LEAVE helper (uses the real spellings in the DB)
+   ─────────────────────────────────────────────────────────────── */
+$leaveTab        = $_GET['leave_tab'] ?? 'request';       // request|approved|disapproved
+$leavePage       = max(1, (int)($_GET['leave_page']  ?? 1));
+$leavePerPage    = max(1, (int)($_GET['leave_perPage'] ?? 10));
+$leaveSortColumn = $_GET['leave_sort']  ?? 'request_date';
+$leaveSortOrder  = strtolower($_GET['leave_order'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
+
+/* each tab → single status value in the table */
+$tabToStatus = [
+    'request'     => 'pending',
+    'approved'    => 'approved',
+    'disapproved' => 'disapprove'   // ← exact value stored in DB
+];
+$statusValue = $tabToStatus[$leaveTab] ?? 'pending';
+
+/* pagination numbers */
+$leaveTotalRows   = leaves_count($statusValue);
+$leaveTotalPages  = max(1, (int)ceil($leaveTotalRows / $leavePerPage));
+$leavePage        = min($leavePage, $leaveTotalPages);
+$leaveOffset      = ($leavePage - 1) * $leavePerPage;
+
+/* data rows for this page */
+$leaveData = leaves_fetch(
+    $statusValue,
+    $leavePerPage,
+    $leaveOffset,
+    $leaveSortColumn,
+    $leaveSortOrder
+);
+
+/* ───────────────── functions ───────────────── */
+function leaves_count(string $status): int
+{
+    $pdo = db_connection();
+    $sql = "SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = ?";
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$status]);
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        error_log("leaves_count error: ".$e->getMessage());
+        return 0;
+    }
+}
+
+function leaves_fetch(
+    string $status,
+    int    $limit,
+    int    $offset,
+    string $sortColumn,
+    string $sortOrder
+): array {
+
+    $pdo = db_connection();
+
+    /* map safe sort keys to real columns */
+    $colMap = [
+        'lname'        => 'ui.lname',
+        'request_date' => 'lr.request_date',
+        'leaveDate'    => 'lr.leaveDate'
+    ];
+    $sortColumn = $colMap[$sortColumn] ?? 'lr.request_date';
+    $sortOrder  = $sortOrder === 'asc' ? 'ASC' : 'DESC';
+
+    $sql = "
+        SELECT
+            lr.*,
+            u.*,
+            ui.*,
+            ld.balance,
+            ld.earned,
+            ld.credits,
+            ld.lessLeave,
+            ld.balanceToDate,
+            ld.disapprovalDetails,
+            ld.approved_at,
+            ld.disapproved_at
+        FROM leaveReq            lr
+        JOIN users              u  ON lr.users_id = u.id
+        JOIN userInformations   ui ON u.id        = ui.users_id
+        LEFT JOIN leave_details ld ON ld.leaveID  = lr.leave_id
+        WHERE lr.leaveStatus = :status
+        ORDER BY $sortColumn $sortOrder, lr.leave_id $sortOrder
+        LIMIT  :limit OFFSET :offset
+    ";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':status', $status);
+        $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("leaves_fetch error: ".$e->getMessage());
+        return [];
+    }
 }

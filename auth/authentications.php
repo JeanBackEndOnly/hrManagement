@@ -1913,78 +1913,83 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // =============================== LEAVE AREA =============================== //
-    if (isset($_POST["LeaveEmployee"]) && $_POST["LeaveEmployee"] === "true"){
-        $users_id = $_SESSION["user_id"] ?? ''; 
-        $dateLeave = $_POST["dateLeave"];
-        $position = $_POST["position"];
-        $department = $_POST["department"];
-        $leaveType = $_POST["leaveType"];
-        $others = $_POST["others"] ?? '';
-        $purpose = $_POST["purpose"];
+    if (isset($_POST["LeaveEmployee"]) && $_POST["LeaveEmployee"] === "true") {
+        $users_id          = $_SESSION["user_id"] ?? '';
+        $dateLeave         = $_POST["dateLeave"];
+        $position          = $_POST["position"];
+        $department        = $_POST["department"];
+        $leaveType         = $_POST["leaveType"];
+        $others            = $_POST["others"] ?? '';
+        $purpose           = $_POST["purpose"];
         $inclusiveDateFrom = $_POST["inclusiveDateFrom"];
-        $inclusiveDateTo = $_POST["inclusiveDateTo"];
-        $daysOfLeave = intval($_POST["daysOfLeave"]);
-        $contact = $_POST["contact"];
-        $sectionHead = $_POST["sectionHead"];
-        $departmentHead = $_POST["departmentHead"];
+        $inclusiveDateTo   = $_POST["inclusiveDateTo"];
+        $daysOfLeave       = intval($_POST["daysOfLeave"]);
+        $contact           = $_POST["contact"];
+        $sectionHead       = $_POST["sectionHead"];
+        $departmentHead    = $_POST["departmentHead"];
 
         try {
-            if(empty($dateLeave) || empty($position) || empty($department) || empty($leaveType) || empty($purpose) || 
-            empty($inclusiveDateFrom) || empty($inclusiveDateTo) || empty($daysOfLeave) || empty($contact) || 
-            empty($sectionHead) || empty($departmentHead)){
+            if (
+                empty($dateLeave)      || empty($position)       || empty($department) ||
+                empty($leaveType)      || empty($purpose)        || empty($inclusiveDateFrom) ||
+                empty($inclusiveDateTo)|| empty($daysOfLeave)    || empty($contact) ||
+                empty($sectionHead)    || empty($departmentHead)
+            ){
                 header("Location: ../src/employee/leave.php?empty=fields");
                 die();
             }
 
-            $query = "INSERT INTO leavereq (users_id, leaveStatus, leaveType, leaveDate, Others, Purpose, InclusiveFrom,
-                InclusiveTo, numberOfDays, contact, sectionHead, departmentHead
-                ) VALUES (
-                :users_id, 'pending', :leaveType, :leaveDate, :Others, :Purpose, :InclusiveFrom,
-                :InclusiveTo, :numberOfDays, :contact, :sectionHead, :departmentHead);";
-            $stmt = $pdo->prepare($query);
-            $stmt->bindParam(":users_id", $users_id);
-            $stmt->bindParam(":leaveType", $leaveType);
-            $stmt->bindParam(":leaveDate", $dateLeave);
-            $stmt->bindParam(":Others", $others);
-            $stmt->bindParam(":Purpose", $purpose);
-            $stmt->bindParam(":InclusiveFrom", $inclusiveDateFrom);
-            $stmt->bindParam(":InclusiveTo", $inclusiveDateTo);
-            $stmt->bindParam(":numberOfDays", $daysOfLeave);
-            $stmt->bindParam(":contact", $contact);
-            $stmt->bindParam(":sectionHead", $sectionHead);
+            $q = "INSERT INTO leavereq (
+                    users_id, leaveStatus, leaveType, leaveDate, Others, Purpose,
+                    InclusiveFrom, InclusiveTo, numberOfDays, contact,
+                    sectionHead, departmentHead
+                )
+                VALUES (
+                    :users_id, 'pending', :leaveType, :leaveDate, :Others, :Purpose,
+                    :InclusiveFrom, :InclusiveTo, :numberOfDays, :contact,
+                    :sectionHead, :departmentHead
+                )";
+            $stmt = $pdo->prepare($q);
+            $stmt->bindParam(":users_id",       $users_id);
+            $stmt->bindParam(":leaveType",      $leaveType);
+            $stmt->bindParam(":leaveDate",      $dateLeave);
+            $stmt->bindParam(":Others",         $others);
+            $stmt->bindParam(":Purpose",        $purpose);
+            $stmt->bindParam(":InclusiveFrom",  $inclusiveDateFrom);
+            $stmt->bindParam(":InclusiveTo",    $inclusiveDateTo);
+            $stmt->bindParam(":numberOfDays",   $daysOfLeave);
+            $stmt->bindParam(":contact",        $contact);
+            $stmt->bindParam(":sectionHead",    $sectionHead);
             $stmt->bindParam(":departmentHead", $departmentHead);
             $stmt->execute();
-            $leaveReportID = $pdo->lastInsertId(); 
 
-            $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'PendingLeave')";
-            $stmt = $pdo->prepare($query);
+            $leaveID = $pdo->lastInsertId();
+
+            $q = "INSERT INTO reports (users_id, report_type, leave_id)
+                VALUES (:users_id, 'PendingLeave', :leave_id)";
+            $stmt = $pdo->prepare($q);
             $stmt->bindParam(":users_id", $users_id);
-            $stmt->execute();
-            $reportLeaveID = $pdo->lastInsertId(); 
-            
-            $query = "INSERT INTO reportLeave (users_id, reportLeaveID, leaveReportID) VALUES (:users_id, :reportLeaveID, :leaveReportID);";
-            $stmt = $pdo->prepare($query);
-            $stmt->bindParam(":users_id", $users_id);
-            $stmt->bindParam(":reportLeaveID", $reportLeaveID);
-            $stmt->bindParam(":leaveReportID", $leaveReportID);
+            $stmt->bindParam(":leave_id", $leaveID);
             $stmt->execute();
 
             header("Location: ../src/employee/leave.php?success=leave");
             $stmt = null;
-            $pdo = null;
+            $pdo  = null;
             die();
         } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
         }
     }
 
+
     if (isset($_POST['LeaveAdminApproval']) && $_POST['LeaveAdminApproval'] === 'true') {
 
-        $users_id  = $_POST['users_id'];
-        $leave_id  = $_POST['leave_id'];
-        $reportID  = $_POST['reportID'];
+        $users_id          = $_POST['users_id'];
+        $leave_id          = $_POST['leave_id'];
+        $reportID          = $_POST['reportID'];
 
-        $disapprovalDetails  = $_POST['disapprovalDetails'];
+        $disapprovalDetails = $_POST['disapprovalDetails'] ?? '';
+
         $vacationBalance        = $_POST['vacationBalance']        ?? '';
         $vacationEarned         = $_POST['vacationEarned']         ?? '';
         $vacationCredits        = $_POST['vacationCredits']        ?? '';
@@ -2003,7 +2008,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $specialLessLeave       = $_POST['specialLessLeave']       ?? '';
         $specialBalanceToDate   = $_POST['specialBalanceToDate']   ?? '';
 
-        $leaveStatus = $_POST['leaveStatus'] ?? '';
+        $leaveStatus = $_POST['leaveStatus'] ?? ''; 
 
         $balance       = $vacationBalance       !== '' ? $vacationBalance       : ($sickBalance       !== '' ? $sickBalance       : $specialBalance);
         $earned        = $vacationEarned        !== '' ? $vacationEarned        : ($sickEarned        !== '' ? $sickEarned        : $specialEarned);
@@ -2012,20 +2017,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $balanceToDate = $vacationBalanceToDate !== '' ? $vacationBalanceToDate : ($sickBalanceToDate !== '' ? $sickBalanceToDate : $specialBalanceToDate);
 
         try {
-            $pdo->beginTransaction(); 
+            $pdo->beginTransaction();
 
-            $q  = "UPDATE leavereq
+            $q = "UPDATE leavereq
                 SET    leaveStatus = :leaveStatus
-                WHERE  leave_id    = :leave_id;";
+                WHERE  leave_id    = :leave_id";
             $st = $pdo->prepare($q);
             $st->bindParam(':leaveStatus', $leaveStatus);
             $st->bindParam(':leave_id',    $leave_id, PDO::PARAM_INT);
             $st->execute();
 
-            $q  = "INSERT INTO leave_details
-                (leaveID, balance, earned, credits, lessLeave, balanceToDate, disapprovalDetails)
+            $q = "INSERT INTO leave_details
+                    (leaveID, balance, earned, credits, lessLeave, balanceToDate, disapprovalDetails)
                 VALUES
-                (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate, :disapprovalDetails)";
+                    (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate, :disapprovalDetails)
+                ON DUPLICATE KEY UPDATE
+                    balance         = VALUES(balance),
+                    earned          = VALUES(earned),
+                    credits         = VALUES(credits),
+                    lessLeave       = VALUES(lessLeave),
+                    balanceToDate   = VALUES(balanceToDate),
+                    disapprovalDetails = VALUES(disapprovalDetails)";
             $st = $pdo->prepare($q);
             $st->bindParam(':leaveID',       $leave_id,     PDO::PARAM_INT);
             $st->bindParam(':balance',       $balance);
@@ -2037,75 +2049,63 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $st->execute();
 
             if ($leaveStatus === 'approved') {
-                    $q = "
-                        UPDATE  leave_details
-                        SET     approved_at = NOW()
-                        WHERE   leaveID     = :leaveID
-                    ";
-                    $st = $pdo->prepare($q);
-                    $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
-                    $st->execute();
 
-                    $query = "
-                        UPDATE  reports
-                        SET     report_type = 'approvedLeave'
-                        WHERE reportID  = :reportID 
-                    ";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':reportID', $reportID, PDO::PARAM_INT);
-                    $stmt->execute();
+                $q = "UPDATE leave_details
+                    SET  approved_at = NOW()
+                    WHERE leaveID = :leaveID";
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                $st->execute();
 
-                    $pdo->commit();
+                $q = "UPDATE reports
+                    SET  report_type = 'approvedLeave'
+                    WHERE leave_id   = :leave_id";
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leave_id', $leave_id, PDO::PARAM_INT);
+                $st->execute();
 
-                    header(
-                        'Location: ../src/admin/leave.php?leave=approved'
-                        . '&users_id=' . $users_id
-                        . '&leave_id=' . $leave_id
-                        . '&open_pdf=1'
-                    );
-                    exit;
+                $pdo->commit();
+                header(
+                    'Location: ../src/admin/leave.php?leave=approved'
+                    . '&users_id=' . $users_id
+                    . '&leave_id=' . $leave_id
+                    . '&open_pdf=1'
+                );
+                exit;
             }
 
             if ($leaveStatus === 'disapprove') {
 
-                    $q = "
-                        UPDATE  leave_details
-                        SET     disapproved_at = NOW()
-                        WHERE   leaveID          = :leaveID
-                        AND   disapproved_at IS NULL
-                    ";
-                    $st = $pdo->prepare($q);
-                    $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
-                    $st->execute();
+                $q = "UPDATE leave_details
+                    SET  disapproved_at = NOW()
+                    WHERE leaveID = :leaveID
+                        AND disapproved_at IS NULL";
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                $st->execute();
 
-                    $query = "
-                        UPDATE  reports
-                        SET     report_type = 'disapprovedLeave'
-                       WHERE reportID  = :reportID 
-                    ";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':reportID', $reportID, PDO::PARAM_INT);
-                    $stmt->execute();
+                $q = "UPDATE reports
+                    SET  report_type = 'disapprovedLeave'
+                    WHERE leave_id   = :leave_id";
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leave_id', $leave_id, PDO::PARAM_INT);
+                $st->execute();
 
-                    $pdo->commit();
-
-                    header(
-                        'Location: ../src/admin/leave.php?leave=disapproved'
-                        . '&users_id=' . $users_id
-                        . '&leave_id=' . $leave_id
-                        . '&open_pdf=1'
-                    );
-                    exit;
-
+                $pdo->commit();
+                header(
+                    'Location: ../src/admin/leave.php?leave=disapproved'
+                    . '&users_id=' . $users_id
+                    . '&leave_id=' . $leave_id
+                    . '&open_pdf=1'
+                );
+                exit;
             }
-
-
 
             $pdo->rollBack();
             header('Location: ../src/admin/employeeLeaveReq.php?leave=failed&users_id=' . $users_id);
             exit;
 
-        } catch (PDOException $e) {      
+        } catch (PDOException $e) {
             $pdo->rollBack();
             die('Query failed: ' . $e->getMessage());
         }

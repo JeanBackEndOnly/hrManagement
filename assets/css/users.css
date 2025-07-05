@@ -250,7 +250,7 @@ transform: translateX(.9rem);
 #hrUl i, #payrollUl i{
     transform: translateX(0);
 }
-.search-titles, .search-validated, .search-request, .search-rejected, .search-titles-promotion{
+.search-titles, .search-validated, .search-request, .search-rejected, .search-titles-promotion, .search-leave{
     box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
     height: 3rem;
 }
