@@ -673,6 +673,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam("users_id", $employeeId);
             $stmt->execute();
 
+            $query = "INSERT INTO leaveCounts (users_id, VacationBalance, SickBalance, SpecialBalance, OthersBalance
+            ) VALUES (
+            :users_id, 10, 10, 10, 10);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $employeeId);
+            $stmt->execute();
+
             $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
             $command = "start /B php " .
                 escapeshellarg($scriptPath) . ' ' .  
@@ -1417,6 +1424,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             );
 
             $createdUserId += 1;
+            $query = "INSERT INTO leaveCounts (users_id, VacationBalance, SickBalance, SpecialBalance, OthersBalance
+            ) VALUES (
+            :users_id, 10, 10, 10, 10);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $createdUserId);
+            $stmt->execute();
 
             if (!$createdUserId) {
                 die("Failed to get newly created user's ID");

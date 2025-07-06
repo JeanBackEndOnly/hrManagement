@@ -737,7 +737,7 @@ function getReports(
     string $sortColumn,
     string $sortOrder,
     string $whereClause = ''
-): array {
+    ): array {
 
     $pdo = db_connection();
 
@@ -917,7 +917,6 @@ function leaves_fetch(
 
     $pdo = db_connection();
 
-    /* map safe sort keys to real columns */
     $colMap = [
         'lname'        => 'ui.lname',
         'request_date' => 'lr.request_date',
@@ -959,4 +958,17 @@ function leaves_fetch(
         error_log("leaves_fetch error: ".$e->getMessage());
         return [];
     }
+}
+
+function getLeaveCredits(){
+    $pdo = db_connection();
+    $users_id = $_GET['users_id'] ?? '';
+    $leave_id = $_GET['leave_id'] ?? '';
+
+    $query = "SELECT * FROM leaveCounts WHERE users_id = :users_id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $leaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['leaveCounts' => $leaveCounts];
 }

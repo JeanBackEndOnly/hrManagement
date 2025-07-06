@@ -28,8 +28,6 @@ $pending = getPendingCountDashboard();
 $pendingCount = $pending["pendingCount"];
 $historyADmin = adminHistoryLog();
 $adminHistory = $historyADmin["adminHistory"];
-// $reports = getReport();
-// $report = $reports["report"];
 $reportsC = getReportCount();
 $reportCount = $reportsC["reportCount"];
 $idUsers = getUSersId();
@@ -42,9 +40,11 @@ $leaveP = leavePending();
 $leavePending = $leaveP["leavePending"];
 $leavesd = leaveID();
 $leaveID = $leavesd["leaveID"];
+$leaveC = getLeaveCredits();
+$leaveCounts = $leaveC["leaveCounts"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
-$employeeInfo = $employee["employeeInfo"];
+$employeeInfo = $employee["employeeInfo"] ?? '';
 $historyEmployee = employeeHistoryLog();
 $employeeHistory = $historyEmployee["employeeHistory"];
 

@@ -364,6 +364,7 @@ function sideNav() {
 }
 function hrButton() {
         const hrUl = document.getElementById("hrUl");
+        const payrollUl = document.getElementById("payrollUl");
         const sideHEheHr = document.getElementById("sideHEhe");
         const ilahr = document.getElementById("iLeftArrowHr");
         const ilapr = document.getElementById("iLeftArrowPr");
@@ -378,6 +379,8 @@ function hrButton() {
             hrUl.style.opacity = "0";
             hrUl.style.marginTop = "0";
             hrUl.classList.remove("open");
+            payrollUl.classList.remove("open");
+            payrollUl.style.display = 'none';
 
             setTimeout(() => {
                 hrUl.style.display = "none";
@@ -392,11 +395,14 @@ function hrButton() {
             hrUl.style.opacity = "1";
             hrUl.style.marginTop = "0.5rem";
             hrUl.classList.add("open");
+            payrollUl.classList.remove("open");
+            payrollUl.style.display = 'none';
         }
 }
 
 function payrollButton() {
         const payrollUl = document.getElementById("payrollUl");
+        const hrUl = document.getElementById("hrUl");
         const sideHEheHr = document.getElementById("sideHEhe");
         const ilahr = document.getElementById("iLeftArrowHr");
         const ilapr = document.getElementById("iLeftArrowPr");
@@ -411,6 +417,8 @@ function payrollButton() {
             payrollUl.style.opacity = "0";
             payrollUl.style.marginTop = "0";
             payrollUl.classList.remove("open");
+            hrUl.classList.remove("open");
+            hrUl.style.display = 'none';
 
             setTimeout(() => {
                 payrollUl.style.display = "none";
@@ -425,6 +433,8 @@ function payrollButton() {
             payrollUl.style.opacity = "1";
             payrollUl.style.marginTop = "0.5rem";
             payrollUl.classList.add("open");
+            hrUl.classList.remove("open");
+            hrUl.style.display = 'none';
         }
 }
 

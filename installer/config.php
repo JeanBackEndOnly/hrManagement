@@ -197,6 +197,15 @@ if (!function_exists('db_connection')) {
                 disapproved_at date NULL,
                 FOREIGN KEY (leaveID) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
             )",
+            "CREATE TABLE IF NOT EXISTS leaveCounts (
+                leaveCountID INT AUTO_INCREMENT PRIMARY KEY,
+                users_id INT NOT NULL,
+                VacationBalance INT NOT NULL,
+                SickBalance INT NOT NULL,
+                SpecialBalance INT NOT NULL,
+                OthersBalance INT NOT NULL,
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
             ];
         // earned + balance = credits
         // earned - lessLeave = balanceToDate
@@ -209,8 +218,5 @@ if (!function_exists('db_connection')) {
         } catch (PDOException $e) {
             die("Database error: " . $e->getMessage());
         }
-        // $scheme   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        //   ? 'https' : 'http';
-        // $BASE_URL = $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 }

@@ -153,7 +153,7 @@
                                 <th style="width:5%;">#</th>
                                 <th style="width:25%;">Employee</th>
                                 <th style="width:25%;">Leave Type</th>
-                                <th style="width:20%;">From‑To</th>
+                                <th style="width:20%;">From-To</th>
                                 <th style="width:15%;">Status</th>
                                 <th style="width:10%;">Actions</th>
                             </tr>
@@ -169,7 +169,7 @@
                                         <td style="width:25%;"><?= htmlspecialchars($row['leaveType']) ?></td>
                                         <td style="width:20%;">
                                             <?= date('M j',  strtotime($row['InclusiveFrom'])) ?>
-                                            – <?= date('M j, Y', strtotime($row['InclusiveTo'])) ?>
+                                            - <?= date('M j, Y', strtotime($row['InclusiveTo'])) ?>
                                         </td>
                                         <td style="width:15%;">
                                             <?php
@@ -180,12 +180,38 @@
                                             };
                                             ?>
                                         </td>
-                                        <td style="width:10%;">
-                                            <a class="btn btn-sm btn-primary"
-                                            href="employeeLeaveReq.php?users_id=<?= $row['users_id'] ?>&leave_id=<?= $row['leave_id'] ?>">
-                                                View
-                                            </a>
-                                        </td>
+                                        <?php
+                                        switch($row["leaveStatus"]) {
+                                            case "pending":
+                                                echo '<td style="width:10%;">';
+                                                    echo '<a class="btn btn-sm btn-primary"
+                                                    href="employeeLeaveReq.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '">
+                                                        View
+                                                    </a>';
+                                                echo '</td>';
+                                                break;
+                                            case "approved":
+                                                echo '<td style="width:10%;">';
+                                                    echo '<a class="btn btn-sm btn-primary"
+                                                    href="leave.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '&open_pdf=1">
+                                                        View
+                                                    </a>';
+                                                echo '</td>';
+                                                break;
+                                            case "disapprove":
+                                                    echo '<td style="width:10%;">';
+                                                    echo '<a class="btn btn-sm btn-primary"
+                                                    href="leave.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '&open_pdf=1">
+                                                        View
+                                                    </a>';
+                                                echo '</td>';
+                                                break;
+                                            default:
+                                                echo 'No leaveStatus match!';
+                                            break;
+                                        }
+                                        ?>
+
                                     </tr>
                                     <?php $no++; ?>
                                 <?php endforeach; ?>

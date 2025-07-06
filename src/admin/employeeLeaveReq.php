@@ -263,35 +263,72 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php
+                                        $VacationBalance = $leaveCounts["VacationBalance"] ?? '';
+                                        $SickBalance = $leaveCounts["SickBalance"]?? '';
+                                        $SpecialBalance = $leaveCounts["SpecialBalance"]?? '';
+                                        $NumberOfLeave = $leavePending["numberOfDays"]?? '';
+
+                                        $pdo = db_connection();
+                                                
+                                        $query = "SELECT leaveDate FROM leavereq WHERE users_id = :users_id AND leaveStatus = :leaveStatus AND leaveType = :leaveType ORDER BY leaveDate DESC;";
+                                        $stmt = $pdo->prepare($query);
+                                        $leaveSatat = 'approved';
+                                        $stmt->bindParam(":users_id", $leavePending["users_id"]);
+                                        $stmt->bindParam(":leaveType", $leavePending["leaveType"]);
+                                        $stmt->bindParam(":leaveStatus", $leaveSatat);
+                                        $stmt->execute();
+                                        $getLeaveDate = $stmt->fetch(PDO::FETCH_ASSOC);
+                                        $CurrentDate = date("Y-m-d");
+                                        $lastLeave = new DateTime($getLeaveDate["leaveDate"] ?? '');
+                                        $leaveDAte = new DateTime($leavePending["leaveDate"]); 
+                                        $leavePending["leaveDate"]; echo '<br>';
+                                        $getLeaveDate["leaveDate"] ?? 'wala';
+                                        $daysPassed = $lastLeave->diff($leaveDAte)->days;
+                                        if($lastLeave !== '' && $daysPassed < 15){
+                                            $earnedSick = 0;
+                                            $earnedVacation = 0;
+                                            $earnedSpecial = 0;
+                                        }elseif($lastLeave !== '' && $daysPassed >= 15 && $daysPassed <= 29){
+                                            $earnedSick = .5;
+                                            $earnedVacation = .5;
+                                            $earnedSpecial = .5;
+                                        }
+                                        elseif($lastLeave !== '' && $daysPassed >= 30 && $daysPassed <= 44){
+                                             $earnedSick = 1;
+                                            $earnedVacation = 1;
+                                            $earnedSpecial = 1;
+                                        }
+                                        ?>
                                         <tr class="col-md-12">
                                             <td style="width: 20.1rem;">Balance&nbsp;as&nbsp;of</td>
-                                            <td style="width:23%"><input type="number" name="vacationBalance"        class="form-control-plaintext p-1"></td>
-                                            <td style="width:23%"><input type="number" name="sickBalance"            class="form-control-plaintext p-1"></td>
-                                            <td style="width:23%"><input type="number" name="specialBalance"         class="form-control-plaintext p-1"></td>
+                                            <td style="width:23%"><input type="text" name="vacationBalance" class="form-control-plaintext p-1" value="<?php if($leavePending["leaveType"] == 'vacation') { echo $VacationBalance; echo " DAYS"; }else{ echo $VacationBalance; echo " DAYS";} ?>"></td>
+                                            <td style="width:23%"><input type="text" name="sickBalance" class="form-control-plaintext p-1" value="<?php if($leavePending["leaveType"] == 'sick') { echo $SickBalance; echo " DAYS"; }else{ echo $SickBalance; echo " DAYS";} ?>"></td>
+                                            <td style="width:23%"><input type="text" name="specialBalance" class="form-control-plaintext p-1" value="<?php if($leavePending["leaveType"] == 'special') { echo $SpecialBalance; echo " DAYS"; }else{ echo $SpecialBalance; echo " DAYS";} ?>"></td>
                                         </tr>
                                         <tr>
                                             <td>Leave&nbsp;Earned</td>
-                                            <td><input type="number" name="vacationEarned"         class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="sickEarned"             class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="specialEarned"          class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="vacationEarned"  value="<?php if($leavePending["leaveDate"] == ''){echo "+" . $earnedVacation = 0;}elseif($leavePending["leaveDate"] !== ''){ echo $earnedSick;} ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="sickEarned" value="<?php if($leavePending["leaveDate"] == ''){echo "+" . $earnedSick = 0;}elseif($leavePending["leaveDate"] !== ''){ echo $earnedSick;} ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="specialEarned"  value="<?php if($leavePending["leaveDate"] == ''){echo "+" . $earnedSpecial = 0;}elseif($leavePending["leaveDate"] !== ''){ echo $earnedSick;} ?>" class="form-control-plaintext p-1"></td>
                                         </tr>
                                         <tr>
                                             <td>Total&nbsp;Leave&nbsp;Credits&nbsp;as&nbsp;of</td>
-                                            <td><input type="number" name="vacationCredits"        class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="sickCredits"            class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="specialCredits"         class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="vacationCredits" value="<?php if($leavePending["leaveType"] == 'vacation') {echo $VacationCredits = $VacationBalance + $earnedVacation; } ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="sickCredits" value="<?php if($leavePending["leaveType"] == 'sick') {echo $SickCredits = $SickBalance + $earnedSick; } ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="specialCredits" value="<?php if($leavePending["leaveType"] == 'special') {echo $SpecialCredits =  $SpecialBalance + $earnedSpecial; } ?>" class="form-control-plaintext p-1"></td>
                                         </tr>
                                         <tr>
                                             <td>Less&nbsp;this&nbsp;Leave</td>
-                                            <td><input type="number" name="vacationLessLeave"      class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="sickLessLeave"          class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="specialLessLeave"       class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="vacationLessLeave" value="<?php if($leavePending["leaveType"] == 'vacation') {echo $balanceVacation = $VacationBalance - $earnedVacation; echo " DAYS"; } ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="sickLessLeave" value="<?php if($leavePending["leaveType"] == 'sick') {echo "-" . $balanceSick = $SickBalance - $earnedSick; echo ' DAYS'; } ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="text" name="specialLessLeave" value="<?php if($leavePending["leaveType"] == 'special') {echo $balanceSpecial = $SpecialBalance - $earnedSpecial; echo " DAYS"; } ?>" class="form-control-plaintext p-1"></td>
                                         </tr>
                                         <tr>
                                             <td>Balance&nbsp;to&nbsp;Date</td>
-                                            <td><input type="number" name="vacationBalanceToDate"  class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="sickBalanceToDate"      class="form-control-plaintext p-1"></td>
-                                            <td><input type="number" name="specialBalanceToDate"   class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="vacationBalanceToDate" value="<?php if($leavePending["leaveType"] == 'vacation') {echo $VacationCredits -= $balanceVacation; } ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="sickBalanceToDate" value="<?php if($leavePending["leaveType"] == 'sick') {echo $SickCredits -= $balanceSick; } ?>" class="form-control-plaintext p-1"></td>
+                                            <td><input type="number" name="specialBalanceToDate" value="<?php if($leavePending["leaveType"] == 'special') {echo $SpecialCredits -= $balanceSpecial; } ?>" class="form-control-plaintext p-1"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -308,9 +345,15 @@
                                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
                                             <textarea id="" class="form-control ms-3" name="disapprovalDetails"></textarea>
                                         </div>
-                                        <div class="admin mt-5">
-                                            <p style="border-bottom: solid 1px #000" class="m-0"></p>
-                                            <p class="text-center">Administrator</p>
+                                        <div class="admin mt-5 d-flex flex-row col-md-12 justify-content-center align-items-center gap-5">
+                                            <div class="hrdo col-md-5">
+                                                <p style="border-bottom: solid 1px #000" class="m-0"></p>
+                                                <p class="text-center">HRDO</p>
+                                            </div>
+                                            <div class="admin col-md-5">
+                                                <p style="border-bottom: solid 1px #000" class="m-0"></p>
+                                                <p class="text-center">Administrator</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

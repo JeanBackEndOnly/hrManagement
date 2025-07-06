@@ -122,10 +122,12 @@
                         </div>
                     </a>
 
-                    <div class="reports shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px;">
+                    <a href="leave.php" class="leave shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0">3</h1>
+                                <h1 class="fw-bold text-primary m-0">
+                                    <span id="leaveCountDisplay">0</span>
+                                </h1>
                                 <small class="text-muted">request</small>
                             </div>
                             <div class="text-start">
@@ -133,7 +135,7 @@
                                 <h6 class="m-0 text-secondary">Request</h6>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -152,12 +154,24 @@
                 console.error('Error fetching data:', error);
             });
     }
-
+    function fetchLeaveReqCount() {
+        fetch('../functions/api.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched data:', data); 
+                const leavePendingCount = data.leavePendingCount ?? 0;
+                document.getElementById('leaveCountDisplay').textContent = leavePendingCount;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
         fetchPendingCount(); 
         setInterval(fetchPendingCount, 5000); 
     });
     fetchReportsCount(); 
+    fetchLeaveReqCount(); 
 </script>
 <?php include '../../templates/Ufooter.php'?>

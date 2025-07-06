@@ -206,7 +206,7 @@
                                                         echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&leave_id=' . $row["leave_id"] . '&open_pdf=1">View</a>';
                                                         break;
                                                     case 'employeeValidated':
-                                                        echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=accept">View</a>';
+                                                        echo '<a class="btn btn-sm btn-primary" href="profile.php?users_id=' . $row["users_id"] . '">View</a>';
                                                         break;
                                                     default:
                                                         echo "No valid variable found!";

@@ -25,10 +25,18 @@ function JobTitleRegistration($pdo){
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getLeaveReqCount($pdo) {
+    $query = "SELECT COUNT(*) FROM leavereq WHERE leaveStatus = 'pending'";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return (int)$stmt->fetchColumn();
+}
+
 $response = [
     'jobTitles'     => JobTitleRegistration($pdo),
     'pendingCount'  => getRequestCount($pdo),
-    'reportsCount'  => getReportCount($pdo)
+    'reportsCount'  => getReportCount($pdo),
+    'leavePendingCount'  => getLeaveReqCount($pdo)
 ];
 
 echo json_encode($response);
