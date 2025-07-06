@@ -107,7 +107,15 @@ $pdf->Cell(0, 6, $leave['Purpose'] ?? '', 'B', 1);
 $pdf->Ln(4);
 
 $pdf->Cell(35, 6, 'INCLUSIVE DATES :', 0, 0);
-$pdf->Cell(80, 6, $leave["InclusiveFrom"] ?? '' . " to " . $leave["InclusiveTo"] ?? '', 'B', 0);
+// one‑liner, just add parentheses
+$pdf->Cell(
+    80,
+    6,
+    ($leave['InclusiveFrom'] ?? '') . ' to ' . ($leave['InclusiveTo'] ?? 'wala'),
+    'B',
+    0
+);
+
 $pdf->Cell(27, 6, 'NO. OF DAYS :', 0, 0);
 $pdf->Cell(0, 6, $leave["numberOfDays"], 'B', 1);
 $pdf->Ln(4);

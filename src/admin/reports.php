@@ -148,7 +148,6 @@
                         </thead>
                         <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
                          <?php 
-                            // Get the data
                             $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $reportSortOrder, $whereClause);
                             $reports = $reportData['reports'];
                             $allLeaveRequests = $reportData['all_leave_requests'];
@@ -158,12 +157,10 @@
                                 $num = $reportOffset + 1;
                                 $processedLeaveIds = [];
                                 
-                                // First display all leave requests (one row per leave)
                                 foreach ($allLeaveRequests as $leave): 
                                     if (in_array($leave['leave_id'], $processedLeaveIds)) continue;
                                     $processedLeaveIds[] = $leave['leave_id'];
                                     
-                                    // Find if there's a report specifically for this leave
                                     $reportForLeave = null;
                                     foreach ($reports as $report) {
                                         if ($report['leave_id'] == $leave['leave_id']) {
@@ -173,37 +170,48 @@
                                     }
                                 ?>
                                     <tr>
-                                        <td><?= $num++ ?></td>
-                                        <td><?= htmlspecialchars($leave['lname']) ?>, <?= htmlspecialchars($leave['fname']) ?></td>
-                                        <td>
-                                            <?php if ($leave['leaveStatus'] === 'Approved'): ?>
+                                        <td style="width: 5%;"><?= $num++ ?></td>
+                                        <td style="width: 24.4%;"><?= htmlspecialchars($leave['lname']) ?>, <?= htmlspecialchars($leave['fname']) ?></td>
+                                        <td style="width: 25%;">
+                                            <?php if ($leave['leaveStatus'] === 'approved'): ?>
                                                 <p style="color: green;">Leave Request Approved!</p>
-                                            <?php elseif ($leave['leaveStatus'] === 'Disapproved'): ?>
+                                            <?php elseif ($leave['leaveStatus'] === 'disapprove'): ?>
                                                 <p style="color: red;">Leave Request Disapproved!</p>
                                             <?php else: ?>
                                                 <p>Requesting for leave!</p>
                                             <?php endif; ?>
                                             <small><?= htmlspecialchars($leave['leaveType']) ?> - <?= date('M d, Y', strtotime($leave['leaveDate'])) ?></small>
                                         </td>
-                                        <td><?= htmlspecialchars($leave['department']) ?></td>
-                                        <td><?= $reportForLeave ? date('F j, Y h:i A', strtotime($reportForLeave['report_date'])) : date('F j, Y h:i A', strtotime($leave['request_date'])) ?></td>
-                                        <td>
-                                            <a class="btn btn-sm btn-primary" 
-                                            href="employeeLeaveReq.php?users_id=<?= $leave['users_id'] ?>&leave_id=<?= $leave['leave_id'] ?>">
-                                            View
-                                            </a>
+                                        <td style="width: 20%;"><?= htmlspecialchars($leave['department']) ?></td>
+                                        <td style="width: 20%;"><?= $reportForLeave ? date('F j, Y h:i A', strtotime($reportForLeave['report_date'])) : date('F j, Y h:i A', strtotime($leave['request_date'])) ?></td>
+                                        <td style="width: 10%;">
+                                            <?php if ($leave['leaveStatus'] === 'approved'): ?>
+                                                <a class="btn btn-sm btn-primary" 
+                                                    href="leave.php?users_id=<?= $leave['users_id'] ?>&leave_id=<?= $leave['leave_id'] ?>&open_pdf=1">
+                                                    View
+                                                </a>
+                                            <?php elseif ($leave['leaveStatus'] === 'disapprove'): ?>
+                                                <a class="btn btn-sm btn-primary" 
+                                                    href="leave.php?users_id=<?= $leave['users_id'] ?>&leave_id=<?= $leave['leave_id'] ?>&open_pdf=1">
+                                                    View
+                                                </a>
+                                            <?php else: ?>
+                                                <a class="btn btn-sm btn-primary" 
+                                                    href="employeeLeaveReq.php?users_id=<?= $leave['users_id'] ?>&leave_id=<?= $leave['leave_id'] ?>">
+                                                    View
+                                                </a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                                
-                                <!-- Then display non-leave reports -->
+
                                 <?php foreach ($reports as $row): 
                                     if (empty($row['leave_id']) || !in_array($row['report_type'], ['PendingLeave', 'approvedLeave', 'disapprovedLeave'])): 
                                 ?>
                                     <tr>
-                                        <td><?= $num++ ?></td>
-                                        <td><?= htmlspecialchars($row['lname']) ?>, <?= htmlspecialchars($row['fname']) ?></td>
-                                        <td>
+                                        <td style="width: 5%;"><?= $num++ ?></td>
+                                        <td style="width: 24.%;"><?= htmlspecialchars($row['lname']) ?>, <?= htmlspecialchars($row['fname']) ?></td>
+                                        <td style="width: 25%;">
                                             <?php switch ($row['report_type']):
                                                 case 'employeeRegistration': echo "Requesting for validation!"; break;
                                                 case 'employeePromotion': 
@@ -214,9 +222,9 @@
                                                 default: echo "No valid variable found!";
                                             endswitch; ?>
                                         </td>
-                                        <td><?= htmlspecialchars($row['department']) ?></td>
-                                        <td><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
-                                        <td>
+                                        <td style="width: 20%;"><?= htmlspecialchars($row['department']) ?></td>
+                                        <td style="width: 20%;"><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
+                                        <td style="width: 10%;">
                                             <?php switch ($row['report_type']):
                                                 case 'employeeRegistration':
                                                     echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
@@ -255,6 +263,13 @@
         </div>
     </div>
 </main>
+<div id="loadingAnimation" style="display:none;">
+  <div class="loading-lines">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('reportsSearchInput');

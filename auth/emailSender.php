@@ -28,6 +28,7 @@ $newSalary         = $argv[5] ?? null;
 $username          = $argv[6] ?? null;
 $password          = $argv[7] ?? null;
 $mailCode          = $argv[8] ?? null;
+$leaveID           = $argv[9] ?? null;
 
 $pdo = db_connection();
 
@@ -40,6 +41,16 @@ try {
     $stmt->bindParam(":users_id", $createdUserId);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // ==================== LEAVE DETAILS ==================== //
+    $query = "SELECT * FROM leaveReq 
+    INNER JOIN leave_details ON leaveReq.leave_id = leave_details.leaveID 
+    WHERE leave_id = :leave_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":leave_id", $leaveID);
+    $stmt->execute();
+    $leave = $stmt->fetch(PDO::FETCH_ASSOC);
+    // ===================================================== //
 
     if (!$user && $createdUserId == 1) {
         $query = "SELECT * FROM users WHERE id = 1";
@@ -156,6 +167,28 @@ try {
                 <p>Hi {$user['fname']} {$user['lname']},</p>
                 <p>Your Mail Code is :<strong>  $mailCode.</strong></p>
                 <p>Please Enter this 6 digit codes!.</p>
+                <br>
+                <p>Best regards,<br>HR Team</p>
+            ";
+
+        }elseif ($action === 'LeaveApproved') {
+            $mail->Subject = 'Leave Approved!';
+            $mail->Body = "
+                <p>Hi {$user['fname']} {$user['lname']},</p>
+                <p>Congrationalations! your leave application have been approved by the admin!</p>
+                <p><strong>Leave Type: {$leave['leaveType']}</strong></p>
+                <p><strong>From: {$leave['InclusiveFrom']}</strong></p>
+                <p><strong>To: {$leave['InclusiveTo']}</strong></p>
+                <br>
+                <p>Best regards,<br>HR Team</p>
+            ";
+
+        }elseif ($action === 'LeaveDisapproved') {
+            $mail->Subject = 'Leave Disapproved!';
+            $mail->Body = "
+                <p>Hi {$user['fname']} {$user['lname']},</p>
+                <p>I'm so sorry but your leave request have been disapproved!</p>
+                <p>Details: {$leave['disapprovalDetails']}</p>
                 <br>
                 <p>Best regards,<br>HR Team</p>
             ";

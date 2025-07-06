@@ -5,6 +5,13 @@ date_default_timezone_set('Asia/Manila');
 require_once '../../installer/session.php';
 require_once '../../installer/config.php';
 require_once '../../auth/view.php';
+
+// ======================== KEEP INTRUDERS OUT ======================== //
+if (!isset($_SESSION['user_role'])) {
+    header('Location: ../index.php');
+    die();
+}
+
     // =========================== Notifications =========================== //
     $AddJobModal = false;
     $DeleteJobModal = false;
@@ -31,6 +38,7 @@ require_once '../../auth/view.php';
     $code = false;
     $passwordFailed = false;
     $leaveRequest = false;
+    $leave = false;
 
     // =========================== JOB TITLES =========================== //
 function getJobTitlesCount(): int {
@@ -750,7 +758,6 @@ function getReports(
     $sortOrder = in_array(strtolower($sortOrder), $allowedOrder, true) ? $sortOrder : 'desc';
 
     try {
-        // First get all reports with basic info
         $sql = "
             SELECT
                 r.*,
@@ -779,12 +786,10 @@ function getReports(
         $stmt->execute();
         $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Then get ALL leave requests for these users
         if (!empty($reports)) {
             $userIds = array_unique(array_column($reports, 'users_id'));
             
             if (!empty($userIds)) {
-                // Create named parameters for the IN clause
                 $params = [];
                 $placeholders = [];
                 foreach ($userIds as $i => $userId) {
@@ -857,9 +862,11 @@ function getLeaveRequest(){
 function leavePending(){
     $pdo = db_connection();
     $users_id = $_GET["users_id"] ?? '';
-    $sql = "SELECT * FROM leavereq WHERE users_id = :users_id AND leaveStatus = 'pending' AND request_date = CURDATE();";
+    $leave_id = $_GET["leave_id"] ?? '';
+    $sql = "SELECT * FROM leavereq WHERE users_id = :users_id AND leaveStatus = 'pending' AND leave_id = :leave_id;";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(":users_id", $users_id);
+    $stmt->bindParam(":leave_id", $leave_id);
     $stmt->execute();
     $leavePending = $stmt->fetch(PDO::FETCH_ASSOC);
     return ['leavePending' => $leavePending];
@@ -882,7 +889,7 @@ $leaveSortOrder  = strtolower($_GET['leave_order'] ?? 'desc') === 'asc' ? 'asc' 
 $tabToStatus = [
     'request'     => 'pending',
     'approved'    => 'approved',
-    'disapproved' => 'disapprove'  
+    'disapprove' => 'disapprove'  
 ];
 $statusValue = $tabToStatus[$leaveTab] ?? 'pending';
 
@@ -900,59 +907,99 @@ $leaveData = leaves_fetch(
 );
 
 /* ───────────────── functions ───────────────── */
+/**
+ * How many requests are in a given status?
+ */
 function leaves_count(string $status): int
 {
     $pdo = db_connection();
     $sql = "SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = ?";
     try {
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$status]);
-        return (int)$stmt->fetchColumn();
+        $st = $pdo->prepare($sql);
+        $st->execute([$status]);
+        return (int) $st->fetchColumn();
     } catch (PDOException $e) {
-        error_log("leaves_count error: ".$e->getMessage());
+        error_log("leaves_count: " . $e->getMessage());
         return 0;
     }
 }
 
+/**
+ * Get a *page* of leave requests or (if $leaveId is given) one exact row.
+ *
+ * @param string  $status     pending | approved | disapprove
+ * @param int     $limit      rows per page
+ * @param int     $offset     starting row
+ * @param string  $sortColumn lname | request_date | leaveDate
+ * @param string  $sortOrder  asc | desc
+ * @param int|null $leaveId   OPTIONAL exact leave_id to fetch
+ */
 function leaves_fetch(
-    string $status,
-    int    $limit,
-    int    $offset,
-    string $sortColumn,
-    string $sortOrder
-    ): array {
+    string  $status,
+    int     $limit,
+    int     $offset,
+    string  $sortColumn,
+    string  $sortOrder,
+    ?int    $leaveId = null
+): array {
 
     $pdo = db_connection();
 
+    /* --- map safe column names --- */
     $colMap = [
         'lname'        => 'ui.lname',
         'request_date' => 'lr.request_date',
         'leaveDate'    => 'lr.leaveDate'
     ];
     $sortColumn = $colMap[$sortColumn] ?? 'lr.request_date';
-    $sortOrder  = $sortOrder === 'asc' ? 'ASC' : 'DESC';
+    $sortOrder  = strtolower($sortOrder) === 'asc' ? 'ASC' : 'DESC';
 
+    /* --- base query: newest detail row per leave_id --- */
     $sql = "
         SELECT
-            *
+            lr.*,
+            ui.fname,
+            ui.lname,
+            ld.balance,
+            ld.credits,
+            ld.disapprovalDetails,
+            ld.approved_at,
+            ld.disapproved_at
         FROM leaveReq            lr
-        JOIN users              u  ON lr.users_id = u.id
-        JOIN userInformations   ui ON u.id        = ui.users_id
-        LEFT JOIN leave_details ld ON ld.leaveID  = lr.leave_id
+        JOIN users               u  ON u.id        = lr.users_id
+        JOIN userInformations    ui ON ui.users_id = u.id
+        LEFT JOIN leave_details  ld ON ld.leaveDetails_id = (
+              SELECT ld2.leaveDetails_id
+              FROM   leave_details ld2
+              WHERE  ld2.leaveID = lr.leave_id
+              ORDER  BY ld2.leaveDetails_id DESC
+              LIMIT  1
+        )
         WHERE lr.leaveStatus = :status
+    ";
+
+    if ($leaveId !== null) {
+        $sql .= " AND lr.leave_id = :leave_id";
+    }
+
+    $sql .= "
         ORDER BY $sortColumn $sortOrder, lr.leave_id $sortOrder
-        LIMIT  :limit OFFSET :offset
+        LIMIT  :limit
+        OFFSET :offset
     ";
 
     try {
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':status', $status);
-        $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $st = $pdo->prepare($sql);
+        $st->bindValue(':status', $status);
+        if ($leaveId !== null) {
+            $st->bindValue(':leave_id', $leaveId, PDO::PARAM_INT);
+        }
+        $st->bindValue(':limit',  $limit,  PDO::PARAM_INT);
+        $st->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $st->execute();
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        error_log("leaves_fetch error: ".$e->getMessage());
+        error_log("leaves_fetch: " . $e->getMessage());
         return [];
     }
 }
@@ -969,3 +1016,28 @@ function getLeaveCredits(){
     $leaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
     return ['leaveCounts' => $leaveCounts];
 }
+
+// ===================== REPORTS ON EMPLOYEE ===================== //
+function getEmployeeReport(){
+    $pdo = db_connection();
+    $users_id = $_SESSION['user_id'] ?? '';
+    $query = "SELECT * FROM leavereq
+    INNER JOIN leave_details ON leavereq.leave_id = leave_details.leaveID
+    WHERE users_id = :users_id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $leaveEmployeeResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ['leaveEmployeeResult' => $leaveEmployeeResult];
+}   
+function getEmployeeLeaveCounts(){
+    $pdo = db_connection();
+    $users_id = $_SESSION['user_id'] ?? '';
+    $query = "SELECT * FROM leavecounts
+    WHERE users_id = :users_id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $getEmployeeLeaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['getEmployeeLeaveCounts' => $getEmployeeLeaveCounts];
+}   

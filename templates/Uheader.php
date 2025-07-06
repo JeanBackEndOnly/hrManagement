@@ -47,6 +47,10 @@ $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"] ?? '';
 $historyEmployee = employeeHistoryLog();
 $employeeHistory = $historyEmployee["employeeHistory"];
+$leaveStatus = getEmployeeReport();
+$leaveEmployeeResult = $leaveStatus["leaveEmployeeResult"];
+$leaveCounts = getEmployeeLeaveCounts();
+$getEmployeeLeaveCounts = $leaveCounts["getEmployeeLeaveCounts"];
 
 
 $educData = getEducationalBG();
@@ -214,6 +218,8 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         $passwordFailed = true;
     }elseif(isset($_GET['success']) && $_GET['success'] === 'leave'){
         $leaveRequest = true;
+    }elseif(isset($_GET['leave']) && $_GET['leave'] === 'notEnoughBalance'){
+        $leave = true;
     }
 
 ?>
@@ -271,6 +277,7 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
         const code = <?php echo json_encode($code); ?>;
         const passwordFailed = <?php echo json_encode($passwordFailed); ?>;
         const leaveRequest = <?php echo json_encode($leaveRequest); ?>;
+        const leave = <?php echo json_encode($leave); ?>;
     </script>
 
 </head>

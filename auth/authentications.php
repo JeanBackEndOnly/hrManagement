@@ -65,7 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     escapeshellarg(''),
                     escapeshellarg(''),
                     escapeshellarg(''),
-                    escapeshellarg($code)
+                    escapeshellarg($code),
+                    escapeshellarg('')
                 ];
                 pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));
 
@@ -117,7 +118,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     escapeshellarg(''),
                     escapeshellarg(''),
                     escapeshellarg(''),
-                    escapeshellarg($code)
+                    escapeshellarg($code),
+                    escapeshellarg('')
                 ];
                 pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));
 
@@ -689,6 +691,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 escapeshellarg('') . ' ' .                   
                 escapeshellarg('') . ' ' .                
                 escapeshellarg('') . ' ' .                
+                escapeshellarg('') . ' ' .                  
                 escapeshellarg('') . ' ' .                  
                 escapeshellarg('') ;                       
 
@@ -2000,8 +2003,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $users_id          = $_POST['users_id'];
         $leave_id          = $_POST['leave_id'];
         $reportID          = $_POST['reportID'];
-
+        $leaveType         = $_POST['leaveType'];
         $disapprovalDetails = $_POST['disapprovalDetails'] ?? '';
+        $numberOfDays = $_POST['numberOfDays'] ?? '';
 
         $vacationBalance        = $_POST['vacationBalance']        ?? '';
         $vacationEarned         = $_POST['vacationEarned']         ?? '';
@@ -2031,8 +2035,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         try {
             $pdo->beginTransaction();
-
-            $q = "UPDATE leavereq
+            // =========================== APPROVED LEAVE ======================== //
+            if ($leaveStatus === 'approved') {
+                $q = "UPDATE leavereq
                 SET    leaveStatus = :leaveStatus
                 WHERE  leave_id    = :leave_id";
             $st = $pdo->prepare($q);
@@ -2061,8 +2066,49 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $st->bindParam(':disapprovalDetails', $disapprovalDetails);
             $st->execute();
 
-            if ($leaveStatus === 'approved') {
+                // =========================== LEAVE BALANCE MOT ENOUGH ======================== //
+                $finalBalance = intval($balance) - $numberOfDays;
+                if(intval($balance) < $numberOfDays){
+                    header('Location: ../src/admin/employeeLeaveReq.php?leave=notEnoughBalance&users_id=' . $users_id . '&leave_id=' . $leave_id);
+                    die();
+                }
 
+                // =========================== LEAVE COUNTS UPDATE ======================== //
+                switch($leaveType){
+                    case "vacation":
+                        $query = "UPDATE leavecounts SET VacationBalance = :VacationBalance WHERE users_id = :users_id";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->bindParam(":users_id",$users_id);
+                        $stmt->bindParam(":VacationBalance",$finalBalance);
+                        $stmt->execute();
+                        break;
+                    case "sick":
+                        $query = "UPDATE leavecounts SET SickBalance = :SickBalance WHERE users_id = :users_id";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->bindParam(":users_id",$users_id);
+                        $stmt->bindParam(":SickBalance",$finalBalance);
+                        $stmt->execute();
+                        break;
+                    case "balance":
+                        $query = "UPDATE leavecounts SET SpecialBalance = :SpecialBalance WHERE users_id = :users_id";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->bindParam(":users_id",$users_id);
+                        $stmt->bindParam(":SpecialBalance",$finalBalance);
+                        $stmt->execute();
+                        break;    
+                    case "others":
+                        $query = "UPDATE leavecounts SET OthersBalance = :OthersBalance WHERE users_id = :users_id";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->bindParam(":users_id",$users_id);
+                        $stmt->bindParam(":OthersBalance",$finalBalance);
+                        $stmt->execute();
+                        break;      
+                    default:
+                    header('Location: ../src/admin/employeeLeaveReq.php?leave=failed&users_id=' . $users_id);
+                    break;
+                } 
+
+                // =========================== LEAVBE DETAILS UPDATE ======================== //
                 $q = "UPDATE leave_details
                     SET  approved_at = NOW()
                     WHERE leaveID = :leaveID";
@@ -2070,6 +2116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
                 $st->execute();
 
+                 // =========================== REPORT UPDATE ======================== //
                 $q = "UPDATE reports
                     SET  report_type = 'approvedLeave'
                     WHERE leave_id   = :leave_id";
@@ -2078,6 +2125,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->execute();
 
                 $pdo->commit();
+                
+                // =========================== MAIL SENDER ======================== //
+                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $command = "start /B php " .
+                    escapeshellarg($scriptPath) . ' ' . 
+                    escapeshellarg($users_id) . ' ' .    
+                    escapeshellarg("LeaveApproved") . ' ' .  
+                    escapeshellarg('') . ' ' .         
+                    escapeshellarg('') . ' ' .              
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg('') . ' ' .                 
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg($leave_id) ;
+
+                pclose(popen($command, "r"));
+
                 header(
                     'Location: ../src/admin/leave.php?leave=approved'
                     . '&users_id=' . $users_id
@@ -2086,9 +2150,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 );
                 exit;
             }
-
+            // =========================== LEAVE DISAPPROVED ======================== //
             if ($leaveStatus === 'disapprove') {
+                $q = "UPDATE leavereq
+                SET    leaveStatus = :leaveStatus
+                WHERE  leave_id    = :leave_id";
+            $st = $pdo->prepare($q);
+            $st->bindParam(':leaveStatus', $leaveStatus);
+            $st->bindParam(':leave_id',    $leave_id, PDO::PARAM_INT);
+            $st->execute();
 
+            // =========================== LEAVE DETAILS ======================== //
+            $q = "INSERT INTO leave_details
+                    (leaveID, balance, earned, credits, lessLeave, balanceToDate, disapprovalDetails)
+                VALUES
+                    (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate, :disapprovalDetails)
+                ON DUPLICATE KEY UPDATE
+                    balance         = VALUES(balance),
+                    earned          = VALUES(earned),
+                    credits         = VALUES(credits),
+                    lessLeave       = VALUES(lessLeave),
+                    balanceToDate   = VALUES(balanceToDate),
+                    disapprovalDetails = VALUES(disapprovalDetails)";
+            $st = $pdo->prepare($q);
+            $st->bindParam(':leaveID',       $leave_id,     PDO::PARAM_INT);
+            $st->bindParam(':balance',       $balance);
+            $st->bindParam(':earned',        $earned);
+            $st->bindParam(':credits',       $credits);
+            $st->bindParam(':lessLeave',     $lessLeave);
+            $st->bindParam(':balanceToDate', $balanceToDate);
+            $st->bindParam(':disapprovalDetails', $disapprovalDetails);
+            $st->execute();
+
+            // =========================== LEAVE DETAILS UPDATE ======================== //
                 $q = "UPDATE leave_details
                     SET  disapproved_at = NOW()
                     WHERE leaveID = :leaveID
@@ -2105,6 +2199,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->execute();
 
                 $pdo->commit();
+
+                // =========================== MAIL SENDER ======================== //
+                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $command = "start /B php " .
+                    escapeshellarg($scriptPath) . ' ' . 
+                    escapeshellarg($users_id) . ' ' .    
+                    escapeshellarg("LeaveDisapproved") . ' ' .  
+                    escapeshellarg('') . ' ' .         
+                    escapeshellarg('') . ' ' .              
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg('') . ' ' .                 
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg('') . ' ' .             
+                    escapeshellarg($leave_id) ;
+
+                pclose(popen($command, "r"));
+
                 header(
                     'Location: ../src/admin/leave.php?leave=disapproved'
                     . '&users_id=' . $users_id
@@ -2161,8 +2272,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     escapeshellarg('') . ' ' .              
                     escapeshellarg('') . ' ' .             
                     escapeshellarg('') . ' ' .                 
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg($mailCode) . '"';
+                    escapeshellarg('') . ' ' .    
+                    escapeshellarg($mailCode)  . "" .  
+                    escapeshellarg('') ;    
+                    
+                    
 
                 pclose(popen($command, "r"));
 

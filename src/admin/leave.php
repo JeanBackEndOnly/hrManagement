@@ -83,8 +83,34 @@
                 
             </div>
             <?php
-            
-            $currentUrl = strtok($_SERVER['REQUEST_URI'], '?');
+                $leaveStatus   = $_GET['leave_tab']  ?? 'pending';   
+                $leavePage     = max(1, (int)($_GET['leave_page'] ?? 1));
+                $leavePerPage  = max(1, (int)($_GET['leave_perPage'] ?? 10));
+                $sortColumn    = $_GET['leave_sort']  ?? 'request_date';
+                $sortOrder     = $_GET['leave_order'] ?? 'desc';
+
+                $offset        = ($leavePage - 1) * $leavePerPage;
+
+                $leaveData     = leaves_fetch(
+                    $leaveStatus,
+                    $leavePerPage,
+                    $offset,
+                    $sortColumn,
+                    $sortOrder
+                );
+
+                $leaveTotal    = leaves_count($leaveStatus);
+                $leaveTotalPages = max(1, (int)ceil($leaveTotal / $leavePerPage));
+
+                function buildQuery(array $add): string
+                {
+                    $qs = $_GET;
+                    unset($qs['leave_id']);                
+                    $qs = array_merge($qs, $add);
+                    return http_build_query($qs);
+                }
+
+                $currentUrl = strtok($_SERVER['REQUEST_URI'], '?');
             ?>
 
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
@@ -97,16 +123,14 @@
 
                     <div class="leaveTabButtons d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
                         <?php
-                        $tabs = ['request' => 'REQUEST', 'approved' => 'APPROVED', 'disapproved' => 'DISAPPROVED'];
+                        $tabs = ['pending' => 'REQUEST', 'approved' => 'APPROVED', 'disapprove' => 'DISAPPROVED'];
                         foreach ($tabs as $key => $label): ?>
                             <div class="crud-employee d-flex flex-row col-md-4 col-12 align-items-center justify-content-end"
                                 style="width: 32%; height: 2rem">
-                                <button type="button"
-                                        class="tab-btns w-100 <?= $leaveTab === $key ? 'active' : '' ?>"
-                                        onclick="location.href='<?= $currentUrl ?>?leave_tab=<?= $key ?>'"
-                                        style="font-size:15px;border:none;box-shadow:none;">
+                                <a href="<?= $currentUrl ?>?leave_tab=<?= $key ?>&leave_page=1&leave_perPage=<?= $leavePerPage ?>"
+                                    class="tab-btns w-100 needs-loader d-flex justify-content-center <?= $leaveTab === $key ? 'active' : '' ?>" style="text-decoration: none;">
                                     <?= $label ?>
-                                </button>
+                                </a>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -239,7 +263,33 @@
         </div>
     </div>
 </main>
+<div id="loadingAnimation" style="display:none;">
+  <div class="loading-lines">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+</div>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.needs-loader').forEach(el =>
+            el.addEventListener('click', showLoader, { passive:true })
+        );
+    });
+
+    function showLoadingAndRun(callback){
+        showLoader();               
+        setTimeout(()=>{
+            document.getElementById("loadingAnimation").style.display="none";
+            callback();
+        }, 500);
+    }
+    function showLoader(){ document.getElementById("loadingAnimation").style.display="flex"; }
+
+    window.addEventListener("pageshow", ()=> {
+        const loader = document.getElementById("loadingAnimation");
+        if (loader) loader.style.display = "none";
+    });
 document.addEventListener('DOMContentLoaded', () => {
 
   const searchInput = document.getElementById('leaveSearchInput');
@@ -247,9 +297,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!searchInput || !tbody) return;
 
   const rows = Array.from(tbody.querySelectorAll('tr[data-row="leave"]'));
-  rows.forEach(r => {              // remember initial display (“table”)
+  rows.forEach(r => {           
     r._origDisplay = r.style.display || 'table';
-    r._cacheText   = r.textContent.toLowerCase();   // cache full text once
+    r._cacheText   = r.textContent.toLowerCase();  
   });
 
   searchInput.addEventListener('keyup', () => {

@@ -38,7 +38,7 @@
 
                     <ul id="hrUl" class="flex-column" style="display:none;">
                         <li class="my-1"><a href="leave.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">LEAVE REQUEST</p></a></li>
-                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">REPORTS</p></a></li>
+                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 fa-briefcase"></i><p style="display:flex;" id="pNone" class="text-start">REPORTS</p></a></li>
                         <li class="my-1"><a href="pds.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">PDS</p></a></li>
                     </ul>
 
@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-11 d-flex flex-column justify-content-center">
-                                    <label class="ms-1" for="dateLeave">DATE OF FILING</label>
+                                    <label class="ms-1" for="dateLeave">DATE OF FILING <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="date" name="dateLeave" id="dateLeave" class="form-control">
                                 </div>
                             </div>
@@ -119,8 +119,8 @@
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <div class="label col-md-2 ms-2">
-                                    <label for="" class="fw-bold">LEAVE APPLIED FOR</label>
+                                <div class="label col-md-2 ms-2 mt-2">
+                                    <label for="" class="fw-bold col-md-12"><span class="fw-bold" style="font-size: 12px; color: red;">(required)</span>LEAVE APPLIED FOR</label>
                                 </div>
                                 <div class="row col-md-2 col-11 d-flex flex-row">
                                     <label for="vacation"><input required type="radio" class="me-1" id="vacation" name="leaveType" value="vacation">Vacation Leave</label>
@@ -137,24 +137,24 @@
                                 </div>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <label for="cp" class="fw-bold col-md-12 col-11">COURSE/PURPOSE<input required type="text" class="form-control col-11 col-md-11" id="cp" name="purpose"></label>
+                                <label for="cp" class="fw-bold col-md-12 col-11">COURSE/PURPOSE <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span><input required type="text" class="form-control col-11 col-md-11" id="cp" name="purpose"></label>
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-3 flex-wrap">
                                 <div class="inclusiveDateFrom d-flex flex-column col-md-3 col-11">
-                                    <label for="inclusiveDates">INCLUSIVE DATE FROM:</label>
+                                    <label for="inclusiveDates">INCLUSIVE DATE FROM: <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="date" name="inclusiveDateFrom" id="inclusiveDateFrom" class="form-control">
                                 </div>
                                 <div class="inclusiveDates d-flex flex-column col-md-3 col-11">
-                                    <label for="inclusiveDateTo">INCLUSIVE DATES TO:</label>
+                                    <label for="inclusiveDateTo">INCLUSIVE DATES TO: <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="date" name="inclusiveDateTo" id="inclusiveDateTo" class="form-control">
                                 </div>
                                 <div class="noDays d-flex flex-column col-md-6 col-11">
-                                    <label for="daysOfLeave">NO. OF DAYS</label>
+                                    <label for="daysOfLeave">NO. OF DAYS <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="number" name="daysOfLeave" id="daysOfLeave" class="form-control">
                                 </div>   
                             </div>
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
-                                <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE<input required type="text" class="form-control col-11 col-md-11" id="cp" name="contact"></label>
+                                <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span><input required type="text" class="form-control col-11 col-md-11" id="cp" name="contact"></label>
                             </div>
                             <div class="text col-md-12 col-11">
                                 <p class="text-start">
@@ -171,11 +171,11 @@
                             </div>
                             <div class="recommending col-md-12 col-11 d-flex flex-row justify-content-start m-0 mt-4 p-0 flex-wrap gap-2">
                                 <div class="sectionHEad col-md-4 col-11">
-                                    <label class="fw-bold" for="sectionHead">Section Head</label>
+                                    <label class="fw-bold" for="sectionHead">Section Head <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="text" class="form-control" id="sectionHead" name="sectionHead">
                                 </div>
                                 <div class="departmentHead col-md-4 col-11">
-                                    <label class="fw-bold" for="departmentHead">Department Head</label>
+                                    <label class="fw-bold" for="departmentHead">Department Head <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="text" class="form-control" id="departmentHead" name="departmentHead">
                                 </div>
                             </div>
