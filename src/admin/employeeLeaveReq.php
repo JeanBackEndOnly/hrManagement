@@ -263,43 +263,69 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                        $VacationBalance = $leaveCounts["VacationBalance"] ?? '';
-                                        $SickBalance = $leaveCounts["SickBalance"]?? '';
-                                        $SpecialBalance = $leaveCounts["SpecialBalance"]?? '';
-                                        $NumberOfLeave = $leavePending["numberOfDays"]?? '';
+                                       <?php
+                                        /* ------------------------------------------------------------------
+                                        * pull current balances & request info
+                                        * ----------------------------------------------------------------*/
+                                        $VacationBalance  = $leaveCounts['VacationBalance'] ?? 0;
+                                        $SickBalance      = $leaveCounts['SickBalance']     ?? 0;
+                                        $SpecialBalance   = $leaveCounts['SpecialBalance']  ?? 0;
 
+                                        $NumberOfLeave    = $leavePending['numberOfDays']    ?? 0;      // days requested
+                                        $leaveTypeFiled   = $leavePending['leaveType']       ?? '';     // vacation|sick|special
+
+                                        /* ------------------------------------------------------------------
+                                        * earned units since last approved leave of the same type
+                                        * ----------------------------------------------------------------*/
                                         $pdo = db_connection();
-                                                
-                                        $query = "SELECT leaveDate FROM leavereq WHERE users_id = :users_id AND leaveStatus = :leaveStatus AND leaveType = :leaveType ORDER BY leaveDate DESC;";
-                                        $stmt = $pdo->prepare($query);
-                                        $leaveSatat = 'approved';
-                                        $stmt->bindParam(":users_id", $leavePending["users_id"]);
-                                        $stmt->bindParam(":leaveType", $leavePending["leaveType"]);
-                                        $stmt->bindParam(":leaveStatus", $leaveSatat);
-                                        $stmt->execute();
-                                        $getLeaveDate = $stmt->fetch(PDO::FETCH_ASSOC);
-                                        $CurrentDate = date("Y-m-d");
-                                        $lastLeave = new DateTime($getLeaveDate["leaveDate"] ?? '');
-                                        $leaveDAte = new DateTime($leavePending["leaveDate"]); 
-                                        $leavePending["leaveDate"]; echo '<br>';
-                                        $getLeaveDate["leaveDate"] ?? 'wala';
-                                        $daysPassed = $lastLeave->diff($leaveDAte)->days;
-                                        if($lastLeave !== '' && $daysPassed < 15){
-                                            $earnedSick = 0;
-                                            $earnedVacation = 0;
-                                            $earnedSpecial = 0;
-                                        }elseif($lastLeave !== '' && $daysPassed >= 15 && $daysPassed <= 29){
-                                            $earnedSick = .5;
-                                            $earnedVacation = .5;
-                                            $earnedSpecial = .5;
+
+                                        $sql = "
+                                            SELECT leaveDate
+                                            FROM   leavereq
+                                            WHERE  users_id    = :users_id
+                                            AND  leaveStatus = 'approved'
+                                            AND  leaveType   = :leaveType
+                                            ORDER BY leaveDate DESC
+                                            LIMIT 1
+                                        ";
+                                        $stmt = $pdo->prepare($sql);
+                                        $stmt->execute([
+                                            ':users_id'  => $leavePending['users_id'],
+                                            ':leaveType' => $leaveTypeFiled,
+                                        ]);
+                                        $prev = $stmt->fetchColumn();          // false if none
+
+                                        $earnedSick = $earnedVacation = $earnedSpecial = 0;
+
+                                        if ($prev) {
+                                            $lastLeave   = new DateTime($prev);
+                                            $thisLeave   = new DateTime($leavePending['leaveDate']);
+                                            $daysPassed  = $lastLeave->diff($thisLeave)->days;
+
+                                            $periods15d  = intdiv($daysPassed, 15);   // 0 if <15 days
+                                            $earnedUnits = 0.5 * $periods15d;         // 0 · 0.5 · 1.0 · 1.5 …
+
+                                            $earnedSick =
+                                            $earnedVacation =
+                                            $earnedSpecial  = $earnedUnits;
                                         }
-                                        elseif($lastLeave !== '' && $daysPassed >= 30 && $daysPassed <= 44){
-                                             $earnedSick = 1;
-                                            $earnedVacation = 1;
-                                            $earnedSpecial = 1;
-                                        }
+
+                                        /* ------------------------------------------------------------------
+                                        * totals and balances
+                                        * ----------------------------------------------------------------*/
+                                        $VacationCredits = $VacationBalance + $earnedVacation;
+                                        $SickCredits     = $SickBalance     + $earnedSick;
+                                        $SpecialCredits  = $SpecialBalance  + $earnedSpecial;
+
+                                        $vacationLessLeave = ($leaveTypeFiled === 'vacation') ? $NumberOfLeave : 0;
+                                        $sickLessLeave     = ($leaveTypeFiled === 'sick')     ? $NumberOfLeave : 0;
+                                        $specialLessLeave  = ($leaveTypeFiled === 'special')  ? $NumberOfLeave : 0;
+
+                                        $vacationBalanceToDate = $VacationCredits - $vacationLessLeave;
+                                        $sickBalanceToDate     = $SickCredits     - $sickLessLeave;
+                                        $specialBalanceToDate  = $SpecialCredits  - $specialLessLeave;
                                         ?>
+
                                         <tr class="col-md-12">
                                             <td style="width: 20.1rem;">Balance&nbsp;as&nbsp;of</td>
                                             <td style="width:23%"><input type="text" name="vacationBalance" class="form-control-plaintext p-1" value="<?php if($leavePending["leaveType"] == 'vacation') { echo $VacationBalance; echo " DAYS"; }else{ echo $VacationBalance; echo " DAYS";} ?>"></td>

@@ -147,80 +147,97 @@
                             </tr>
                         </thead>
                         <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
-                            <?php if (!empty($reportData)): ?>
-                                <?php $num = $reportOffset + 1; foreach ($reportData as $row): ?>
-                                    <tr style="display: table; width: 100%; table-layout: fixed;">
-                                        <td style="width: 5%;"><?= $num ?></td>
-                                        <td style="width: 25%;"><?= htmlspecialchars($row['lname']) . ", " . htmlspecialchars($row['fname']) ?></td>
-                                        <td style="width: 25%;">
-                                            <?php 
-                                                switch ($row['report_type']) {
-                                                    case 'employeeRegistration':
-                                                        echo "Requesting for validation!";
-                                                        break;
-                                                    case 'employeePromotion':
-                                                        echo '<p style="color: green;" class="m-0 p-0">Got Promoted to ' . htmlspecialchars($row['jobTitle']). '</p>';
-                                                        break;
-                                                    case 'employeeRejected':
-                                                        echo '<p style="color: red;" class="m-0 p-0">Employee Rejected!</p>';
-                                                        break;
-                                                    case 'PendingLeave':
-                                                        echo "Requesting for leave!";
-                                                        break;
-                                                    case 'approvedLeave':
-                                                        echo '<p style="color: green;" class="m-0 p-0">Leave Request Approved!</p>';
-                                                        break;
-                                                    case 'disapprovedLeave':
-                                                        echo '<p style="color: red;" class="m-0 p-0">Leave Request Disapproved!</p>';
-                                                        break;
-                                                    case 'employeeValidated':
-                                                        echo '<p style="color: green;" class="m-0 p-0">Employee got Validated Successfully!</p>';
-                                                        break;
-                                                    default:
-                                                        echo "No valid variable found!";
-                                                        break;
-                                                }
-                                            ?>
+                         <?php 
+                            // Get the data
+                            $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $reportSortOrder, $whereClause);
+                            $reports = $reportData['reports'];
+                            $allLeaveRequests = $reportData['all_leave_requests'];
+
+                            if (!empty($reports) || !empty($allLeaveRequests)): ?>
+                                <?php 
+                                $num = $reportOffset + 1;
+                                $processedLeaveIds = [];
+                                
+                                // First display all leave requests (one row per leave)
+                                foreach ($allLeaveRequests as $leave): 
+                                    if (in_array($leave['leave_id'], $processedLeaveIds)) continue;
+                                    $processedLeaveIds[] = $leave['leave_id'];
+                                    
+                                    // Find if there's a report specifically for this leave
+                                    $reportForLeave = null;
+                                    foreach ($reports as $report) {
+                                        if ($report['leave_id'] == $leave['leave_id']) {
+                                            $reportForLeave = $report;
+                                            break;
+                                        }
+                                    }
+                                ?>
+                                    <tr>
+                                        <td><?= $num++ ?></td>
+                                        <td><?= htmlspecialchars($leave['lname']) ?>, <?= htmlspecialchars($leave['fname']) ?></td>
+                                        <td>
+                                            <?php if ($leave['leaveStatus'] === 'Approved'): ?>
+                                                <p style="color: green;">Leave Request Approved!</p>
+                                            <?php elseif ($leave['leaveStatus'] === 'Disapproved'): ?>
+                                                <p style="color: red;">Leave Request Disapproved!</p>
+                                            <?php else: ?>
+                                                <p>Requesting for leave!</p>
+                                            <?php endif; ?>
+                                            <small><?= htmlspecialchars($leave['leaveType']) ?> - <?= date('M d, Y', strtotime($leave['leaveDate'])) ?></small>
                                         </td>
-                                        <td style="width: 20%;"><?= htmlspecialchars($row['department']) ?></td>
-                                        <td style="width: 20%;"><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
-                                        <td style="width: 10%;">
-                                            <?php 
-                                                switch ($row['report_type']) {
-                                                    case 'employeeRegistration':
-                                                        echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
-                                                        break;
-                                                    case 'employeePromotion':
-                                                        echo '<a class="btn btn-sm btn-primary" href="job.php?tab=salaryManage">View</a>';
-                                                        break;
-                                                    case 'employeeRejected':
-                                                        echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=reject">View</a>';
-                                                        break;
-                                                    case 'PendingLeave':
-                                                        echo '<a class="btn btn-sm btn-primary" href="employeeLeaveReq.php?users_id=' . $row["users_id"] . '&reportsID=' . $row["reportID"] . '">View</a>';
-                                                        break;
-                                                    case 'disapprovedLeave':
-                                                         echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&leave_id=' . $row["leave_id"] . '&open_pdf=1">View</a>';
-                                                        break;
-                                                    case 'approvedLeave':
-                                                        echo '<a class="btn btn-sm btn-primary" href="reports.php?users_id=' . $row["users_id"] . '&leave_id=' . $row["leave_id"] . '&open_pdf=1">View</a>';
-                                                        break;
-                                                    case 'employeeValidated':
-                                                        echo '<a class="btn btn-sm btn-primary" href="profile.php?users_id=' . $row["users_id"] . '">View</a>';
-                                                        break;
-                                                    default:
-                                                        echo "No valid variable found!";
-                                                        break;
-                                                }
-                                            ?>
+                                        <td><?= htmlspecialchars($leave['department']) ?></td>
+                                        <td><?= $reportForLeave ? date('F j, Y h:i A', strtotime($reportForLeave['report_date'])) : date('F j, Y h:i A', strtotime($leave['request_date'])) ?></td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary" 
+                                            href="employeeLeaveReq.php?users_id=<?= $leave['users_id'] ?>&leave_id=<?= $leave['leave_id'] ?>">
+                                            View
+                                            </a>
                                         </td>
                                     </tr>
-                                    <?php $num++; ?>
                                 <?php endforeach; ?>
+                                
+                                <!-- Then display non-leave reports -->
+                                <?php foreach ($reports as $row): 
+                                    if (empty($row['leave_id']) || !in_array($row['report_type'], ['PendingLeave', 'approvedLeave', 'disapprovedLeave'])): 
+                                ?>
+                                    <tr>
+                                        <td><?= $num++ ?></td>
+                                        <td><?= htmlspecialchars($row['lname']) ?>, <?= htmlspecialchars($row['fname']) ?></td>
+                                        <td>
+                                            <?php switch ($row['report_type']):
+                                                case 'employeeRegistration': echo "Requesting for validation!"; break;
+                                                case 'employeePromotion': 
+                                                    echo '<p style="color: green;">Got Promoted to ' . htmlspecialchars($row['jobTitle']) . '</p>'; 
+                                                    break;
+                                                case 'employeeRejected': echo '<p style="color: red;">Employee Rejected!</p>'; break;
+                                                case 'employeeValidated': echo '<p style="color: green;">Employee Validated!</p>'; break;
+                                                default: echo "No valid variable found!";
+                                            endswitch; ?>
+                                        </td>
+                                        <td><?= htmlspecialchars($row['department']) ?></td>
+                                        <td><?= date('F j, Y h:i A', strtotime($row['report_date'])) ?></td>
+                                        <td>
+                                            <?php switch ($row['report_type']):
+                                                case 'employeeRegistration':
+                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=request">View</a>';
+                                                    break;
+                                                case 'employeePromotion':
+                                                    echo '<a class="btn btn-sm btn-primary" href="job.php?tab=salaryManage">View</a>';
+                                                    break;
+                                                case 'employeeRejected':
+                                                    echo '<a class="btn btn-sm btn-primary" href="employee.php?tab=reject">View</a>';
+                                                    break;
+                                                case 'employeeValidated':
+                                                    echo '<a class="btn btn-sm btn-primary" href="profile.php?users_id='.$row["users_id"].'">View</a>';
+                                                    break;
+                                                default: echo "No link available";
+                                            endswitch; ?>
+                                        </td>
+                                    </tr>
+                                <?php endif; endforeach; ?>
                             <?php else: ?>
                                 <tr><td colspan="6" class="text-center">No reports found.</td></tr>
                             <?php endif; ?>
-
                         </tbody>
                     </table>
 

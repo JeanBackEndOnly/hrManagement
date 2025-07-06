@@ -51,6 +51,19 @@ document.addEventListener('DOMContentLoaded', () => {
             customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['mfa']);
+        }else if (resent) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Mail resend successfully!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['resent']);
         }
 
         function removeUrlParams(params) {

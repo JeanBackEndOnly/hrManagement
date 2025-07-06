@@ -11,6 +11,7 @@ require_once '../../auth/view.php';
     $password = false;
     $passwordLogin = false;
     $mfa = false;
+    $resent = false;
     if(isset($_GET['signup']) && $_GET['signup'] === 'success'){
         $signup = true;
     }elseif(isset($_GET['username']) && $_GET['username'] === 'failed'){
@@ -25,6 +26,8 @@ require_once '../../auth/view.php';
         $passwordLogin = true;
     }elseif(isset($_GET['mfa']) && $_GET['mfa'] === 'failed'){
         $mfa = true;
+    }elseif(isset($_GET['resent']) && $_GET['resent'] === 'true'){
+        $resent = true;
     }
 ?>
 
@@ -54,6 +57,7 @@ require_once '../../auth/view.php';
         const password = <?php echo json_encode($password); ?>;
         const passwordLogin = <?php echo json_encode($passwordLogin); ?>;
         const mfa = <?php echo json_encode($mfa); ?>;
+        const resent = <?php echo json_encode($resent); ?>;
     </script>
     <style>
         body, main, h1, h2, h3, h4, h5{

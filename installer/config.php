@@ -160,19 +160,12 @@ if (!function_exists('db_connection')) {
                 logout_time DATETIME DEFAULT NULL,
                 FOREIGN KEY (employee_id) REFERENCES users(id) ON DELETE CASCADE
             )",
-            "CREATE TABLE IF NOT EXISTS reports (
-                reportID INT AUTO_INCREMENT PRIMARY KEY,
-                users_id INT NOT NULL,
-                report_type VARCHAR(255) NOT NULL,
-                report_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
-            )",
             "CREATE TABLE IF NOT EXISTS leaveReq (
-                leave_id INT AUTO_INCREMENT PRIMARY KEY,
-                users_id INT NOT NULL,
-                leaveStatus VARCHAR(10) NOT NULL,
-                leaveType VARCHAR(20) NOT NULL,
-                leaveDate date NOT NULL,
+                leave_id     INT(11) NOT NULL AUTO_INCREMENT,
+                users_id     INT(11) NOT NULL,
+                leaveStatus  VARCHAR(10) NOT NULL,
+                leaveType    VARCHAR(20) NOT NULL,
+                leaveDate    DATE NOT NULL,
                 Others VARCHAR(255),
                 Purpose VARCHAR(255) NOT NULL,
                 InclusiveFrom date NOT NULL,
@@ -182,8 +175,20 @@ if (!function_exists('db_connection')) {
                 sectionHead VARCHAR(120) NOT NULL,
                 departmentHead VARCHAR(120) NOT NULL,
                 request_date DATE NOT NULL DEFAULT CURRENT_DATE,
+                PRIMARY KEY (leave_id),
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
-            )",
+            ) ENGINE = InnoDB",
+
+            "CREATE TABLE IF NOT EXISTS reports (
+                reportID     INT(11) NOT NULL AUTO_INCREMENT,
+                users_id     INT(11) NOT NULL,
+                leave_id     INT(11) NULL,
+                report_type  VARCHAR(255) NOT NULL,
+                report_date  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (reportID),                       
+                FOREIGN KEY (users_id) REFERENCES users(id)        ON DELETE CASCADE,
+                FOREIGN KEY (leave_id) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
+            ) ENGINE = InnoDB",
             "CREATE TABLE IF NOT EXISTS leave_details (
                 leaveDetails_id INT AUTO_INCREMENT PRIMARY KEY,
                 leaveID INT NOT NULL,
@@ -207,8 +212,6 @@ if (!function_exists('db_connection')) {
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
             )",
             ];
-        // earned + balance = credits
-        // earned - lessLeave = balanceToDate
             foreach ($tableQueries as $query) {
                 $pdo->exec($query);
             }
