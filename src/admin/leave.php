@@ -212,22 +212,42 @@
                                                     href="employeeLeaveReq.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '">
                                                         View
                                                     </a>';
+
+                                                    echo '<button type="button"
+                                                            class="btn btn-sm btn-danger ms-1"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal' . $row['leave_id']. '">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>';
                                                 echo '</td>';
+
                                                 break;
                                             case "approved":
                                                 echo '<td style="width:10%;">';
                                                     echo '<a class="btn btn-sm btn-primary"
-                                                    href="leave.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '&open_pdf=1">
+                                                    href="leave.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '&open_pdf=1&leave_tab={$tab}">
                                                         View
                                                     </a>';
+                                                     echo '<button type="button"
+                                                            class="btn btn-sm btn-danger ms-1"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModalApp' . $row['leave_id']. '">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>';
                                                 echo '</td>';
                                                 break;
                                             case "disapprove":
                                                     echo '<td style="width:10%;">';
                                                     echo '<a class="btn btn-sm btn-primary"
-                                                    href="leave.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '&open_pdf=1">
+                                                    href="leave.php?users_id=' . $row['users_id'] . '&leave_id=' . $row['leave_id'] . '&open_pdf=1&leave_tab={$tab}">
                                                         View
                                                     </a>';
+                                                     echo '<button type="button"
+                                                            class="btn btn-sm btn-danger ms-1"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModalDis' . $row['leave_id']. '">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>';
                                                 echo '</td>';
                                                 break;
                                             default:
@@ -237,6 +257,53 @@
                                         ?>
 
                                     </tr>
+
+                                    <!-- ==================== ADDED: matching modal inside loop ==================== -->
+                                    <?php
+                                        // choose the correct ID that your button points to
+                                        if ($row["leaveStatus"] === "pending") {
+                                            $modalId = "deleteModal" . $row['leave_id'];
+                                        } elseif ($row["leaveStatus"] === "approved") {
+                                            $modalId = "deleteModalApp" . $row['leave_id'];
+                                        } else {
+                                            $modalId = "deleteModalDis" . $row['leave_id'];
+                                        }
+                                    ?>
+                                    <div class="modal fade"
+                                        id="<?= $modalId ?>"
+                                        tabindex="-1"
+                                        aria-labelledby="<?= $modalId ?>Label"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form action="../../auth/authentications.php" method="POST">
+                                                    <?php $csrf = $_SESSION["csrf_token"] ?? ""; ?>
+                                                    <input type="hidden" name="csrf_token" value="<?= $csrf ?>">
+                                                    <input type="hidden" name="deleteLeave" value="true">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="<?= $modalId ?>Label">Confirm delete</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                    Are you sure you want to permanently remove this leave request for
+                                                    <strong><?= htmlspecialchars($row['lname'] . ', ' . $row['fname']) ?></strong>
+                                                    (<?= date('M j, Y', strtotime($row['InclusiveFrom'])) ?> - <?= date('M j, Y', strtotime($row['InclusiveTo'])) ?>)?
+                                                    <input type="hidden" name="action"   value="delete_leave">
+                                                    <input type="hidden" name="leave_id" value="<?= $row['leave_id'] ?>">
+                                                    <input type="hidden" name="users_id" value="<?= $row['users_id'] ?>">
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- =========================================================================== -->
+
                                     <?php $no++; ?>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -246,7 +313,7 @@
                             <?php endif; ?>
                         </tbody>
                     </table>
-
+                    
                     <div class="d-flex justify-content-between align-items-center mt-1" style="flex-shrink:0;">
                         <div>Page <?= $leavePage ?> of <?= $leaveTotalPages ?></div>
                         <div>
@@ -276,7 +343,30 @@
             el.addEventListener('click', showLoader, { passive:true })
         );
     });
+    document.addEventListener('DOMContentLoaded', () => {
+        const tab = new URLSearchParams(location.search).get('leave_tab');
+        if (!tab) return;
 
+        document
+            .querySelectorAll('a[href*="leave_id="], a[href*="employeeLeaveReq.php"]')
+            .forEach(link => {
+            const url = new URL(link.href, location.origin);
+            url.searchParams.set('leave_tab', tab);
+            link.href = url.pathname + '?' + url.searchParams.toString();
+            });
+
+        document
+            .querySelectorAll('form[action*="authentications.php"]')
+            .forEach(f => {
+            if (!f.querySelector('input[name="leave_tab"]')) {
+                const hidden = document.createElement('input');
+                hidden.type  = 'hidden';
+                hidden.name  = 'leave_tab';
+                hidden.value = tab;
+                f.appendChild(hidden);
+            }
+            });
+    });
     function showLoadingAndRun(callback){
         showLoader();               
         setTimeout(()=>{

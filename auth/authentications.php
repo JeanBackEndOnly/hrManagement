@@ -1997,7 +1997,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-
     if (isset($_POST['LeaveAdminApproval']) && $_POST['LeaveAdminApproval'] === 'true') {
 
         $users_id          = $_POST['users_id'];
@@ -2234,6 +2233,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die('Query failed: ' . $e->getMessage());
         }
     }
+
+    if (isset($_POST['deleteLeave']) && $_POST['deleteLeave'] === 'true') {
+        $leaveId = (int)($_POST['leave_id'] ?? 0);
+
+        if ($leaveId) {
+            $pdo = db_connection();
+            $stmt = $pdo->prepare('DELETE FROM leavereq WHERE leave_id = :leave_id');
+            $stmt->execute([':leave_id' => $leaveId]);
+        }
+        header("Location: ../src/admin/leave.php?leave=delete&leave_tab={$tab}");
+        exit;
+    }
+
 
     // ============================== FORGOT PASSWORD ============================== //
     if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true"){

@@ -79,7 +79,7 @@
                 <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
                     <a href="profile.php?users_id=
                     <?php
-                        $users_id = $_GET["users_id"] ?? '';
+                        echo $_GET["users_id"] ?? '';
                     ?>" style="text-decoration: none;">
                     <i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>
                     
