@@ -32,6 +32,7 @@ if (!function_exists('db_connection')) {
                 lname VARCHAR(100) NOT NULL,
                 fname VARCHAR(150) NOT NULL,
                 mname VARCHAR(150) NOT NULL,
+                nickname VARCHAR(7),
                 suffix VARCHAR(6),
                 citizenship VARCHAR(50) NOT NULL,
                 gender VARCHAR(50) NOT NULL,
@@ -66,6 +67,127 @@ if (!function_exists('db_connection')) {
                 zip_code VARCHAR(10) NOT NULL,
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
             )",
+            "CREATE TABLE IF NOT EXISTS personal_data_sheet (
+                pds_id           INT AUTO_INCREMENT PRIMARY KEY,
+                users_id      INT NOT NULL,             
+                accomplished_on DATE NOT NULL DEFAULT CURRENT_DATE,
+                FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+            );",
+            "CREATE TABLE IF NOT EXISTS userGovIDs (
+                id           INT AUTO_INCREMENT PRIMARY KEY,
+                pds_id INT NOT NULL,
+                sss_no         VARCHAR(30),
+                tin_no         VARCHAR(30),
+                pagibig_no     VARCHAR(30),
+                philhealth_no  VARCHAR(30),
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE
+            )",
+            "CREATE TABLE IF NOT EXISTS spouseInfo (
+                id              INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id        INT(11)      NOT NULL,
+                spouse_surname  VARCHAR(60),
+                spouse_first    VARCHAR(60),
+                spouse_middle   VARCHAR(60),
+                occupation      VARCHAR(80),
+                employer        VARCHAR(120),
+                business_addr   VARCHAR(255),
+                telephone_no    VARCHAR(30),
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE
+            )",
+
+            "CREATE TABLE IF NOT EXISTS children (
+                id          INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id    INT(11)      NOT NULL,
+                full_name   VARCHAR(120),
+                dob         DATE,
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                INDEX idx_child_user (pds_id)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS parents (
+                id           INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id     INT(11)      NOT NULL,
+                relation     ENUM('Father','Mother') NOT NULL,
+                surname      VARCHAR(60),
+                first_name   VARCHAR(60),
+                middle_name  VARCHAR(60),
+                occupation   VARCHAR(80),
+                address      VARCHAR(255),
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                UNIQUE KEY uq_user_relation (pds_id, relation)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS siblings (
+                id          INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id    INT(11)      NOT NULL,
+                full_name   VARCHAR(120),
+                age         TINYINT,
+                occupation  VARCHAR(80),
+                address     VARCHAR(255),
+                birth_order TINYINT UNSIGNED,
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                INDEX idx_sib_user (pds_id)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS educationInfo (
+                id             INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id       INT(11)      NOT NULL,
+                level          ENUM('Elementary','Secondary','Vocational','College','Graduate') NOT NULL,
+                school_name    VARCHAR(120),
+                degree_course  VARCHAR(120),
+                school_address VARCHAR(255),
+                year_grad      YEAR,
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                UNIQUE KEY uq_user_level (pds_id, level)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS workExperience (
+                id              INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id        INT(11)      NOT NULL,
+                date_from       DATE,
+                date_to         DATE,
+                position_title  VARCHAR(120),
+                department      VARCHAR(160),
+                monthly_salary  DECIMAL(12,2),
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                INDEX idx_work_user (pds_id)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS seminarsTrainings (
+                id              INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id        INT(11)      NOT NULL,
+                inclusive_dates VARCHAR(80),
+                title           VARCHAR(180),
+                place           VARCHAR(120),
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                INDEX idx_trn_user (pds_id)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS otherInfo (
+                id              INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                pds_id        INT(11)      NOT NULL,
+                special_skills    TEXT,
+                house_status      ENUM('Owned','Rented'),
+                rental_amount     DECIMAL(10,2),
+                house_type        ENUM('Light','SemiConcrete','Concrete'),
+                household_members TEXT,
+                height DECIMAL(4,2),
+                weight DECIMAL(5,2),
+                blood_type VARCHAR(4),
+                emergency_contact VARCHAR(120),
+                tel_no VARCHAR(20),
+                FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
+                ON DELETE CASCADE ON UPDATE CASCADE
+            )",
+
             "CREATE TABLE IF NOT EXISTS userRequest(
                 id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 users_id INT(11) NOT NULL,

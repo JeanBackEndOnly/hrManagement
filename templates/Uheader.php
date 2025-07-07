@@ -42,6 +42,8 @@ $leavesd = leaveID();
 $leaveID = $leavesd["leaveID"];
 $leaveC = getLeaveCredits();
 $leaveCounts = $leaveC["leaveCounts"];
+$pds = getPersonalData();
+$getPersonalData = $pds["getPersonalData"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"] ?? '';

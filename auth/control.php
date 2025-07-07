@@ -597,7 +597,11 @@ function getEducationalBG() {
 function getEmployee(): array
     {
     $pdo     = db_connection();
-    $user_id = $_SESSION['user_id'] ?? null;
+    if($_SESSION['user_id'] == 1){
+        $user_id = $_GET["users_id"] ?? '';
+    }else if($_SESSION["user_id"] != 1){
+        $user_id = $_SESSION['user_id'] ?? null;
+    }
     if (!$user_id) {
         return [];                           
     }
@@ -1041,3 +1045,28 @@ function getEmployeeLeaveCounts(){
     $getEmployeeLeaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
     return ['getEmployeeLeaveCounts' => $getEmployeeLeaveCounts];
 }   
+
+// ===================== PERSONAL DATA SHEET ===================== //
+
+function getPersonalData(){
+    $pdo = db_connection();
+    $users_id = $_GET['users_id'] ?? '';
+    $query = "SELECT * FROM users 
+    INNER JOIN userInformations ON users.id = userInformations.users_id
+    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
+    INNER JOIN userGovIDs ON users.id = userGovIDs.users_id
+    INNER JOIN spouseInfo ON users.id = spouseInfo.users_id
+    INNER JOIN children ON users.id = children.users_id
+    INNER JOIN parents ON users.id = parents.users_id
+    INNER JOIN siblings ON users.id = siblings.users_id
+    INNER JOIN educationInfo ON users.id = educationInfo.users_id
+    INNER JOIN workExperience ON users.id = workExperience.users_id
+    INNER JOIN seminarsTrainings ON users.id = seminarsTrainings.users_id
+    INNER JOIN otherInfo ON users.id = otherInfo.users_id
+    WHERE users.id = :id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":id", $users_id);
+    $stmt->execute();
+    $getPersonalData = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['getPersonalData' => $getPersonalData];
+}

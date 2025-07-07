@@ -120,7 +120,6 @@ function getValidated() {
 }
 
 function getRequest() {
-    console.log("BilaT REQUEST");
     showLoading();
     setTimeout(() => {
         document.getElementById("requestList").style.display = 'flex';

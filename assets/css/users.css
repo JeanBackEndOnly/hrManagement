@@ -383,6 +383,42 @@ transform: translateX(.9rem);
     background-size: cover;
     transform: translate(-.2rem, .4rem);
 }
+
+/* Stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: 2px solid #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+
+.step.active {
+  background-color: #444;
+  color: white;
+}
+
+.lines {
+  height: 2px;
+  width: 60px;
+  background-color: #333;
+  margin: 0 5px;
+  z-index: 0;
+}
 @media (max-width: 576px) {
     .logo h4{
         font-size: 12px;
