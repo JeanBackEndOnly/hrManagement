@@ -368,6 +368,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($query); 
             $stmt->bindParam(":users_id", $usersID);
             $stmt->execute();
+            
+            $query = "INSERT INTO personal_data_sheet (users_id) VALUES (:users_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $usersID);
+            $stmt->execute();
+            $pds_id = $pdo->lastInsertId();
+
+            $query = "INSERT INTO userGovIDs (pds_id) VALUES (:pds_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":pds_id", $pds_id);
+            $stmt->execute();
+
+            $query = "INSERT INTO spouseInfo (pds_id) VALUES (:pds_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":pds_id", $pds_id);
+            $stmt->execute();
+
+            $levels = ['Elementary', 'Secondary', 'Vocational', 'College', 'Graduate'];
+
+            $eduStmt = $pdo->prepare(
+                "INSERT INTO educationInfo (pds_id, level)
+                VALUES (:pds_id, :level)"
+            );
+
+            foreach ($levels as $lvl) {
+                $eduStmt->execute([
+                    ':pds_id' => $pds_id,
+                    ':level'  => $lvl
+                ]);
+            }
+
+            $sql = "
+                INSERT INTO parents (pds_id, relation)
+                VALUES (?, 'Father'), (?, 'Mother')
+                ON DUPLICATE KEY UPDATE pds_id = pds_id
+            ";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$pds_id, $pds_id]); 
+
+            $query = "INSERT INTO otherInfo (pds_id) VALUES (:pds_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":pds_id", $pds_id);
+            $stmt->execute();
+
             // echo $usersID;
             header("Location: ../src/index.php?signup=success");
     
@@ -1312,7 +1357,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 }
             } else {
-                // No image uploaded; copy default image
                 $default_image = "../assets/image/users.png";
                 $target_dir = "../assets/image/upload/";
                 $image_file_name = uniqid() . "-users.png";
@@ -1432,6 +1476,50 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             :users_id, 10, 10, 10, 10);";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $createdUserId);
+            $stmt->execute();
+
+            $query = "INSERT INTO personal_data_sheet (users_id) VALUES (:users_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":users_id", $createdUserId);
+            $stmt->execute();
+            $pds_id = $pdo->lastInsertId();
+
+            $query = "INSERT INTO userGovIDs (pds_id) VALUES (:pds_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":pds_id", $pds_id);
+            $stmt->execute();
+
+            $query = "INSERT INTO spouseInfo (pds_id) VALUES (:pds_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":pds_id", $pds_id);
+            $stmt->execute();
+
+           $sql = "
+                INSERT INTO parents (pds_id, relation)
+                VALUES (?, 'Father'), (?, 'Mother')
+                ON DUPLICATE KEY UPDATE pds_id = pds_id
+            ";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$pds_id, $pds_id]); 
+
+            $levels = ['Elementary', 'Secondary', 'Vocational', 'College', 'Graduate'];
+
+            $eduStmt = $pdo->prepare(
+                "INSERT INTO educationInfo (pds_id, level)
+                VALUES (:pds_id, :level)"
+            );
+
+            foreach ($levels as $lvl) {
+                $eduStmt->execute([
+                    ':pds_id' => $pds_id,
+                    ':level'  => $lvl
+                ]);
+            }
+
+            $query = "INSERT INTO otherInfo (pds_id) VALUES (:pds_id);";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(":pds_id", $pds_id);
             $stmt->execute();
 
             if (!$createdUserId) {
@@ -2341,211 +2429,367 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // ===================== PERSONAL DATA SHEETs ===================== //
     
-   if (isset($_POST['adminSidePDS']) && $_POST['adminSidePDS'] === 'true') {
-
+if (isset($_POST['adminSidePDS']) && $_POST['adminSidePDS'] === 'true') {
+    /* ---------- basic sanity ---------- */
     $users_id = intval($_POST['users_id'] ?? 0);
-    if ($users_id <= 0)  exit('Invalid user ID');
+    if ($users_id <= 0) {
+        exit('Invalid user ID');
+    }
+
+    /* ---------- PDO must raise exceptions ---------- */
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     try {
         $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE users_id = ?");
+        /* ════════════════════════════════════════════════
+           1. personal_data_sheet  → pds_id  (must exist)
+        ════════════════════════════════════════════════ */
+        $stmt = $pdo->prepare(
+            "SELECT pds_id FROM personal_data_sheet
+              WHERE users_id = ?"
+        );
         $stmt->execute([$users_id]);
         $pds_id = $stmt->fetchColumn();
 
         if (!$pds_id) {
-            $pdo->prepare("INSERT INTO personal_data_sheet (users_id) VALUES (?)")
-                ->execute([$users_id]);
-            $pds_id = $pdo->lastInsertId();
+            throw new RuntimeException(
+                "No personal_data_sheet row for users_id {$users_id}"
+            );
         }
 
-        $pdo->prepare("
-            INSERT INTO userInformations
-              (users_id,lname,fname,mname,nickname,suffix,citizenship,gender,
-               civil_status,religion,age,birthday,birthPlace,contact,email)
-            VALUES(:uid,:ln,:fn,:mn,:nn,:sx,:ctz,:gen,:civ,:rel,:age,:bd,:bp,:cnt,:em)
-            ON DUPLICATE KEY UPDATE
-              lname=VALUES(lname),  fname=VALUES(fname),  mname=VALUES(mname),
-              nickname=VALUES(nickname), suffix=VALUES(suffix),
-              citizenship=VALUES(citizenship), gender=VALUES(gender),
-              civil_status=VALUES(civil_status), religion=VALUES(religion),
-              age=VALUES(age), birthday=VALUES(birthday),
-              birthPlace=VALUES(birthPlace), contact=VALUES(contact), email=VALUES(email)
-        ")->execute([
-            ':uid'=>$users_id, ':ln'=>$_POST['lname']??null, ':fn'=>$_POST['fname']??null,
-            ':mn'=>$_POST['mname']??null, ':nn'=>$_POST['nickname']??null, ':sx'=>$_POST['name_ext']??null,
-            ':ctz'=>$_POST['citizenship']??null, ':gen'=>$_POST['gender']??null,
-            ':civ'=>$_POST['civil_status']??null, ':rel'=>$_POST['religion']??null,
-            ':age'=>$_POST['age']??null, ':bd'=>$_POST['dob']??null, ':bp'=>$_POST['pob']??null,
-            ':cnt'=>$_POST['cell_no']??null, ':em'=>$_POST['email']??null
+        /* ════════════════════════════════════════════════
+           2. userInformations
+        ════════════════════════════════════════════════ */
+        $pdo->prepare(
+            "UPDATE userInformations SET
+                lname         = :ln,
+                fname         = :fn,
+                mname         = :mn,
+                nickname      = :nn,
+                suffix        = :sx,
+                citizenship   = :ctz,
+                gender        = :gen,
+                civil_status  = :civ,
+                religion      = :rel,
+                age           = :age,
+                birthday      = :bd,
+                birthPlace    = :bp,
+                contact       = :cnt,
+                email         = :em
+             WHERE users_id   = :uid"
+        )->execute([
+            ':uid' => $users_id,
+            ':ln'  => $_POST['lname']        ?? null,
+            ':fn'  => $_POST['fname']        ?? null,
+            ':mn'  => $_POST['mname']        ?? null,
+            ':nn'  => $_POST['nickname']     ?? null,
+            ':sx'  => $_POST['suffix']       ?? null,        // ← matches table
+            ':ctz' => $_POST['citizenship']  ?? null,
+            ':gen' => $_POST['gender']       ?? null,
+            ':civ' => $_POST['civil_status'] ?? null,
+            ':rel' => $_POST['religion']     ?? null,
+            ':age' => $_POST['age']          ?? null,
+            ':bd'  => $_POST['birthday']     ?? null,
+            ':bp'  => $_POST['birthPlace']   ?? null,
+            ':cnt' => $_POST['contact']      ?? null,
+            ':em'  => $_POST['email']        ?? null
         ]);
 
-        $govRow = $pdo->prepare("SELECT id FROM userGovIDs WHERE pds_id=?")
-                      ->execute([$pds_id])->fetchColumn();
-        if ($govRow) {
-            $pdo->prepare("
-                UPDATE userGovIDs SET
-                  sss_no=?, tin_no=?, pagibig_no=?, philhealth_no=?
-                WHERE pds_id=?
-            ")->execute([
-                $_POST['sss_no']??null, $_POST['tin_no']??null,
-                $_POST['pagibig_no']??null, $_POST['philhealth_no']??null,
-                $pds_id
-            ]);
-        } else {
-            $pdo->prepare("
-                INSERT INTO userGovIDs
-                  (pds_id, sss_no, tin_no, pagibig_no, philhealth_no)
-                VALUES (?,?,?,?,?)
-            ")->execute([
-                $pds_id, $_POST['sss_no']??null, $_POST['tin_no']??null,
-                $_POST['pagibig_no']??null, $_POST['philhealth_no']??null
-            ]);
-        }
-        $pdo->prepare("
-            INSERT INTO spouseInfo
-              (pds_id,spouse_surname,spouse_first,spouse_middle,
-               occupation,employer,business_addr,telephone_no)
-            VALUES
-              (:pid,:sur,:fir,:mid,:occ,:emp,:addr,:tel)
-            ON DUPLICATE KEY UPDATE
-              spouse_surname = VALUES(spouse_surname),
-              spouse_first   = VALUES(spouse_first),
-              spouse_middle  = VALUES(spouse_middle),
-              occupation     = VALUES(occupation),
-              employer       = VALUES(employer),
-              business_addr  = VALUES(business_addr),
-              telephone_no   = VALUES(telephone_no)
-        ")->execute([
-            ':pid'=>$pds_id,
-            ':sur'=>$_POST['spouse_surname']??null, ':fir'=>$_POST['spouse_first']??null,
-            ':mid'=>$_POST['spouse_middle']??null, ':occ'=>$_POST['spouse_occupation']??null,
-            ':emp'=>$_POST['spouse_employer']??null, ':addr'=>$_POST['spouse_business_address']??null,
-            ':tel'=>$_POST['spouse_tel']??null
+        /* ════════════════════════════════════════════════
+           4. userGovIDs
+        ════════════════════════════════════════════════ */
+        $ok = $pdo->prepare(
+            "UPDATE userGovIDs SET
+                sss_no        = ?,
+                tin_no        = ?,
+                pagibig_no    = ?,
+                philhealth_no = ?
+             WHERE pds_id = ?"
+        )->execute([
+            $_POST['sss_no']        ?? null,
+            $_POST['tin_no']        ?? null,
+            $_POST['pagibig_no']    ?? null,
+            $_POST['philhealth_no'] ?? null,
+            $pds_id
         ]);
-        $pdo->prepare("DELETE FROM children WHERE pds_id=?")->execute([$pds_id]);
-        for ($i=1;$i<=7;$i++){
-            $name = trim($_POST["child_name_$i"]??'');
-            if ($name!==''){
-                $pdo->prepare("
-                    INSERT INTO children (pds_id,full_name,dob)
-                    VALUES(?,?,?)
-                ")->execute([$pds_id,$name,$_POST["child_dob_$i"]??null]);
-            }
+        if (!$ok) {
+            throw new RuntimeException('userGovIDs update failed – row missing');
         }
-        $pStmt = $pdo->prepare("
-            INSERT INTO parents
-              (pds_id,relation,surname,first_name,middle_name,occupation,address)
-            VALUES (:pid,:rel,:sur,:fir,:mid,:occ,:addr)
-            ON DUPLICATE KEY UPDATE
-              surname=VALUES(surname),first_name=VALUES(first_name),
-              middle_name=VALUES(middle_name),occupation=VALUES(occupation),
-              address=VALUES(address)
-        ");
-        foreach (['Father','Mother'] as $rel){
-            $pStmt->execute([
-                ':pid'=>$pds_id, ':rel'=>$rel,
-                ':sur'=>$_POST[strtolower($rel).'_surname']??null,
-                ':fir'=>$_POST[strtolower($rel).'_first']??null,
-                ':mid'=>$_POST[strtolower($rel).'_middle']??null,
-                ':occ'=>$_POST[strtolower($rel).'_occupation']??null,
-                ':addr'=>$_POST[strtolower($rel).'_address']??null
-            ]);
-        }
-        $pdo->prepare("DELETE FROM siblings WHERE pds_id=?")->execute([$pds_id]);
-        for ($i=1;$i<=8;$i++){
-            $n = trim($_POST["sib_name_$i"]??'');
-            if ($n!==''){
-                $pdo->prepare("
-                    INSERT INTO siblings
-                      (pds_id,full_name,age,occupation,address,birth_order)
-                    VALUES (?,?,?,?,?,?)
-                ")->execute([
-                    $pds_id,$n,$_POST["sib_age_$i"]??null,$_POST["sib_occ_$i"]??null,
-                    $_POST["sib_addr_$i"]??null,$i
-                ]);
-            }
-        }
-        $edu = $pdo->prepare("
-            INSERT INTO educationInfo
-              (pds_id,level,school_name,degree_course,school_address,year_grad)
-            VALUES (?,?,?,?,?,?)
-            ON DUPLICATE KEY UPDATE
-              school_name=VALUES(school_name),degree_course=VALUES(degree_course),
-              school_address=VALUES(school_address),year_grad=VALUES(year_grad)
-        ");
-        foreach (['elem'=>'Elementary','sec'=>'Secondary','voc'=>'Vocational',
-                  'college'=>'College','grad'=>'Graduate'] as $s=>$lvl){
-            $sch = $_POST["{$s}_school"]??'';
-            if ($sch!==''){
-                $edu->execute([
-                    $pds_id,$lvl,$sch,
-                    $_POST["{$s}_course"]??null,
-                    $_POST["{$s}_address"]??null,
-                    $_POST["{$s}_year"]??null
-                ]);
-            }
-        }
-        $pdo->prepare("DELETE FROM workExperience WHERE pds_id=?")->execute([$pds_id]);
-        for($i=1;$i<=5;$i++){
-            $pos = trim($_POST["exp_{$i}_position"]??'');
-            if ($pos!==''){
-                $pdo->prepare("
-                    INSERT INTO workExperience
-                      (pds_id,date_from,date_to,position_title,department,monthly_salary)
-                    VALUES (?,?,?,?,?,?)
-                ")->execute([
-                    $pds_id,$_POST["exp_{$i}_from"]??null,$_POST["exp_{$i}_to"]??null,
-                    $pos,$_POST["exp_{$i}_department"]??null,$_POST["exp_{$i}_salary"]??null
-                ]);
-            }
-        }
-        $pdo->prepare("DELETE FROM seminarsTrainings WHERE pds_id=?")->execute([$pds_id]);
-        for($i=1;$i<=5;$i++){
-            $title = trim($_POST["seminar_{$i}_title"]??'');
-            if ($title!==''){
-                $pdo->prepare("
-                    INSERT INTO seminarsTrainings
-                      (pds_id,inclusive_dates,title,place)
-                    VALUES (?,?,?,?)
-                ")->execute([
-                    $pds_id,$_POST["seminar_{$i}_dates"]??null,$title,
-                    $_POST["seminar_{$i}_place"]??null
-                ]);
-            }
-        }
-        $pdo->prepare("
-            INSERT INTO otherInfo
-              (pds_id,special_skills,house_status,rental_amount,house_type,
-               household_members,height,weight,blood_type,emergency_contact,tel_no)
-            VALUES
-              (:pid,:skills,:status,:rent,:type,:members,:h,:w,:b,:emg,:tel)
-            ON DUPLICATE KEY UPDATE
-              special_skills=VALUES(special_skills),house_status=VALUES(house_status),
-              rental_amount=VALUES(rental_amount),house_type=VALUES(house_type),
-              household_members=VALUES(household_members),
-              height=VALUES(height),weight=VALUES(weight),blood_type=VALUES(blood_type),
-              emergency_contact=VALUES(emergency_contact),tel_no=VALUES(tel_no)
-        ")->execute([
-            ':pid'=>$pds_id,
-            ':skills'=>$_POST['special_skills']??null,
-            ':status'=>$_POST['house_own_rent']??null,
-            ':rent'=>$_POST['rental_amount']?:null,
-            ':type'=>$_POST['house_type']??null,
-            ':members'=>$_POST['household_members']??null,
-            ':h'=>$_POST['height']??null,
-            ':w'=>$_POST['weight']??null,
-            ':b'=>$_POST['blood_type']??null,
-            ':emg'=>$_POST['emergency_contact']??null,
-            ':tel'=>$_POST['tel_no']??null
+
+        /* ════════════════════════════════════════════════
+           5. spouseInfo
+        ════════════════════════════════════════════════ */
+        $ok = $pdo->prepare(
+            "UPDATE spouseInfo SET
+                spouse_surname = :sur,
+                spouse_first   = :fir,
+                spouse_middle  = :mid,
+                occupation     = :occ,
+                employer       = :emp,
+                business_addr  = :addr,
+                telephone_no   = :tel
+             WHERE pds_id = :pid"
+        )->execute([
+            ':pid' => $pds_id,
+            ':sur' => $_POST['spouse_surname']           ?? null,
+            ':fir' => $_POST['spouse_first']             ?? null,
+            ':mid' => $_POST['spouse_middle']            ?? null,
+            ':occ' => $_POST['spouse_occupation']        ?? null,
+            ':emp' => $_POST['spouse_employer']          ?? null,
+            ':addr'=> $_POST['spouse_business_address']     ?? null,
+            ':tel' => $_POST['spouse_tel']      ?? null
         ]);
+        if (!$ok) {
+            throw new RuntimeException('spouseInfo update failed – row missing');
+        }
+
+        /* ════════════════════════════════════════════════
+           6. parents  — Father and Mother
+        ════════════════════════════════════════════════ */
+        $parentStmt = $pdo->prepare(
+            "UPDATE parents SET
+                surname      = :sur,
+                first_name   = :fir,
+                middle_name  = :mid,
+                occupation   = :occ,
+                address      = :addr
+             WHERE pds_id = :pid AND relation = :rel"
+        );
+        foreach (['father', 'mother'] as $rel) {
+            $ok = $parentStmt->execute([
+                ':pid' => $pds_id,
+                ':rel' => $rel,
+                ':sur' => $_POST[strtolower($rel) . '_surname']  ?? null,
+                ':fir' => $_POST[strtolower($rel) . '_first']    ?? null,
+                ':mid' => $_POST[strtolower($rel) . '_middle']   ?? null,
+                ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
+                ':addr'=> $_POST[strtolower($rel) . '_address']  ?? null
+            ]);
+            if (!$ok) {
+                throw new RuntimeException("$rel row missing in parents table");
+            }
+        }
+
+        /* ════════════════════════════════════════════════
+           7. children  (use each child’s ID field)
+        ════════════════════════════════════════════════ */
+        /* create one reusable INSERT handle */
+        $childUpd = $pdo->prepare(
+            "UPDATE children
+                SET full_name = ?, dob = ?
+            WHERE id = ? AND pds_id = ?"
+        );
+
+        /* one handle for inserts (no ID, new row) */
+        $childIns = $pdo->prepare(
+            "INSERT INTO children (pds_id, full_name, dob)
+            VALUES (?, ?, ?)"
+        );
+
+        for ($i = 1; $i <= 7; $i++) {
+            $cid  = intval($_POST["child_id_$i"] ?? 0);      // hidden PK, 0 if none
+            $name = trim($_POST["child_name_$i"] ?? '');
+            $dob  = $_POST["child_dob_$i"]      ?? null;     // allow null
+
+            if ($cid > 0) {                                  // ➜ UPDATE path
+                $childUpd->execute([
+                    $name !== '' ? $name : null,
+                    $dob,
+                    $cid,
+                    $pds_id
+                ]);
+
+            } elseif ($name !== '') {                        // ➜ INSERT path
+                $childIns->execute([
+                    $pds_id,
+                    $name,
+                    $dob
+                ]);
+            }
+        }
+
+
+        /* ════════════════════════════════════════════════
+           8. siblings  (ID + pds_id)
+        ════════════════════════════════════════════════ */
+       $sibUpd = $pdo->prepare("
+            UPDATE siblings SET
+                full_name = ?, age = ?, occupation = ?, address = ?
+            WHERE id = ? AND pds_id = ?
+        ");
+
+        /* insert handle (new row) */
+        $sibIns = $pdo->prepare("
+            INSERT INTO siblings (
+                pds_id, full_name, age, occupation, address, birth_order
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+
+        for ($i = 1; $i <= 8; $i++) {
+            $sid   = intval($_POST["sibling_id_$i"] ?? 0);   // hidden <input>, 0 if none
+            $name  = trim($_POST["sib_name_$i"]    ?? '');
+            $age   = $_POST["sib_age_$i"]          ?? null;
+            $occ   = $_POST["sib_occ_$i"]          ?? null;
+            $addr  = $_POST["sib_addr_$i"]         ?? null;
+
+            if ($sid > 0) {                                     // ➜ UPDATE
+                $sibUpd->execute([
+                    $name !== '' ? $name : null,
+                    $age,
+                    $occ,
+                    $addr,
+                    $sid,
+                    $pds_id
+                ]);
+
+            } elseif ($name !== '') {                           // ➜ INSERT
+                $sibIns->execute([
+                    $pds_id,
+                    $name,
+                    $age,
+                    $occ,
+                    $addr,
+                    $i                                           // birth_order 1‑8
+                ]);
+            }
+        }
+
+        /* ════════════════════════════════════════════════
+           9. educationInfo  (five fixed levels, each needs its ID)
+        ════════════════════════════════════════════════ */
+        $eduStmt = $pdo->prepare(
+            "UPDATE educationInfo SET
+                school_name    = ?,
+                degree_course  = ?,
+                school_address = ?,
+                year_grad      = ?
+             WHERE id = ? AND pds_id = ?"
+        );
+        foreach ([
+            'elem'    => 'Elementary',
+            'sec'     => 'Secondary',
+            'voc'     => 'Vocational',
+            'college' => 'College',
+            'grad'    => 'Graduate',
+        ] as $prefix => $level) {
+            $eid = intval($_POST["edu_id_$prefix"] ?? 0);
+            if ($eid > 0) {
+                $eduStmt->execute([
+                    $_POST["{$prefix}_school"]   ?? null,
+                    $_POST["{$prefix}_course"]   ?? null,
+                    $_POST["{$prefix}_address"]  ?? null,
+                    $_POST["{$prefix}_year"]     ?? null,
+                    $eid,
+                    $pds_id
+                ]);
+            }
+        }
+
+        /* ════════════════════════════════════════════════
+           10. workExperience  (ID + pds_id)
+        ════════════════════════════════════════════════ */
+
+        $workStmt = $pdo->prepare(
+            "INSERT INTO workExperience (
+                pds_id, date_from, date_to,
+                position_title, department, monthly_salary
+            )
+            VALUES (?, ?, ?, ?, ?, ?)"
+        );
+
+        $inserted = 0;                           
+
+        for ($i = 1; $i <= 5; $i++) {
+
+            $from  = $_POST["exp_{$i}_from"]       ?? null;   
+            $to    = $_POST["exp_{$i}_to"]         ?? null;
+            $title = trim($_POST["exp_{$i}_position"]   ?? '');
+            $dept  = trim($_POST["exp_{$i}_department"] ?? '');
+            $sal   = $_POST["exp_{$i}_salary"]     ?? null;  
+
+            if ($from || $to || $title !== '' || $dept !== '' || $sal !== null) {
+                $workStmt->execute([
+                    $pds_id,
+                    $from !== ''  ? $from  : null,
+                    $to   !== ''  ? $to    : null,
+                    $title !== '' ? $title : null,
+                    $dept  !== '' ? $dept  : null,
+                    $sal  !== '' ? $dept  : null,
+                ]);
+                $inserted += $workStmt->rowCount();
+            }
+        }
+
+
+
+
+        /* ════════════════════════════════════════════════
+           11. seminarsTrainings  (ID + pds_id)
+        ════════════════════════════════════════════════ */
+        $semStmt = $pdo->prepare(
+            "INSERT INTO seminarsTrainings (
+                pds_id, inclusive_dates, title, place
+            )
+            VALUES (?, ?, ?, ?)"
+        );
+
+        for ($i = 1; $i <= 5; $i++) {
+            $title = trim($_POST["seminar_{$i}_title"] ?? '');
+            if ($title !== '') {                        // only insert non‑blank rows
+                $semStmt->execute([
+                    $pds_id,                                // FK → personal_data_sheet
+                    $_POST["seminar_{$i}_dates"] ?? null,   // inclusive_dates
+                    $title,                                 // title
+                    $_POST["seminar_{$i}_place"] ?? null    // place
+                ]);
+            }
+        }
+
+        /* ════════════════════════════════════════════════
+           12. otherInfo
+        ════════════════════════════════════════════════ */
+        $ok = $pdo->prepare(
+            "UPDATE otherInfo SET
+                special_skills    = :skills,
+                house_status      = :status,
+                rental_amount     = :rent,
+                house_type        = :type,
+                household_members = :members,
+                height            = :h,
+                weight            = :w,
+                blood_type        = :b,
+                emergency_contact = :emg,
+                tel_no            = :tel
+             WHERE pds_id = :pid"
+        )->execute([
+            ':pid'    => $pds_id,
+            ':skills' => $_POST['special_skills']      ?? null,
+            ':status' => $_POST['house_status']        ?? null,
+            ':rent'   => $_POST['rental_amount']       ?? null,
+            ':type'   => $_POST['house_type']          ?? null,
+            ':members'=> $_POST['household_members']   ?? null,
+            ':h'      => $_POST['height']              ?? null,
+            ':w'      => $_POST['weight']              ?? null,
+            ':b'      => $_POST['blood_type']          ?? null,
+            ':emg'    => $_POST['emergency_contact']   ?? null,
+            ':tel'    => $_POST['tel_no']              ?? null
+        ]);
+        if (!$ok) {
+            throw new RuntimeException('otherInfo update failed – row missing');
+        }
+
+        /* ════════════════════════════════════════════════
+           Commit & redirect
+        ════════════════════════════════════════════════ */
         $pdo->commit();
-        header("Location: ../src/admin/pds.php?users_id=$users_id");
+        header("Location: ../src/admin/pds.php?users_id={$users_id}");
         exit;
 
     } catch (Throwable $e) {
         $pdo->rollBack();
-        die("DB error: ".$e->getMessage());
+        die("DB error: " . $e->getMessage());
     }
 }
 

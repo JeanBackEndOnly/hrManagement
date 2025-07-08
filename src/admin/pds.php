@@ -160,12 +160,28 @@
                                         <th class="fw-bold">DATE OF BIRTH</th>
                                         <td><input type="date" class="form-control" name="dob" value="<?php echo $employeeInfo["birthday"]; ?>"></td>
                                         <th class="fw-bold">PLACE OF BIRTH</th>
-                                        <td><input type="text" class="form-control" name="pob"></td>
+                                        <td><input type="text" class="form-control" name="pob" value="<?php echo $employeeInfo["birthPlace"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">RESIDENTIAL ADDRESS</th>
-                                        <td colspan="3"><textarea class="form-control" name="res_address" rows="2"></textarea></td>
+                                        <td colspan="3"><textarea class="form-control" name="res_address" rows="2">
+                                           <?php 
+                                            echo $employeeInfo["houseBlock"] ?? ''; 
+                                            echo ' ';
+                                            echo $employeeInfo["street"] ?? ''; 
+                                            echo ' ';
+                                            echo $employeeInfo["subdivision"] ?? ''; 
+                                            echo ' ';
+                                            echo $employeeInfo["barangay"] ?? ''; 
+                                            echo ' ';
+                                            echo $employeeInfo["city_muntinlupa"] ?? ''; 
+                                            echo ' ';
+                                            echo $employeeInfo["province"] ?? ''; 
+                                            echo ' ';
+                                            echo $employeeInfo["zip_code"] ?? ''; 
+                                           ?>
+                                        </textarea></td>
                                     </tr>
 
                                     <tr>
@@ -200,33 +216,33 @@
                                         <th class="fw-bold">RELIGION</th>
                                         <td><input type="text" class="form-control" name="religion" value="<?php echo $employeeInfo["religion"]; ?>"></td>
                                         <th class="fw-bold">PAG‑IBIG NO.</th>
-                                        <td><input type="text" class="form-control" name="pagibig_no" value="<?php echo $getPersonalData["pagibig_no"] ?? ''; ?>"></td>
+                                        <td><input type="text" class="form-control" name="pagibig_no" value="<?= htmlspecialchars($getPersonalData['userGovIDs']['pagibig_no'] ?? '') ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">HEIGHT (m)</th>
-                                        <td><input type="number" class="form-control" name="height" value="<?php echo $getPersonalData["height"] ?? ''; ?>"></td>
+                                        <td><input type="number" class="form-control" name="height" value="<?= htmlspecialchars($getPersonalData['otherInfo']['height'] ?? '') ?>"></td>
                                         <th class="fw-bold">WEIGHT (kg)</th>
-                                        <td><input type="number" class="form-control" name="weight" value="<?php echo $getPersonalData["weight"] ?? ''; ?>"></td>
+                                        <td><input type="number" class="form-control" name="weight" value="<?= htmlspecialchars($getPersonalData['otherInfo']['weight'] ?? '') ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">PHILHEALTH NO.</th>
-                                        <td><input type="text" class="form-control" name="philhealth_no"></td>
+                                        <td><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['userGovIDs']['philhealth_no'] ?? '') ?>" name="philhealth_no"></td>
                                         <th class="fw-bold">BLOOD TYPE</th>
-                                        <td><input type="text" class="form-control" name="blood_type"></td>
+                                        <td><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['otherInfo']['blood_type'] ?? '') ?>" name="blood_type"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">SSS NO.</th>
-                                        <td><input type="text" class="form-control" name="sss_no"></td>
+                                        <td><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['userGovIDs']['sss_no'] ?? '') ?>" name="sss_no"></td>
                                         <th class="fw-bold">TIN NO.</th>
-                                        <td><input type="text" class="form-control" name="tin_no"></td>
+                                        <td><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['userGovIDs']['tin_no'] ?? '') ?>" name="tin_no"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold" style="font-size:12px;">IN CASE OF EMERGENCY CALL</th>
-                                        <td colspan="3"><input type="text" class="form-control" name="emergency_contact"></td>
+                                        <td colspan="3"><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['otherInfo']['emergency_contact'] ?? '') ?>" name="emergency_contact"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -344,14 +360,43 @@
                                         <th>ADDRESS</th>
                                     </tr>
 
-                                    <tr><td><input class="form-control" name="sib_name_1"></td><td><input class="form-control" name="sib_age_1"></td><td><input class="form-control" name="sib_occ_1"></td><td><input class="form-control" name="sib_addr_1"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_2"></td><td><input class="form-control" name="sib_age_2"></td><td><input class="form-control" name="sib_occ_2"></td><td><input class="form-control" name="sib_addr_2"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_3"></td><td><input class="form-control" name="sib_age_3"></td><td><input class="form-control" name="sib_occ_3"></td><td><input class="form-control" name="sib_addr_3"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_4"></td><td><input class="form-control" name="sib_age_4"></td><td><input class="form-control" name="sib_occ_4"></td><td><input class="form-control" name="sib_addr_4"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_5"></td><td><input class="form-control" name="sib_age_5"></td><td><input class="form-control" name="sib_occ_5"></td><td><input class="form-control" name="sib_addr_5"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_6"></td><td><input class="form-control" name="sib_age_6"></td><td><input class="form-control" name="sib_occ_6"></td><td><input class="form-control" name="sib_addr_6"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_7"></td><td><input class="form-control" name="sib_age_7"></td><td><input class="form-control" name="sib_occ_7"></td><td><input class="form-control" name="sib_addr_7"></td></tr>
-                                    <tr><td><input class="form-control" name="sib_name_8"></td><td><input class="form-control" name="sib_age_8"></td><td><input class="form-control" name="sib_occ_8"></td><td><input class="form-control" name="sib_addr_8"></td></tr>
+                                    <?php
+/*  grab the siblings array (8 rows max, eldest→youngest)  */
+$siblings = $getPersonalData['siblings'] ?? [];   // adjust key if different
+
+for ($i = 1; $i <= 8; $i++) {
+
+    /* pick the corresponding DB row, or null if the slot is empty */
+    $row = $siblings[$i - 1] ?? null;
+
+    /* pull out columns safely */
+    $sid   = $row['id']          ?? 0;            // primary key
+    $name  = $row['full_name']   ?? '';
+    $age   = $row['age']         ?? '';
+    $occ   = $row['occupation']  ?? '';
+    $addr  = $row['address']     ?? '';
+?>
+    <!-- hidden PK needed by the update‑or‑insert logic -->
+    <input type="hidden" name="sibling_id_<?= $i ?>" value="<?= $sid ?>">
+
+    <tr>
+        <td><input class="form-control"
+                   name="sib_name_<?= $i ?>"
+                   value="<?= htmlspecialchars($name) ?>"></td>
+
+        <td><input class="form-control"
+                   name="sib_age_<?= $i ?>"
+                   value="<?= htmlspecialchars($age) ?>"></td>
+
+        <td><input class="form-control"
+                   name="sib_occ_<?= $i ?>"
+                   value="<?= htmlspecialchars($occ) ?>"></td>
+
+        <td><input class="form-control"
+                   name="sib_addr_<?= $i ?>"
+                   value="<?= htmlspecialchars($addr) ?>"></td>
+    </tr>
+<?php } ?>
                                     </tbody>
                                 </table>
                             </div>

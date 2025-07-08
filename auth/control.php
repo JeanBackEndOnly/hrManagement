@@ -1047,26 +1047,110 @@ function getEmployeeLeaveCounts(){
 }   
 
 // ===================== PERSONAL DATA SHEET ===================== //
+/**
+ * Load one user’s entire PDS packet.
+ * Returns [] if ?users_id= is missing or no matching user exists.
+ *
+ * Result format:
+ * [
+ *   'user'            => [...users + userInformations + userHr_Informations...],
+ *   'userGovIDs'      => [...],
+ *   'spouseInfo'      => [...],
+ *   'otherInfo'       => [...],
+ *   'children'        => [ [...], [...], ... ],
+ *   'parents'         => [ [...Father...], [...Mother...] ],
+ *   'siblings'        => [ [...], ... ],
+ *   'educationInfo'   => [ [...], ... ],
+ *   'workExperience'  => [ [...], ... ],
+ *   'seminarsTrainings'=>[ [...], ... ]
+ * ]
+ */
+function getPersonalData(): array
+{
+    $pdo      = db_connection();
+    $users_id = (int)($_GET['users_id'] ?? 0);
 
-function getPersonalData(){
-    $pdo = db_connection();
-    $users_id = $_GET['users_id'] ?? '';
-    $query = "SELECT * FROM users 
-    INNER JOIN userInformations ON users.id = userInformations.users_id
-    INNER JOIN userHr_Informations ON users.id = userHr_Informations.users_id
-    INNER JOIN userGovIDs ON users.id = userGovIDs.users_id
-    INNER JOIN spouseInfo ON users.id = spouseInfo.users_id
-    INNER JOIN children ON users.id = children.users_id
-    INNER JOIN parents ON users.id = parents.users_id
-    INNER JOIN siblings ON users.id = siblings.users_id
-    INNER JOIN educationInfo ON users.id = educationInfo.users_id
-    INNER JOIN workExperience ON users.id = workExperience.users_id
-    INNER JOIN seminarsTrainings ON users.id = seminarsTrainings.users_id
-    INNER JOIN otherInfo ON users.id = otherInfo.users_id
-    WHERE users.id = :id;";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(":id", $users_id);
-    $stmt->execute();
-    $getPersonalData = $stmt->fetch(PDO::FETCH_ASSOC);
-    return ['getPersonalData' => $getPersonalData];
+    if (!$users_id) {
+        return [];
+    }
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    /* ───────── 1. one‑to‑one core tables (users + ui + uhr + pds) ───────── */
+    $sql = "
+        SELECT u.*,
+               ui.*,                 -- userInformations
+               uhr.*,                -- userHr_Informations
+               pds.pds_id
+        FROM   users                 AS u
+        JOIN   userInformations      AS ui  ON u.id = ui.users_id
+        JOIN   userHr_Informations   AS uhr ON u.id = uhr.users_id
+        JOIN   personal_data_sheet   AS pds ON u.id = pds.users_id
+        WHERE  u.id = :id
+        LIMIT  1
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $users_id]);
+    $core = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$core) {                         // no such user
+        return [];
+    }
+
+    $pds_id = (int)$core['pds_id'];
+
+    /* container for everything */
+    $data = ['user' => $core];
+
+    /* ───────── 2. one‑to‑one tables keyed by pds_id ───────── */
+    $oneToOneQueries = [
+        'userGovIDs' => "SELECT * FROM userGovIDs  WHERE pds_id = :pid LIMIT 1",
+        'spouseInfo' => "SELECT * FROM spouseInfo  WHERE pds_id = :pid LIMIT 1",
+        'otherInfo'  => "SELECT * FROM otherInfo   WHERE pds_id = :pid LIMIT 1",
+    ];
+
+    foreach ($oneToOneQueries as $key => $sql) {
+        $st = $pdo->prepare($sql);
+        $st->execute([':pid' => $pds_id]);
+        $data[$key] = $st->fetch(PDO::FETCH_ASSOC) ?: [];
+    }
+
+    /* ───────── 3. one‑to‑many tables ───────── */
+    $oneToManyQueries = [
+        'children' => "SELECT * FROM children
+                       WHERE pds_id = :pid
+                       ORDER BY id",
+
+        'parents'  => "SELECT * FROM parents
+                       WHERE pds_id = :pid
+                       ORDER BY FIELD(relation,'Father','Mother')",
+
+        'siblings' => "SELECT * FROM siblings
+                       WHERE pds_id = :pid
+                       ORDER BY birth_order",
+
+        'educationInfo' => "SELECT * FROM educationInfo
+                            WHERE pds_id = :pid
+                            ORDER BY FIELD(level,
+                                  'Elementary','Secondary','Vocational',
+                                  'College','Graduate')",
+
+        'workExperience' => "SELECT * FROM workExperience
+                             WHERE pds_id = :pid
+                             ORDER BY id",
+
+        'seminarsTrainings' => "SELECT * FROM seminarsTrainings
+                                WHERE pds_id = :pid
+                                ORDER BY id",
+    ];
+
+    foreach ($oneToManyQueries as $key => $sql) {
+        $st = $pdo->prepare($sql);
+        $st->execute([':pid' => $pds_id]);
+        $data[$key] = $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    return $data;
 }
+
+
+
