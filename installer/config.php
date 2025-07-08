@@ -89,10 +89,10 @@ if (!function_exists('db_connection')) {
                 spouse_surname  VARCHAR(60),
                 spouse_first    VARCHAR(60),
                 spouse_middle   VARCHAR(60),
-                occupation      VARCHAR(80),
-                employer        VARCHAR(120),
-                business_addr   VARCHAR(255),
-                telephone_no    VARCHAR(30),
+                spouse_occupation      VARCHAR(80),
+                spouse_employer        VARCHAR(120),
+                spouse_business_address   VARCHAR(255),
+                spouse_tel    VARCHAR(30),
                 FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
                 ON DELETE CASCADE ON UPDATE CASCADE
             )",
@@ -177,7 +177,7 @@ if (!function_exists('db_connection')) {
                 special_skills    TEXT,
                 house_status      ENUM('Owned','Rented'),
                 rental_amount     DECIMAL(10,2),
-                house_type        ENUM('Light','SemiConcrete','Concrete'),
+                house_type        ENUM('light','semi_concrete','concrete'),
                 household_members TEXT,
                 height DECIMAL(4,2),
                 weight DECIMAL(5,2),
@@ -325,12 +325,12 @@ if (!function_exists('db_connection')) {
                 FOREIGN KEY (leaveID) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS leaveCounts (
-                leaveCountID INT AUTO_INCREMENT PRIMARY KEY,
-                users_id INT NOT NULL,
-                VacationBalance INT NOT NULL,
-                SickBalance INT NOT NULL,
-                SpecialBalance INT NOT NULL,
-                OthersBalance INT NOT NULL,
+                leaveCountID     INT          AUTO_INCREMENT PRIMARY KEY,
+                users_id         INT          NOT NULL,
+                VacationBalance  DECIMAL(6,2) NOT NULL DEFAULT 0.00,
+                SickBalance      DECIMAL(6,2) NOT NULL DEFAULT 0.00,
+                SpecialBalance   DECIMAL(6,2) NOT NULL DEFAULT 0.00,
+                OthersBalance    DECIMAL(6,2) NOT NULL DEFAULT 0.00,
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
             )",
             ];

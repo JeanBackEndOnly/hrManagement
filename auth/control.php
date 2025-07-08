@@ -1008,18 +1008,17 @@ function leaves_fetch(
     }
 }
 
-function getLeaveCredits(){
-    $pdo = db_connection();
-    $users_id = $_GET['users_id'] ?? '';
-    $leave_id = $_GET['leave_id'] ?? '';
+// function getLeaveCredits(){
+//     $pdo = db_connection();
+//     $users_id = $_GET['users_id'] ?? '';
 
-    $query = "SELECT * FROM leaveCounts WHERE users_id = :users_id;";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(":users_id", $users_id);
-    $stmt->execute();
-    $leaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
-    return ['leaveCounts' => $leaveCounts];
-}
+//     $query = "SELECT * FROM leaveCounts WHERE users_id = :users_id;";
+//     $stmt = $pdo->prepare($query);
+//     $stmt->bindParam(":users_id", $users_id);
+//     $stmt->execute();
+//     $leaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
+//     return ['leaveCounts' => $leaveCounts];
+// }
 
 // ===================== REPORTS ON EMPLOYEE ===================== //
 function getEmployeeReport(){
@@ -1047,24 +1046,7 @@ function getEmployeeLeaveCounts(){
 }   
 
 // ===================== PERSONAL DATA SHEET ===================== //
-/**
- * Load one user’s entire PDS packet.
- * Returns [] if ?users_id= is missing or no matching user exists.
- *
- * Result format:
- * [
- *   'user'            => [...users + userInformations + userHr_Informations...],
- *   'userGovIDs'      => [...],
- *   'spouseInfo'      => [...],
- *   'otherInfo'       => [...],
- *   'children'        => [ [...], [...], ... ],
- *   'parents'         => [ [...Father...], [...Mother...] ],
- *   'siblings'        => [ [...], ... ],
- *   'educationInfo'   => [ [...], ... ],
- *   'workExperience'  => [ [...], ... ],
- *   'seminarsTrainings'=>[ [...], ... ]
- * ]
- */
+
 function getPersonalData(): array
 {
     $pdo      = db_connection();
@@ -1075,7 +1057,6 @@ function getPersonalData(): array
     }
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    /* ───────── 1. one‑to‑one core tables (users + ui + uhr + pds) ───────── */
     $sql = "
         SELECT u.*,
                ui.*,                 -- userInformations
@@ -1092,16 +1073,14 @@ function getPersonalData(): array
     $stmt->execute([':id' => $users_id]);
     $core = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$core) {                         // no such user
+    if (!$core) {                       
         return [];
     }
 
     $pds_id = (int)$core['pds_id'];
 
-    /* container for everything */
     $data = ['user' => $core];
 
-    /* ───────── 2. one‑to‑one tables keyed by pds_id ───────── */
     $oneToOneQueries = [
         'userGovIDs' => "SELECT * FROM userGovIDs  WHERE pds_id = :pid LIMIT 1",
         'spouseInfo' => "SELECT * FROM spouseInfo  WHERE pds_id = :pid LIMIT 1",
@@ -1114,7 +1093,6 @@ function getPersonalData(): array
         $data[$key] = $st->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    /* ───────── 3. one‑to‑many tables ───────── */
     $oneToManyQueries = [
         'children' => "SELECT * FROM children
                        WHERE pds_id = :pid
@@ -1151,6 +1129,15 @@ function getPersonalData(): array
 
     return $data;
 }
-
+function getPdsId(){
+    $pdo = db_connection();
+    $users_id = $_GET["users_id"] ?? '';
+    $query = "SELECT * FROM personal_data_sheet WHERE users_id = :users_id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $getPds_id = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['getPds_id' => $getPds_id];
+}
 
 

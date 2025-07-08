@@ -40,9 +40,11 @@ $leaveP = leavePending();
 $leavePending = $leaveP["leavePending"];
 $leavesd = leaveID();
 $leaveID = $leavesd["leaveID"];
-$leaveC = getLeaveCredits();
-$leaveCounts = $leaveC["leaveCounts"];
+// $leaveC = getLeaveCredits();
+// $leaveCounts = $leaveC["leaveCounts"];
 $getPersonalData = getPersonalData();
+$pds = getPdsId();
+$getPds_id = $pds["getPds_id"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"] ?? '';

@@ -1,5 +1,11 @@
 <?php include '../../templates/Uheader.php';?>
-
+<?php if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
+<script>
+    window.onload = function () {
+        window.open('pdsPDF.php?users_id=<?php echo $_GET["users_id"]; ?>&pds_id=<?php echo $getPds_id["pds_id"]; ?>', '_blank');
+    };
+</script>
+<?php endif;  ?>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
@@ -75,7 +81,7 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
+                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-between p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
                     <a href="profile.php?users_id=
                     <?php
                         echo $_GET["users_id"] ?? '';
@@ -83,6 +89,7 @@
                     <i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>
                     
                     Go back to Employee Profile</a>
+                    <a class="btn btn-primary" href="pds.php?users_id=<?php echo $_GET["users_id"] ?>&open_pdf=1">Create PDF</a>
                 </div>
                 <div class="contents d-flex flex-column align-items-center p-3 m-0 col-md-11 shadow rounded-2" style="height: auto;">
                      <div class="stepper" id="stepOne" style="display:flex;">
@@ -126,7 +133,7 @@
                         <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                         <input type="hidden" name="users_id" value="<?php echo $_GET["users_id"] ?? ''; ?>">
-
+                        <!-- ============================== PERSONAL INFORMATION ========================================= -->
                         <div id="personalInfo" class="personalInfo flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: flex; height: auto;">
                             <div class="table-responsive mb-4 col-md-12">
                                 <table class="table table-bordered table-sm align-middle" id="personal-info">
@@ -141,7 +148,7 @@
                                         <th class="fw-bold">SURNAME</th>
                                         <td><input type="text" class="form-control" name="lname" value="<?php echo $employeeInfo["lname"]; ?>"></td>
                                         <th class="fw-bold">NICKNAME</th>
-                                        <td><input type="text" class="form-control" name="nickname" value="<?php echo $getPersonalData["nickname"] ?? ''; ?>"></td>
+                                        <td><input type="text" class="form-control" name="nickname" value="<?php echo $employeeInfo["nickname"]; ?>"></td>
                                     </tr>
 
                                     <tr>
@@ -153,14 +160,14 @@
                                         <th class="fw-bold">MIDDLE NAME</th>
                                         <td><input type="text" class="form-control" name="mname" value="<?php echo $employeeInfo["mname"]; ?>"></td>
                                         <th class="fw-bold">NAME EXTENSION</th>
-                                        <td><input type="text" class="form-control" name="name_ext"  value="<?php echo $employeeInfo["suffix"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="suffix"  value="<?php echo $employeeInfo["suffix"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">DATE OF BIRTH</th>
-                                        <td><input type="date" class="form-control" name="dob" value="<?php echo $employeeInfo["birthday"]; ?>"></td>
+                                        <td><input type="date" class="form-control" name="birthday" value="<?php echo $employeeInfo["birthday"]; ?>"></td>
                                         <th class="fw-bold">PLACE OF BIRTH</th>
-                                        <td><input type="text" class="form-control" name="pob" value="<?php echo $employeeInfo["birthPlace"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="birthPlace" value="<?php echo $employeeInfo["birthPlace"]; ?>"></td>
                                     </tr>
 
                                     <tr>
@@ -195,14 +202,14 @@
                                         <th class="fw-bold">GENDER</th>
                                         <td><input type="text" class="form-control" name="gender" value="<?php echo $employeeInfo["gender"]; ?>"></td>
                                         <th class="fw-bold">TELEPHONE NO.</th>
-                                        <td><input type="number" class="form-control" name="tel_no"></td>
+                                        <td><input type="number" class="form-control" name="tel_no" value="<?= htmlspecialchars($getPersonalData['otherInfo']['tel_no'] ?? '') ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">CIVIL STATUS</th>
                                         <td><input type="text" class="form-control" name="civil_status" value="<?php echo $employeeInfo["civil_status"]; ?>"></td>
                                         <th class="fw-bold">CELLPHONE NO.</th>
-                                        <td><input type="number" class="form-control" name="cell_no" value="<?php echo $employeeInfo["contact"]; ?>"></td>
+                                        <td><input type="number" class="form-control" name="contact" value="<?php echo $employeeInfo["contact"]; ?>"></td>
                                     </tr>
 
                                     <tr>
@@ -237,7 +244,7 @@
                                         <th class="fw-bold">SSS NO.</th>
                                         <td><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['userGovIDs']['sss_no'] ?? '') ?>" name="sss_no"></td>
                                         <th class="fw-bold">TIN NO.</th>
-                                        <td><input type="text" class="form-control"  value="<?= htmlspecialchars($getPersonalData['userGovIDs']['tin_no'] ?? '') ?>" name="tin_no"></td>
+                                        <td><input type="text" class="form-control" value="<?= htmlspecialchars($getPersonalData['userGovIDs']['tin_no'] ?? '') ?>" name="tin_no"></td>
                                     </tr>
 
                                     <tr>
@@ -248,7 +255,7 @@
                                 </table>
                             </div>
                         </div>
-
+                        <!-- ============================== DAMILY BACKGROUND ========================================= -->
                         <div id="familyBackground" class="familyBackground flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: none; height: auto;">
                             <div class="table-responsive col-md-12">
                                 <table id="family-bg" class="table table-bordered align-middle table-sm">
@@ -265,92 +272,156 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr>
-                                        <td class="line-label">SPOUSE’S SURNAME</td>
-                                        <td><input class="form-control" name="spouse_surname"></td>
-                                        <td><input class="form-control" name="child_name_1"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_1"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label">FIRST NAME</td>
-                                        <td><input class="form-control" name="spouse_first"></td>
-                                        <td><input class="form-control" name="child_name_2"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label">MIDDLE NAME</td>
-                                        <td><input class="form-control" name="spouse_middle"></td>
-                                        <td><input class="form-control" name="child_name_3"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_3"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label">OCCUPATION</td>
-                                        <td><input class="form-control" name="spouse_occupation"></td>
-                                        <td><input class="form-control" name="child_name_4"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_4"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label">EMPLOYER / BUS. NAME</td>
-                                        <td><input class="form-control" name="spouse_employer"></td>
-                                        <td><input class="form-control" name="child_name_5"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_5"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label">BUSINESS ADDRESS</td>
-                                        <td><input class="form-control" name="spouse_business_address"></td>
-                                        <td><input class="form-control" name="child_name_6"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_6"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label">TELEPHONE NO.</td>
-                                        <td><input class="form-control" name="spouse_tel"></td>
-                                        <td><input class="form-control" name="child_name_7"></td>
-                                        <td><input class="form-control" type="date" name="child_dob_7"></td>
-                                    </tr>
+                                    <?php
+                                    $spouseRow = $getPersonalData['spouseInfo'] ?? []; 
+                                    $spousePad = [
+                                        'spouse_surname'          => '',
+                                        'spouse_first'            => '',
+                                        'spouse_middle'           => '',
+                                        'spouse_occupation'       => '',
+                                        'spouse_employer'         => '',
+                                        'spouse_business_address' => '',
+                                        'spouse_tel'              => '',
+                                    ];
+                                    $spouse = array_merge($spousePad, $spouseRow);
+
+                                    $kids = $getPersonalData['children'] ?? [];   
+
+                                    for ($i = 1; $i <= 7; $i++) {
+                                        $row = $kids[$i - 1] ?? [];       
+
+                                        $childPad = ['id'=>0,'full_name'=>'','dob'=>''];
+                                        $kid      = array_merge($childPad, $row);
+
+                                        $name = $kid['full_name'] ?? $kid['child_name'] ?? '';
+                                        $dob  = $kid['dob']       ?? $kid['child_dob']  ?? '';
+
+                                        $labels = [
+                                            1 => ['SPOUSE’S SURNAME',        'spouse_surname'],
+                                            2 => ['FIRST NAME',              'spouse_first'],
+                                            3 => ['MIDDLE NAME',             'spouse_middle'],
+                                            4 => ['OCCUPATION',              'spouse_occupation'],
+                                            5 => ['EMPLOYER / BUS. NAME',    'spouse_employer'],
+                                            6 => ['BUSINESS ADDRESS',        'spouse_business_address'],
+                                            7 => ['TELEPHONE NO.',           'spouse_tel'],
+                                        ];
+
+                                        [$labelText, $fieldName] = $labels[$i];
+                                    ?>
+                                        <input type="hidden" name="child_id_<?= $i ?>" value="<?= $kid['id'] ?>">
+
+                                        <tr>
+                                            <td class="line-label"><?= $labelText ?></td>
+                                            <td>
+                                                <input class="form-control"
+                                                    name="<?= $fieldName ?>"
+                                                    value="<?= htmlspecialchars($spouse[$fieldName]) ?>">
+                                            </td>
+
+                                            <td>
+                                                <input class="form-control"
+                                                    name="child_name_<?= $i ?>"
+                                                    value="<?= htmlspecialchars($name) ?>">
+                                            </td>
+
+                                            <td>
+                                                <input class="form-control" type="date"
+                                                    name="child_dob_<?= $i ?>"
+                                                    value="<?= htmlspecialchars($dob) ?>">
+                                            </td>
+                                        </tr>
+                                    <?php }   ?>
+
 
                                     <tr><td colspan="4" class="bg-white p-1"></td></tr>
+                                    <?php
+                                    $rows    = $getPersonalData['parents'] ?? [];  
+                                    $father  = [];
+                                    $mother  = [];
+
+                                    foreach ($rows as $r) {
+                                        if (strcasecmp($r['relation'] ?? '', 'Father') === 0) {
+                                            $father = $r;
+                                        } elseif (strcasecmp($r['relation'] ?? '', 'Mother') === 0) {
+                                            $mother = $r;
+                                        }
+                                    }
+                                    $pad = [
+                                        'id'          => 0,
+                                        'surname'     => '',
+                                        'maiden_name' => '',
+                                        'first_name'  => '',
+                                        'middle_name' => '',
+                                        'occupation'  => '',
+                                        'address'     => '',
+                                    ];
+
+                                    $father = array_merge($pad, $father);
+                                    $mother = array_merge($pad, $mother);
+                                    ?>
+
+                                    <input type="hidden" name="father_id" value="<?= $father['id'] ?>">
+                                    <input type="hidden" name="mother_id" value="<?= $mother['id'] ?>">
 
                                     <tr>
                                         <td class="line-label">FATHER’S SURNAME</td>
-                                        <td><input class="form-control" name="father_surname"></td>
+                                        <td><input class="form-control" name="father_surname"
+                                                value="<?= htmlspecialchars($father['surname']) ?>"></td>
+
                                         <td class="line-label">OCCUPATION</td>
-                                        <td><input class="form-control" name="father_occupation"></td>
+                                        <td><input class="form-control" name="father_occupation"
+                                                value="<?= htmlspecialchars($father['occupation']) ?>"></td>
                                     </tr>
+
                                     <tr>
                                         <td class="line-label">FIRST NAME</td>
-                                        <td><input class="form-control" name="father_first"></td>
+                                        <td><input class="form-control" name="father_first"
+                                                value="<?= htmlspecialchars($father['first_name']) ?>"></td>
+
                                         <td class="line-label">ADDRESS</td>
-                                        <td><input class="form-control" name="father_address"></td>
+                                        <td><input class="form-control" name="father_address"
+                                                value="<?= htmlspecialchars($father['address']) ?>"></td>
                                     </tr>
+
                                     <tr>
                                         <td class="line-label">MIDDLE NAME</td>
-                                        <td><input class="form-control" name="father_middle"></td>
+                                        <td><input class="form-control" name="father_middle"
+                                                value="<?= htmlspecialchars($father['middle_name']) ?>"></td>
                                         <td></td><td></td>
                                     </tr>
 
                                     <tr>
-                                        <td class="line-label">MOTHER’S MAIDEN NAME</td>
-                                        <td><input class="form-control" name="mother_maiden"></td>
+                                        <td class="line-label fw-bold">MOTHER’S MAIDEN NAME</td>
+                                        <td></td>
                                         <td></td><td></td>
                                     </tr>
+
                                     <tr>
                                         <td class="line-label ps-3">SURNAME</td>
-                                        <td><input class="form-control" name="mother_surname"></td>
+                                        <td><input class="form-control" name="mother_surname"
+                                                value="<?= htmlspecialchars($mother['surname']) ?>"></td>
+
                                         <td class="line-label">OCCUPATION</td>
-                                        <td><input class="form-control" name="mother_occupation"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label ps-3">FIRST NAME</td>
-                                        <td><input class="form-control" name="mother_first"></td>
-                                        <td class="line-label">ADDRESS</td>
-                                        <td><input class="form-control" name="mother_address"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="line-label ps-3">MIDDLE NAME</td>
-                                        <td><input class="form-control" name="mother_middle"></td>
-                                        <td></td><td></td>
+                                        <td><input class="form-control" name="mother_occupation"
+                                                value="<?= htmlspecialchars($mother['occupation']) ?>"></td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="line-label ps-3">FIRST NAME</td>
+                                        <td><input class="form-control" name="mother_first"
+                                                value="<?= htmlspecialchars($mother['first_name']) ?>"></td>
+
+                                        <td class="line-label">ADDRESS</td>
+                                        <td><input class="form-control" name="mother_address"
+                                                value="<?= htmlspecialchars($mother['address']) ?>"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="line-label ps-3">MIDDLE NAME</td>
+                                        <td><input class="form-control" name="mother_middle"
+                                                value="<?= htmlspecialchars($mother['middle_name']) ?>"></td>
+                                        <td></td><td></td>
+                                    </tr>
                                     <tr><td colspan="4" class="bg-white p-1"></td></tr>
 
                                     <tr class="table-light text-center">
@@ -361,48 +432,44 @@
                                     </tr>
 
                                     <?php
-/*  grab the siblings array (8 rows max, eldest→youngest)  */
-$siblings = $getPersonalData['siblings'] ?? [];   // adjust key if different
+                                    $siblings = $getPersonalData['siblings'] ?? [];  
 
-for ($i = 1; $i <= 8; $i++) {
+                                    for ($i = 1; $i <= 8; $i++) {
 
-    /* pick the corresponding DB row, or null if the slot is empty */
-    $row = $siblings[$i - 1] ?? null;
+                                        $row = $siblings[$i - 1] ?? null;
 
-    /* pull out columns safely */
-    $sid   = $row['id']          ?? 0;            // primary key
-    $name  = $row['full_name']   ?? '';
-    $age   = $row['age']         ?? '';
-    $occ   = $row['occupation']  ?? '';
-    $addr  = $row['address']     ?? '';
-?>
-    <!-- hidden PK needed by the update‑or‑insert logic -->
-    <input type="hidden" name="sibling_id_<?= $i ?>" value="<?= $sid ?>">
+                                        $sid   = $row['id']          ?? 0;       
+                                        $name  = $row['full_name']   ?? '';
+                                        $age   = $row['age']         ?? '';
+                                        $occ   = $row['occupation']  ?? '';
+                                        $addr  = $row['address']     ?? '';
+                                    ?>
+                                    <input type="hidden" name="sibling_id_<?= $i ?>" value="<?= $sid ?>">
 
-    <tr>
-        <td><input class="form-control"
-                   name="sib_name_<?= $i ?>"
-                   value="<?= htmlspecialchars($name) ?>"></td>
+                                    <tr>
+                                        <td><input class="form-control"
+                                                name="sib_name_<?= $i ?>"
+                                                value="<?= htmlspecialchars($name) ?>"></td>
 
-        <td><input class="form-control"
-                   name="sib_age_<?= $i ?>"
-                   value="<?= htmlspecialchars($age) ?>"></td>
+                                        <td><input class="form-control"
+                                                name="sib_age_<?= $i ?>"
+                                                value="<?= htmlspecialchars($age) ?>"></td>
 
-        <td><input class="form-control"
-                   name="sib_occ_<?= $i ?>"
-                   value="<?= htmlspecialchars($occ) ?>"></td>
+                                        <td><input class="form-control"
+                                                name="sib_occ_<?= $i ?>"
+                                                value="<?= htmlspecialchars($occ) ?>"></td>
 
-        <td><input class="form-control"
-                   name="sib_addr_<?= $i ?>"
-                   value="<?= htmlspecialchars($addr) ?>"></td>
-    </tr>
-<?php } ?>
+                                        <td><input class="form-control"
+                                                name="sib_addr_<?= $i ?>"
+                                                value="<?= htmlspecialchars($addr) ?>"></td>
+                                    </tr>
+                                <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
-                        <div id="EducBG_WorkExp" class="familyBackground flex-row align-items-start justify-content-start p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: none; height: auto;">
+                        <!-- ============================== Educcation BG and Work Exp ========================================= -->
+                        <div id="EducBG_WorkExp" class="EducBG_WorkExp flex-row align-items-start justify-content-start p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: none; height: auto;">
                             <div class="title w-100">
                                 <h4 class="w-100 text-start my-2">PERSONAL INFORMATION</h4>
                             </div>
@@ -419,40 +486,131 @@ for ($i = 1; $i <= 8; $i++) {
                                 </thead>
 
                                 <tbody>
+                                <?php
+                                $rows = $getPersonalData['educationInfo'] ?? [];
+
+                                $find = static function (array $rows, string $level): array {
+                                    foreach ($rows as $r) {
+                                        if (strcasecmp($r['level'] ?? '', $level) === 0) {
+                                            return $r;
+                                        }
+                                    }
+                                    return [];                    
+                                };
+
+                                $levels = ['Elementary','Secondary','Vocational','College','Graduate'];
+                                $data   = [];
+                                $pad = [
+                                    'id'             => 0,
+                                    'school_name'    => '',
+                                    'degree_course'  => '',
+                                    'school_address' => '',
+                                    'year_grad'      => '',
+                                ];
+
+                                foreach ($levels as $lvl) {
+                                    $data[$lvl] = array_merge($pad, $find($rows, $lvl));
+                                }
+                                ?>
+
+                                <input type="hidden" name="edu_elem_id" value="<?= $data['Elementary']['id'] ?>">
                                 <tr>
                                     <th class="text-center">ELEMENTARY</th>
-                                    <td><input type="text" class="form-control" name="elem_school"></td>
-                                    <td><input type="text" class="form-control" name="elem_course"></td>
-                                    <td><input type="text" class="form-control" name="elem_address"></td>
-                                    <td><input type="text" class="form-control" name="elem_year"   placeholder="YYYY"></td>
+                                    <td><input type="text" class="form-control"
+                                            name="elem_school"
+                                            value="<?= htmlspecialchars($data['Elementary']['school_name']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="elem_course"
+                                            value="<?= htmlspecialchars($data['Elementary']['degree_course']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="elem_address"
+                                            value="<?= htmlspecialchars($data['Elementary']['school_address']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="elem_year" placeholder="YYYY"
+                                            value="<?= htmlspecialchars($data['Elementary']['year_grad']) ?>"></td>
                                 </tr>
+
+                                <input type="hidden" name="edu_sec_id" value="<?= $data['Secondary']['id'] ?>">
                                 <tr>
                                     <th class="text-center">SECONDARY</th>
-                                    <td><input type="text" class="form-control" name="sec_school"></td>
-                                    <td><input type="text" class="form-control" name="sec_course"></td>
-                                    <td><input type="text" class="form-control" name="sec_address"></td>
-                                    <td><input type="text" class="form-control" name="sec_year"   placeholder="YYYY"></td>
+                                    <td><input type="text" class="form-control"
+                                            name="sec_school"
+                                            value="<?= htmlspecialchars($data['Secondary']['school_name']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="sec_course"
+                                            value="<?= htmlspecialchars($data['Secondary']['degree_course']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="sec_address"
+                                            value="<?= htmlspecialchars($data['Secondary']['school_address']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="sec_year" placeholder="YYYY"
+                                            value="<?= htmlspecialchars($data['Secondary']['year_grad']) ?>"></td>
                                 </tr>
+
+                                <input type="hidden" name="edu_voc_id" value="<?= $data['Vocational']['id'] ?>">
                                 <tr>
                                     <th class="text-center">VOCATIONAL</th>
-                                    <td><input type="text" class="form-control" name="voc_school"></td>
-                                    <td><input type="text" class="form-control" name="voc_course"></td>
-                                    <td><input type="text" class="form-control" name="voc_address"></td>
-                                    <td><input type="text" class="form-control" name="voc_year"   placeholder="YYYY"></td>
+                                    <td><input type="text" class="form-control"
+                                            name="voc_school"
+                                            value="<?= htmlspecialchars($data['Vocational']['school_name']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="voc_course"
+                                            value="<?= htmlspecialchars($data['Vocational']['degree_course']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="voc_address"
+                                            value="<?= htmlspecialchars($data['Vocational']['school_address']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="voc_year" placeholder="YYYY"
+                                            value="<?= htmlspecialchars($data['Vocational']['year_grad']) ?>"></td>
                                 </tr>
+
+                                <input type="hidden" name="edu_college_id" value="<?= $data['College']['id'] ?>">
                                 <tr>
                                     <th class="text-center">COLLEGE</th>
-                                    <td><input type="text" class="form-control" name="college_school"></td>
-                                    <td><input type="text" class="form-control" name="college_course"></td>
-                                    <td><input type="text" class="form-control" name="college_address"></td>
-                                    <td><input type="text" class="form-control" name="college_year"   placeholder="YYYY"></td>
+                                    <td><input type="text" class="form-control"
+                                            name="college_school"
+                                            value="<?= htmlspecialchars($data['College']['school_name']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="college_course"
+                                            value="<?= htmlspecialchars($data['College']['degree_course']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="college_address"
+                                            value="<?= htmlspecialchars($data['College']['school_address']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="college_year" placeholder="YYYY"
+                                            value="<?= htmlspecialchars($data['College']['year_grad']) ?>"></td>
                                 </tr>
+
+                                <input type="hidden" name="edu_grad_id" value="<?= $data['Graduate']['id'] ?>">
                                 <tr>
                                     <th class="text-center">GRADUATE</th>
-                                    <td><input type="text" class="form-control" name="grad_school"></td>
-                                    <td><input type="text" class="form-control" name="grad_course"></td>
-                                    <td><input type="text" class="form-control" name="grad_address"></td>
-                                    <td><input type="text" class="form-control" name="grad_year"   placeholder="YYYY"></td>
+                                    <td><input type="text" class="form-control"
+                                            name="grad_school"
+                                            value="<?= htmlspecialchars($data['Graduate']['school_name']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="grad_course"
+                                            value="<?= htmlspecialchars($data['Graduate']['degree_course']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="grad_address"
+                                            value="<?= htmlspecialchars($data['Graduate']['school_address']) ?>"></td>
+
+                                    <td><input type="text" class="form-control"
+                                            name="grad_year" placeholder="YYYY"
+                                            value="<?= htmlspecialchars($data['Graduate']['year_grad']) ?>"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -478,61 +636,63 @@ for ($i = 1; $i <= 8; $i++) {
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>
-                                    <div class="d-flex gap-1">
-                                        <input type="date" class="form-control" name="exp_1_from" placeholder="From">
-                                        <input type="date" class="form-control" name="exp_1_to"   placeholder="To">
-                                    </div>
-                                    </td>
-                                    <td><input type="text" class="form-control" name="exp_1_position"></td>
-                                    <td><input type="text" class="form-control" name="exp_1_department"></td>
-                                    <td><input type="number" class="form-control" name="exp_1_salary" min="0"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <div class="d-flex gap-1">
-                                        <input type="date" class="form-control" name="exp_2_from">
-                                        <input type="date" class="form-control" name="exp_2_to">
-                                    </div>
-                                    </td>
-                                    <td><input type="text" class="form-control" name="exp_2_position"></td>
-                                    <td><input type="text" class="form-control" name="exp_2_department"></td>
-                                    <td><input type="number" class="form-control" name="exp_2_salary" min="0"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <div class="d-flex gap-1">
-                                        <input type="date" class="form-control" name="exp_3_from">
-                                        <input type="date" class="form-control" name="exp_3_to">
-                                    </div>
-                                    </td>
-                                    <td><input type="text" class="form-control" name="exp_3_position"></td>
-                                    <td><input type="text" class="form-control" name="exp_3_department"></td>
-                                    <td><input type="number" class="form-control" name="exp_3_salary" min="0"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <div class="d-flex gap-1">
-                                        <input type="date" class="form-control" name="exp_4_from">
-                                        <input type="date" class="form-control" name="exp_4_to">
-                                    </div>
-                                    </td>
-                                    <td><input type="text" class="form-control" name="exp_4_position"></td>
-                                    <td><input type="text" class="form-control" name="exp_4_department"></td>
-                                    <td><input type="number" class="form-control" name="exp_4_salary" min="0"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <div class="d-flex gap-1">
-                                        <input type="date" class="form-control" name="exp_5_from">
-                                        <input type="date" class="form-control" name="exp_5_to">
-                                    </div>
-                                    </td>
-                                    <td><input type="text" class="form-control" name="exp_5_position"></td>
-                                    <td><input type="text" class="form-control" name="exp_5_department"></td>
-                                    <td><input type="number" class="form-control" name="exp_5_salary" min="0"></td>
-                                </tr>
+                                <?php
+                                $experiences = $getPersonalData['workExperience'] ?? [];
+
+                                for ($i = 1; $i <= 5; $i++) {
+
+                                    $row = $experiences[$i - 1] ?? [];
+
+                                    $id       = $row['id']             ?? 0;
+                                    $fromRaw  = $row['date_from']      ?? null;
+                                    $toRaw    = $row['date_to']        ?? null;
+                                    $position = $row['position_title'] ?? '';
+                                    $dept     = $row['department']     ?? '';
+                                    $salary   = $row['monthly_salary'] ?? '';
+
+                                    $from = $fromRaw && strpos($fromRaw, '0000-00-00') === false
+                                        ? date('Y-m-d', strtotime($fromRaw))
+                                        : '';
+
+                                    $to   = $toRaw && strpos($toRaw, '0000-00-00') === false
+                                        ? date('Y-m-d', strtotime($toRaw))
+                                        : '';
+
+                                    $salary = $salary !== '' && $salary > 0
+                                        ? number_format($salary, 2, '.', '')
+                                        : '';
+                                ?>
+                                    <input type="hidden" name="exp_<?= $i ?>_id" value="<?= $id ?>">
+
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <input type="date" class="form-control"
+                                                    name="exp_<?= $i ?>_from"
+                                                    placeholder="From"
+                                                    value="<?= htmlspecialchars($from) ?>">
+
+                                                <input type="date" class="form-control"
+                                                    name="exp_<?= $i ?>_to"
+                                                    placeholder="To"
+                                                    value="<?= htmlspecialchars($to) ?>">
+                                            </div>
+                                        </td>
+
+                                        <td><input type="text" class="form-control"
+                                                name="exp_<?= $i ?>_position"
+                                                value="<?= htmlspecialchars($position) ?>"></td>
+
+                                        <td><input type="text" class="form-control"
+                                                name="exp_<?= $i ?>_department"
+                                                value="<?= htmlspecialchars($dept) ?>"></td>
+
+                                        <td><input type="number" class="form-control"
+                                                name="exp_<?= $i ?>_salary"
+                                                min="0" step="0.01"
+                                                value="<?= htmlspecialchars($salary) ?>"></td>
+                                    </tr>
+                                <?php } ?>
                                 </tbody>
                             </table>
                             </div>
@@ -553,38 +713,42 @@ for ($i = 1; $i <= 8; $i++) {
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="seminar_1_dates" placeholder="e.g., Jan – Mar 2024"></td>
-                                    <td><input type="text" class="form-control" name="seminar_1_title"></td>
-                                    <td><input type="text" class="form-control" name="seminar_1_place"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="seminar_2_dates"></td>
-                                    <td><input type="text" class="form-control" name="seminar_2_title"></td>
-                                    <td><input type="text" class="form-control" name="seminar_2_place"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="seminar_3_dates"></td>
-                                    <td><input type="text" class="form-control" name="seminar_3_title"></td>
-                                    <td><input type="text" class="form-control" name="seminar_3_place"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="seminar_4_dates"></td>
-                                    <td><input type="text" class="form-control" name="seminar_4_title"></td>
-                                    <td><input type="text" class="form-control" name="seminar_4_place"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="seminar_5_dates"></td>
-                                    <td><input type="text" class="form-control" name="seminar_5_title"></td>
-                                    <td><input type="text" class="form-control" name="seminar_5_place"></td>
-                                </tr>
+                                <?php
+                                $seminars = $getPersonalData['seminarsTrainings'] ?? [];
+
+                                for ($i = 1; $i <= 5; $i++) {
+
+                                    $row   = $seminars[$i - 1] ?? [];      
+                                    $id    = $row['id']              ?? 0; 
+                                    $dates = $row['inclusive_dates'] ?? '';
+                                    $title = $row['title']           ?? '';
+                                    $place = $row['place']           ?? '';
+                                ?>
+                                    <input type="hidden" name="seminar_<?= $i ?>_id" value="<?= $id ?>">
+
+                                    <tr>
+                                        <td><input type="text" class="form-control"
+                                                name="seminar_<?= $i ?>_dates"
+                                                placeholder="e.g., Jan – Mar 2024"
+                                                value="<?= htmlspecialchars($dates) ?>"></td>
+
+                                        <td><input type="text" class="form-control"
+                                                name="seminar_<?= $i ?>_title"
+                                                value="<?= htmlspecialchars($title) ?>"></td>
+
+                                        <td><input type="text" class="form-control"
+                                                name="seminar_<?= $i ?>_place"
+                                                value="<?= htmlspecialchars($place) ?>"></td>
+                                    </tr>
+                                <?php } ?>
+
                                 </tbody>
                             </table>
                             </div>
 
                         </div>
-
-                        <div id="Others" class="familyBackground flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: none; height: auto;">
+                        <!-- ============================== OTHERS ========================================= -->
+                        <div id="Others" class="Others flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: none; height: auto;">
                             <div class="table-responsive mb-3 col-md-12">
                                 <table class="table table-bordered table-sm align-middle" id="others-section">
                                     <thead class="table-light text-center">
@@ -594,95 +758,129 @@ for ($i = 1; $i <= 8; $i++) {
                                     </thead>
 
                                     <tbody>
-                                    <tr>
-                                        <th style="width:25%;">What are your special skills / hobbies?</th>
-                                        <td colspan="3"><textarea class="form-control" name="special_skills" rows="2"></textarea></td>
-                                    </tr>
-
+                                    <?php
+                                    $other = $getPersonalData['otherInfo'] ?? [];
+                                    ?>
+                                        <tr>
+                                            <th style="width:25%;">What are your special skills / hobbies?</th>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="special_skills" rows="2"><?= htmlspecialchars($other['special_skills'] ?? '') ?></textarea>
+                                            </td>
+                                        </tr>
                                     <tr>
                                         <th>Do you own / rent the house you live in?</th>
                                         <td colspan="3">
-                                        <div class="d-flex flex-wrap gap-3">
-                                            <div class="form-check me-2">
-                                            <input class="form-check-input" type="radio" name="house_own_rent" id="houseOwned"  value="owned">
-                                            <label class="form-check-label" for="houseOwned">Owned</label>
+                                            <div class="d-flex flex-wrap gap-3 align-items-center">
+
+                                                <div class="form-check me-2">
+                                                    <input class="form-check-input" type="radio" name="house_status"
+                                                        id="houseOwned" value="owned"
+                                                        <?= (isset($other['house_status']) && $other['house_status'] === 'owned') ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="houseOwned">Owned</label>
+                                                </div>
+
+                                                <div class="form-check me-2">
+                                                    <input class="form-check-input" type="radio" name="house_status"
+                                                        id="houseRented" value="rented"
+                                                        <?= (isset($other['house_status']) && $other['house_status'] === 'rented') ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="houseRented">Rented</label>
+                                                </div>
+
+                                                <span class="align-self-center">If rented, amount per month (PHP):</span>
+                                                <input type="number" min="0" class="form-control ms-2" style="max-width:140px;"
+                                                    name="rental_amount" value="<?= htmlspecialchars($other['rental_amount'] ?? '') ?>">
                                             </div>
-                                            <div class="form-check me-2">
-                                            <input class="form-check-input" type="radio" name="house_own_rent" id="houseRented" value="rented">
-                                            <label class="form-check-label" for="houseRented">Rented</label>
-                                            </div>
-                                            <span class="align-self-center">If rented, amount per month (PHP):</span>
-                                            <input type="number" min="0" class="form-control ms-2" name="rental_amount" style="max-width:140px;">
-                                        </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <th>Type of House</th>
                                         <td colspan="3">
-                                        <div class="d-flex flex-wrap gap-3">
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="house_type" id="typeLight" value="light">
-                                            <label class="form-check-label" for="typeLight">Light&nbsp;Materials</label>
+                                            <div class="d-flex flex-wrap gap-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="house_type"
+                                                        id="typeLight" value="light"
+                                                        <?= (isset($other['house_type']) && $other['house_type'] === 'light') ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="typeLight">Light&nbsp;Materials</label>
+                                                </div>
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="house_type"
+                                                        id="typeSemi" value="semi_concrete"
+                                                        <?= (isset($other['house_type']) && $other['house_type'] === 'semi_concrete') ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="typeSemi">Semi‑concrete</label>
+                                                </div>
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="house_type"
+                                                        id="typeConcrete" value="concrete"
+                                                        <?= (isset($other['house_type']) && $other['house_type'] === 'concrete') ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="typeConcrete">Concrete</label>
+                                                </div>
                                             </div>
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="house_type" id="typeSemi"  value="semi_concrete">
-                                            <label class="form-check-label" for="typeSemi">Semi‑concrete</label>
-                                            </div>
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="house_type" id="typeConcrete" value="concrete">
-                                            <label class="form-check-label" for="typeConcrete">Concrete</label>
-                                            </div>
-                                        </div>
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <th>Who stays with you at home? <br><small>(State number of persons & relationship to employee.)</small></th>
-                                        <td colspan="3"><textarea class="form-control" name="household_members" rows="2"></textarea></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                </div>
+                                        <tr>
+                                            <th>
+                                                Who stays with you at home?<br>
+                                                <small>(State number of persons &amp; relationship to employee.)</small>
+                                            </th>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="household_members" rows="2"><?= htmlspecialchars($other['household_members'] ?? '') ?></textarea>
+                                            </td>
+                                        </tr>
 
-                                <div class="table-responsive">
-                                <table class="table table-bordered table-sm" id="declaration-section">
-                                    <tbody>
-                                    <tr>
-                                        <td colspan="3">
-                                        <p class="mb-2" style="font-size:13px;">
-                                            I declare under oath that this Personal Data Sheet has been accomplished by me, and is a true, correct and complete statement pursuant to the provisions of pertinent laws, rules and regulations of the Republic of the Philippines.<br>
-                                            I also authorize the head/authorized representative to verify/validate the contents stated herein. I trust that this information shall remain confidential.
-                                        </p>
-                                        </td>
-                                        <td rowspan="2" class="text-center align-middle" style="width:140px;">
-                                        <div class="border p-3" style="height:160px;">PHOTO</div>
-                                        </td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td style="width:40%;">
-                                        <div class="border mb-1" style="height:70px;"></div>
-                                        <small>Signature (sign inside the box)</small>
-                                        </td>
-                                        <td style="width:25%;">
-                                        <div class="border mb-1" style="height:70px;"></div>
-                                        <small>Right Thumbmark</small>
-                                        </td>
-                                        <td style="width:25%;">
-                                        <div class="border mb-1" style="height:70px;"></div>
-                                        <small>Left Thumbmark</small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="width:20%;">Date Accomplished</th>
-                                        <td colspan="3"><input type="date" class="form-control" name="date_accomplished"></td>
-                                    </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                    <table class="table table-bordered table-sm" id="declaration-section">
+                                        <tbody>
+
+                                        <tr>
+                                            <td colspan="3">
+                                                <p class="mb-2" style="font-size:13px;">
+                                                    I declare under oath that this Personal Data Sheet has been accomplished by me,
+                                                    and is a true, correct and complete statement pursuant to the provisions of
+                                                    pertinent laws, rules and regulations of the Republic of the Philippines.<br>
+                                                    I also authorize the head/authorized representative to verify/validate the contents
+                                                    stated herein. I trust that this information shall remain confidential.
+                                                </p>
+                                            </td>
+                                            <td rowspan="2" class="text-center align-middle" style="width:140px;">
+                                                <div class="border p-3" style="height:160px;">PHOTO</div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="text-center">
+                                            <td style="width:40%;">
+                                                <div class="border mb-1" style="height:70px;"></div>
+                                                <small>Signature (sign inside the box)</small>
+                                            </td>
+                                            <td style="width:25%;">
+                                                <div class="border mb-1" style="height:70px;"></div>
+                                                <small>Right Thumbmark</small>
+                                            </td>
+                                            <td style="width:25%;">
+                                                <div class="border mb-1" style="height:70px;"></div>
+                                                <small>Left Thumbmark</small>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th style="width:20%;">Date Accomplished</th>
+                                            <td colspan="3">
+                                                <input type="date" class="form-control" name="date_accomplished"
+                                                    value="<?= htmlspecialchars($other['date_accomplished'] ?? '') ?>">
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
 
                         </div>
-
+                        <!-- ============================== SUBMIT MODAL ========================================= -->
                         <div class="modal fade" id="updateModalEBG" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-md modal-dialog-start">
                                 <div class="modal-content">
@@ -701,6 +899,7 @@ for ($i = 1; $i <= 8; $i++) {
                             </div>
                         </div>
                     </form>
+                        <!-- ============================== BUTTONS ========================================= -->                    
                     <div class="next col-md-12 d-flex justify-content-between">
                         <div class="backsButtons">
                             <button class="btn btn-danger" id="buttonSecondB" onclick="buttonSecondB()" style="display: none;">BACK</button>

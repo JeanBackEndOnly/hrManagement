@@ -278,7 +278,17 @@ transform: translateX(.9rem);
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
 }
-
+.form-check-input:checked + .form-check-label {
+    background-color: #0d6efd;   /* Bootstrap primary */
+    color: #fff;
+    padding: 0 .45rem;
+    border-radius: .25rem;
+    font-weight: 600;
+}
+/* Optional – smoother visual change */
+.form-check-input + .form-check-label {
+    transition: background-color .15s, color .15s;
+}
 /* ========================== EMPLOYEE ANIMATIONS ============================== */
 #loadingAnimation, #loading-overlay, #loadingAnimationSettings{
     position: fixed;

@@ -1,4 +1,4 @@
-<?php include '../../templates/Uheader.php';?>
+<?php include '../../templates/Uheader.php';require_once '../../installer/config.php';?>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
@@ -266,9 +266,33 @@
                                     </thead>
                                     <tbody class="col-md-12">
                                        <?php
-                                        $VacationBalance  = $leaveCounts['VacationBalance'] ?? 0;
-                                        $SickBalance      = $leaveCounts['SickBalance']     ?? 0;
-                                        $SpecialBalance   = $leaveCounts['SpecialBalance']  ?? 0;
+                                        $users_id = (int)($_GET['users_id'] ?? 0);   
+                                        $leaveCounts = getLeaveCredits($users_id);   
+
+                                        function getLeaveCredits(int $uid): array
+                                        {
+                                            if ($uid === 0) { return []; }
+
+                                            $pdo = db_connection();
+                                            $sql = "SELECT VacationBalance, SickBalance, SpecialBalance, OthersBalance
+                                                    FROM leaveCounts WHERE users_id = :uid LIMIT 1";
+
+                                            $stmt = $pdo->prepare($sql);
+                                            $stmt->bindValue(':uid', $uid, PDO::PARAM_INT);
+                                            $stmt->execute();
+                                            $counts = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+
+                                            if (!$counts) {
+                                                error_log("leaveCounts: no row for users_id {$uid}");
+                                            }
+                                            return $counts;
+                                        }
+
+                                        $VacationBalance = (float)($leaveCounts['VacationBalance']  ?? 0);
+                                        $SickBalance     = (float)($leaveCounts['SickBalance']      ?? 0);
+                                        $SpecialBalance  = (float)($leaveCounts['SpecialBalance']   ?? 0);
+                                        $OthersBalance   = (float)($leaveCounts['OthersBalance']    ?? 0);
+
 
                                         $NumberOfLeave    = $leavePending['numberOfDays']    ?? 0;     
                                         $leaveTypeFiled   = $leavePending['leaveType']       ?? '';   
@@ -363,7 +387,7 @@
                                         <div class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
                                             <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus" value="disapprove">
                                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                                            <textarea id="" class="form-control ms-3" name="disapprovalDetails" required></textarea>
+                                            <textarea id="" class="form-control ms-3" name="disapprovalDetails"></textarea>
                                         </div>
                                         <div class="admin mt-5 d-flex flex-row col-md-12 justify-content-center align-items-center gap-5">
                                             <div class="hrdo col-md-5">
