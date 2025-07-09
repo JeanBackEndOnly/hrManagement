@@ -45,6 +45,8 @@ $leaveID = $leavesd["leaveID"];
 $getPersonalData = getPersonalData();
 $pds = getPdsId();
 $getPds_id = $pds["getPds_id"];
+$employeeStatus = getStatus();
+$status = $employeeStatus["status"];
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"] ?? '';
@@ -238,6 +240,7 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
     <meta name="theme-color" content="#E72120">
     <link rel="manifest" href="/github/hrManagement/webApp/manifest.json">
     <link rel="stylesheet" href="../../assets/css/all.min.css?v=<?php echo time() ?>">
+    <!-- <link rel="stylesheet" href="../../assets/css/pds.css?v=<?php echo time() ?>"> -->
     <link rel="stylesheet" href="../../assets/css/users.css?v=<?php echo time() ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">

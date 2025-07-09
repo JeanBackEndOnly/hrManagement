@@ -1,0 +1,154 @@
+@media (max-width: 576px) {
+    /* General adjustments */
+    .main-body {
+        overflow-x: hidden;
+    }
+    
+    .header h4 {
+        font-size: 14px;
+        display: none;
+    }
+    
+    .usersButton span.fw-bold {
+        display: none;
+    }
+    
+    .usersButton a {
+        margin-left: 5px !important;
+    }
+    
+    /* Side navigation */
+    .sideNav {
+        width: 50px !important;
+    }
+    
+    .sideNav .side-text, 
+    .sideNav #pNone {
+        display: none !important;
+    }
+    
+    .sideNav i {
+        margin-right: 0 !important;
+    }
+    
+    /* Form content */
+    .contents {
+        padding: 5px !important;
+    }
+    
+    .linkToEmployeeManagement {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Stepper */
+    .stepper {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .step {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+    }
+    
+    .lines {
+        width: 15px;
+    }
+    
+    /* Tables */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 4px !important;
+    }
+    
+    /* Form inputs */
+    .form-control {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+    
+    textarea.form-control {
+        min-height: 60px;
+    }
+    
+    /* Radio buttons and checkboxes */
+    .form-check {
+        margin-right: 5px !important;
+    }
+    
+    .form-check-label {
+        font-size: 12px;
+    }
+    
+    /* Buttons */
+    .btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+    
+    /* Modal */
+    .modal-dialog {
+        margin: 10px;
+    }
+    
+    /* Specific table adjustments */
+    #personal-info th,
+    #family-bg th,
+    #education-table th,
+    #work-experience th,
+    #seminar-training th,
+    #others-section th {
+        font-size: 11px;
+        white-space: nowrap;
+    }
+    
+    /* Hide less important columns on small screens */
+    #education-table th:nth-child(4),
+    #education-table td:nth-child(4) {
+        display: none;
+    }
+    
+    #work-experience th:nth-child(4),
+    #work-experience td:nth-child(4) {
+        display: none;
+    }
+    
+    /* Signature section */
+    #declaration-section td {
+        padding: 2px !important;
+    }
+    
+    #declaration-section .border {
+        height: 50px !important;
+    }
+    
+    #declaration-section small {
+        font-size: 10px;
+    }
+    
+    /* Navigation buttons */
+    .nextButtons, .backsButtons {
+        flex-wrap: wrap;
+    }
+    
+    .nextButtons button, 
+    .backsButtons button {
+        margin: 3px;
+    }
+    
+    /* Loading animation */
+    .loading-lines .line {
+        width: 20px;
+        height: 3px;
+    }
+}

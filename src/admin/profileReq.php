@@ -9,6 +9,7 @@
             </div>
 
             <div class="usersButton d-flex align-items-center">
+                <a href="pds.php?users_id=<?php echo $get_users_id["id"]; ?>"><i class="fa-solid fa-arrow-up-right-from-square mx-3"></i></a>
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
                 <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
                 <button class="align-items-center" type="button" onclick="userButton()">

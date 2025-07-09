@@ -1,4 +1,145 @@
 <?php include '../../templates/Uheader.php';?>
+<style>
+    @media (max-width: 576px) {
+    /* General adjustments */
+    .main-body {
+        overflow-x: auto;
+    }
+    
+    .usersButton span.fw-bold {
+        display: none;
+    }
+    
+    .usersButton a {
+        margin-left: 5px !important;
+    }
+    
+    .sideNav i {
+        margin-right: 0 !important;
+    }
+    
+    .contents {
+        padding: 5px !important;
+    }
+    
+    .linkToEmployeeManagement {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .stepper {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .step {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+    }
+    
+    .lines {
+        width: 15px;
+    }
+    
+    /* Tables */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 20rem;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 4px !important;
+    }
+    
+    /* Form inputs */
+    .form-control {
+        font-size: 12px;
+        padding: 4px 8px;
+        width: auto;
+    }
+    
+    textarea.form-control {
+        min-height: 60px;
+    }
+    
+    /* Radio buttons and checkboxes */
+    .form-check {
+        margin-right: 5px !important;
+    }
+    
+    .form-check-label {
+        font-size: 12px;
+    }
+    
+    /* Buttons */
+    .btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+    
+    /* Modal */
+    .modal-dialog {
+        margin: 10px;
+    }
+    
+    /* Specific table adjustments */
+    #personal-info th,
+    #family-bg th,
+    #education-table th,
+    #work-experience th,
+    #seminar-training th,
+    #others-section th {
+        font-size: 11px;
+        white-space: nowrap;
+    }
+    
+    /* Hide less important columns on small screens */
+    #education-table th:nth-child(4),
+    #education-table td:nth-child(4) {
+        display: none;
+    }
+    
+    #work-experience th:nth-child(4),
+    #work-experience td:nth-child(4) {
+        display: none;
+    }
+    
+    /* Signature section */
+    #declaration-section td {
+        padding: 2px !important;
+    }
+    
+    #declaration-section .border {
+        height: 50px !important;
+    }
+    
+    #declaration-section small {
+        font-size: 10px;
+    }
+    
+    /* Navigation buttons */
+    .nextButtons, .backsButtons {
+        flex-wrap: wrap;
+    }
+    
+    .nextButtons button, 
+    .backsButtons button {
+        margin: 3px;
+    }
+    
+    /* Loading animation */
+    .loading-lines .line {
+        width: 20px;
+        height: 3px;
+    }
+}
+</style>
 <?php if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
 <script>
     window.onload = function () {
@@ -17,13 +158,15 @@
 
             <div class="usersButton d-flex align-items-center">
                 <a href="settings.php"><i class="fa-solid fa-gear"></i></a>
-                <a href="logout.php"><i class="fa-solid fa-right-from-bracket ms-3"></i></a>
-                <button class="align-items-center" type="button" onclick="userButton()">
-                    <img src="../../assets/image/users.png" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
-                    <span class="fw-bold">ADMIN</span>
-                </button>
+                <a href="../logout.php"><i class="fa-solid fa-right-from-bracket ms-3 me-1"></i></a>
+                <a href="profile.php?users_id=<?php echo $_SESSION["user_id"]??'no'; ?>" class="align-items-center m-0" style="text-decoration: none; color: #000;" type="button" onclick="userButton()">
+                    <img src="../../assets/image/upload/<?php echo htmlspecialchars($employeeInfo["user_profile"]) ?>" class="rounded-circle me-0 ms-4" style="height: 35px; width: 35px;">
+                    <span class="fw-bold"><?php echo isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) . ", " . htmlspecialchars($employeeInfo["fname"]) : "N/A" ?></span>
+                </a>
             </div>
         </div>
+
+
         <div class="d-flex w-100 align-items-start" style="height: 91%">
             <div class="sideNav p-0" id="sideHEhe">
                 <div class="navs p-0 m-0 mt-2 w-auto">
@@ -42,10 +185,9 @@
                     </li>
 
                     <ul id="hrUl" class="flex-column" style="display:none;">
-                       <li class="my-1"><a href="employee.php" class="d-flex justify-content-start"><i class="fa-solid me-1 fa-users-gear d-flex align-items-center"></i><p style="display:flex;" id="pNone" class="text-start">RECRUITMENTS</p></a></li>
                         <li class="my-1"><a href="leave.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">LEAVE REQUEST</p></a></li>
-                        <li class="my-1"><a href="job.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-briefcase"></i><p style="display:flex;" id="pNone" class="text-start">JOB & SALARY</p></a></li>
-                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 fa-flag" d-flex align-items-center></i><p style="display:flex;" id="pNone" class="text-start">Reports</p></a></li>
+                        <li class="my-1"><a href="reports.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 fa-briefcase"></i><p style="display:flex;" id="pNone" class="text-start">REPORTS</p></a></li>
+                        <li class="my-1"><a href="pds.php"  class="d-flex justify-content-start"><i class="fa-solid me-1 d-flex align-items-center fa-file-export"></i><p style="display:flex;" id="pNone" class="text-start">PDS</p></a></li>
                     </ul>
 
                     <li class="payrollLi d-flex align-items-center p-2 mb-2">
@@ -57,11 +199,9 @@
                     </li>
 
                     <ul id="payrollUl" class="flex-column" style="display:none;">
-                        <li class="my-1"><a href="payroll/process.php"><i class="fa-solid me-1 fa-users-gear"></i>PROCESS</a></li>
-                        <li class="my-1"><a href="payroll/Config.php"><i class="fa-solid me-1 fa-file-export"></i>CONFIG</a></li>
-                        <li class="my-1"><a href="payroll/Reports.php"><i class="fa-solid me-1 fa-briefcase"></i>REPORTS</a></li>
-                        <li class="my-1"><a href="payroll/Deduction Slip.php"><i class="fa-solid me-1 fa-file-export"></i>DEDUCTION SLIP</a></li>
-                        <li class="my-1"><a href="payroll/Loan Request.php"><i class="fa-solid me-1 fa-briefcase"></i>LOAN REQUEST</a></li>
+                        <li class="my-1"><a href="employee.php"><i class="fa-solid me-1 fa-users-gear"></i>RECRUITMENTS</a></li>
+                        <li class="my-1"><a href="leave.php"><i class="fa-solid me-1 fa-file-export"></i>LEAVE REQUEST</a></li>
+                        <li class="my-1"><a href="job.php"><i class="fa-solid me-1 fa-briefcase"></i>JOB TITLES</a></li>
                     </ul>
 
                     <li class="attendanceLi d-flex align-items-center p-2 mb-2">
@@ -72,7 +212,7 @@
                     </li>
 
                     <li class="settingsLi d-flex align-items-center p-2 mb-2">
-                        <a href="settings.php" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
+                        <a href="#" class="p-0 m-0 w-100 h-100 d-flex align-items-center">
                             <i class="fa-solid me-2 fa-gear"></i>
                             <p class="text-start side-text" id="ps">Settings</p>
                         </a>
@@ -81,15 +221,8 @@
                 
             </div>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-between p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
-                    <a href="profile.php?users_id=
-                    <?php
-                        echo $_GET["users_id"] ?? '';
-                    ?>" style="text-decoration: none;">
-                    <i class="fa-solid fa-arrow-left-long fs-6 me-1"></i>
-                    
-                    Go back to Employee Profile</a>
-                    <a class="btn btn-primary" href="pds.php?users_id=<?php echo $_GET["users_id"] ?>&open_pdf=1">Create PDF</a>
+                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-end p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
+                    <a class="btn btn-primary" href="pds.php?users_id=<?php echo $_SESSION["user_id"] ?>&open_pdf=1">Create PDF</a>
                 </div>
                 <div class="contents d-flex flex-column align-items-center p-3 m-0 col-md-11 shadow rounded-2" style="height: auto;">
                      <div class="stepper" id="stepOne" style="display:flex;">
@@ -129,10 +262,10 @@
                         <div class="step active">4</div>
                     </div>
                     <form action="../../auth/authentications.php" method="post" class="col-md-12">
-                        <input type="hidden" name="adminSidePDS" value="true">
+                        <input type="hidden" name="employeeSidePDS" value="true">
                         <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                        <input type="hidden" name="users_id" value="<?php echo $_GET["users_id"] ?? ''; ?>">
+                        <input type="hidden" name="users_id" value="<?php echo $_SESSION["user_id"] ?? ''; ?>">
                         <!-- ============================== PERSONAL INFORMATION ========================================= -->
                         <div id="personalInfo" class="personalInfo flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1" style="display: flex; height: auto;">
                             <div class="table-responsive mb-4 col-md-12">

@@ -1,11 +1,11 @@
-<?php include '../../templates/Uheader.php';?>
-
-<main>
+<?php include '../../templates/pendingHeader.php'; ?>
+    <main>
     <div class="header d-flex flex-row justify-content-between align-items-center w-100" style="height: 2rem;">
         <div class="logo d-flex flex-row align-items-center">
             <img src="../../assets/image/pueri-logo.png" class="mx-3" style="width: 7%; height: auto;"  alt="">
             <h4>Zamboanga Puericulture Center</h4>
         </div>
+        <a href="pendingPDS.php?users_id=<?= $_SESSION["pending_user_id"] ?>" class="btn btn-primary">PDS</a>
         <a href="../logout.php" class="me-3">Logout</a>
     </div>
     <div class="form-group h-100 w-100 d-flex justify-content-center align-items-center flex-column">
@@ -20,8 +20,4 @@
     </div>
 </main>
 
-<script src="../../assets/js/hr/hrmain.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="../../webApp/main.js"></script>
-<?php include '../../templates/Ufooter.php'?>
+<?php include '../../templates/Ufooter.php'; ?>

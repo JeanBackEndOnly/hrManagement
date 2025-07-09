@@ -883,7 +883,6 @@ function leaveID(){
     $leaveID = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return ['leaveID' => $leaveID];
 }
-
 $leaveTab        = $_GET['leave_tab'] ?? 'request';      
 $leavePage       = max(1, (int)($_GET['leave_page']  ?? 1));
 $leavePerPage    = max(1, (int)($_GET['leave_perPage'] ?? 10));
@@ -1007,19 +1006,6 @@ function leaves_fetch(
         return [];
     }
 }
-
-// function getLeaveCredits(){
-//     $pdo = db_connection();
-//     $users_id = $_GET['users_id'] ?? '';
-
-//     $query = "SELECT * FROM leaveCounts WHERE users_id = :users_id;";
-//     $stmt = $pdo->prepare($query);
-//     $stmt->bindParam(":users_id", $users_id);
-//     $stmt->execute();
-//     $leaveCounts = $stmt->fetch(PDO::FETCH_ASSOC);
-//     return ['leaveCounts' => $leaveCounts];
-// }
-
 // ===================== REPORTS ON EMPLOYEE ===================== //
 function getEmployeeReport(){
     $pdo = db_connection();
@@ -1050,8 +1036,11 @@ function getEmployeeLeaveCounts(){
 function getPersonalData(): array
 {
     $pdo      = db_connection();
-    $users_id = (int)($_GET['users_id'] ?? 0);
-
+    if($_SESSION["user_id"] == 1){
+        $users_id = (int)($_GET['users_id'] ?? 0);
+    }else{
+        $users_id = (int)($_SESSION['user_id'] ?? 0);
+    }
     if (!$users_id) {
         return [];
     }
@@ -1139,5 +1128,14 @@ function getPdsId(){
     $getPds_id = $stmt->fetch(PDO::FETCH_ASSOC);
     return ['getPds_id' => $getPds_id];
 }
-
+function getStatus(){
+    $pdo = db_connection();
+    $users_id = $_GET["users_id"] ?? '';
+    $query = "SELECT status FROM userrequest WHERE users_id = :users_id;";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":users_id", $users_id);
+    $stmt->execute();
+    $status = $stmt->fetch(PDO::FETCH_ASSOC);
+    return ['status' => $status];
+}
 
