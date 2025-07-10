@@ -15,22 +15,16 @@ html, body, main{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent !important;
+    background-color: var(--BG) !important;
 }
 html{
-    background: url("../image/puericultureBG.jpg");
+    /* background: url("../image/puericultureBG.jpg"); */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 main h4, main h3{
     color: var(--backGroundDark);
-}
-.card, .column-container{
-    background-color: rgba(255, 255, 255, .7);
-    backdrop-filter: blur(3px);
-    box-shadow: 0 0 5px 1px var(--box-shadow);
-    height: 40vh;
 }
 .card input, .card button{
     background-color: transparent;

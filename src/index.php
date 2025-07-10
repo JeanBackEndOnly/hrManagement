@@ -9,7 +9,7 @@
 <main id="main" class="login-page mb-3 px-0">
     <div class="container w-100">
         <div class="row">
-            <div class="card h-50 w-100 rounded-2 p-0 rounded-4">
+            <div class="card h-50 w-100 shadow p-0 rounded-4 ">
                 <div class="headerLogin mb-2 w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:rgb(205, 205, 205);">
                     <div class="logo w-100 d-flex justify-content-center mt-4">
                         <img src="../assets/image/pueri-logo.png" alt="" style="width: 100px; height: 100px;">

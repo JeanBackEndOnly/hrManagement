@@ -18,7 +18,7 @@ html, body, main{
     background-color: transparent !important;
 }
 html{
-    background: url("../image/puericultureBG.jpg");
+    /* background: url("../image/puericultureBG.jpg"); */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

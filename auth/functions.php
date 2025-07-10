@@ -49,41 +49,6 @@ function get_current_page() {
 
     return $protocol . '://' . $host . $uri;
 }
-// function base_url(): string
-// {
-//     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-//            ? 'https' : 'http';
-//     $host  = $_SERVER['HTTP_HOST'];
-
-//     $dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-//     return "{$proto}://{$host}{$dir}/";
-// }
-
-// /* ---------- current page (debug helper) --------------------- */
-// function get_current_page(): string
-// {
-//     $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-//     return "{$proto}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-// }
-
-// function initInstaller(): void
-// {
-//     $pdo = db_connection();
-//     $hasAdmin = (bool)$pdo->query("SELECT 1 FROM users WHERE user_role = 'administrator' LIMIT 1")->fetchColumn();
-
-//     $installer = '/github/hrManagement/installer/';
-//     $here      = $_SERVER['REQUEST_URI'];
-
-//     if (!$hasAdmin && $here !== $installer) {
-//         header('Location: ' . base_url() . 'installer/');
-//         exit;
-//     }
-//     if ($hasAdmin && $here === $installer) {
-//         header('Location: ' . base_url() . 'src/');
-//         exit;
-//     }
-// }
-
 /* ---------- CSS & manifest tags ----------------------------- */
 function render_styles(): void
 {
