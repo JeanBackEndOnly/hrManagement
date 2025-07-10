@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 register_shutdown_function(function () {
     $error = error_get_last();
     if ($error) {
-        echo "hehe";
+        echo "hehe HIND NAGA WORK ANG EMAIL";
     }
 });
 
@@ -20,20 +20,20 @@ if (!isset($argv[1]) || !isset($argv[2])) {
     exit();
 }
 
-$createdUserId     = $argv[1];          
-$action            = $argv[2];
-$previousJobTitle  = $argv[3] ?? null;
-$newJobTitle       = $argv[4] ?? null;
-$newSalary         = $argv[5] ?? null;
-$username          = $argv[6] ?? null;
-$password          = $argv[7] ?? null;
-$mailCode          = $argv[8] ?? null;
-$leaveID           = $argv[9] ?? null;
+$createdUserId = $argv[1];
+$action = $argv[2];
+$previousJobTitle = $argv[3] ?? null;
+$newJobTitle = $argv[4] ?? null;
+$newSalary = $argv[5] ?? null;
+$username = $argv[6] ?? null;
+$password = $argv[7] ?? null;
+$mailCode = $argv[8] ?? null;
+$leaveID = $argv[9] ?? null;
 
 $pdo = db_connection();
 
 try {
-    
+
     $user = null;
 
     $query = "SELECT * FROM userinformations WHERE users_id = :users_id";
@@ -67,7 +67,7 @@ try {
         }
     }
 
-    if (!$user) { 
+    if (!$user) {
         exit();
     }
 
@@ -80,13 +80,13 @@ try {
 
     try {
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'pagotaisidromarcojean@gmail.com';
-        $mail->Password   = 'ytzu niks mizj bojx';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'pagotaisidromarcojean@gmail.com';
+        $mail->Password = 'ytzu niks mizj bojx';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        $mail->CharSet    = 'UTF-8';
+        $mail->Port = 587;
+        $mail->CharSet = 'UTF-8';
 
         $mail->setFrom('pagotaisidromarcojean@gmail.com', 'HR Department');
         $mail->addAddress($user['email'], "{$user['fname']} {$user['lname']}");
@@ -95,7 +95,7 @@ try {
 
         if ($action === 'accepted') {
             $mail->Subject = 'Your Request has been Accepted!';
-            $mail->Body    = "
+            $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
                 <p>Welcome to the company of ZAMBOANGA PUERICULTURE CENTER! Your employee account has been successfully validated.</p>
                 <br>
@@ -108,7 +108,7 @@ try {
             }
 
             $mail->Subject = 'Your Employee Account has been Created';
-            $mail->Body    = "
+            $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
                 <p>Welcome to the company of ZAMBOANGA PUERICULTURE CENTER! Your employee account has been successfully created.</p>
                 <p><strong>Login Credentials:</strong></p>
@@ -131,7 +131,7 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }elseif ($action === 'rejected') {
+        } elseif ($action === 'rejected') {
             $mail->Subject = 'Account not valid!';
             $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
@@ -141,7 +141,7 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }elseif ($action === 'password') {
+        } elseif ($action === 'password') {
             $mail->Subject = 'Mail Code!';
             $mail->Body = "
                 <p>Hi Admin,</p>
@@ -151,7 +151,7 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }elseif ($action === 'ForgotEmployeePass') {
+        } elseif ($action === 'ForgotEmployeePass') {
             $mail->Subject = 'Mail Code!';
             $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
@@ -161,7 +161,7 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }elseif ($action === 'MFA') {
+        } elseif ($action === 'MFA') {
             $mail->Subject = 'Mail Code!';
             $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
@@ -171,7 +171,7 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }elseif ($action === 'LeaveApproved') {
+        } elseif ($action === 'LeaveApproved') {
             $mail->Subject = 'Leave Approved!';
             $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
@@ -183,7 +183,7 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }elseif ($action === 'LeaveDisapproved') {
+        } elseif ($action === 'LeaveDisapproved') {
             $mail->Subject = 'Leave Disapproved!';
             $mail->Body = "
                 <p>Hi {$user['fname']} {$user['lname']},</p>
@@ -193,12 +193,12 @@ try {
                 <p>Best regards,<br>HR Team</p>
             ";
 
-        }else {
+        } else {
             exit();
         }
 
         $mail->send();
-        
+
     } catch (Exception $e) {
         file_put_contents(__DIR__ . '/email_error.log', "PHPMailer Error: {$mail->ErrorInfo}\n", FILE_APPEND);
     }

@@ -7,7 +7,7 @@ require '../vendor/autoload.php';
 require_once '../installer/config.php';
 require_once '../installer/session.php';
 require_once 'model.php';
-require_once 'functions.php'; 
+require_once 'functions.php';
 
 if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
     header("Location: ../invalid.php");
@@ -16,23 +16,23 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $pdo = db_connection(); 
+    $pdo = db_connection();
 
     // ============================= Login Authentication ============================= //
     if (isset($_POST['loginAuth']) && $_POST['loginAuth'] === 'true') {
-        $username        = $_POST['username']        ?? '';
-        $password        = $_POST['password']        ?? '';
-        $mailCode        = $_POST['mailCode']        ?? '';
-        $adminMailCode   = $_POST['AdminMailCode']   ?? '';
-        $resendCode      = $_POST['resendCode']      ?? '';
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $mailCode = $_POST['mailCode'] ?? '';
+        $adminMailCode = $_POST['AdminMailCode'] ?? '';
+        $resendCode = $_POST['resendCode'] ?? '';
         $AdminResendCode = $_POST['AdminResendCode'] ?? '';
 
         $hasCredentials = $username !== '' && $password !== '';
-        $hasMfaCode     = ($mailCode !== '') || ($adminMailCode !== '');
+        $hasMfaCode = ($mailCode !== '') || ($adminMailCode !== '');
 
         try {
             if (($resendCode === 'true' || $AdminResendCode === 'true') && !$hasCredentials && !$hasMfaCode) {
-                $userId   = $_SESSION['pending_user_id']   ?? null;
+                $userId = $_SESSION['pending_user_id'] ?? null;
                 $userRole = $_SESSION['pending_user_role'] ?? null;
 
                 if (!$userId || !$userRole) {
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
                 $_SESSION['EmailAuth'] = $code;
 
-                $script   = realpath(__DIR__ . '/emailSender.php');
+                $script = realpath(__DIR__ . '/emailSender.php');
                 $cmdParts = [
                     'php',
                     escapeshellarg($script),
@@ -94,20 +94,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $status = 'pending';
                 if ($user['user_role'] === 'employee') {
-                    $stmt  = $pdo->prepare('SELECT status FROM userRequest WHERE users_id = ? ORDER BY request_date DESC LIMIT 1');
+                    $stmt = $pdo->prepare('SELECT status FROM userRequest WHERE users_id = ? ORDER BY request_date DESC LIMIT 1');
                     $stmt->execute([$user['id']]);
-                    $row   = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     $status = $row['status'] ?? 'pending';
                 }
 
                 session_regenerate_id(true);
 
                 $code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
-                $_SESSION['EmailAuth']         = $code;
-                $_SESSION['pending_user_id']   = $user['id'];
+                $_SESSION['EmailAuth'] = $code;
+                $_SESSION['pending_user_id'] = $user['id'];
                 $_SESSION['pending_user_role'] = $user['user_role'];
 
-                $script   = realpath(__DIR__ . '/emailSender.php');
+                $script = realpath(__DIR__ . '/emailSender.php');
                 $cmdParts = [
                     'php',
                     escapeshellarg($script),
@@ -125,9 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 if ($user['user_role'] === 'employee') {
                     switch ($status) {
-                        case 'validated':  header('Location: ../src/functions/MFAauth.php');   break;
-                        case 'rejected':   header('Location: ../src/employee/rejected.php');   break;
-                        default:           header('Location: ../src/employee/pending.php');    break;
+                        case 'validated':
+                            header('Location: ../src/functions/MFAauth.php');
+                            break;
+                        case 'rejected':
+                            header('Location: ../src/employee/rejected.php');
+                            break;
+                        default:
+                            header('Location: ../src/employee/pending.php');
+                            break;
                     }
                 } else {
                     header('Location: ../src/functions/adminMfaMailCode.php');
@@ -137,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if ($hasMfaCode && !$hasCredentials) {
                 $expected = $_SESSION['EmailAuth'] ?? '';
-                $posted   = $mailCode !== '' ? $mailCode : $adminMailCode;
+                $posted = $mailCode !== '' ? $mailCode : $adminMailCode;
 
                 if ($posted !== $expected && $posted == $mailCode) {
                     header('Location: ../src/functions/MFAauth.php?mfa=failed');
@@ -147,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     exit();
                 }
 
-                $userId   = $_SESSION['pending_user_id']   ?? null;
+                $userId = $_SESSION['pending_user_id'] ?? null;
                 $userRole = $_SESSION['pending_user_role'] ?? null;
                 if (!$userId || !$userRole) {
                     $_SESSION['errors_login']['login_incorrect'] = 'Session expired. Please log in again.';
@@ -155,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     exit();
                 }
 
-                $_SESSION['user_id']   = $userId;
+                $_SESSION['user_id'] = $userId;
                 $_SESSION['user_role'] = $userRole;
 
                 if ($userRole === 'employee') {
@@ -191,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // ============================= User Registration Authentication ============================= //
-    if(isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
+    if (isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];
         $mname = $_POST["mname"];
@@ -225,7 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         try {
 
-             if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
+            if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
                 $profile = $_FILES["user_profile"];
 
                 if (empty_image($profile)) {
@@ -270,28 +276,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
             }
 
-            if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, 
-            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $scheduleFrom, $scheduleTo,
-            $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)){
+            if (
+                user_inputs(
+                    $lname,
+                    $fname,
+                    $mname,
+                    $employeeID,
+                    $jobTitle,
+                    $slary_rate,
+                    $citizenship,
+                    $gender,
+                    $civil_status,
+                    $birthday,
+                    $contact,
+                    $email,
+                    $scheduleFrom,
+                    $scheduleTo,
+                    $street,
+                    $barangay,
+                    $city_muntinlupa,
+                    $province,
+                    $zipCode,
+                    $username,
+                    $password,
+                    $confirmPassword
+                )
+            ) {
                 $errors["empty_inputs"] = "Please fill out all fields!.";
             }
 
-            if(invalid_email($email)){
-            $errors["invalid_email"] = "your email is invalid!";
+            if (invalid_email($email)) {
+                $errors["invalid_email"] = "your email is invalid!";
             }
-            if(email_registered($pdo, $email)){
+            if (email_registered($pdo, $email)) {
                 $errors["email_registered"] = "your email is already registered!";
             }
-            if(password_notMatch ($confirmPassword, $password)){
+            if (password_notMatch($confirmPassword, $password)) {
                 $errors["password_notMatch"] = "Password not match!";
             }
-            if(username_taken($pdo, $username)){
+            if (username_taken($pdo, $username)) {
                 $errors["username_taken"] = "Username Already Taken!";
             }
-            if(password_secured($password)){
+            if (password_secured($password)) {
                 $errors["password_secured"] = "password must be 8 characters above!";
             }
-            if(password_security($password)){
+            if (password_security($password)) {
                 $errors["password_security"] = "password must have at least 1 uppercase, numbers and unique characters like # or !.";
             }
 
@@ -365,10 +394,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $password
             );
             $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'employeeRegistration')";
-            $stmt = $pdo->prepare($query); 
+            $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $usersID);
             $stmt->execute();
-            
+
             $query = "INSERT INTO personal_data_sheet (users_id) VALUES (:users_id);";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $usersID);
@@ -395,7 +424,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             foreach ($levels as $lvl) {
                 $eduStmt->execute([
                     ':pds_id' => $pds_id,
-                    ':level'  => $lvl
+                    ':level' => $lvl
                 ]);
             }
 
@@ -406,7 +435,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ";
 
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$pds_id, $pds_id]); 
+            $stmt->execute([$pds_id, $pds_id]);
 
             $query = "INSERT INTO otherInfo (pds_id) VALUES (:pds_id);";
             $stmt = $pdo->prepare($query);
@@ -415,10 +444,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // echo $usersID;
             header("Location: ../src/index.php?signup=success");
-    
+
             $stmt = null;
             $pdo = null;
-    
+
             die();
 
         } catch (PDOException $e) {
@@ -427,31 +456,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // ============================= Job Titles and salary Authentication ============================= //
-    if(isset($_POST["addJob"]) && $_POST["addJob"] === "true") {
+    if (isset($_POST["addJob"]) && $_POST["addJob"] === "true") {
         $jobTitle = $_POST["jobTitle"];
 
         try {
-            if($jobTitle){
+            if ($jobTitle) {
                 $errors = [];
-                if(JobTitleExist($pdo, $jobTitle)){
+                if (JobTitleExist($pdo, $jobTitle)) {
                     $errors["JobExist"] = "Job Title Already Exist!";
                 }
-                if($errors){
+                if ($errors) {
                     header("Location: ../src/admin/job.php?Job=exist");
                     die();
-                }else{
+                } else {
                     $query = "INSERT INTO jobTitles (jobTitle) VALUES (:jobTitle)";
                     $stmt = $pdo->prepare($query);
                     $stmt->bindParam(":jobTitle", $jobTitle);
                     $stmt->execute();
 
                     header("Location: ../src/admin/job.php?job=success");
-                    $stmt=null;
-                    $pdo=null;
+                    $stmt = null;
+                    $pdo = null;
                     die();
                 }
-                
-            }else{
+
+            } else {
                 echo "no input";
             }
         } catch (PDOException $e) {
@@ -459,36 +488,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    if(isset($_POST["deleteJobTitle"]) && $_POST["deleteJobTitle"] === "true") {
+    if (isset($_POST["deleteJobTitle"]) && $_POST["deleteJobTitle"] === "true") {
         $deleteJob = $_POST["deleteJob"];
-        try{
+        try {
             $query = "DELETE FROM jobtitles WHERE id = :id;";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":id", $deleteJob);
             $stmt->execute();
 
             header("Location: ../src/admin/job.php?deleteJob=success");
-            $stmt=null;
-            $pdo=null;
+            $stmt = null;
+            $pdo = null;
             die();
-        }catch(PDOException $e){
-            die("Query Failed: " . $getMessage());
+        } catch (PDOException $e) {
+            die("Query Failed: " . $e->getMessage());
         }
     }
-    
-    if(isset($_POST["EditJobTitle"]) && $_POST["EditJobTitle"] === "true"){
+
+    if (isset($_POST["EditJobTitle"]) && $_POST["EditJobTitle"] === "true") {
         $editJobId = $_POST["editJobId"];
         $editJobTitle = $_POST["editJobTitle"];
 
         try {
             $errors = [];
-                if(JobTitleExist($pdo, $editJobTitle)){
-                    $errors["JobExist"] = "Job Title Already Exist!";
-                }
-                if($errors){
-                    header("Location: ../src/admin/job.php?Job=exist");
-                    die();
-                }
+            if (JobTitleExist($pdo, $editJobTitle)) {
+                $errors["JobExist"] = "Job Title Already Exist!";
+            }
+            if ($errors) {
+                header("Location: ../src/admin/job.php?Job=exist");
+                die();
+            }
             $query = "UPDATE jobtitles SET jobTitle = :jobTitle WHERE id = :id";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":id", $editJobId);
@@ -496,8 +525,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute();
 
             header("Location: ../src/admin/job.php?JobTitleExdit=success");
-            $stmt=null;
-            $pdo=null;
+            $stmt = null;
+            $pdo = null;
             die();
         } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
@@ -542,7 +571,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         pclose(popen($command, "r"));
 
         $query = "INSERT INTO reports (users_id, report_type) VALUES (:users_id, 'employeePromotion')";
-        $stmt = $pdo->prepare($query); 
+        $stmt = $pdo->prepare($query);
         $stmt->bindParam(":users_id", $users_id_job);
         $stmt->execute();
 
@@ -575,7 +604,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // ============================= ADMIN SETTINGS ============================= //
-    if (isset($_POST["changePassword"]) && $_POST["changePassword"] === "true"){
+    if (isset($_POST["changePassword"]) && $_POST["changePassword"] === "true") {
         $currentPassword = $_POST["current_password"] ?? "";
         $newPassword = $_POST["new_password"] ?? "";
         $confirmPassword = $_POST["confirm_password"] ?? "";
@@ -632,55 +661,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
     }
-    
-    if (isset($_POST["forgotPassword"]) && $_POST["forgotPassword"] === "true"){
-       $usersnameAuth = $_POST["username"] ?? '';
-       $mailCode = $_POST["mailCode"] ?? '';
-       $new_password = $_POST["new_password"] ?? '';
-       $confirm_password = $_POST["confirm_password"] ?? '';
 
-       // =============== SEND TO EMAIL ====================== //
+    if (isset($_POST["forgotPassword"]) && $_POST["forgotPassword"] === "true") {
+        $usersnameAuth = $_POST["username"] ?? '';
+        $mailCode = $_POST["mailCode"] ?? '';
+        $new_password = $_POST["new_password"] ?? '';
+        $confirm_password = $_POST["confirm_password"] ?? '';
 
-        try{
+        // =============== SEND TO EMAIL ====================== //
+
+        try {
             $query = "SELECT username FROM users WHERE id = 1";
             $stmt = $pdo->prepare($query);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             $getUsername = $user["username"];
 
-          
 
-            if($usersnameAuth !== null && $usersnameAuth === $getUsername){
+
+            if ($usersnameAuth !== null && $usersnameAuth === $getUsername) {
                 $emailAuth = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
                 $employeeId = 1;
-                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $scriptPath = realpath(__DIR__ . "/emailSender.php");
                 $command = "start /B php " .
-                    escapeshellarg($scriptPath) . ' ' . 
-                    escapeshellarg($employeeId) . ' ' .     
-                    escapeshellarg("password") . ' ' .     
-                    escapeshellarg('') . ' ' .           
-                    escapeshellarg('') . ' ' .                 
-                    escapeshellarg('') . ' ' .               
-                    escapeshellarg('') . ' ' .                 
-                    escapeshellarg('') . ' ' .                        
-                    escapeshellarg($emailAuth) . '"';                       
+                    escapeshellarg($scriptPath) . ' ' .
+                    escapeshellarg($employeeId) . ' ' .
+                    escapeshellarg("password") . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg($emailAuth) . '"';
                 pclose(popen($command, "r"));
                 $_SESSION["EmailAuth"] = $emailAuth;
                 header("Location: ../src/admin/changePass.php?username=success");
                 die();
-            }else if($usersnameAuth !== '' && $usersnameAuth !== $getUsername){
+            } else if ($usersnameAuth !== '' && $usersnameAuth !== $getUsername) {
                 header("Location: ../src/admin/settings.php?passwordAuthFailes=failed");
                 die();
-            }else if($usersnameAuth !== ''){
-                 header("Location: ../src/admin/settings.php?passwordAuth=null");
+            } else if ($usersnameAuth !== '') {
+                header("Location: ../src/admin/settings.php?passwordAuth=null");
                 die();
-            }elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]) {
-                if($new_password !== $confirm_password){
+            } elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]) {
+                if ($new_password !== $confirm_password) {
                     header("Location: ../src/admin/changePass.php?password=notMatch");
                     die();
                 }
-                if(empty($new_password) || empty($confirm_password)){
-                     header("Location: ../src/admin/changePass.php?password=empty");
+                if (empty($new_password) || empty($confirm_password)) {
+                    header("Location: ../src/admin/changePass.php?password=empty");
                     die();
                 }
                 $hasedPass = password_hash($new_password, PASSWORD_DEFAULT);
@@ -691,11 +720,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 header("Location: ../src/admin/settings.php?passwordChange=success");
                 die();
-            }elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
+            } elseif ($mailCode !== null && $mailCode !== $_SESSION["EmailAuth"]) {
                 header("Location: ../src/admin/changePass.php?code=notMatch");
                 die();
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
         }
     }
@@ -727,18 +756,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam(":users_id", $employeeId);
             $stmt->execute();
 
-            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+            $scriptPath = realpath(__DIR__ . "/emailSender.php");
             $command = "start /B php " .
-                escapeshellarg($scriptPath) . ' ' .  
-                escapeshellarg($employeeId) . ' ' .     
-                escapeshellarg("accepted") . ' ' .     
-                escapeshellarg('') . ' ' .            
-                escapeshellarg('') . ' ' .                   
-                escapeshellarg('') . ' ' .                
-                escapeshellarg('') . ' ' .                
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') ;                       
+                escapeshellarg($scriptPath) . ' ' .
+                escapeshellarg($employeeId) . ' ' .
+                escapeshellarg("accepted") . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('');
 
             pclose(popen($command, "r"));
 
@@ -752,9 +781,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
 
-    if(isset($_POST["rejectEmployee"]) && $_POST["rejectEmployee"] === "true"){
+    if (isset($_POST["rejectEmployee"]) && $_POST["rejectEmployee"] === "true") {
         $employeeId = $_POST["employeeId"];
-        try{
+        try {
             $query = "UPDATE userrequest SET status = 'rejected' WHERE users_id = :users_id";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(":users_id", $employeeId);
@@ -765,30 +794,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam("users_id", $employeeId);
             $stmt->execute();
 
-            $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+            $scriptPath = realpath(__DIR__ . "/emailSender.php");
             $command = "start /B php " .
-                escapeshellarg($scriptPath) . ' ' .         
-                escapeshellarg($employeeId) . ' ' .          
-                escapeshellarg("rejected") . ' ' .         
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                  
-                escapeshellarg('') . ' ' .                   
-                escapeshellarg('') . ' ' .                
-                escapeshellarg('') . ' ' .                
-                escapeshellarg('') ;                       
+                escapeshellarg($scriptPath) . ' ' .
+                escapeshellarg($employeeId) . ' ' .
+                escapeshellarg("rejected") . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('');
 
             pclose(popen($command, "r"));
 
             header("Location: ../src/admin/employee.php?rejectEmployee=success&tab=request");
-            $stmt=null;
-            $pdo=null;
+            $stmt = null;
+            $pdo = null;
             die();
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
         }
     }
 
-    if(isset($_POST["deleteValidatedEmployee"]) && $_POST["deleteValidatedEmployee"] === "true"){
+    if (isset($_POST["deleteValidatedEmployee"]) && $_POST["deleteValidatedEmployee"] === "true") {
         $delete_user_id = $_POST["delete_user_id"];
         try {
             $query = "DELETE FROM users WHERE id = :id";
@@ -796,8 +825,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam(":id", $delete_user_id);
             $stmt->execute();
             header("Location: ../src/admin/employee.php?deleteValidatedEmployee=success&tab=delete");
-            $stmt=null;
-            $pdo=null;
+            $stmt = null;
+            $pdo = null;
             die();
         } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
@@ -806,7 +835,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // ============================= PROFILING Authentication ============================= //
     if (isset($_POST["requestUpdate"]) && $_POST["requestUpdate"] === "true") {
-        $users_id = (int)$_POST["users_id"];
+        $users_id = (int) $_POST["users_id"];
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];
         $mname = $_POST["mname"];
@@ -869,13 +898,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 }
             } else {
-               $profile = $_POST["current_profile_image"];
+                $profile = $_POST["current_profile_image"];
             }
 
             if (invalid_email($email)) {
                 $errors["invalid_email"] = "Your email is invalid!";
             }
-            if (email_registeredUpdate($pdo, $email, $users_id)) { 
+            if (email_registeredUpdate($pdo, $email, $users_id)) {
                 $errors["email_registered"] = "Your email is already registered!";
             }
 
@@ -927,7 +956,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (isset($_POST["validatedUpdate"]) && $_POST["validatedUpdate"] === "true") {
-        $users_id = (int)$_POST["users_id"];
+        $users_id = (int) $_POST["users_id"];
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];
         $mname = $_POST["mname"];
@@ -990,13 +1019,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 }
             } else {
-               $profile = $_POST["current_profile_image"];
+                $profile = $_POST["current_profile_image"];
             }
 
             if (invalid_email($email)) {
                 $errors["invalid_email"] = "Your email is invalid!";
             }
-            if (email_registeredUpdate($pdo, $email, $users_id)) { 
+            if (email_registeredUpdate($pdo, $email, $users_id)) {
                 $errors["email_registered"] = "Your email is already registered!";
             }
 
@@ -1108,7 +1137,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $insertStmt = $pdo->prepare($insertSql);
 
             foreach ($educations as $edu) {
-                if (empty($edu['school_name'])) continue;
+                if (empty($edu['school_name']))
+                    continue;
 
                 $year_started = !empty($edu['year_started']) ? $edu['year_started'] : null;
                 $year_ended = !empty($edu['year_ended']) ? $edu['year_ended'] : null;
@@ -1137,19 +1167,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["familyUpdate"]) && $_POST["familyUpdate"] === "true") {
         $users_id = $_POST['users_id'] ?? null;
-        
+
         $father_name = $_POST['father_name'] ?? '';
         $father_occupation = $_POST['father_occupation'] ?? '';
         $father_contact = $_POST['father_contact'] ?? '';
-        
+
         $mother_name = $_POST['mother_name'] ?? '';
         $mother_occupation = $_POST['mother_occupation'] ?? '';
         $mother_contact = $_POST['mother_contact'] ?? '';
-        
+
         $guardian_name = $_POST['guardian_name'] ?? '';
         $guardian_relationship = $_POST['guardian_relationship'] ?? '';
         $guardian_contact = $_POST['guardian_contact'] ?? '';
-        
+
         $father_houseBlock = $_POST['father_houseBlock'] ?? '';
         $father_street = $_POST['father_street'] ?? '';
         $father_subdivision = $_POST['father_subdivision'] ?? '';
@@ -1157,7 +1187,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $father_city_muntinlupa = $_POST['father_city_muntinlupa'] ?? '';
         $father_province = $_POST['father_province'] ?? '';
         $father_zip_code = $_POST['father_zip_code'] ?? '';
-        
+
         $mother_houseBlock = $_POST['mother_houseBlock'] ?? '';
         $mother_street = $_POST['mother_street'] ?? '';
         $mother_subdivision = $_POST['mother_subdivision'] ?? '';
@@ -1165,7 +1195,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mother_city_muntinlupa = $_POST['mother_city_muntinlupa'] ?? '';
         $mother_province = $_POST['mother_province'] ?? '';
         $mother_zip_code = $_POST['mother_zip_code'] ?? '';
-        
+
         $guardian_houseBlock = $_POST['guardian_houseBlock'] ?? '';
         $guardian_street = $_POST['guardian_street'] ?? '';
         $guardian_subdivision = $_POST['guardian_subdivision'] ?? '';
@@ -1183,7 +1213,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $checkStmt = $pdo->prepare("SELECT id FROM family_information WHERE users_id = :users_id");
             $checkStmt->execute([':users_id' => $users_id]);
             $existingFamily = $checkStmt->fetch(PDO::FETCH_ASSOC);
-            
+
             $familyParams = [
                 ':users_id' => $users_id,
                 ':father_name' => $father_name,
@@ -1236,7 +1266,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     WHERE users_id = :users_id");
 
                 $updateFamilyInfoStmt->execute($familyParams);
-                
+
                 $updateFamilyAddressStmt = $pdo->prepare("UPDATE family_informationAddress SET
                     father_houseBlock = :father_houseBlock,
                     father_street = :father_street,
@@ -1269,7 +1299,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     VALUES (:users_id, :father_name, :father_occupation, :father_contact, :mother_name, :mother_occupation, :mother_contact, :guardian_name, :guardian_relationship, :guardian_contact)");
 
                 $insertFamilyInfoStmt->execute($familyParams);
-                
+
                 $insertFamilyAddressStmt = $pdo->prepare("INSERT INTO family_informationAddress (users_id, father_houseBlock, father_street, father_subdivision, father_barangay, father_city_muntinlupa, father_province, father_zip_code, mother_houseBlock, mother_street, mother_subdivision, mother_barangay, mother_city_muntinlupa, mother_province, mother_zip_code, guardian_houseBlock, guardian_street, guardian_subdivision, guardian_barangay, guardian_city_muntinlupa, guardian_province, guardian_zip_code) 
                     VALUES (:users_id, :father_houseBlock, :father_street, :father_subdivision, :father_barangay, :father_city_muntinlupa, :father_province, :father_zip_code, :mother_houseBlock, :mother_street, :mother_subdivision, :mother_barangay, :mother_city_muntinlupa, :mother_province, :mother_zip_code, :guardian_houseBlock, :guardian_street, :guardian_subdivision, :guardian_barangay, :guardian_city_muntinlupa, :guardian_province, :guardian_zip_code)");
 
@@ -1287,7 +1317,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    if(isset($_POST["add_employee"]) && $_POST["add_employee"] === "true") {
+    if (isset($_POST["add_employee"]) && $_POST["add_employee"] === "true") {
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];
         $mname = $_POST["mname"];
@@ -1324,7 +1354,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         try {
 
-           if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
+            if (isset($_FILES["user_profile"]) && $_FILES["user_profile"]["error"] === 0) {
                 $profile = $_FILES["user_profile"];
 
                 if (empty_image($profile)) {
@@ -1369,28 +1399,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
             }
 
-            if(user_inputs($lname, $fname, $mname, $employeeID, $jobTitle, $slary_rate, $salary_Range_From, $salary_Range_To, $salary,
-            $citizenship, $gender, $civil_status, $birthday, $contact, $email, $scheduleFrom, $scheduleTo,
-            $street, $barangay, $city_muntinlupa, $province, $zipCode, $username, $password, $confirmPassword)){
-                $errors["empty_inputs"] = "Please fill out all fields!.";
+            if (
+                user_inputs(
+                    $lname,
+                    $fname,
+                    $mname,
+                    $employeeID,
+                    $jobTitle,
+                    $salary_rate,
+                    $salary_Range_From,
+                    $salary_Range_To,
+                    $salary,
+                    $citizenship,
+                    $gender,
+                    $civil_status,
+                    $birthday,
+                    $contact,
+                    $email,
+                    $scheduleFrom,
+                    $scheduleTo,
+                    $street,
+                    $barangay,
+                    $city_muntinlupa,
+                    $province,
+                    $zipCode,
+                    $username,
+                    $password,
+                    $confirmPassword
+                )
+            ) {
+                $errors["empty_inputs"] = "Please fill out all fields!";
             }
 
-            if(invalid_email($email)){
-            $errors["invalid_email"] = "your email is invalid!";
+            if (invalid_email($email)) {
+                $errors["invalid_email"] = "your email is invalid!";
             }
-            if(email_registered($pdo, $email)){
+            if (email_registered($pdo, $email)) {
                 $errors["email_registered"] = "your email is already registered!";
             }
-            if(password_notMatch ($confirmPassword, $password)){
+            if (password_notMatch($confirmPassword, $password)) {
                 $errors["password_notMatch"] = "Password not match!";
             }
-            if(username_taken($pdo, $username)){
+            if (username_taken($pdo, $username)) {
                 $errors["username_taken"] = "Username Already Taken!";
             }
-            if(password_secured($password)){
+            if (password_secured($password)) {
                 $errors["password_secured"] = "password must be 8 characters above!";
             }
-            if(password_security($password)){
+            if (password_security($password)) {
                 $errors["password_security"] = "password must have at least 1 uppercase, numbers and unique characters like # or !.";
             }
 
@@ -1494,14 +1550,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindParam(":pds_id", $pds_id);
             $stmt->execute();
 
-           $sql = "
+            $sql = "
                 INSERT INTO parents (pds_id, relation)
                 VALUES (?, 'Father'), (?, 'Mother')
                 ON DUPLICATE KEY UPDATE pds_id = pds_id
             ";
 
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$pds_id, $pds_id]); 
+            $stmt->execute([$pds_id, $pds_id]);
 
             $levels = ['Elementary', 'Secondary', 'Vocational', 'College', 'Graduate'];
 
@@ -1513,7 +1569,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             foreach ($levels as $lvl) {
                 $eduStmt->execute([
                     ':pds_id' => $pds_id,
-                    ':level'  => $lvl
+                    ':level' => $lvl
                 ]);
             }
 
@@ -1529,25 +1585,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $phpPath = 'C:\\xampp\\php\\php.exe';
 
             $command = 'cmd.exe /C "start /B "" ' .
-            escapeshellarg($phpPath) . ' ' .
-            escapeshellarg($scriptPath) . ' ' .
-            escapeshellarg($createdUserId) . ' ' .  
-            escapeshellarg("created") . ' ' .     
-            escapeshellarg('') . ' ' .             
-            escapeshellarg('') . ' ' .          
-            escapeshellarg('') . ' ' .          
-            escapeshellarg($username) . ' ' .   
-            escapeshellarg($password) . ' ';       
-            escapeshellarg($password) ;       
+                escapeshellarg($phpPath) . ' ' .
+                escapeshellarg($scriptPath) . ' ' .
+                escapeshellarg($createdUserId) . ' ' .
+                escapeshellarg("created") . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg('') . ' ' .
+                escapeshellarg($username) . ' ' .
+                escapeshellarg($password) . ' ';
+            escapeshellarg($password);
 
             pclose(popen($command, "r"));
 
 
             header("Location: ../src/admin/employee.php?acceptEmployee=success&tab=accept");
-    
+
             $stmt = null;
             $pdo = null;
-    
+
             die();
 
         } catch (PDOException $e) {
@@ -1556,8 +1612,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // =============================== EMPLOYEE AREA =============================== //
-    if(isset($_POST["userUpdateProfile"]) && $_POST["userUpdateProfile"] === "true") {
-       $users_id = (int)$_POST["users_id"];
+    if (isset($_POST["userUpdateProfile"]) && $_POST["userUpdateProfile"] === "true") {
+        $users_id = (int) $_POST["users_id"];
         $lname = $_POST["lname"];
         $fname = $_POST["fname"];
         $mname = $_POST["mname"];
@@ -1620,12 +1676,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 }
             } else {
-               $profile = $_POST["current_profile_image"];
+                $profile = $_POST["current_profile_image"];
             }
 
             if (invalid_email($email)) {
-                 header("Location: ../src/employee/profile.php?users_id=" . $users_id . "&InvalidEmail=failed");
-                 exit();
+                header("Location: ../src/employee/profile.php?users_id=" . $users_id . "&InvalidEmail=failed");
+                exit();
             }
             // if (email_registeredUpdate($pdo, $email, $users_id)) { 
             //      header("Location: ../src/employee/profile.php?users_id=" . $users_id . "&mail=failed");
@@ -1681,7 +1737,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["familyEmployeeUpdate"]) && $_POST["familyEmployeeUpdate"] === "true") {
         $users_id = $_POST['users_id'] ?? null;
-        
+
         $father_name = $_POST['father_name'] ?? '';
         $father_occupation = $_POST['father_occupation'] ?? '';
         $father_contact = $_POST['father_contact'] ?? '';
@@ -1751,7 +1807,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     guardian_relationship = :guardian_relationship,
                     guardian_contact = :guardian_contact
                     WHERE users_id = :users_id";
-                
+
                 $stmtFamily = $pdo->prepare($sqlFamily);
                 $stmtFamily->execute($params);
 
@@ -1930,7 +1986,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $insertStmt = $pdo->prepare($insertSql);
 
             foreach ($educations as $edu) {
-                if (empty($edu['school_name'])) continue;
+                if (empty($edu['school_name']))
+                    continue;
 
                 $year_started = !empty($edu['year_started']) ? $edu['year_started'] : null;
                 $year_ended = !empty($edu['year_ended']) ? $edu['year_ended'] : null;
@@ -1957,7 +2014,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    if (isset($_POST["changePasswordEmp"]) && $_POST["changePasswordEmp"] === "true"){
+    if (isset($_POST["changePasswordEmp"]) && $_POST["changePasswordEmp"] === "true") {
         $currentPassword = $_POST["current_password"] ?? "";
         $newPassword = $_POST["new_password"] ?? "";
         $confirmPassword = $_POST["confirm_password"] ?? "";
@@ -2018,27 +2075,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // =============================== LEAVE AREA =============================== //
     if (isset($_POST["LeaveEmployee"]) && $_POST["LeaveEmployee"] === "true") {
-        $users_id          = $_SESSION["user_id"] ?? '';
-        $dateLeave         = $_POST["dateLeave"];
-        $position          = $_POST["position"];
-        $department        = $_POST["department"];
-        $leaveType         = $_POST["leaveType"];
-        $others            = $_POST["others"] ?? '';
-        $purpose           = $_POST["purpose"];
+        $users_id = $_SESSION["user_id"] ?? '';
+        $dateLeave = $_POST["dateLeave"];
+        $position = $_POST["position"];
+        $department = $_POST["department"];
+        $leaveType = $_POST["leaveType"];
+        $others = $_POST["others"] ?? '';
+        $purpose = $_POST["purpose"];
         $inclusiveDateFrom = $_POST["inclusiveDateFrom"];
-        $inclusiveDateTo   = $_POST["inclusiveDateTo"];
-        $daysOfLeave       = intval($_POST["daysOfLeave"]);
-        $contact           = $_POST["contact"];
-        $sectionHead       = $_POST["sectionHead"];
-        $departmentHead    = $_POST["departmentHead"];
+        $inclusiveDateTo = $_POST["inclusiveDateTo"];
+        $daysOfLeave = intval($_POST["daysOfLeave"]);
+        $contact = $_POST["contact"];
+        $sectionHead = $_POST["sectionHead"];
+        $departmentHead = $_POST["departmentHead"];
 
         try {
             if (
-                empty($dateLeave)      || empty($position)       || empty($department) ||
-                empty($leaveType)      || empty($purpose)        || empty($inclusiveDateFrom) ||
-                empty($inclusiveDateTo)|| empty($daysOfLeave)    || empty($contact) ||
-                empty($sectionHead)    || empty($departmentHead)
-            ){
+                empty($dateLeave) || empty($position) || empty($department) ||
+                empty($leaveType) || empty($purpose) || empty($inclusiveDateFrom) ||
+                empty($inclusiveDateTo) || empty($daysOfLeave) || empty($contact) ||
+                empty($sectionHead) || empty($departmentHead)
+            ) {
                 header("Location: ../src/employee/leave.php?empty=fields");
                 die();
             }
@@ -2054,16 +2111,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     :sectionHead, :departmentHead
                 )";
             $stmt = $pdo->prepare($q);
-            $stmt->bindParam(":users_id",       $users_id);
-            $stmt->bindParam(":leaveType",      $leaveType);
-            $stmt->bindParam(":leaveDate",      $dateLeave);
-            $stmt->bindParam(":Others",         $others);
-            $stmt->bindParam(":Purpose",        $purpose);
-            $stmt->bindParam(":InclusiveFrom",  $inclusiveDateFrom);
-            $stmt->bindParam(":InclusiveTo",    $inclusiveDateTo);
-            $stmt->bindParam(":numberOfDays",   $daysOfLeave);
-            $stmt->bindParam(":contact",        $contact);
-            $stmt->bindParam(":sectionHead",    $sectionHead);
+            $stmt->bindParam(":users_id", $users_id);
+            $stmt->bindParam(":leaveType", $leaveType);
+            $stmt->bindParam(":leaveDate", $dateLeave);
+            $stmt->bindParam(":Others", $others);
+            $stmt->bindParam(":Purpose", $purpose);
+            $stmt->bindParam(":InclusiveFrom", $inclusiveDateFrom);
+            $stmt->bindParam(":InclusiveTo", $inclusiveDateTo);
+            $stmt->bindParam(":numberOfDays", $daysOfLeave);
+            $stmt->bindParam(":contact", $contact);
+            $stmt->bindParam(":sectionHead", $sectionHead);
             $stmt->bindParam(":departmentHead", $departmentHead);
             $stmt->execute();
 
@@ -2078,7 +2135,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             header("Location: ../src/employee/leave.php?success=leave");
             $stmt = null;
-            $pdo  = null;
+            $pdo = null;
             die();
         } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
@@ -2087,37 +2144,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST['LeaveAdminApproval']) && $_POST['LeaveAdminApproval'] === 'true') {
 
-        $users_id          = $_POST['users_id'];
-        $leave_id          = $_POST['leave_id'];
-        $reportID          = $_POST['reportID'];
-        $leaveType         = $_POST['leaveType'];
+        $users_id = $_POST['users_id'];
+        $leave_id = $_POST['leave_id'];
+        $reportID = $_POST['reportID'];
+        $leaveType = $_POST['leaveType'];
         $disapprovalDetails = $_POST['disapprovalDetails'] ?? '';
         $numberOfDays = $_POST['numberOfDays'] ?? '';
 
-        $vacationBalance        = $_POST['vacationBalance']        ?? '';
-        $vacationEarned         = $_POST['vacationEarned']         ?? '';
-        $vacationCredits        = $_POST['vacationCredits']        ?? '';
-        $vacationLessLeave      = $_POST['vacationLessLeave']      ?? '';
-        $vacationBalanceToDate  = $_POST['vacationBalanceToDate']  ?? '';
+        $vacationBalance = $_POST['vacationBalance'] ?? '';
+        $vacationEarned = $_POST['vacationEarned'] ?? '';
+        $vacationCredits = $_POST['vacationCredits'] ?? '';
+        $vacationLessLeave = $_POST['vacationLessLeave'] ?? '';
+        $vacationBalanceToDate = $_POST['vacationBalanceToDate'] ?? '';
 
-        $sickBalance            = $_POST['sickBalance']            ?? '';
-        $sickEarned             = $_POST['sickEarned']             ?? '';
-        $sickCredits            = $_POST['sickCredits']            ?? '';
-        $sickLessLeave          = $_POST['sickLessLeave']          ?? '';
-        $sickBalanceToDate      = $_POST['sickBalanceToDate']      ?? '';
+        $sickBalance = $_POST['sickBalance'] ?? '';
+        $sickEarned = $_POST['sickEarned'] ?? '';
+        $sickCredits = $_POST['sickCredits'] ?? '';
+        $sickLessLeave = $_POST['sickLessLeave'] ?? '';
+        $sickBalanceToDate = $_POST['sickBalanceToDate'] ?? '';
 
-        $specialBalance         = $_POST['specialBalance']         ?? '';
-        $specialEarned          = $_POST['specialEarned']          ?? '';
-        $specialCredits         = $_POST['specialCredits']         ?? '';
-        $specialLessLeave       = $_POST['specialLessLeave']       ?? '';
-        $specialBalanceToDate   = $_POST['specialBalanceToDate']   ?? '';
+        $specialBalance = $_POST['specialBalance'] ?? '';
+        $specialEarned = $_POST['specialEarned'] ?? '';
+        $specialCredits = $_POST['specialCredits'] ?? '';
+        $specialLessLeave = $_POST['specialLessLeave'] ?? '';
+        $specialBalanceToDate = $_POST['specialBalanceToDate'] ?? '';
 
-        $leaveStatus = $_POST['leaveStatus'] ?? ''; 
+        $leaveStatus = $_POST['leaveStatus'] ?? '';
 
-        $balance       = $vacationBalance       !== '' ? $vacationBalance       : ($sickBalance       !== '' ? $sickBalance       : $specialBalance);
-        $earned        = $vacationEarned        !== '' ? $vacationEarned        : ($sickEarned        !== '' ? $sickEarned        : $specialEarned);
-        $credits       = $vacationCredits       !== '' ? $vacationCredits       : ($sickCredits       !== '' ? $sickCredits       : $specialCredits);
-        $lessLeave     = $vacationLessLeave     !== '' ? $vacationLessLeave     : ($sickLessLeave     !== '' ? $sickLessLeave     : $specialLessLeave);
+        $balance = $vacationBalance !== '' ? $vacationBalance : ($sickBalance !== '' ? $sickBalance : $specialBalance);
+        $earned = $vacationEarned !== '' ? $vacationEarned : ($sickEarned !== '' ? $sickEarned : $specialEarned);
+        $credits = $vacationCredits !== '' ? $vacationCredits : ($sickCredits !== '' ? $sickCredits : $specialCredits);
+        $lessLeave = $vacationLessLeave !== '' ? $vacationLessLeave : ($sickLessLeave !== '' ? $sickLessLeave : $specialLessLeave);
         $balanceToDate = $vacationBalanceToDate !== '' ? $vacationBalanceToDate : ($sickBalanceToDate !== '' ? $sickBalanceToDate : $specialBalanceToDate);
 
         try {
@@ -2127,12 +2184,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $q = "UPDATE leavereq
                 SET    leaveStatus = :leaveStatus
                 WHERE  leave_id    = :leave_id";
-            $st = $pdo->prepare($q);
-            $st->bindParam(':leaveStatus', $leaveStatus);
-            $st->bindParam(':leave_id',    $leave_id, PDO::PARAM_INT);
-            $st->execute();
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveStatus', $leaveStatus);
+                $st->bindParam(':leave_id', $leave_id, PDO::PARAM_INT);
+                $st->execute();
 
-            $q = "INSERT INTO leave_details
+                $q = "INSERT INTO leave_details
                     (leaveID, balance, earned, credits, lessLeave, balanceToDate, disapprovalDetails)
                 VALUES
                     (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate, :disapprovalDetails)
@@ -2143,57 +2200,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     lessLeave       = VALUES(lessLeave),
                     balanceToDate   = VALUES(balanceToDate),
                     disapprovalDetails = VALUES(disapprovalDetails)";
-            $st = $pdo->prepare($q);
-            $st->bindParam(':leaveID',       $leave_id,     PDO::PARAM_INT);
-            $st->bindParam(':balance',       $balance);
-            $st->bindParam(':earned',        $earned);
-            $st->bindParam(':credits',       $credits);
-            $st->bindParam(':lessLeave',     $lessLeave);
-            $st->bindParam(':balanceToDate', $balanceToDate);
-            $st->bindParam(':disapprovalDetails', $disapprovalDetails);
-            $st->execute();
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                $st->bindParam(':balance', $balance);
+                $st->bindParam(':earned', $earned);
+                $st->bindParam(':credits', $credits);
+                $st->bindParam(':lessLeave', $lessLeave);
+                $st->bindParam(':balanceToDate', $balanceToDate);
+                $st->bindParam(':disapprovalDetails', $disapprovalDetails);
+                $st->execute();
 
                 // =========================== LEAVE BALANCE MOT ENOUGH ======================== //
                 $finalBalance = intval($balance) - $numberOfDays;
-                if(intval($balance) < $numberOfDays){
+                if (intval($balance) < $numberOfDays) {
                     header('Location: ../src/admin/employeeLeaveReq.php?leave=notEnoughBalance&users_id=' . $users_id . '&leave_id=' . $leave_id);
                     die();
                 }
 
                 // =========================== LEAVE COUNTS UPDATE ======================== //
-                switch($leaveType){
+                switch ($leaveType) {
                     case "vacation":
                         $query = "UPDATE leavecounts SET VacationBalance = :VacationBalance WHERE users_id = :users_id";
                         $stmt = $pdo->prepare($query);
-                        $stmt->bindParam(":users_id",$users_id);
-                        $stmt->bindParam(":VacationBalance",$finalBalance);
+                        $stmt->bindParam(":users_id", $users_id);
+                        $stmt->bindParam(":VacationBalance", $finalBalance);
                         $stmt->execute();
                         break;
                     case "sick":
                         $query = "UPDATE leavecounts SET SickBalance = :SickBalance WHERE users_id = :users_id";
                         $stmt = $pdo->prepare($query);
-                        $stmt->bindParam(":users_id",$users_id);
-                        $stmt->bindParam(":SickBalance",$finalBalance);
+                        $stmt->bindParam(":users_id", $users_id);
+                        $stmt->bindParam(":SickBalance", $finalBalance);
                         $stmt->execute();
                         break;
                     case "balance":
                         $query = "UPDATE leavecounts SET SpecialBalance = :SpecialBalance WHERE users_id = :users_id";
                         $stmt = $pdo->prepare($query);
-                        $stmt->bindParam(":users_id",$users_id);
-                        $stmt->bindParam(":SpecialBalance",$finalBalance);
+                        $stmt->bindParam(":users_id", $users_id);
+                        $stmt->bindParam(":SpecialBalance", $finalBalance);
                         $stmt->execute();
-                        break;    
+                        break;
                     case "others":
                         $query = "UPDATE leavecounts SET OthersBalance = :OthersBalance WHERE users_id = :users_id";
                         $stmt = $pdo->prepare($query);
-                        $stmt->bindParam(":users_id",$users_id);
-                        $stmt->bindParam(":OthersBalance",$finalBalance);
+                        $stmt->bindParam(":users_id", $users_id);
+                        $stmt->bindParam(":OthersBalance", $finalBalance);
                         $stmt->execute();
-                        break;      
+                        break;
                     default:
-                    header('Location: ../src/admin/employeeLeaveReq.php?leave=failed&users_id=' . $users_id);
-                    break;
-                } 
+                        header('Location: ../src/admin/employeeLeaveReq.php?leave=failed&users_id=' . $users_id);
+                        break;
+                }
 
                 // =========================== LEAVBE DETAILS UPDATE ======================== //
                 $q = "UPDATE leave_details
@@ -2203,7 +2260,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
                 $st->execute();
 
-                 // =========================== REPORT UPDATE ======================== //
+                // =========================== REPORT UPDATE ======================== //
                 $q = "UPDATE reports
                     SET  report_type = 'approvedLeave'
                     WHERE leave_id   = :leave_id";
@@ -2212,20 +2269,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $st->execute();
 
                 $pdo->commit();
-                
+
                 // =========================== MAIL SENDER ======================== //
-                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $scriptPath = realpath(__DIR__ . "/emailSender.php");
                 $command = "start /B php " .
-                    escapeshellarg($scriptPath) . ' ' . 
-                    escapeshellarg($users_id) . ' ' .    
-                    escapeshellarg("LeaveApproved") . ' ' .  
-                    escapeshellarg('') . ' ' .         
-                    escapeshellarg('') . ' ' .              
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg('') . ' ' .                 
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg($leave_id) ;
+                    escapeshellarg($scriptPath) . ' ' .
+                    escapeshellarg($users_id) . ' ' .
+                    escapeshellarg("LeaveApproved") . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg($leave_id);
 
                 pclose(popen($command, "r"));
 
@@ -2242,13 +2299,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $q = "UPDATE leavereq
                 SET    leaveStatus = :leaveStatus
                 WHERE  leave_id    = :leave_id";
-            $st = $pdo->prepare($q);
-            $st->bindParam(':leaveStatus', $leaveStatus);
-            $st->bindParam(':leave_id',    $leave_id, PDO::PARAM_INT);
-            $st->execute();
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveStatus', $leaveStatus);
+                $st->bindParam(':leave_id', $leave_id, PDO::PARAM_INT);
+                $st->execute();
 
-            // =========================== LEAVE DETAILS ======================== //
-            $q = "INSERT INTO leave_details
+                // =========================== LEAVE DETAILS ======================== //
+                $q = "INSERT INTO leave_details
                     (leaveID, balance, earned, credits, lessLeave, balanceToDate, disapprovalDetails)
                 VALUES
                     (:leaveID, :balance, :earned, :credits, :lessLeave, :balanceToDate, :disapprovalDetails)
@@ -2259,17 +2316,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     lessLeave       = VALUES(lessLeave),
                     balanceToDate   = VALUES(balanceToDate),
                     disapprovalDetails = VALUES(disapprovalDetails)";
-            $st = $pdo->prepare($q);
-            $st->bindParam(':leaveID',       $leave_id,     PDO::PARAM_INT);
-            $st->bindParam(':balance',       $balance);
-            $st->bindParam(':earned',        $earned);
-            $st->bindParam(':credits',       $credits);
-            $st->bindParam(':lessLeave',     $lessLeave);
-            $st->bindParam(':balanceToDate', $balanceToDate);
-            $st->bindParam(':disapprovalDetails', $disapprovalDetails);
-            $st->execute();
+                $st = $pdo->prepare($q);
+                $st->bindParam(':leaveID', $leave_id, PDO::PARAM_INT);
+                $st->bindParam(':balance', $balance);
+                $st->bindParam(':earned', $earned);
+                $st->bindParam(':credits', $credits);
+                $st->bindParam(':lessLeave', $lessLeave);
+                $st->bindParam(':balanceToDate', $balanceToDate);
+                $st->bindParam(':disapprovalDetails', $disapprovalDetails);
+                $st->execute();
 
-            // =========================== LEAVE DETAILS UPDATE ======================== //
+                // =========================== LEAVE DETAILS UPDATE ======================== //
                 $q = "UPDATE leave_details
                     SET  disapproved_at = NOW()
                     WHERE leaveID = :leaveID
@@ -2288,18 +2345,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $pdo->commit();
 
                 // =========================== MAIL SENDER ======================== //
-                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $scriptPath = realpath(__DIR__ . "/emailSender.php");
                 $command = "start /B php " .
-                    escapeshellarg($scriptPath) . ' ' . 
-                    escapeshellarg($users_id) . ' ' .    
-                    escapeshellarg("LeaveDisapproved") . ' ' .  
-                    escapeshellarg('') . ' ' .         
-                    escapeshellarg('') . ' ' .              
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg('') . ' ' .                 
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg($leave_id) ;
+                    escapeshellarg($scriptPath) . ' ' .
+                    escapeshellarg($users_id) . ' ' .
+                    escapeshellarg("LeaveDisapproved") . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg($leave_id);
 
                 pclose(popen($command, "r"));
 
@@ -2323,7 +2380,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (isset($_POST['deleteLeave']) && $_POST['deleteLeave'] === 'true') {
-        $leaveId = (int)($_POST['leave_id'] ?? 0);
+        $leaveId = (int) ($_POST['leave_id'] ?? 0);
 
         if ($leaveId) {
             $pdo = db_connection();
@@ -2336,25 +2393,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
     // ============================== FORGOT PASSWORD ============================== //
-    if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true"){
+    if (isset($_POST["usersForgottenPass"]) && $_POST["usersForgottenPass"] === "true") {
         $usernameForgot = $_POST["usernameAuth"] ?? null;
         $AuthType = $_POST["AuthType"] ?? null;
         $mailCode = $_POST["mailCode"] ?? '';
         $new_password = $_POST["new_password"] ?? '';
         $confirm_password = $_POST["confirm_password"] ?? '';
-        try{
+        try {
             $query = "SELECT username FROM users WHERE username = :username";
             $stmt = $pdo->prepare($query);
             $stmt->execute(['username' => $usernameForgot]);
             $userForgot = $stmt->fetch(PDO::FETCH_ASSOC);
             // ===================== USERNAME NOT MATCH! ===================== //
-            if (!$userForgot && $AuthType == '' && $mailCode == '' &&
-            $new_password == '' && $confirm_password == '') {
+            if (
+                !$userForgot && $AuthType == '' && $mailCode == '' &&
+                $new_password == '' && $confirm_password == ''
+            ) {
                 header("location: ../src/index.php?username=failed");
                 die();
             }
-             // ===================== USERNAME MATCHED! ===================== //
-            else if($userForgot){
+            // ===================== USERNAME MATCHED! ===================== //
+            else if ($userForgot) {
                 $mailCode = substr(str_shuffle("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM123456789"), 0, 6);
                 $query = "SELECT id FROM users WHERE username = :username";
                 $stmt = $pdo->prepare($query);
@@ -2363,20 +2422,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $hehe = $stmt->fetch(PDO::FETCH_ASSOC);
                 $employeeId = $hehe['id'];
                 $_SESSION["idNgEmployee"] = $hehe['id'];
-                $scriptPath = realpath(__DIR__ . "/emailSender.php"); 
+                $scriptPath = realpath(__DIR__ . "/emailSender.php");
                 $command = "start /B php " .
-                    escapeshellarg($scriptPath) . ' ' . 
-                    escapeshellarg($employeeId) . ' ' .    
-                    escapeshellarg("ForgotEmployeePass") . ' ' .  
-                    escapeshellarg('') . ' ' .         
-                    escapeshellarg('') . ' ' .              
-                    escapeshellarg('') . ' ' .             
-                    escapeshellarg('') . ' ' .                 
-                    escapeshellarg('') . ' ' .    
-                    escapeshellarg($mailCode)  . "" .  
-                    escapeshellarg('') ;    
-                    
-                    
+                    escapeshellarg($scriptPath) . ' ' .
+                    escapeshellarg($employeeId) . ' ' .
+                    escapeshellarg("ForgotEmployeePass") . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg('') . ' ' .
+                    escapeshellarg($mailCode) . "" .
+                    escapeshellarg('');
+
+
 
                 pclose(popen($command, "r"));
 
@@ -2386,18 +2445,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 die();
             }
             // ===================== CODE MAIL MATCHED! ===================== //
-            elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]){
+            elseif ($mailCode !== null && $mailCode == $_SESSION["EmailAuth"]) {
                 echo "<pre>";
                 print_r($_SESSION);
                 echo "</pre>";
                 echo $employeeId = $_SESSION["idNgEmployee"] ?? 'Wala   ';
 
-                if($new_password !== $confirm_password){
+                if ($new_password !== $confirm_password) {
                     header("Location: ../src/functions/changePass.php?password=notMatch");
                     die();
                 }
-                if(empty($new_password) || empty($confirm_password) && $userForgot){
-                     header("Location: ../src/functions/changePass.php?password=empty");
+                if (empty($new_password) || empty($confirm_password) && $userForgot) {
+                    header("Location: ../src/functions/changePass.php?password=empty");
                     die();
                 }
                 $hasedPass = password_hash($new_password, PASSWORD_DEFAULT);
@@ -2416,19 +2475,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 die();
             }
             // ===================== EMPTY INPUTS (IN CASE)! ===================== //
-            else if(empty($usernameForgot) && empty($AuthType) && empty($new_password) && empty($confirm_password)){
+            else if (empty($usernameForgot) && empty($AuthType) && empty($new_password) && empty($confirm_password)) {
                 header("Location: ../src/index.php?empty=input");
                 die();
             }
 
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             die("Query Failed: " . $e->getMessage());
         }
-        
+
     }
 
     // ===================== PERSONAL DATA SHEETs ===================== //
-    
+
     if (isset($_POST['adminSidePDS']) && $_POST['adminSidePDS'] === 'true') {
         $users_id = intval($_POST['users_id'] ?? 0);
         if ($users_id <= 0) {
@@ -2471,22 +2530,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     email         = :em
                 WHERE users_id   = :uid"
             )->execute([
-                ':uid' => $users_id,
-                ':ln'  => $_POST['lname']        ?? null,
-                ':fn'  => $_POST['fname']        ?? null,
-                ':mn'  => $_POST['mname']        ?? null,
-                ':nn'  => $_POST['nickname']     ?? null,
-                ':sx'  => $_POST['suffix']       ?? null,        
-                ':ctz' => $_POST['citizenship']  ?? null,
-                ':gen' => $_POST['gender']       ?? null,
-                ':civ' => $_POST['civil_status'] ?? null,
-                ':rel' => $_POST['religion']     ?? null,
-                ':age' => $_POST['age']          ?? null,
-                ':bd'  => $_POST['birthday']     ?? null,
-                ':bp'  => $_POST['birthPlace']   ?? null,
-                ':cnt' => $_POST['contact']      ?? null,
-                ':em'  => $_POST['email']        ?? null
-            ]);
+                        ':uid' => $users_id,
+                        ':ln' => $_POST['lname'] ?? null,
+                        ':fn' => $_POST['fname'] ?? null,
+                        ':mn' => $_POST['mname'] ?? null,
+                        ':nn' => $_POST['nickname'] ?? null,
+                        ':sx' => $_POST['suffix'] ?? null,
+                        ':ctz' => $_POST['citizenship'] ?? null,
+                        ':gen' => $_POST['gender'] ?? null,
+                        ':civ' => $_POST['civil_status'] ?? null,
+                        ':rel' => $_POST['religion'] ?? null,
+                        ':age' => $_POST['age'] ?? null,
+                        ':bd' => $_POST['birthday'] ?? null,
+                        ':bp' => $_POST['birthPlace'] ?? null,
+                        ':cnt' => $_POST['contact'] ?? null,
+                        ':em' => $_POST['email'] ?? null
+                    ]);
             $ok = $pdo->prepare(
                 "UPDATE userGovIDs SET
                     sss_no        = ?,
@@ -2495,12 +2554,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     philhealth_no = ?
                 WHERE pds_id = ?"
             )->execute([
-                $_POST['sss_no']        ?? null,
-                $_POST['tin_no']        ?? null,
-                $_POST['pagibig_no']    ?? null,
-                $_POST['philhealth_no'] ?? null,
-                $pds_id
-            ]);
+                        $_POST['sss_no'] ?? null,
+                        $_POST['tin_no'] ?? null,
+                        $_POST['pagibig_no'] ?? null,
+                        $_POST['philhealth_no'] ?? null,
+                        $pds_id
+                    ]);
             if (!$ok) {
                 throw new RuntimeException('userGovIDs update failed – row missing');
             }
@@ -2515,15 +2574,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     spouse_tel   = :tel
                 WHERE pds_id = :pid"
             )->execute([
-                ':pid' => $pds_id,
-                ':sur' => $_POST['spouse_surname']           ?? null,
-                ':fir' => $_POST['spouse_first']             ?? null,
-                ':mid' => $_POST['spouse_middle']            ?? null,
-                ':occ' => $_POST['spouse_occupation']        ?? null,
-                ':emp' => $_POST['spouse_employer']          ?? null,
-                ':addr'=> $_POST['spouse_business_address']     ?? null,
-                ':tel' => $_POST['spouse_tel']      ?? null
-            ]);
+                        ':pid' => $pds_id,
+                        ':sur' => $_POST['spouse_surname'] ?? null,
+                        ':fir' => $_POST['spouse_first'] ?? null,
+                        ':mid' => $_POST['spouse_middle'] ?? null,
+                        ':occ' => $_POST['spouse_occupation'] ?? null,
+                        ':emp' => $_POST['spouse_employer'] ?? null,
+                        ':addr' => $_POST['spouse_business_address'] ?? null,
+                        ':tel' => $_POST['spouse_tel'] ?? null
+                    ]);
             if (!$ok) {
                 throw new RuntimeException('spouseInfo update failed – row missing');
             }
@@ -2540,11 +2599,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $ok = $parentStmt->execute([
                     ':pid' => $pds_id,
                     ':rel' => $rel,
-                    ':sur' => $_POST[strtolower($rel) . '_surname']  ?? null,
-                    ':fir' => $_POST[strtolower($rel) . '_first']    ?? null,
-                    ':mid' => $_POST[strtolower($rel) . '_middle']   ?? null,
+                    ':sur' => $_POST[strtolower($rel) . '_surname'] ?? null,
+                    ':fir' => $_POST[strtolower($rel) . '_first'] ?? null,
+                    ':mid' => $_POST[strtolower($rel) . '_middle'] ?? null,
                     ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
-                    ':addr'=> $_POST[strtolower($rel) . '_address']  ?? null
+                    ':addr' => $_POST[strtolower($rel) . '_address'] ?? null
                 ]);
                 if (!$ok) {
                     throw new RuntimeException("$rel row missing in parents table");
@@ -2562,11 +2621,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             );
 
             for ($i = 1; $i <= 7; $i++) {
-                $cid  = intval($_POST["child_id_$i"] ?? 0);      
+                $cid = intval($_POST["child_id_$i"] ?? 0);
                 $name = trim($_POST["child_name_$i"] ?? '');
-                $dob  = $_POST["child_dob_$i"]      ?? null;    
+                $dob = $_POST["child_dob_$i"] ?? null;
 
-                if ($cid > 0) {                                 
+                if ($cid > 0) {
                     $childUpd->execute([
                         $name !== '' ? $name : null,
                         $dob,
@@ -2574,7 +2633,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $pds_id
                     ]);
 
-                } elseif ($name !== '') {                       
+                } elseif ($name !== '') {
                     $childIns->execute([
                         $pds_id,
                         $name,
@@ -2582,7 +2641,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ]);
                 }
             }
-        $sibUpd = $pdo->prepare("
+            $sibUpd = $pdo->prepare("
                 UPDATE siblings SET
                     full_name = ?, age = ?, occupation = ?, address = ?
                 WHERE id = ? AND pds_id = ?
@@ -2596,13 +2655,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ");
 
             for ($i = 1; $i <= 8; $i++) {
-                $sid   = intval($_POST["sibling_id_$i"] ?? 0);  
-                $name  = trim($_POST["sib_name_$i"]    ?? '');
-                $age   = $_POST["sib_age_$i"]          ?? null;
-                $occ   = $_POST["sib_occ_$i"]          ?? null;
-                $addr  = $_POST["sib_addr_$i"]         ?? null;
+                $sid = intval($_POST["sibling_id_$i"] ?? 0);
+                $name = trim($_POST["sib_name_$i"] ?? '');
+                $age = $_POST["sib_age_$i"] ?? null;
+                $occ = $_POST["sib_occ_$i"] ?? null;
+                $addr = $_POST["sib_addr_$i"] ?? null;
 
-                if ($sid > 0) {                                 
+                if ($sid > 0) {
                     $sibUpd->execute([
                         $name !== '' ? $name : null,
                         $age,
@@ -2612,18 +2671,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $pds_id
                     ]);
 
-                } elseif ($name !== '') {                        
+                } elseif ($name !== '') {
                     $sibIns->execute([
                         $pds_id,
                         $name,
                         $age,
                         $occ,
                         $addr,
-                        $i                                     
+                        $i
                     ]);
                 }
             }
-        $updEdu = $pdo->prepare("
+            $updEdu = $pdo->prepare("
                 UPDATE educationInfo
                 SET school_name    = :school,
                     degree_course  = :course,
@@ -2642,22 +2701,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ");
 
             $levels = [
-                'elem'    => 'Elementary',
-                'sec'     => 'Secondary',
-                'voc'     => 'Vocational',
+                'elem' => 'Elementary',
+                'sec' => 'Secondary',
+                'voc' => 'Vocational',
                 'college' => 'College',
-                'grad'    => 'Graduate',
+                'grad' => 'Graduate',
             ];
 
             $updated = $inserted = 0;
 
             foreach ($levels as $prefix => $level) {
 
-                $id     = intval($_POST["edu_{$prefix}_id"] ?? 0);  
-                $school = trim($_POST["{$prefix}_school"]   ?? '');
-                $course = trim($_POST["{$prefix}_course"]   ?? '');
-                $addr   = trim($_POST["{$prefix}_address"]  ?? '');
-                $yr     = trim($_POST["{$prefix}_year"]     ?? '');
+                $id = intval($_POST["edu_{$prefix}_id"] ?? 0);
+                $school = trim($_POST["{$prefix}_school"] ?? '');
+                $course = trim($_POST["{$prefix}_course"] ?? '');
+                $addr = trim($_POST["{$prefix}_address"] ?? '');
+                $yr = trim($_POST["{$prefix}_year"] ?? '');
 
                 if ($id === 0 && $school === '' && $course === '' && $addr === '' && $yr === '') {
                     continue;
@@ -2667,27 +2726,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $updEdu->execute([
                         ':school' => $school,
                         ':course' => $course,
-                        ':addr'   => $addr,
-                        ':yr'     => $yr !== '' ? $yr : null,   
-                        ':id'     => $id,
-                        ':pds'    => $pds_id,
+                        ':addr' => $addr,
+                        ':yr' => $yr !== '' ? $yr : null,
+                        ':id' => $id,
+                        ':pds' => $pds_id,
                     ]);
                     $updated += $updEdu->rowCount();
-                }
-                else {
+                } else {
                     $insEdu->execute([
-                        ':pds'    => $pds_id,
-                        ':lvl'    => $level,
+                        ':pds' => $pds_id,
+                        ':lvl' => $level,
                         ':school' => $school,
                         ':course' => $course,
-                        ':addr'   => $addr,
-                        ':yr'     => $yr !== '' ? $yr : null,
+                        ':addr' => $addr,
+                        ':yr' => $yr !== '' ? $yr : null,
                     ]);
                     $inserted += $insEdu->rowCount();
                 }
             }
 
-                    $ins = $pdo->prepare("
+            $ins = $pdo->prepare("
                 INSERT INTO workExperience (
                     pds_id, date_from, date_to,
                     position_title, department, monthly_salary
@@ -2710,12 +2768,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             for ($i = 1; $i <= 5; $i++) {
 
-                $id      = (int)($_POST["exp_{$i}_id"] ?? 0);  
-                $from    = $_POST["exp_{$i}_from"]       ?? '';
-                $to      = $_POST["exp_{$i}_to"]         ?? '';
-                $title   = trim($_POST["exp_{$i}_position"]   ?? '');
-                $dept    = trim($_POST["exp_{$i}_department"] ?? '');
-                $salary  = $_POST["exp_{$i}_salary"]     ?? '';
+                $id = (int) ($_POST["exp_{$i}_id"] ?? 0);
+                $from = $_POST["exp_{$i}_from"] ?? '';
+                $to = $_POST["exp_{$i}_to"] ?? '';
+                $title = trim($_POST["exp_{$i}_position"] ?? '');
+                $dept = trim($_POST["exp_{$i}_department"] ?? '');
+                $salary = $_POST["exp_{$i}_salary"] ?? '';
 
                 if ($id === 0 && $from === '' && $to === '' && $title === '' && $dept === '' && $salary === '') {
                     continue;
@@ -2724,14 +2782,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id > 0) {
                     $upd->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
                     $updated += $upd->rowCount();
-                }
-                else {
+                } else {
                     $ins->execute([$pds_id, $from, $to, $title, $dept, $salary]);
                     $inserted += $ins->rowCount();
                 }
             }
 
-                $insSem = $pdo->prepare("
+            $insSem = $pdo->prepare("
                 INSERT INTO seminarsTrainings (
                     pds_id, inclusive_dates, title, place
                 )
@@ -2751,10 +2808,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             for ($i = 1; $i <= 5; $i++) {
 
-                $id     = intval($_POST["seminar_{$i}_id"]   ?? 0);   
-                $dates  = trim($_POST["seminar_{$i}_dates"]  ?? '');
-                $title  = trim($_POST["seminar_{$i}_title"]  ?? '');
-                $place  = trim($_POST["seminar_{$i}_place"]  ?? '');
+                $id = intval($_POST["seminar_{$i}_id"] ?? 0);
+                $dates = trim($_POST["seminar_{$i}_dates"] ?? '');
+                $title = trim($_POST["seminar_{$i}_title"] ?? '');
+                $place = trim($_POST["seminar_{$i}_place"] ?? '');
 
                 if ($id === 0 && $dates === '' && $title === '' && $place === '') {
                     continue;
@@ -2762,23 +2819,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id > 0) {
                     $updSem->execute([$dates ?: null, $title ?: null, $place ?: null, $id, $pds_id]);
                     $updated += $updSem->rowCount();
-                }
-                else {
+                } else {
                     $insSem->execute([$pds_id, $dates ?: null, $title, $place ?: null]);
                     $inserted += $insSem->rowCount();
                 }
             }
 
-            $status = $_POST['house_status'] ?? null;         
-            $type   = $_POST['house_type']     ?? null;
-            $rent   = $_POST['rental_amount']  ?? null;
+            $status = $_POST['house_status'] ?? null;
+            $type = $_POST['house_type'] ?? null;
+            $rent = $_POST['rental_amount'] ?? null;
 
-            $allowedTypes = ['light','semi_concrete','concrete'];
+            $allowedTypes = ['light', 'semi_concrete', 'concrete'];
             if (!in_array($type, $allowedTypes, true)) {
                 $type = null;
             }
 
-            $rent = ($rent !== '' && $rent !== null) ? number_format((float)$rent, 2, '.', '') : null;
+            $rent = ($rent !== '' && $rent !== null) ? number_format((float) $rent, 2, '.', '') : null;
 
             $sql = "UPDATE otherInfo SET
                         special_skills    = :skills,
@@ -2796,17 +2852,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($sql);
 
             $ok = $stmt->execute([
-                ':pid'    => $pds_id,
-                ':skills' => $_POST['special_skills']    ?? null,
+                ':pid' => $pds_id,
+                ':skills' => $_POST['special_skills'] ?? null,
                 ':status' => $status,
-                ':rent'   => $rent,
-                ':type'   => $type,
-                ':members'=> $_POST['household_members'] ?? null,
-                ':h'      => $_POST['height']            ?? null,
-                ':w'      => $_POST['weight']            ?? null,
-                ':b'      => $_POST['blood_type']        ?? null,
-                ':emg'    => $_POST['emergency_contact'] ?? null,
-                ':tel'    => $_POST['tel_no']            ?? null
+                ':rent' => $rent,
+                ':type' => $type,
+                ':members' => $_POST['household_members'] ?? null,
+                ':h' => $_POST['height'] ?? null,
+                ':w' => $_POST['weight'] ?? null,
+                ':b' => $_POST['blood_type'] ?? null,
+                ':emg' => $_POST['emergency_contact'] ?? null,
+                ':tel' => $_POST['tel_no'] ?? null
             ]);
 
             if (!$ok) {
@@ -2865,22 +2921,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     email         = :em
                 WHERE users_id   = :uid"
             )->execute([
-                ':uid' => $users_id,
-                ':ln'  => $_POST['lname']        ?? null,
-                ':fn'  => $_POST['fname']        ?? null,
-                ':mn'  => $_POST['mname']        ?? null,
-                ':nn'  => $_POST['nickname']     ?? null,
-                ':sx'  => $_POST['suffix']       ?? null,        
-                ':ctz' => $_POST['citizenship']  ?? null,
-                ':gen' => $_POST['gender']       ?? null,
-                ':civ' => $_POST['civil_status'] ?? null,
-                ':rel' => $_POST['religion']     ?? null,
-                ':age' => $_POST['age']          ?? null,
-                ':bd'  => $_POST['birthday']     ?? null,
-                ':bp'  => $_POST['birthPlace']   ?? null,
-                ':cnt' => $_POST['contact']      ?? null,
-                ':em'  => $_POST['email']        ?? null
-            ]);
+                        ':uid' => $users_id,
+                        ':ln' => $_POST['lname'] ?? null,
+                        ':fn' => $_POST['fname'] ?? null,
+                        ':mn' => $_POST['mname'] ?? null,
+                        ':nn' => $_POST['nickname'] ?? null,
+                        ':sx' => $_POST['suffix'] ?? null,
+                        ':ctz' => $_POST['citizenship'] ?? null,
+                        ':gen' => $_POST['gender'] ?? null,
+                        ':civ' => $_POST['civil_status'] ?? null,
+                        ':rel' => $_POST['religion'] ?? null,
+                        ':age' => $_POST['age'] ?? null,
+                        ':bd' => $_POST['birthday'] ?? null,
+                        ':bp' => $_POST['birthPlace'] ?? null,
+                        ':cnt' => $_POST['contact'] ?? null,
+                        ':em' => $_POST['email'] ?? null
+                    ]);
             $ok = $pdo->prepare(
                 "UPDATE userGovIDs SET
                     sss_no        = ?,
@@ -2889,12 +2945,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     philhealth_no = ?
                 WHERE pds_id = ?"
             )->execute([
-                $_POST['sss_no']        ?? null,
-                $_POST['tin_no']        ?? null,
-                $_POST['pagibig_no']    ?? null,
-                $_POST['philhealth_no'] ?? null,
-                $pds_id
-            ]);
+                        $_POST['sss_no'] ?? null,
+                        $_POST['tin_no'] ?? null,
+                        $_POST['pagibig_no'] ?? null,
+                        $_POST['philhealth_no'] ?? null,
+                        $pds_id
+                    ]);
             if (!$ok) {
                 throw new RuntimeException('userGovIDs update failed – row missing');
             }
@@ -2909,15 +2965,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     spouse_tel   = :tel
                 WHERE pds_id = :pid"
             )->execute([
-                ':pid' => $pds_id,
-                ':sur' => $_POST['spouse_surname']           ?? null,
-                ':fir' => $_POST['spouse_first']             ?? null,
-                ':mid' => $_POST['spouse_middle']            ?? null,
-                ':occ' => $_POST['spouse_occupation']        ?? null,
-                ':emp' => $_POST['spouse_employer']          ?? null,
-                ':addr'=> $_POST['spouse_business_address']     ?? null,
-                ':tel' => $_POST['spouse_tel']      ?? null
-            ]);
+                        ':pid' => $pds_id,
+                        ':sur' => $_POST['spouse_surname'] ?? null,
+                        ':fir' => $_POST['spouse_first'] ?? null,
+                        ':mid' => $_POST['spouse_middle'] ?? null,
+                        ':occ' => $_POST['spouse_occupation'] ?? null,
+                        ':emp' => $_POST['spouse_employer'] ?? null,
+                        ':addr' => $_POST['spouse_business_address'] ?? null,
+                        ':tel' => $_POST['spouse_tel'] ?? null
+                    ]);
             if (!$ok) {
                 throw new RuntimeException('spouseInfo update failed – row missing');
             }
@@ -2934,11 +2990,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $ok = $parentStmt->execute([
                     ':pid' => $pds_id,
                     ':rel' => $rel,
-                    ':sur' => $_POST[strtolower($rel) . '_surname']  ?? null,
-                    ':fir' => $_POST[strtolower($rel) . '_first']    ?? null,
-                    ':mid' => $_POST[strtolower($rel) . '_middle']   ?? null,
+                    ':sur' => $_POST[strtolower($rel) . '_surname'] ?? null,
+                    ':fir' => $_POST[strtolower($rel) . '_first'] ?? null,
+                    ':mid' => $_POST[strtolower($rel) . '_middle'] ?? null,
                     ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
-                    ':addr'=> $_POST[strtolower($rel) . '_address']  ?? null
+                    ':addr' => $_POST[strtolower($rel) . '_address'] ?? null
                 ]);
                 if (!$ok) {
                     throw new RuntimeException("$rel row missing in parents table");
@@ -2956,11 +3012,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             );
 
             for ($i = 1; $i <= 7; $i++) {
-                $cid  = intval($_POST["child_id_$i"] ?? 0);      
+                $cid = intval($_POST["child_id_$i"] ?? 0);
                 $name = trim($_POST["child_name_$i"] ?? '');
-                $dob  = $_POST["child_dob_$i"]      ?? null;    
+                $dob = $_POST["child_dob_$i"] ?? null;
 
-                if ($cid > 0) {                                 
+                if ($cid > 0) {
                     $childUpd->execute([
                         $name !== '' ? $name : null,
                         $dob,
@@ -2968,7 +3024,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $pds_id
                     ]);
 
-                } elseif ($name !== '') {                       
+                } elseif ($name !== '') {
                     $childIns->execute([
                         $pds_id,
                         $name,
@@ -2976,7 +3032,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ]);
                 }
             }
-        $sibUpd = $pdo->prepare("
+            $sibUpd = $pdo->prepare("
                 UPDATE siblings SET
                     full_name = ?, age = ?, occupation = ?, address = ?
                 WHERE id = ? AND pds_id = ?
@@ -2990,13 +3046,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ");
 
             for ($i = 1; $i <= 8; $i++) {
-                $sid   = intval($_POST["sibling_id_$i"] ?? 0);  
-                $name  = trim($_POST["sib_name_$i"]    ?? '');
-                $age   = $_POST["sib_age_$i"]          ?? null;
-                $occ   = $_POST["sib_occ_$i"]          ?? null;
-                $addr  = $_POST["sib_addr_$i"]         ?? null;
+                $sid = intval($_POST["sibling_id_$i"] ?? 0);
+                $name = trim($_POST["sib_name_$i"] ?? '');
+                $age = $_POST["sib_age_$i"] ?? null;
+                $occ = $_POST["sib_occ_$i"] ?? null;
+                $addr = $_POST["sib_addr_$i"] ?? null;
 
-                if ($sid > 0) {                                 
+                if ($sid > 0) {
                     $sibUpd->execute([
                         $name !== '' ? $name : null,
                         $age,
@@ -3006,18 +3062,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $pds_id
                     ]);
 
-                } elseif ($name !== '') {                        
+                } elseif ($name !== '') {
                     $sibIns->execute([
                         $pds_id,
                         $name,
                         $age,
                         $occ,
                         $addr,
-                        $i                                     
+                        $i
                     ]);
                 }
             }
-        $updEdu = $pdo->prepare("
+            $updEdu = $pdo->prepare("
                 UPDATE educationInfo
                 SET school_name    = :school,
                     degree_course  = :course,
@@ -3036,22 +3092,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ");
 
             $levels = [
-                'elem'    => 'Elementary',
-                'sec'     => 'Secondary',
-                'voc'     => 'Vocational',
+                'elem' => 'Elementary',
+                'sec' => 'Secondary',
+                'voc' => 'Vocational',
                 'college' => 'College',
-                'grad'    => 'Graduate',
+                'grad' => 'Graduate',
             ];
 
             $updated = $inserted = 0;
 
             foreach ($levels as $prefix => $level) {
 
-                $id     = intval($_POST["edu_{$prefix}_id"] ?? 0);  
-                $school = trim($_POST["{$prefix}_school"]   ?? '');
-                $course = trim($_POST["{$prefix}_course"]   ?? '');
-                $addr   = trim($_POST["{$prefix}_address"]  ?? '');
-                $yr     = trim($_POST["{$prefix}_year"]     ?? '');
+                $id = intval($_POST["edu_{$prefix}_id"] ?? 0);
+                $school = trim($_POST["{$prefix}_school"] ?? '');
+                $course = trim($_POST["{$prefix}_course"] ?? '');
+                $addr = trim($_POST["{$prefix}_address"] ?? '');
+                $yr = trim($_POST["{$prefix}_year"] ?? '');
 
                 if ($id === 0 && $school === '' && $course === '' && $addr === '' && $yr === '') {
                     continue;
@@ -3061,27 +3117,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $updEdu->execute([
                         ':school' => $school,
                         ':course' => $course,
-                        ':addr'   => $addr,
-                        ':yr'     => $yr !== '' ? $yr : null,   
-                        ':id'     => $id,
-                        ':pds'    => $pds_id,
+                        ':addr' => $addr,
+                        ':yr' => $yr !== '' ? $yr : null,
+                        ':id' => $id,
+                        ':pds' => $pds_id,
                     ]);
                     $updated += $updEdu->rowCount();
-                }
-                else {
+                } else {
                     $insEdu->execute([
-                        ':pds'    => $pds_id,
-                        ':lvl'    => $level,
+                        ':pds' => $pds_id,
+                        ':lvl' => $level,
                         ':school' => $school,
                         ':course' => $course,
-                        ':addr'   => $addr,
-                        ':yr'     => $yr !== '' ? $yr : null,
+                        ':addr' => $addr,
+                        ':yr' => $yr !== '' ? $yr : null,
                     ]);
                     $inserted += $insEdu->rowCount();
                 }
             }
 
-                    $ins = $pdo->prepare("
+            $ins = $pdo->prepare("
                 INSERT INTO workExperience (
                     pds_id, date_from, date_to,
                     position_title, department, monthly_salary
@@ -3104,12 +3159,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             for ($i = 1; $i <= 5; $i++) {
 
-                $id      = (int)($_POST["exp_{$i}_id"] ?? 0);  
-                $from    = $_POST["exp_{$i}_from"]       ?? '';
-                $to      = $_POST["exp_{$i}_to"]         ?? '';
-                $title   = trim($_POST["exp_{$i}_position"]   ?? '');
-                $dept    = trim($_POST["exp_{$i}_department"] ?? '');
-                $salary  = $_POST["exp_{$i}_salary"]     ?? '';
+                $id = (int) ($_POST["exp_{$i}_id"] ?? 0);
+                $from = $_POST["exp_{$i}_from"] ?? '';
+                $to = $_POST["exp_{$i}_to"] ?? '';
+                $title = trim($_POST["exp_{$i}_position"] ?? '');
+                $dept = trim($_POST["exp_{$i}_department"] ?? '');
+                $salary = $_POST["exp_{$i}_salary"] ?? '';
 
                 if ($id === 0 && $from === '' && $to === '' && $title === '' && $dept === '' && $salary === '') {
                     continue;
@@ -3118,14 +3173,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id > 0) {
                     $upd->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
                     $updated += $upd->rowCount();
-                }
-                else {
+                } else {
                     $ins->execute([$pds_id, $from, $to, $title, $dept, $salary]);
                     $inserted += $ins->rowCount();
                 }
             }
 
-                $insSem = $pdo->prepare("
+            $insSem = $pdo->prepare("
                 INSERT INTO seminarsTrainings (
                     pds_id, inclusive_dates, title, place
                 )
@@ -3145,10 +3199,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             for ($i = 1; $i <= 5; $i++) {
 
-                $id     = intval($_POST["seminar_{$i}_id"]   ?? 0);   
-                $dates  = trim($_POST["seminar_{$i}_dates"]  ?? '');
-                $title  = trim($_POST["seminar_{$i}_title"]  ?? '');
-                $place  = trim($_POST["seminar_{$i}_place"]  ?? '');
+                $id = intval($_POST["seminar_{$i}_id"] ?? 0);
+                $dates = trim($_POST["seminar_{$i}_dates"] ?? '');
+                $title = trim($_POST["seminar_{$i}_title"] ?? '');
+                $place = trim($_POST["seminar_{$i}_place"] ?? '');
 
                 if ($id === 0 && $dates === '' && $title === '' && $place === '') {
                     continue;
@@ -3156,23 +3210,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id > 0) {
                     $updSem->execute([$dates ?: null, $title ?: null, $place ?: null, $id, $pds_id]);
                     $updated += $updSem->rowCount();
-                }
-                else {
+                } else {
                     $insSem->execute([$pds_id, $dates ?: null, $title, $place ?: null]);
                     $inserted += $insSem->rowCount();
                 }
             }
 
-            $status = $_POST['house_status'] ?? null;         
-            $type   = $_POST['house_type']     ?? null;
-            $rent   = $_POST['rental_amount']  ?? null;
+            $status = $_POST['house_status'] ?? null;
+            $type = $_POST['house_type'] ?? null;
+            $rent = $_POST['rental_amount'] ?? null;
 
-            $allowedTypes = ['light','semi_concrete','concrete'];
+            $allowedTypes = ['light', 'semi_concrete', 'concrete'];
             if (!in_array($type, $allowedTypes, true)) {
                 $type = null;
             }
 
-            $rent = ($rent !== '' && $rent !== null) ? number_format((float)$rent, 2, '.', '') : null;
+            $rent = ($rent !== '' && $rent !== null) ? number_format((float) $rent, 2, '.', '') : null;
 
             $sql = "UPDATE otherInfo SET
                         special_skills    = :skills,
@@ -3190,17 +3243,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($sql);
 
             $ok = $stmt->execute([
-                ':pid'    => $pds_id,
-                ':skills' => $_POST['special_skills']    ?? null,
+                ':pid' => $pds_id,
+                ':skills' => $_POST['special_skills'] ?? null,
                 ':status' => $status,
-                ':rent'   => $rent,
-                ':type'   => $type,
-                ':members'=> $_POST['household_members'] ?? null,
-                ':h'      => $_POST['height']            ?? null,
-                ':w'      => $_POST['weight']            ?? null,
-                ':b'      => $_POST['blood_type']        ?? null,
-                ':emg'    => $_POST['emergency_contact'] ?? null,
-                ':tel'    => $_POST['tel_no']            ?? null
+                ':rent' => $rent,
+                ':type' => $type,
+                ':members' => $_POST['household_members'] ?? null,
+                ':h' => $_POST['height'] ?? null,
+                ':w' => $_POST['weight'] ?? null,
+                ':b' => $_POST['blood_type'] ?? null,
+                ':emg' => $_POST['emergency_contact'] ?? null,
+                ':tel' => $_POST['tel_no'] ?? null
             ]);
 
             if (!$ok) {
@@ -3259,22 +3312,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     email         = :em
                 WHERE users_id   = :uid"
             )->execute([
-                ':uid' => $users_id,
-                ':ln'  => $_POST['lname']        ?? null,
-                ':fn'  => $_POST['fname']        ?? null,
-                ':mn'  => $_POST['mname']        ?? null,
-                ':nn'  => $_POST['nickname']     ?? null,
-                ':sx'  => $_POST['suffix']       ?? null,        
-                ':ctz' => $_POST['citizenship']  ?? null,
-                ':gen' => $_POST['gender']       ?? null,
-                ':civ' => $_POST['civil_status'] ?? null,
-                ':rel' => $_POST['religion']     ?? null,
-                ':age' => $_POST['age']          ?? null,
-                ':bd'  => $_POST['birthday']     ?? null,
-                ':bp'  => $_POST['birthPlace']   ?? null,
-                ':cnt' => $_POST['contact']      ?? null,
-                ':em'  => $_POST['email']        ?? null
-            ]);
+                        ':uid' => $users_id,
+                        ':ln' => $_POST['lname'] ?? null,
+                        ':fn' => $_POST['fname'] ?? null,
+                        ':mn' => $_POST['mname'] ?? null,
+                        ':nn' => $_POST['nickname'] ?? null,
+                        ':sx' => $_POST['suffix'] ?? null,
+                        ':ctz' => $_POST['citizenship'] ?? null,
+                        ':gen' => $_POST['gender'] ?? null,
+                        ':civ' => $_POST['civil_status'] ?? null,
+                        ':rel' => $_POST['religion'] ?? null,
+                        ':age' => $_POST['age'] ?? null,
+                        ':bd' => $_POST['birthday'] ?? null,
+                        ':bp' => $_POST['birthPlace'] ?? null,
+                        ':cnt' => $_POST['contact'] ?? null,
+                        ':em' => $_POST['email'] ?? null
+                    ]);
             $ok = $pdo->prepare(
                 "UPDATE userGovIDs SET
                     sss_no        = ?,
@@ -3283,12 +3336,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     philhealth_no = ?
                 WHERE pds_id = ?"
             )->execute([
-                $_POST['sss_no']        ?? null,
-                $_POST['tin_no']        ?? null,
-                $_POST['pagibig_no']    ?? null,
-                $_POST['philhealth_no'] ?? null,
-                $pds_id
-            ]);
+                        $_POST['sss_no'] ?? null,
+                        $_POST['tin_no'] ?? null,
+                        $_POST['pagibig_no'] ?? null,
+                        $_POST['philhealth_no'] ?? null,
+                        $pds_id
+                    ]);
             if (!$ok) {
                 throw new RuntimeException('userGovIDs update failed – row missing');
             }
@@ -3303,15 +3356,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     spouse_tel   = :tel
                 WHERE pds_id = :pid"
             )->execute([
-                ':pid' => $pds_id,
-                ':sur' => $_POST['spouse_surname']           ?? null,
-                ':fir' => $_POST['spouse_first']             ?? null,
-                ':mid' => $_POST['spouse_middle']            ?? null,
-                ':occ' => $_POST['spouse_occupation']        ?? null,
-                ':emp' => $_POST['spouse_employer']          ?? null,
-                ':addr'=> $_POST['spouse_business_address']     ?? null,
-                ':tel' => $_POST['spouse_tel']      ?? null
-            ]);
+                        ':pid' => $pds_id,
+                        ':sur' => $_POST['spouse_surname'] ?? null,
+                        ':fir' => $_POST['spouse_first'] ?? null,
+                        ':mid' => $_POST['spouse_middle'] ?? null,
+                        ':occ' => $_POST['spouse_occupation'] ?? null,
+                        ':emp' => $_POST['spouse_employer'] ?? null,
+                        ':addr' => $_POST['spouse_business_address'] ?? null,
+                        ':tel' => $_POST['spouse_tel'] ?? null
+                    ]);
             if (!$ok) {
                 throw new RuntimeException('spouseInfo update failed – row missing');
             }
@@ -3328,11 +3381,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $ok = $parentStmt->execute([
                     ':pid' => $pds_id,
                     ':rel' => $rel,
-                    ':sur' => $_POST[strtolower($rel) . '_surname']  ?? null,
-                    ':fir' => $_POST[strtolower($rel) . '_first']    ?? null,
-                    ':mid' => $_POST[strtolower($rel) . '_middle']   ?? null,
+                    ':sur' => $_POST[strtolower($rel) . '_surname'] ?? null,
+                    ':fir' => $_POST[strtolower($rel) . '_first'] ?? null,
+                    ':mid' => $_POST[strtolower($rel) . '_middle'] ?? null,
                     ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
-                    ':addr'=> $_POST[strtolower($rel) . '_address']  ?? null
+                    ':addr' => $_POST[strtolower($rel) . '_address'] ?? null
                 ]);
                 if (!$ok) {
                     throw new RuntimeException("$rel row missing in parents table");
@@ -3350,11 +3403,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             );
 
             for ($i = 1; $i <= 7; $i++) {
-                $cid  = intval($_POST["child_id_$i"] ?? 0);      
+                $cid = intval($_POST["child_id_$i"] ?? 0);
                 $name = trim($_POST["child_name_$i"] ?? '');
-                $dob  = $_POST["child_dob_$i"]      ?? null;    
+                $dob = $_POST["child_dob_$i"] ?? null;
 
-                if ($cid > 0) {                                 
+                if ($cid > 0) {
                     $childUpd->execute([
                         $name !== '' ? $name : null,
                         $dob,
@@ -3362,7 +3415,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $pds_id
                     ]);
 
-                } elseif ($name !== '') {                       
+                } elseif ($name !== '') {
                     $childIns->execute([
                         $pds_id,
                         $name,
@@ -3370,7 +3423,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ]);
                 }
             }
-        $sibUpd = $pdo->prepare("
+            $sibUpd = $pdo->prepare("
                 UPDATE siblings SET
                     full_name = ?, age = ?, occupation = ?, address = ?
                 WHERE id = ? AND pds_id = ?
@@ -3384,13 +3437,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ");
 
             for ($i = 1; $i <= 8; $i++) {
-                $sid   = intval($_POST["sibling_id_$i"] ?? 0);  
-                $name  = trim($_POST["sib_name_$i"]    ?? '');
-                $age   = $_POST["sib_age_$i"]          ?? null;
-                $occ   = $_POST["sib_occ_$i"]          ?? null;
-                $addr  = $_POST["sib_addr_$i"]         ?? null;
+                $sid = intval($_POST["sibling_id_$i"] ?? 0);
+                $name = trim($_POST["sib_name_$i"] ?? '');
+                $age = $_POST["sib_age_$i"] ?? null;
+                $occ = $_POST["sib_occ_$i"] ?? null;
+                $addr = $_POST["sib_addr_$i"] ?? null;
 
-                if ($sid > 0) {                                 
+                if ($sid > 0) {
                     $sibUpd->execute([
                         $name !== '' ? $name : null,
                         $age,
@@ -3400,18 +3453,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $pds_id
                     ]);
 
-                } elseif ($name !== '') {                        
+                } elseif ($name !== '') {
                     $sibIns->execute([
                         $pds_id,
                         $name,
                         $age,
                         $occ,
                         $addr,
-                        $i                                     
+                        $i
                     ]);
                 }
             }
-        $updEdu = $pdo->prepare("
+            $updEdu = $pdo->prepare("
                 UPDATE educationInfo
                 SET school_name    = :school,
                     degree_course  = :course,
@@ -3430,22 +3483,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ");
 
             $levels = [
-                'elem'    => 'Elementary',
-                'sec'     => 'Secondary',
-                'voc'     => 'Vocational',
+                'elem' => 'Elementary',
+                'sec' => 'Secondary',
+                'voc' => 'Vocational',
                 'college' => 'College',
-                'grad'    => 'Graduate',
+                'grad' => 'Graduate',
             ];
 
             $updated = $inserted = 0;
 
             foreach ($levels as $prefix => $level) {
 
-                $id     = intval($_POST["edu_{$prefix}_id"] ?? 0);  
-                $school = trim($_POST["{$prefix}_school"]   ?? '');
-                $course = trim($_POST["{$prefix}_course"]   ?? '');
-                $addr   = trim($_POST["{$prefix}_address"]  ?? '');
-                $yr     = trim($_POST["{$prefix}_year"]     ?? '');
+                $id = intval($_POST["edu_{$prefix}_id"] ?? 0);
+                $school = trim($_POST["{$prefix}_school"] ?? '');
+                $course = trim($_POST["{$prefix}_course"] ?? '');
+                $addr = trim($_POST["{$prefix}_address"] ?? '');
+                $yr = trim($_POST["{$prefix}_year"] ?? '');
 
                 if ($id === 0 && $school === '' && $course === '' && $addr === '' && $yr === '') {
                     continue;
@@ -3455,27 +3508,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $updEdu->execute([
                         ':school' => $school,
                         ':course' => $course,
-                        ':addr'   => $addr,
-                        ':yr'     => $yr !== '' ? $yr : null,   
-                        ':id'     => $id,
-                        ':pds'    => $pds_id,
+                        ':addr' => $addr,
+                        ':yr' => $yr !== '' ? $yr : null,
+                        ':id' => $id,
+                        ':pds' => $pds_id,
                     ]);
                     $updated += $updEdu->rowCount();
-                }
-                else {
+                } else {
                     $insEdu->execute([
-                        ':pds'    => $pds_id,
-                        ':lvl'    => $level,
+                        ':pds' => $pds_id,
+                        ':lvl' => $level,
                         ':school' => $school,
                         ':course' => $course,
-                        ':addr'   => $addr,
-                        ':yr'     => $yr !== '' ? $yr : null,
+                        ':addr' => $addr,
+                        ':yr' => $yr !== '' ? $yr : null,
                     ]);
                     $inserted += $insEdu->rowCount();
                 }
             }
 
-                    $ins = $pdo->prepare("
+            $ins = $pdo->prepare("
                 INSERT INTO workExperience (
                     pds_id, date_from, date_to,
                     position_title, department, monthly_salary
@@ -3498,12 +3550,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             for ($i = 1; $i <= 5; $i++) {
 
-                $id      = (int)($_POST["exp_{$i}_id"] ?? 0);  
-                $from    = $_POST["exp_{$i}_from"]       ?? '';
-                $to      = $_POST["exp_{$i}_to"]         ?? '';
-                $title   = trim($_POST["exp_{$i}_position"]   ?? '');
-                $dept    = trim($_POST["exp_{$i}_department"] ?? '');
-                $salary  = $_POST["exp_{$i}_salary"]     ?? '';
+                $id = (int) ($_POST["exp_{$i}_id"] ?? 0);
+                $from = $_POST["exp_{$i}_from"] ?? '';
+                $to = $_POST["exp_{$i}_to"] ?? '';
+                $title = trim($_POST["exp_{$i}_position"] ?? '');
+                $dept = trim($_POST["exp_{$i}_department"] ?? '');
+                $salary = $_POST["exp_{$i}_salary"] ?? '';
 
                 if ($id === 0 && $from === '' && $to === '' && $title === '' && $dept === '' && $salary === '') {
                     continue;
@@ -3512,14 +3564,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id > 0) {
                     $upd->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
                     $updated += $upd->rowCount();
-                }
-                else {
+                } else {
                     $ins->execute([$pds_id, $from, $to, $title, $dept, $salary]);
                     $inserted += $ins->rowCount();
                 }
             }
 
-                $insSem = $pdo->prepare("
+            $insSem = $pdo->prepare("
                 INSERT INTO seminarsTrainings (
                     pds_id, inclusive_dates, title, place
                 )
@@ -3539,10 +3590,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             for ($i = 1; $i <= 5; $i++) {
 
-                $id     = intval($_POST["seminar_{$i}_id"]   ?? 0);   
-                $dates  = trim($_POST["seminar_{$i}_dates"]  ?? '');
-                $title  = trim($_POST["seminar_{$i}_title"]  ?? '');
-                $place  = trim($_POST["seminar_{$i}_place"]  ?? '');
+                $id = intval($_POST["seminar_{$i}_id"] ?? 0);
+                $dates = trim($_POST["seminar_{$i}_dates"] ?? '');
+                $title = trim($_POST["seminar_{$i}_title"] ?? '');
+                $place = trim($_POST["seminar_{$i}_place"] ?? '');
 
                 if ($id === 0 && $dates === '' && $title === '' && $place === '') {
                     continue;
@@ -3550,23 +3601,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id > 0) {
                     $updSem->execute([$dates ?: null, $title ?: null, $place ?: null, $id, $pds_id]);
                     $updated += $updSem->rowCount();
-                }
-                else {
+                } else {
                     $insSem->execute([$pds_id, $dates ?: null, $title, $place ?: null]);
                     $inserted += $insSem->rowCount();
                 }
             }
 
-            $status = $_POST['house_status'] ?? null;         
-            $type   = $_POST['house_type']     ?? null;
-            $rent   = $_POST['rental_amount']  ?? null;
+            $status = $_POST['house_status'] ?? null;
+            $type = $_POST['house_type'] ?? null;
+            $rent = $_POST['rental_amount'] ?? null;
 
-            $allowedTypes = ['light','semi_concrete','concrete'];
+            $allowedTypes = ['light', 'semi_concrete', 'concrete'];
             if (!in_array($type, $allowedTypes, true)) {
                 $type = null;
             }
 
-            $rent = ($rent !== '' && $rent !== null) ? number_format((float)$rent, 2, '.', '') : null;
+            $rent = ($rent !== '' && $rent !== null) ? number_format((float) $rent, 2, '.', '') : null;
 
             $sql = "UPDATE otherInfo SET
                         special_skills    = :skills,
@@ -3584,17 +3634,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($sql);
 
             $ok = $stmt->execute([
-                ':pid'    => $pds_id,
-                ':skills' => $_POST['special_skills']    ?? null,
+                ':pid' => $pds_id,
+                ':skills' => $_POST['special_skills'] ?? null,
                 ':status' => $status,
-                ':rent'   => $rent,
-                ':type'   => $type,
-                ':members'=> $_POST['household_members'] ?? null,
-                ':h'      => $_POST['height']            ?? null,
-                ':w'      => $_POST['weight']            ?? null,
-                ':b'      => $_POST['blood_type']        ?? null,
-                ':emg'    => $_POST['emergency_contact'] ?? null,
-                ':tel'    => $_POST['tel_no']            ?? null
+                ':rent' => $rent,
+                ':type' => $type,
+                ':members' => $_POST['household_members'] ?? null,
+                ':h' => $_POST['height'] ?? null,
+                ':w' => $_POST['weight'] ?? null,
+                ':b' => $_POST['blood_type'] ?? null,
+                ':emg' => $_POST['emergency_contact'] ?? null,
+                ':tel' => $_POST['tel_no'] ?? null
             ]);
 
             if (!$ok) {
