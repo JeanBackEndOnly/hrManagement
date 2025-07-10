@@ -11,7 +11,7 @@ function signup_inputs(){
        unset($_SESSION["user_signups"]);
        unset($_SESSION["signup_errors"]);
        
-        echo '<div class="column-container h-100 w-100 rounded-1 p-2 px-4">';
+        echo '<div class="column-container h-100 w-100 rounded-1 p-2 px-4 shadow" style="background-color: #fefefe;">';
             echo '<div class="col-md-12">';
                 echo '<div class="back-button w-100">';
                     echo '<a href="index.php" class="text-start" style="z-index: 0;"><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
@@ -32,9 +32,9 @@ function signup_inputs(){
                     echo '<div class="form-group row w-100 justify-content-center align-items-start" id="st-step" style="display: flex;">';
                         echo '<div class="stepper mb-1">';
                             echo '<div class="step active">1</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">2</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">3</div>';
                         echo '</div>';
                         echo '<div class="col-md-4 px-1 d-flex flex-column w-31 mb-2 p-0">';
@@ -146,9 +146,9 @@ function signup_inputs(){
                     echo '<div class="form-group row w-100 ms-1 mb-4" id="nd-step" style="display: none;">';
                         echo '<div class="stepper mb-2">';
                             echo '<div class="step">1</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step active">2</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">3</div>';
                         echo '</div>';
                         echo '<div class="col-md-12 d-flex flex-wrap w-100 px-0 justify-content-center">';
@@ -235,9 +235,9 @@ function signup_inputs(){
                     echo '<div class="form-group row w-100 ms-1 mb-5" id="rd-step" style="display: none; z-index: 3 !important">';
                         echo '<div class="stepper">';
                             echo '<div class="step">1</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">2</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step active">3</div>';
                         echo '</div>';
                         echo '<div class="form-group col-md-12 d-flex flex-column justify-content-center align-items-center w-100 m-0" id="image">';

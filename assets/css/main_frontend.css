@@ -7,7 +7,11 @@
     --green: #00A313;
     --next: #D54446;
     --hover: #FB6340;
+    --navs: #E32126;
 }
+html, main{
+        background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%) !important;
+    }
 html, body, main{
     margin: 0;
     height: 100vh;
@@ -15,7 +19,15 @@ html, body, main{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--BG) !important;
+    /* background: linear-gradient(to top, var(--navs), var(--wihite)); */
+    background-color: #141212;
+}
+.lines {
+  height: 2px;
+  width: 60px;
+  background-color: #333;
+  margin: 0 5px;
+  z-index: 0;
 }
 html{
     /* background: url("../image/puericultureBG.jpg"); */
@@ -168,8 +180,16 @@ select {
         min-width: 90vw;
         margin: 0s;
     }
+    .card{
+        padding: 0 !important;
+    }
+    .loginh{
+        margin-left: 10px;
+    }
+    .loginh h5, .body-header h5{
+        font-size: 15px;
+    }
     .login-page .card{
-        padding: 1rem !important;
         border-radius: 10px;
         min-width: 50%;
         background-color: rgba(255, 255, 255, .9);
@@ -182,11 +202,11 @@ select {
     .login-page input[type="text"],
     .login-page input[type="password"] {
         font-size: 0.9rem;
-        padding: 0.5rem;
+        padding: 0.3rem;
     }
     .login-page button[type="submit"] {
         font-size: 1rem;
-        padding: 0.6rem;
+        padding: 0.2rem !important;
     }
     .login-page .li-div {
         flex-direction: row;
@@ -202,5 +222,15 @@ select {
         right: 1rem;
         left: 1rem;
         width: auto;
+    }
+    .card-body{
+        height: 30% !important;
+    }
+    .logo img{
+        height: 70px !important;
+        width: 70px !important;
+    }
+    .mb-3, .btn{
+        font-size: 13px;
     }
 }

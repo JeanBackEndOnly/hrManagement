@@ -53,14 +53,6 @@ require_once '../auth/view.php';
         body, main, h1, h2, h3, h4, h5{
             font-family: 'Poppins', sans-serif;
         }
-        .error-border {
-            border: 2px solid red !important;
-        }
-        .input-error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 4px;
-        }
 
     </style>
 </head>

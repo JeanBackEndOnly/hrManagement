@@ -3,7 +3,6 @@ date_default_timezone_set('Asia/Manila'); // Adjust this if needed
 require_once '../../installer/session.php';
 require_once '../../auth/view.php';
 require_once '../../auth/control.php';
-
 if (isset($_GET['open_pdf']) && $_GET['open_pdf'] == '1') : ?>
 <script>
     window.onload = function () {

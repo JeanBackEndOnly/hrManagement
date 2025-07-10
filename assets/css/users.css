@@ -8,6 +8,7 @@
     --next: #D54446;
     --hover: #FB6340;
     --add: #18DF3C;
+    --navs: #E32126;
 }
 html, main, body{
     height: 99vh;
@@ -29,18 +30,25 @@ html, body , main{
 }
 /* =================================== SIDE NAV ==================================== */
 
+.sideNav{
+    background-color: var(--navs);
+    color: var(--wihite);
+}
 .sideNav .navs li {
     transition: background-color 0.3s ease;
+    color: var(--wihite);
 }
 
 .sideNav .navs li:hover {
     background-color: #f0f0f0;
     cursor: pointer;
+    color: var(--wihite);
 }
 
 .sideNav .navs li a,
 .sideNav .navs li button {
     transition: color 0.3s ease;
+    color: var(--wihite);
 }
 
 .sideNav .navs li p,
@@ -52,9 +60,11 @@ html, body , main{
 .sideNav .navs li a:hover i,
 .sideNav .navs li button:hover p,
 .sideNav .navs li button:hover i {
-    color: #007bff;
+    color: var(--navs);
 }
-
+.usersButton{
+    color: var(--wihite);
+}
 
 .sideNav .navs ul li {
     transition: background-color 0.3s ease;
@@ -63,9 +73,10 @@ html, body , main{
 .sideNav .navs ul li:hover {
     background-color: #e9ecef;
     border-radius: 0.25rem;
+    color: var(--navs);
 }
 .sideNav .navs ul li a:hover {
-    color: #0056b3;
+    color: var(--navs);
 }
 
 
@@ -84,9 +95,10 @@ html, body , main{
     margin: 0;
 }
 .header{
-    box-shadow: 0 0 3px 1px var(--box-shadow);
+    background-color: var(--navs);
+    color: var(--wihite);
     min-height: 8%;
-    margin-bottom: none;
+    margin-bottom: .2rem;
 }
 .logo button, .usersButton button, .sideNav button{
     background: none;
@@ -94,10 +106,9 @@ html, body , main{
 }
 .sideNav{
     min-width: 5rem;
-    box-shadow: 0 3px 3px 1px var(--box-shadow);
-    height: 75%;
+    height: 100%;
     transition: .5s;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .row{
     margin-left: 0!important;
@@ -456,7 +467,6 @@ transform: translateX(.9rem);
         background-color: var(--wihite);
         z-index: 9999;
     }
-
     #sideHEhe.opened {
         visibility: visible;
         opacity: 1;
@@ -465,6 +475,7 @@ transform: translateX(.9rem);
         min-width: 15rem !important;
         padding-right: 1rem;
         z-index: 9999;
+        background-color: var(--navs);
     }
     #hrUl a{
         width: 60%;

@@ -74,4 +74,4 @@ require_once '../../auth/view.php';
 
     </style>
 </head>
-    <body class="body w-50">
+    <body class="body w-50" style="background: none; !important">

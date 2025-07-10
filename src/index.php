@@ -1,25 +1,23 @@
 <?php include '../templates/RLheader.php'; ?>
 <style>
-    @media (max-width: 576px) {
-        .login-page .card{
-            padding: 0 !important;
-        }
+    html, main{
+        background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%);
     }
 </style>
-<main id="main" class="login-page mb-3 px-0">
+<main id="main" class="login-page px-0">
     <div class="container w-100">
-        <div class="row">
-            <div class="card h-50 w-100 shadow p-0 rounded-4 ">
-                <div class="headerLogin mb-2 w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:rgb(205, 205, 205);">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="card h-50 w-75 shadow p-0 rounded-4 ">
+                <div class="headerLogin mb-2 w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color: #E32126;">
                     <div class="logo w-100 d-flex justify-content-center mt-4">
-                        <img src="../assets/image/pueri-logo.png" alt="" style="width: 100px; height: 100px;">
+                        <img src="../assets/image/pueri-logo.png" alt="" style="width: 150px; height: 150px;">
                     </div>
                     <div class="body-header mb-1 mt-2 w-100">
-                        <h3 class="text-center">ZAMBOANGA PUERICULTURE CENTER</h3>
+                        <h5 class="text-center" style="color: #fff;">ZAMBOANGA PUERICULTURE CENTER</h5>
                     </div>
                 </div>
-                <div class="p-0 w-100 ms-5">
-                    <h4 class="fs-4 text-start ms-2 mt-2 p-0" style="box-shadow: none !important;">Login</h4>
+                <div class="loginh p-0 w-100">
+                    <h5 class="text-start ms-3 mt-2 p-0" style="box-shadow: none !important;">Login</h5>
                 </div>
                 <div class="card-body w-100 p-0 d-flex flex-column justify-content-center align-items-center mt-1">
                     <form action="../auth/authentications.php" class="col-md-11 col-11 h-auto" method="post">
@@ -41,7 +39,7 @@
                             </li>
                         </div>
                         <div class="mb-3 mt-3 text-center w-100">
-                            <button type="submit" class="btn btn-danger w-100 p-2 mb-0">Login</button>
+                            <button type="submit" class="btn btn-danger w-100 p-2 mb-0" style="background-color: #00A313; ">Login</button>
                         </div>
                     </form>
                     <button class="btn btn-sm mb-1" style="background: none; box-shadow: none; color: blue;" data-bs-toggle="modal" data-bs-target="#changePassword">Forgot Password?</button>

@@ -1,15 +1,15 @@
 <?php include '../../templates/funcHeader.php'; ?>
 <div class="hehe h-75 w-75 d-flex justify-content-start align-items-start">
-    <div class="heh w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4" style="background-color: #f0f0f0;">
-        <div class="headerCode w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:rgb(205, 205, 205);">
+    <div class="heh w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color: #f0f0f0;">
+        <div class="headerCode w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:#E32126;">
             <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start pt-1 m-0" style="width: 95%; height: 2rem !important;">
-                <a href="../index.php" style="text-decoration: none; color: #000;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i></a>
+                <a href="../index.php" style="text-decoration: none; color: #000;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1" style="color: #fff;"></i></a>
             </div>
             <div class="logo w-100 d-flex justify-content-center">
                 <img src="../../assets/image/pueri-logo.png" alt="" style="width: 100px; height: 100px;">
             </div>
             <div class="title">
-                <h5>ZAMBOANGA PUERICULTURE CENTER</h5>
+                <h5 style="color: #fff;">ZAMBOANGA PUERICULTURE CENTER</h5>
             </div>
         </div>
         <form method="POST" action="../../auth/authentications.php" class="modal-content">
@@ -21,7 +21,7 @@
                 <input type="text" name="AdminMailCode" id="emailLabel" class="form-control w-100 text-center fw-bold p-2 fs-6" placeholder="Authentication Code" required>
             </div>
             <div class="button w-100 d-flex justify-content-center">
-                <button class="btn btn-danger p-1 rounded-0 col-md-11 rounded-2">Confirm</button>
+                <button class="btn btn-success p-1 rounded-0 col-md-11 rounded-2">Confirm</button>
             </div>
         </form>
         <div class="resendCode my-2">

@@ -1,15 +1,15 @@
 <?php include '../../templates/funcHeader.php'; ?>
 <div class="hehe h-auto d-flex justify-content-start align-items-start" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%;">
    <div class="heh w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4" style="background-color: #f0f0f0;">
-        <div class="headerCode w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:rgb(205, 205, 205);">
+        <div class="headerCode w-100 h-auto d-flex justify-content-center flex-column align-items-center m-0 p-0 rounded-4 shadow" style="background-color:#E32126;">
             <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start pt-1 m-0" style="width: 95%; height: 2rem !important;">
-                <a href="../index.php" style="text-decoration: none; color: #000;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1"></i></a>
+                <a href="../index.php" style="text-decoration: none; color: #000;" class="m-0"><i class="fa-solid fa-arrow-left-long fs-6 me-1" style="color: #fff;"></i></a>
             </div>
             <div class="logo w-100 d-flex justify-content-center">
                 <img src="../../assets/image/pueri-logo.png" alt="" style="width: 100px; height: 100px;">
             </div>
             <div class="title">
-                <h5 class="text-center">ZAMBOANGA PUERICULTURE CENTER</h5>
+                <h5 class="text-center" style="color: #ffffff;">ZAMBOANGA PUERICULTURE CENTER</h5>
             </div>
         </div>
         <form method="POST" action="../../auth/authentications.php" class="modal-content">

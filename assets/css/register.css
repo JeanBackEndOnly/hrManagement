@@ -7,6 +7,7 @@
     --green: #00A313;
     --next: #D54446;
     --hover: #FB6340;
+
 }
 html, body, main{
     margin: 0;
@@ -18,7 +19,7 @@ html, body, main{
     background-color: transparent !important;
 }
 html{
-    /* background: url("../image/puericultureBG.jpg"); */
+    background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -89,6 +90,13 @@ main h4, main h3{
 }
 
 .line {
+  height: 2px;
+  width: 60px;
+  background-color: #333;
+  margin: 0 5px;
+  z-index: 0;
+}
+.lines {
   height: 2px;
   width: 60px;
   background-color: #333;
