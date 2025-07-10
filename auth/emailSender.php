@@ -203,7 +203,7 @@ try {
         file_put_contents(__DIR__ . '/email_error.log', "PHPMailer Error: {$mail->ErrorInfo}\n", FILE_APPEND);
     }
 
-} catch (Exception $e) {
+} catch ( Exception $e) {
     file_put_contents(__DIR__ . '/email_error.log', "DB Error: {$e->getMessage()}\n", FILE_APPEND);
 }
 
