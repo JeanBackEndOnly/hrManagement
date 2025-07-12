@@ -9,7 +9,7 @@ register_shutdown_function(function () {
     }
 });
 
-
+// working na
 require __DIR__ . '/../vendor/autoload.php';
 require_once(__DIR__ . '/../installer/config.php');
 
