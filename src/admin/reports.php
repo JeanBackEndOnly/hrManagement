@@ -12,11 +12,11 @@
              
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
-                    <div class="h1">
+                    <div class="h1 AnimationFinalfirst">
                         <h3 class="m-0">REPORTS</h3>
                     </div>
                 </div>
-                <div class="search-titles flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableReport">
+                <div class="search-titles AnimationFinalsecond flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableReport">
                     <div class="search-bar d-flex align-items-center justify-content-start" style="width: 70%; transform: translateX(-10px);">
                         <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                             <input type="text" class="form-control ps-5" placeholder="Search..." id="reportsSearchInput">
@@ -60,24 +60,24 @@
                         </select>
                     </div>
                 </div>
-                <div class="report-list" style="width: 95%; margin: 10px auto; height: 50vh; display: flex; flex-direction: column;" id="reportList">
+                <div class="report-list AnimationFinalthird" style="width: 95%; margin: 10px auto; height: 50vh; display: flex; flex-direction: column;" id="reportList">
                     <table id="reportsTableBody" class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">
-                                <th style="width: 5%;">#</th>
-                                <th style="width: 25%;">
+                                <th class="col-md-1">#</th>
+                                <th class="col-md-3">
                                     <a href="<?= $currentUrl ?>?<?= buildReportQueryString(['reports_sort' => 'lname', 'reports_order' => ($reportSortColumn === 'lname' && $reportSortOrder === 'asc') ? 'desc' : 'asc', 'reports_perPage' => $reportsPerPage, 'reports_page' => 1, 'dateFilter' => $dateFilter]) ?>" style="color:black; text-decoration:none;">
                                         Name <?= $reportSortColumn === 'lname' ? ($reportSortOrder === 'asc' ? '▲' : '▼') : '' ?>
                                     </a>
                                 </th>
-                                <th style="width: 25%;">Details</th>
-                                <th style="width: 20%;">Department</th>
-                                <th style="width: 20%;">
+                                <th class="col-md-2">Details</th>
+                                <th class="col-md-2">Department</th>
+                                <th class="col-md-2">
                                     <a href="<?= $currentUrl ?>?<?= buildReportQueryString(['reports_sort' => 'report_date', 'reports_order' => ($reportSortColumn === 'report_date' && $reportSortOrder === 'asc') ? 'desc' : 'asc', 'reports_perPage' => $reportsPerPage, 'reports_page' => 1, 'dateFilter' => $dateFilter]) ?>" style="color:black; text-decoration:none;">
                                         Report Date <?= $reportSortColumn === 'report_date' ? ($reportSortOrder === 'asc' ? '▲' : '▼') : '' ?>
                                     </a>
                                 </th>
-                                <th style="width: 10%;">Actions</th>
+                                <th class="col-md-1">Actions</th>
                             </tr>
                         </thead>
                         <tbody style="display: block; overflow-y: auto; height: calc(50vh - 50px); width: 99.8%; margin-left: 2px;">
@@ -104,9 +104,9 @@
                                     }
                                 ?>
                                     <tr>
-                                        <td style="width: 5%;"><?= $num++ ?></td>
-                                        <td style="width: 24.4%;"><?= htmlspecialchars($leave['lname']) ?>, <?= htmlspecialchars($leave['fname']) ?></td>
-                                        <td style="width: 25%;">
+                                        <td class="col-md-1"><?= $num++ ?></td>
+                                        <td class="col-md-3"><?= htmlspecialchars($leave['lname']) ?>, <?= htmlspecialchars($leave['fname']) ?></td>
+                                        <td class="col-md-2">
                                             <?php if ($leave['leaveStatus'] === 'approved'): ?>
                                                 <p style="color: green;">Leave Request Approved!</p>
                                             <?php elseif ($leave['leaveStatus'] === 'disapprove'): ?>
@@ -116,9 +116,9 @@
                                             <?php endif; ?>
                                             <small><?= htmlspecialchars($leave['leaveType']) ?> - <?= date('M d, Y', strtotime($leave['leaveDate'])) ?></small>
                                         </td>
-                                        <td style="width: 20%;"><?= htmlspecialchars($leave['department']) ?></td>
-                                        <td style="width: 20%;"><?= $reportForLeave ? date('F j, Y h:i A', strtotime($reportForLeave['report_date'])) : date('F j, Y h:i A', strtotime($leave['request_date'])) ?></td>
-                                        <td style="width: 10%;">
+                                        <td class="col-md-2"><?= htmlspecialchars($leave['department']) ?></td>
+                                        <td class="col-md-2"><?= $reportForLeave ? date('F j, Y h:i A', strtotime($reportForLeave['report_date'])) : date('F j, Y h:i A', strtotime($leave['request_date'])) ?></td>
+                                        <td class="col-md-1">
                                             <?php if ($leave['leaveStatus'] === 'approved'): ?>
                                                 <a class="btn btn-sm btn-primary" 
                                                     href="leave.php?users_id=<?= $leave['users_id'] ?>&leave_id=<?= $leave['leave_id'] ?>&open_pdf=1">

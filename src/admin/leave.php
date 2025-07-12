@@ -51,11 +51,11 @@
 
                 <div class="header-employee d-flex flex-wrap col-md-12 flex-row justify-content-between align-items-center"
                     style="height: 7rem; width: 95%;">
-                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-start" style="display:flex;">
+                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-start AnimationFinalfirst" style="display:flex;">
                         <h3 class="m-0">LEAVE REQUESTS</h3>
                     </div>
 
-                    <div class="leaveTabButtons d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
+                    <div class="leaveTabButtons AnimationFinalfirst d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
                         <?php
                         $tabs = ['pending' => 'REQUEST', 'approved' => 'APPROVED', 'disapprove' => 'DISAPPROVED'];
                         foreach ($tabs as $key => $label): ?>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
 
-                <div class="search-leave flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2"
+                <div class="search-leave flex-row justify-content-evenly AnimationFinalsecond mx-0 my-1 align-items-center gap-2 rounded-2"
                     style="width: 95%; display:flex;">
                     <div class="search-bar d-flex align-items-center justify-content-start"
                         style="width: 80%; transform: translateX(-10px);">
@@ -103,7 +103,7 @@
                     </div>
                 </div>
 
-                <div class="leave-list" style="width:95%; margin:10px auto; height:50vh; display:flex; flex-direction:column;">
+                <div class="leave-list AnimationFinalthird" style="width:95%; margin:10px auto; height:50vh; display:flex; flex-direction:column;">
                     <table class="table table-bordered table-striped mt-3"
                         style="width:100%; border-collapse:separate; flex:1 1 auto; display:block;">
                         <thead style="display:table-header-group; width:100%; background:white; position:sticky; top:0; z-index:10;">

@@ -13,10 +13,10 @@
 
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee col-md-12 d-flex flex-row flex-wrap justify-content-between align-items-center" style="height: 7rem; width: 95%;">
-                    <div class="h1 col-md-5 col-12">
+                    <div class="h1 col-md-5 col-12 AnimationFinalfirst">
                         <h3 class="m-0">EMPLOYEE MANAGEMENT</h3>
                     </div>
-                    <div class="crud-employee d-flex flex-row justify-content-between me-3 col-md-5 col-12" style="height: 2rem">
+                    <div class="crud-employee d-flex flex-row justify-content-between me-3 col-md-5 col-12 AnimationFinalfirst" style="height: 2rem">
                         <button type="button" onclick="getValidated()" class="rounded-2 border-2" style="font-size:15px;" id="requet">Validated</button>
                         <button type="button" onclick="getRequest()" class="rounded-2 border-2" style="font-size: 15px;" id="requet">
                             Request <span id="pendingCountDisplay"></span>
@@ -27,18 +27,18 @@
                 </div>
 
                 <div class="titlesOfList d-flex justify-content-start m-0" id="ListTitles" style="width: 95%;">
-                    <div class="Employee-list" id="validatedEmployees" style="display: flex;">
+                    <div class="Employee-list AnimationFinalfirst" id="validatedEmployees" style="display: flex;">
                         <h5>Validated Employee List</h5>
                     </div>
-                    <div class="Employee-list" id="employeesRequest" style="display: none;">
+                    <div class="Employee-list AnimationFinalfirst" id="employeesRequest" style="display: none;">
                         <h5>Employee Request List</h5>
                     </div>
-                    <div class="Employee-list" id="rejectedEmployees" style="display: none;">
+                    <div class="Employee-list AnimationFinalfirst" id="rejectedEmployees" style="display: none;">
                         <h5>Employee Rejected List</h5>
                     </div>
                 </div>
                 <!-- ======================= VALIDATED EMPLOYEE LIST ============================== -->
-                <div id="validateSearch" class="search-validated flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;">
+                <div id="validateSearch" class="search-validated AnimationFinalsecond flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;">
                     <div class="search-bar d-flex align-items-center justify-content-start" style="width: 80%; transform: translateX(-10px);">
                         <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                             <input type="text" class="form-control ps-5" id="searchValidatedInput" placeholder="Search...">
@@ -48,7 +48,7 @@
                     <?=renderValidatedSortAndPerPageControls($currentUrl, $validatedPerPage, $validatedSortColumn, $validatedSortOrder);?>
                 </div>
 
-                <div class="validated-employee-list" id="validatedList" style="width: 95%; margin: 20px auto; height: 50vh; display: flex; flex-direction: column;">
+                <div class="validated-employee-list AnimationFinalthird" id="validatedList" style="width: 95%; margin: 20px auto; height: 50vh; display: flex; flex-direction: column;">
                     <table class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">
@@ -112,7 +112,7 @@
                 </div>
 
                 <!-- ======================= EMPLOYEE REQUEST LIST ============================== -->
-                <div id="requestSearch" class="search-request flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;">
+                <div id="requestSearch" class="search-request AnimationFinalsecond flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;">
                     <div class="search-bar d-flex align-items-center justify-content-start" style="width: 80%; transform: translateX(-10px);">
                         <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                             <input type="text" class="form-control ps-5" id="searchRequestInput" placeholder="Search...">
@@ -122,7 +122,7 @@
                     <?= renderRequestSortAndPerPageControls($currentUrl, $requestPerPage, $requestSortColumn, $requestSortOrder); ?>
                 </div>
 
-                <div class="request-employee-list" id="requestList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
+                <div class="request-employee-list AnimationFinalthird" id="requestList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
                     <table class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">
@@ -207,7 +207,7 @@
                     </div>
                 </div>
                 <!-- ======================= EMPLOYEE REJECTED LIST ============================== -->
-                <div id="rejectedSearch" class="search-rejected flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;">
+                <div id="rejectedSearch" class="search-rejected AnimationFinalsecond flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;">
                     <div class="search-bar d-flex align-items-center justify-content-start" style="width: 80%; transform: translateX(-10px);">
                         <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                             <input type="text" class="form-control ps-5" id="searchRejectedInput" placeholder="Search...">
@@ -217,7 +217,7 @@
                     <?= renderRejectSortAndPerPageControls($currentUrl, $rejectedPerPage, $rejectedSortColumn, $rejectedSortOrder); ?>
                 </div>
 
-                <div class="rejected-employee-list" id="rejectedList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
+                <div class="rejected-employee-list AnimationFinalthird" id="rejectedList" style="width: 95%; margin: 20px auto; height: 50vh; display: none; flex-direction: column;">
                     <table class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">

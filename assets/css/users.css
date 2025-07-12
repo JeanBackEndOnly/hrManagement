@@ -439,6 +439,63 @@ transform: translateX(.9rem);
   margin: 0 5px;
   z-index: 0;
 }
+.pNone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-13rem, -0.5rem);
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    cursor: pointer;
+    width: 11rem !important;
+    margin: 0;
+}
+
+.pds-wrapper:hover .pNone {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+@keyframes Last{
+    0%{ transform: translateX(-1rem); opacity: 0;}
+    70%{ transform: translateX(-1rem); opacity: 0;}
+    100%{transform: translateX(0);opacity: 1;}
+}
+@keyframes third{
+    0%{ transform: translateX(-1rem); opacity: 0;}
+    50%{ transform: translateX(-1rem); opacity: 0;}
+    100%{transform: translateX(0);opacity: 1;}
+}
+@keyframes second{
+    0%{ transform: translateX(-1rem); opacity: 0;}
+    30%{ transform: translateX(-1rem); opacity: 0;}
+    100%{transform: translateX(0);opacity: 1;}
+}
+@keyframes first{
+    10%{ transform: translateX(-1rem); opacity: 0;}
+    100%{transform: translateX(0);opacity: 1;}
+}
+
+.AnimationFinalLast{
+    animation: Last 1s forwards ease-in-out;
+}
+.AnimationFinalthird{
+    animation: third 1s forwards ease-in-out;
+}
+.AnimationFinalsecond{
+    animation: second 1s forwards ease-in-out;
+}
+.AnimationFinalfirst{
+    animation: first 1s forwards ease-in-out;
+}
+.BGGradiant{
+    background: linear-gradient(40deg, #D2001A, #f3cbcb, #D2001A);
+}
+.txtToWhite{
+    color: #fff !important;
+}
 @media (max-width: 576px) {
     .logo h4{
         font-size: 12px;

@@ -10,16 +10,16 @@
 
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
-                    <div class="h1">
-                        <h3 class="m-0">DASHBOARD</h3>
+                    <div class="h1 AnimationFinalfirst">
+                        <h3 class="m-0"><i class="fa-solid fa-network-wired me-2"></i>DASHBOARD</h3>
                     </div>
                 </div>
                 <div class="d-flex col-ms-12 flex-row justify-content-start align-items-center flex-wrap" style="height: 7rem; width: 95%;">
-                   <a href="employee.php" class="pending shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                   <a href="employee.php" class="pending BGGradiant AnimationFinalfirst shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0"><?php echo $validatedCount; ?></h1>
-                                <small class="text-muted">Users</small>
+                                <h1 class="fw-bold text-primary txtToWhite m-0"><?php echo $validatedCount; ?></h1>
+                                <small class="txtToWhite">Users</small>
                             </div>
                             <div class="text-start">
                                 <h5 class="m-0 fw-semibold text-dark">Validated</h5>
@@ -27,11 +27,11 @@
                             </div>
                         </div>
                     </a>
-                    <a href="employee.php?tab=request" class="pending shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                    <a href="employee.php?tab=request" class="pending BGGradiant AnimationFinalsecond shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0"><?php echo $pendingCount; ?></h1>
-                                <small class="text-muted">Users</small>
+                                <h1 class="fw-bold text-primary txtToWhite m-0"><?php echo $pendingCount; ?></h1>
+                                <small class="txtToWhite">Users</small>
                             </div>
                             <div class="text-start">
                                 <h5 class="m-0 fw-semibold text-dark">Pending</h5>
@@ -39,13 +39,13 @@
                             </div>
                         </div>
                     </a>
-                    <a href="reports.php" class="pending shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                    <a href="reports.php" class="pending BGGradiant AnimationFinalthird shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0">
+                                <h1 class="fw-bold text-primary txtToWhite m-0">
                                     <span id="reportsCountDisplay">0</span>
                                 </h1>
-                                <small class="text-muted">reports</small>
+                                <small class="txtToWhite">reports</small>
                             </div>
                             <div class="text-start">
                                 <h5 class="m-0 fw-semibold text-dark">Today</h5>
@@ -54,13 +54,13 @@
                         </div>
                     </a>
 
-                    <a href="leave.php" class="leave shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                    <a href="leave.php" class="leave BGGradiant AnimationFinalLast shadow-sm rounded-4 p-4 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
-                                <h1 class="fw-bold text-primary m-0">
+                                <h1 class="fw-bold text-primary txtToWhite m-0">
                                     <span id="leaveCountDisplay">0</span>
                                 </h1>
-                                <small class="text-muted">request</small>
+                                <small class="txtToWhite">request</small>
                             </div>
                             <div class="text-start">
                                 <h5 class="m-0 fw-semibold text-dark">Leave</h5>

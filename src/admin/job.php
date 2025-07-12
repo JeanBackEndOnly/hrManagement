@@ -13,31 +13,31 @@
 
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee d-flex flex-wrap col-md-12 flex-row justify-content-between align-items-center" style="height: 7rem; width: 95%;">
-                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-start" id="titleJob" style="display: flex;">
+                    <div class="h1 AnimationFinalfirst flex-row col-md-5 col-12 align-items-center justify-content-start" id="titleJob" style="display: flex;">
                         <h3 class="m-0">JOB TITLES</h3>
                     </div>
-                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-end" id="titleSalary" style="display: none;">
+                    <div class="h1 flex-row AnimationFinalfirst col-md-5 col-12 align-items-center justify-content-end" id="titleSalary" style="display: none;">
                         <h3 class="m-0">JOB TITLE AND SALARY MANAGEMENT</h3>
                     </div>
-                    <div class="jobSalaryButton d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
-                        <div class="crud-employee d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
+                    <div class="jobSalaryButton AnimationFinalfirst d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
+                        <div class="crud-employee AnimationFinalfirst d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
                             <button type="button" class="tab-btns w-100" onclick="jobTitleButton()" style="font-size:15px; border:none; box-shadow: none;" id="jobTtitles">
                                 JOB TITLES
                             </button>
                         </div>
-                        <div class="crud-employee d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
-                            <button type="button" class="tab-btns w-100" onclick="jobSalaryButton()" style="font-size:15px; border:none; box-shadow: none;" id="salaryManage">
+                        <div class="crud-employee AnimationFinalfirst d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
+                            <button type="button" class="tab-btns w-100 " onclick="jobSalaryButton()" style="font-size:15px; border:none; box-shadow: none;" id="salaryManage">
                                 PROMOTION
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="header-employee flex-row justify-content-end align-items-center m-0" style="height: 4rem; width: 95%; display: flex;" id="buttonJobTitle">
+                <div class="header-employee AnimationFinalsecond flex-row justify-content-end align-items-center m-0" style="height: 4rem; width: 95%; display: flex;" id="buttonJobTitle">
                     <div class="crud-employee d-flex flex-row align-items-center justify-content-end" style="width: 20rem; height: 2rem">
                       <button type="button" class="rounded-2 border-2" style="font-size:15px;" id="add" data-bs-toggle="modal" data-bs-target="#addJobModal">Add</button>
                     </div>
                 </div>
-                <div class="search-titles flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableJob">
+                <div class="search-titles AnimationFinalsecond flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableJob">
                     <div class="search-bar d-flex align-items-center justify-content-start" style="width: 80%; transform: translateX(-10px);">
                         <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                             <input type="text" class="form-control ps-5" placeholder="Search..." id="jobTitleSearchInput">
@@ -64,7 +64,7 @@
                 </div>
 
                 <!-- ==================== List of Job Titles ================================== -->
-                <div class="job-list" style="width: 95%; margin: 10px auto; height: 50vh; display: flex; flex-direction: column;" id="jobList">
+                <div class="job-list AnimationFinalthird" style="width: 95%; margin: 10px auto; height: 50vh; display: flex; flex-direction: column;" id="jobList">
                     <table id="jobTitleTableBody" class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                         <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                             <tr style="display: table; width: 100%; table-layout: fixed;">
@@ -147,7 +147,7 @@
                 </div>
 
                 <!-- ==================== Edit Job Title ================================== -->
-                <div class="modal fade" id="editJobModal" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
+                <div class="modal fade AnimationFinalthird" id="editJobModal" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <form method="POST" action="../../auth/authentications.php" class="modal-content">
                             <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
@@ -195,7 +195,7 @@
                 </div>
                 <!-- ======================================= SALARY ===================================== -->
                 <?php $currentUrl = strtok($_SERVER["REQUEST_URI"], '?'); ?>
-                    <div class="search-titles-promotion flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;" id="headerTableJobPromotion">
+                    <div class="search-titles-promotion AnimationFinalthird flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: none;" id="headerTableJobPromotion">
                         <div class="search-bar d-flex align-items-center justify-content-start" style="width: 80%; transform: translateX(-10px);">
                             <div class="search-active position-relative w-100 ms-2 d-flex align-items-center justify-content-start">
                                 <input type="text" class="form-control ps-5" placeholder="Search..." id="empSearchInput">
@@ -222,7 +222,7 @@
                         </div>
                     </div>
 
-                    <div class="promotion-list" style="width: 95%; margin: 10px auto; height: 50vh; display: none; flex-direction: column;" id="promotionList">
+                    <div class="promotion-list AnimationFinalthird" style="width: 95%; margin: 10px auto; height: 50vh; display: none; flex-direction: column;" id="promotionList">
                         <table class="table table-bordered table-striped mt-3" style="width: 100%; border-collapse: separate; flex: 1 1 auto; display: block;">
                             <thead style="display: table-header-group; width: 100%; background: white; position: sticky; top: 0; z-index: 10; color: #000;">
                                 <tr style="display: table; width: 100%; table-layout: fixed;">

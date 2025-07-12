@@ -5,7 +5,49 @@
 
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
-        <?php echo renderHeader() ?>
+        <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
+            <div class="logo d-flex align-items-center">
+                <button type="button" onclick="sideNav();"><i class="fa-solid fa-bars fs-4 me-3" style="color: #fff;"></i></button>
+                <img src="../../assets/image/pueri-logo.png" alt="Logo" style="height: 40px;" class="me-2">
+                <h4 class="m-0">ZAMBOANGA PUERICULTURE CENTER</h4>
+            </div>
+
+            <div class="usersButton d-flex align-items-center">
+                <div class="pds-wrapper" style="position: relative;">
+                    <p class="fw-bold pNone">Personal Data Sheet</p>
+                    <a href="pds.php?users_id=<?= $_GET["users_id"] ?? '' ?>" class="togglePDS">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-3" style="color: #fff !important;"></i>
+                    </a>
+                </div>
+
+
+                <a href="settings.php"><i class="fa-solid fa-gear" style="color: #fff;"></i></a>
+                <button class="me-3" style="background: none; border:none; width: 20px;" onclick="logoutButton()"><i class="fa-solid fa-right-from-bracket ms-3" style="color: #fff;"></i></button>
+                <button class="align-items-center" type="button" onclick="userButton()">
+                    <img src="../../assets/image/admin.jpg" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
+                    <span class="fw-bold" style="color: #fff;">ADMIN</span>
+                </button>
+            </div>
+        </div>
+        <script>
+            function logoutButton(){
+                document.getElementById("logoutDiv").style.display = 'flex';
+            }
+            function logoutNo(){
+                document.getElementById("logoutDiv").style.display = 'none';
+            }
+        </script>
+        <div class="logout flex-column" id="logoutDiv" class="p-3" style="position: fixed; transform: translate(-50%, -50%); top:50%; left:50%; display: none; z-index: 55;">
+            <div class="shadow rounded p-3" style="background-color:rgb(230, 230, 230);">
+                <div class="question mb-3">
+                    <h5>Are you sure you want to logout?</h5>
+                </div>
+                <div class="buttons d-flex flex-row justify-content-evenly w-100 mt-1" style="border-top: solid 1px rgba(0,0,0,.4);">
+                    <a href="logout.php" id="logoutYes" class="col-md-5 btn btn-danger btn-sm mt-2">Yes</a>
+                    <button id="logoutNo" class="col-md-5 btn btn-secondary btn-sm mt-2" onclick="logoutNo()">No</button>
+                </div>
+            </div>
+        </div>
 
         <div class="d-flex w-100 align-items-start" style="height: 91%">
              <?php renderNav() ?>
@@ -40,7 +82,7 @@
                 <div class="employeeReqProfileINfo flex-column justify-content-between p-0 m-0 mt-2" style="width: 95%; height: 74vh; display:flex;" id="personalID">
                     <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                            <div class="profileSide BGGradiant col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
                                 rounded-1 mb-1 mb-md-0" style="height: 80%; display: flex;" id="personalProfileInformation">
                                 <?php foreach($reqProfInfo as $row): ?>
                                     <input type="hidden" name="users_id" value="<?= $row["users_id"] ?>">
@@ -59,12 +101,12 @@
                                         <?php endif; ?>
                                     </div>
                                     <div class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
-                                        <h5 class="fs-6 fw-bold"><?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?></h5>
-                                        <h5 class="text-center fs-6 fw-bold"><?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>, <?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?> <?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?></h5>
+                                        <h5 class="txtToWhite text-center fs-6 fw-bold"><?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>, <?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?> <?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                             </div>
                             <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start" style="height: 100%; display: flex;" id="personalInformation">
@@ -240,7 +282,7 @@
                 <div class="familybg flex-column justify-content-between p-0 m-0 mt-2" id="familybg" style="width: 95%; height: 74vh; display: none;">
                     <!-- <div class="row h-100 w-100"> -->
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                            <div class="profileSide BGGradiant col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
                                 rounded-1 mb-1 mb-md-0" id="familyProfileInformation" style="height: 80%; display: none;">
                                 <?php foreach ($reqProfInfo as $row): ?>
                                     <input type="hidden" name="users_id" value="<?= $row["users_id"] ?>">
@@ -251,12 +293,12 @@
                                         <img src="../../assets/image/upload/<?= isset($row["user_profile"]) ? htmlspecialchars($row["user_profile"]) : "N/A" ?>" alt="Profile Picture" class="img-fluid rounded-circle">
                                     </div>
                                     <div class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
-                                        <h5 class="fs-6 fw-bold"><?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?></h5>
-                                        <h5 class="text-center fs-6 fw-bold"><?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>, <?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?> <?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= isset($row["employeeID"]) ? htmlspecialchars($row["employeeID"]) : "N/A" ?></h5>
+                                        <h5 class="txtToWhite text-center fs-6 fw-bold"><?= isset($row["lname"]) ? htmlspecialchars($row["lname"]) : "N/A" ?>, <?= isset($row["fname"]) ? htmlspecialchars($row["fname"]) : "N/A" ?> <?= isset($row["mname"]) ? htmlspecialchars($row["mname"]) : "N/A" ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= isset($row["jobTitle"]) ? htmlspecialchars($row["jobTitle"]) : "N/A" ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"]) ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -499,7 +541,7 @@
                 <div class="educationalbg mt-2" id="educationalbg" style="display: none; height: 74vh; width: 95%;">
                     <div class="row h-100 w-100">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data" class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                            <div class="profileSide BGGradiant col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
                                 rounded-1 mb-1 mb-md-0" id="educationProfileInformation" style="height: 80%; display: none;">
                                 <?php foreach ($reqProfInfo as $row): ?>
                                     <input type="hidden" name="users_id" value="<?= htmlspecialchars($row["users_id"]) ?>">
@@ -511,12 +553,12 @@
                                     </div>
 
                                     <div class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["employeeID"] ?? "N/A") ?></h5>
-                                        <h5 class="text-center fs-6 fw-bold"><?= htmlspecialchars($row["lname"] ?? "N/A") ?>, <?= htmlspecialchars($row["fname"] ?? "N/A") ?> <?= htmlspecialchars($row["mname"] ?? "N/A") ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["jobTitle"] ?? "N/A") ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"] ?? "N/A") ?></h5>
-                                        <h5 class="fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= htmlspecialchars($row["employeeID"] ?? "N/A") ?></h5>
+                                        <h5 class="txtToWhite text-center fs-6 fw-bold"><?= htmlspecialchars($row["lname"] ?? "N/A") ?>, <?= htmlspecialchars($row["fname"] ?? "N/A") ?> <?= htmlspecialchars($row["mname"] ?? "N/A") ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= htmlspecialchars($row["jobTitle"] ?? "N/A") ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= htmlspecialchars($row["department"] ?? "N/A") ?> DEPARTMENT</h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= "Status: " . htmlspecialchars($row["status"] ?? "N/A") ?></h5>
+                                        <h5 class="txtToWhite fs-6 fw-bold"><?= "Schedule: " . htmlspecialchars($row["scheduleFrom"]) . " - "  . htmlspecialchars($row["scheduleTo"]) ?></h5>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
