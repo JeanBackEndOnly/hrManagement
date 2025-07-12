@@ -9,7 +9,7 @@ register_shutdown_function(function () {
     }
 });
 
-
+// working na
 require __DIR__ . '/../vendor/autoload.php';
 require_once(__DIR__ . '/../installer/config.php');
 
@@ -203,7 +203,7 @@ try {
         file_put_contents(__DIR__ . '/email_error.log', "PHPMailer Error: {$mail->ErrorInfo}\n", FILE_APPEND);
     }
 
-} catch (Exception $e) {
+} catch ( Exception $e) {
     file_put_contents(__DIR__ . '/email_error.log', "DB Error: {$e->getMessage()}\n", FILE_APPEND);
 }
 
