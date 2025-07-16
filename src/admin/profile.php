@@ -50,7 +50,7 @@
         </div>
 
         <div class="d-flex w-100 align-items-start" style="height: 91%">
-             <?php renderNav() ?>
+            <?php renderNav() ?>
              
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-start p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">

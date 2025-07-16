@@ -1,6 +1,6 @@
 :root{
     --backGroundDark: #141212;
-    --wihite: #fff;
+    --white: #fff;
     --BG: #F8F8F8;
     --box-shadow: #8F8F8F;
     --back: #4772ff;
@@ -13,7 +13,7 @@
 html, main, body{
     height: 99vh;
     margin: 0;
-    background-color: var(--wihite);
+    background-color: var(--white);
 }
 html, body , main{
   width: 100vw !important;
@@ -32,23 +32,23 @@ html, body , main{
 
 .sideNav{
     background-color: var(--navs);
-    color: var(--wihite);
+    color: var(--white);
 }
 .sideNav .navs li {
     transition: background-color 0.3s ease;
-    color: var(--wihite);
+    color: var(--white);
 }
 
 .sideNav .navs li:hover {
     background-color: #f0f0f0;
     cursor: pointer;
-    color: var(--wihite);
+    color: var(--white);
 }
 
 .sideNav .navs li a,
 .sideNav .navs li button {
     transition: color 0.3s ease;
-    color: var(--wihite);
+    color: var(--white);
 }
 
 .sideNav .navs li p,
@@ -63,7 +63,7 @@ html, body , main{
     color: var(--navs);
 }
 .usersButton{
-    color: var(--wihite);
+    color: var(--white);
 }
 
 .sideNav .navs ul li {
@@ -96,7 +96,7 @@ html, body , main{
 }
 .header{
     background-color: var(--navs);
-    color: var(--wihite);
+    color: var(--white);
     min-height: 8%;
     margin-bottom: .2rem;
 }
@@ -188,7 +188,7 @@ transform: translateX(.9rem);
     width: 22%;
     height: 100%;
     color: var(--backGroundDark);
-    background-color: var(--wihite);
+    background-color: var(--white);
     transition: .5s ease-in-out;
     border-style: solid;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
@@ -201,21 +201,21 @@ transform: translateX(.9rem);
 }
 #requet:hover, #requet:hover #pendingCountDisplay{
     background-color: var(--back); 
-    color: var(--wihite);
+    color: var(--white);
 }
 #reject{
     border-color: var(--next);
 }
 #reject:hover{
     background-color: var(--next); 
-    color: var(--wihite);
+    color: var(--white);
 }
 #add, .buttonUpdate button{
     border-color: var(--add);
 }
 #add:hover, .buttonUpdate button:hover{
     background-color: var(--add); 
-    color: var(--wihite);
+    color: var(--white);
 }
 #requet:active, #reject:active, #add:active, .buttonUpdate button:active{
     opacity: 0.5;
@@ -342,7 +342,7 @@ transform: translateX(.9rem);
     border-radius: 50%;
     width: 25px;
     height: 25px;
-    background-color: var(--wihite);
+    background-color: var(--white);
     border: solid 2px var(--back);
     display: flex;
     justify-content: center;
@@ -491,7 +491,7 @@ transform: translateX(.9rem);
     animation: first 1s forwards ease-in-out;
 }
 .BGGradiant{
-    background: linear-gradient(40deg, #D2001A, #f3cbcb, #D2001A);
+    background: linear-gradient(40deg,  #e6233aa2, #D2001A, #D2001A, #e6233aa2);
 }
 .txtToWhite{
     color: #fff !important;
@@ -521,7 +521,7 @@ transform: translateX(.9rem);
         opacity: 0;
         transform: translateX(-100%);
         transition: all 0.4s ease;
-        background-color: var(--wihite);
+        background-color: var(--white);
         z-index: 9999;
     }
     #sideHEhe.opened {
