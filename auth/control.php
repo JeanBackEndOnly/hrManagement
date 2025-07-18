@@ -597,10 +597,13 @@ function getEducationalBG() {
 function getEmployee(): array
     {
     $pdo     = db_connection();
-    if($_SESSION['user_id'] ?? '' == 1){
-        $user_id = $_GET["users_id"] ?? '';
-    }else if($_SESSION["user_id"] ?? '' != 1){
-        $user_id = $_SESSION['user_id'] ?? null;
+    //  echo $users_id = $_SESSION["user_id"] ?? 'WALANG ID NA NAKUKUHA DITO LMAO';
+    if($users_id ?? '' == 1){
+        $user_id = $_GET["users_id"] ?? 'sa admin to';
+    }else if($users_id ?? '' != 1){
+        $user_id = $_SESSION['user_id'] ?? 'dasfsdf';
+    }else{
+         echo "walang nakuha sa session";
     }
     if (!$user_id) {
         return [];                           

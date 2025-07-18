@@ -2,7 +2,18 @@
  include '../../templates/Uheader.php';
  include '../../templates/HN.php';
 ?>
+<style>
+.hr {
+    background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
+    color: #fff !important;
+}
 
+.hrP,
+.me-side-text1 {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+</style>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <?php echo renderHeader() ?>
@@ -12,8 +23,9 @@
              
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
-                    <div class="h1 AnimationFinalfirst">
-                        <h3 class="m-0">REPORTS</h3>
+                     <div class="h1 AnimationFinalfirst">
+                        <h3 class="m-0 titleFont">LEAVE MANAGEMENT</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>Manage reports</span></p>
                     </div>
                 </div>
                 <div class="search-titles AnimationFinalsecond flex-row justify-content-evenly mx-0 my-1 align-items-center gap-2 rounded-2" style="width: 95%; display: flex;" id="headerTableReport">

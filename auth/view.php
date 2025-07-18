@@ -332,7 +332,7 @@ function registerEmployeeAdmin() {
        unset($_SESSION["user_signups"]);
        unset($_SESSION["signup_errors"]);
        
-        echo '<div class="column-container h-100 rounded-1 p-2 px-4" style="width: 50%">';
+        echo '<div class="column-container h-auto rounded-1 p-2 px-4" style="width: 50%">';
             echo '<div class="col-md-12">';
                 echo '<div class="back-button w-100 mt-2">';
                     echo '<a href="employee.php" class="text-start "><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
@@ -353,9 +353,9 @@ function registerEmployeeAdmin() {
                     echo '<div class="form-group row w-100 ms-1" id="st-stepA">';
                         echo '<div class="stepper mb-1">';
                             echo '<div class="step active">1</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">2</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">3</div>';
                         echo '</div>';
                         echo '<div class="col-md-4 px-1 d-flex flex-column w-31">';
@@ -471,9 +471,9 @@ function registerEmployeeAdmin() {
                     echo '<div class="form-group row w-100 ms-1 mb-4" id="nd-stepA" style="display: none;">';
                         echo '<div class="stepper mb-2">';
                             echo '<div class="step">1</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step active">2</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">3</div>';
                         echo '</div>';
                     echo '<div class="col-md-12 d-flex flex-wrap w-100 px-0 justify-content-center">';
@@ -525,17 +525,17 @@ function registerEmployeeAdmin() {
                             echo '<h3 class="w-100 text-start fs-4 my-1 mt-3">ADDRESS</h3>';
                         echo '</div>';
                         echo '<div class="row w-100 px-0 d-flex flex-row flex-wrap justify-content-center">';
-                            echo '<div class="col-12 col-md-4 px-1">';
+                            echo '<div class="col-12 col-md-4 px-1 d-flex flex-column">';
                                 echo '<label for="houseBlock" class="mb-0 text-start w-100" style="color:#000; font-weight: 400 !important">Optional</label>';
                                 echo '<input type="text" name="houseBlock" id="houseBlock" class="form-control p-1 py-2 rounded-1" placeholder="House Block:" value="' . (isset($signup_data['houseBlock']) ? htmlspecialchars($signup_data['houseBlock']) : '') . '">';
                             echo '</div>';
 
-                            echo '<div class="col-12 col-md-4 px-1">';
+                            echo '<div class="col-12 col-md-4 px-1 d-flex flex-column">';
                                 echo '<label for="street" class="mb-0 text-start w-100" style="color:red; font-weight:400 !important;">Required</label>';
                                 echo '<input type="text" name="street" id="street" class="form-control p-1 py-2 rounded-1" placeholder="Street:" value="' . (isset($signup_data['street']) ? htmlspecialchars($signup_data['street']) : '') . '">';
                             echo '</div>';
 
-                            echo '<div class="col-12 col-md-4 px-1">';
+                            echo '<div class="col-12 col-md-4 px-1 d-flex flex-column">';
                                 echo '<label for="Subdivision" class="mb-0 text-start w-100" style="color:#000; font-weight: 400 !important">Optional</label>';
                                 echo '<input type="text" name="subdivision" id="Subdivision" class="form-control p-1 py-2 rounded-1" placeholder="Subdivision:" value="' . (isset($signup_data['subdivision']) ? htmlspecialchars($signup_data['subdivision']) : '') . '">';
                             echo '</div>';
@@ -567,9 +567,9 @@ function registerEmployeeAdmin() {
                     echo '<div class="form-group row w-100 ms-1 mb-5" id="rd-stepA" style="display: none;">';
                         echo '<div class="stepper">';
                             echo '<div class="step">1</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step">2</div>';
-                            echo '<div class="line"></div>';
+                            echo '<div class="lines"></div>';
                             echo '<div class="step active">3</div>';
                         echo '</div>';
                         echo '<div class="form-group col-md-12 d-flex flex-column justify-content-center align-items-center w-100 m-0" id="image">';
@@ -612,9 +612,6 @@ function registerEmployeeAdmin() {
                             echo '</div>';
 
                         echo '</div>';
-                    echo '</div>';
-                    echo '<div class="col-md-12 w-100 ms-2" mb-1 style="height: 35px; display: flex;"  id="button-signupA">';
-                        // echo '<button class="w-100 border-0 mb-1 px-1 text-center" style="height: 100%;" onclick="disable_Button()" id="backs">Sign-up</button>';
                     echo '</div>';
                     echo '<div class="col-md-12 w-100 ms-2" mb-1 style="height: 35px; display: none; margin-top: -1.5rem"  id="button-signup-rdA">';
                         echo '<button class="w-100 border-0 mb-1 px-1 text-center" type="submit" style="height: 100%;" id="button-signup-rds">Sign-up</button>';

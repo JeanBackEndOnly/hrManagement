@@ -9,6 +9,18 @@
     };
 </script>
 <?php endif;  ?>
+<style>
+.hr {
+    background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
+    color: #fff !important;
+}
+
+.hrP,
+.me-side-text1 {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+</style>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <?php echo renderHeader() ?>
@@ -51,8 +63,9 @@
 
                 <div class="header-employee d-flex flex-wrap col-md-12 flex-row justify-content-between align-items-center"
                     style="height: 7rem; width: 95%;">
-                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-start " style="display:flex;">
-                        <h3 class="m-0">LEAVE REQUESTS</h3>
+                    <div class="h1 AnimationFinalfirst">
+                        <h3 class="m-0 titleFont">LEAVE MANAGEMENT</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>Manage leave request</span></p>
                     </div>
 
                     <div class="leaveTabButtons  d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">

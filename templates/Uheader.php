@@ -56,7 +56,6 @@ $leaveEmployeeResult = $leaveStatus["leaveEmployeeResult"];
 $leaveCounts = getEmployeeLeaveCounts();
 $getEmployeeLeaveCounts = $leaveCounts["getEmployeeLeaveCounts"];
 
-
 $educData = getEducationalBG();
 $getEduc = $educData['getEduc'] ?? [
     'elementary' => null,

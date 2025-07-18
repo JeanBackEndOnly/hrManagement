@@ -312,131 +312,93 @@
   // ===================== side navs ===================== //
 
 function sideNav() {
-        const sideHEhe = document.getElementById("sideHEhe");
-        const ilahr = document.getElementById("iLeftArrowHr");
-        const ilapr = document.getElementById("iLeftArrowPr");
-        const hrUls = document.getElementById("hrUl");
-        const payrollUl = document.getElementById("payrollUl");
+    const sideHEhe = document.getElementById("sideHEhe");
+    const ilahr = document.getElementById("iLeftArrowHr");
+    const ilapr = document.getElementById("iLeftArrowPr");
+    const hrUls = document.getElementById("hrUl");
+    const payrollUl = document.getElementById("payrollUl");
+    const pHR = document.getElementById("phr");
+    const pDASHBOARD = document.getElementById("pdashboard");
+    const ppr = document.getElementById("ppr");
+    const pa = document.getElementById("pa");
+    const ps = document.getElementById("ps");
 
-        const isOpen = sideHEhe.classList.contains("opened");
+    const isClosed = sideHEhe.classList.contains("colsed");
 
-        if (!isOpen) {
-            sideHEhe.classList.add("opened");
+    if (isClosed) {
+        // Open Sidebar
+        sideHEhe.classList.remove("colsed");
+        sideHEhe.classList.add("opened");
 
-            ilahr.style.display = 'flex';
-            ilapr.style.display = 'flex';
+        // Show text and arrows
+        [pHR, pDASHBOARD, ppr, pa, ps, ilahr, ilapr].forEach(el => el.style.display = 'flex');
 
-            if (hrUls.classList.contains("open")) {
-                hrUls.style.display = "flex";
-                hrUls.style.flexDirection = "column";
-                hrUls.style.maxHeight = hrUls.scrollHeight + "px";
-                hrUls.style.opacity = "1";
-                hrUls.style.marginTop = "0.5rem";
-            }
-
-             if (payrollUl.classList.contains("open")) {
-                payrollUl.style.display = "flex";
-                payrollUl.style.flexDirection = "column";
-                payrollUl.style.maxHeight = payrollUl.scrollHeight + "px";
-                payrollUl.style.opacity = "1";
-                payrollUl.style.marginTop = "0.5rem";
-            }
-
-        } else {
-            sideHEhe.classList.remove("opened");
-
-            ilahr.style.display = 'none';
-            ilapr.style.display = 'none';
-
-            hrUls.style.maxHeight = "0";
-            hrUls.style.opacity = "0";
-            hrUls.style.marginTop = "0";
-            payrollUl.style.maxHeight = "0";
-            payrollUl.style.opacity = "0";
-            payrollUl.style.marginTop = "0";
-            payrollUl.classList.remove("open");
-            setTimeout(() => {
-                hrUls.style.display = "none";
-                payrollUl.style.display = "none";
-            }, 400);
-
+        // Expand submenus if they were open
+        if (hrUls.classList.contains("open")) {
+            hrUls.style.display = "flex";
+            hrUls.style.flexDirection = "column";
+            hrUls.style.maxHeight = hrUls.scrollHeight + "px";
+            hrUls.style.opacity = "1";
+            hrUls.style.marginTop = "0.5rem";
         }
-}
-function hrButton() {
-        const hrUl = document.getElementById("hrUl");
-        const payrollUl = document.getElementById("payrollUl");
-        const sideHEheHr = document.getElementById("sideHEhe");
-        const ilahr = document.getElementById("iLeftArrowHr");
-        const ilapr = document.getElementById("iLeftArrowPr");
 
-        const isOpen = hrUl.classList.contains("open");
-
-        if (isOpen) {
-            sideHEheHr.classList.remove("opened");
-             ilahr.style.display = 'none';
-            ilapr.style.display = 'none';
-            hrUl.style.maxHeight = "0";
-            hrUl.style.opacity = "0";
-            hrUl.style.marginTop = "0";
-            hrUl.classList.remove("open");
-            payrollUl.classList.remove("open");
-            payrollUl.style.display = 'none';
-
-            setTimeout(() => {
-                hrUl.style.display = "none";
-            }, 400);
-        } else {
-            sideHEheHr.classList.add("opened");
-             ilahr.style.display = 'flex';
-            ilapr.style.display = 'flex';
-            hrUl.style.display = "flex";
-            hrUl.style.flexDirection = "column";
-            hrUl.style.maxHeight = hrUl.scrollHeight + "px";
-            hrUl.style.opacity = "1";
-            hrUl.style.marginTop = "0.5rem";
-            hrUl.classList.add("open");
-            payrollUl.classList.remove("open");
-            payrollUl.style.display = 'none';
-        }
-}
-
-function payrollButton() {
-        const payrollUl = document.getElementById("payrollUl");
-        const hrUl = document.getElementById("hrUl");
-        const sideHEheHr = document.getElementById("sideHEhe");
-        const ilahr = document.getElementById("iLeftArrowHr");
-        const ilapr = document.getElementById("iLeftArrowPr");
-
-        const isOpen = payrollUl.classList.contains("open");
-
-        if (isOpen) {
-            sideHEheHr.classList.remove("opened");
-             ilahr.style.display = 'none';
-            ilapr.style.display = 'none';
-            payrollUl.style.maxHeight = "0";
-            payrollUl.style.opacity = "0";
-            payrollUl.style.marginTop = "0";
-            payrollUl.classList.remove("open");
-            hrUl.classList.remove("open");
-            hrUl.style.display = 'none';
-
-            setTimeout(() => {
-                payrollUl.style.display = "none";
-            }, 400);
-        } else {
-            sideHEheHr.classList.add("opened");
-             ilahr.style.display = 'flex';
-            ilapr.style.display = 'flex';
+        if (payrollUl.classList.contains("open")) {
             payrollUl.style.display = "flex";
             payrollUl.style.flexDirection = "column";
             payrollUl.style.maxHeight = payrollUl.scrollHeight + "px";
             payrollUl.style.opacity = "1";
             payrollUl.style.marginTop = "0.5rem";
-            payrollUl.classList.add("open");
-            hrUl.classList.remove("open");
-            hrUl.style.display = 'none';
         }
+    } else {
+        // Close Sidebar
+        sideHEhe.classList.remove("opened");
+        sideHEhe.classList.add("colsed");
+
+        // Hide text and arrows
+        [pHR, pDASHBOARD, ppr, pa, ps, ilahr, ilapr].forEach(el => el.style.display = 'none');
+
+        // Collapse submenus
+        [hrUls, payrollUl].forEach(ul => {
+            ul.style.maxHeight = "0";
+            ul.style.opacity = "0";
+            ul.style.marginTop = "0";
+        });
+
+        setTimeout(() => {
+            hrUls.style.display = "none";
+            payrollUl.style.display = "none";
+        }, 400);
+    }
 }
+
+function toggleDropdown(targetUl, otherUl) {
+  if (targetUl.classList.contains("open")) {
+    targetUl.style.maxHeight = "0";
+    targetUl.classList.remove("open");
+  } else {
+    // Expand target
+    targetUl.style.maxHeight = targetUl.scrollHeight + "px";
+    targetUl.classList.add("open");
+
+    // Collapse other
+    otherUl.style.maxHeight = "0";
+    otherUl.classList.remove("open");
+  }
+}
+
+function hrButton() {
+  const hrUl = document.getElementById("hrUl");
+  const prUl = document.getElementById("payrollUl");
+  toggleDropdown(hrUl, prUl);
+}
+
+function payrollButton() {
+  const hrUl = document.getElementById("hrUl");
+  const prUl = document.getElementById("payrollUl");
+  toggleDropdown(prUl, hrUl);
+}
+
+
 
 function showLoading() {
     const loading = document.getElementById("loadingAnimation");

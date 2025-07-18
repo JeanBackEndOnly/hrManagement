@@ -2,6 +2,18 @@
  include '../../templates/Uheader.php';
  include '../../templates/HN.php';
 ?>
+<style>
+    .dashboard{
+    background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
+        border-radius: 10px !important;
+        border-radius: 10px !important;
+        color: #fff !important;
+    }
+    .pdashboard, .me-side-text2{
+        color: #fff !important;
+        font-weight: bold !important;
+    }
+</style>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <?php echo renderHeader() ?>

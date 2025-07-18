@@ -11,7 +11,7 @@
     --navs: #E32126;
 }
 html, main, body{
-    height: 99vh;
+    height: 100vh !important;
     margin: 0;
     background-color: var(--white);
 }
@@ -29,57 +29,15 @@ html, body , main{
     border-color: inherit; 
 }
 /* =================================== SIDE NAV ==================================== */
-
-.sideNav{
-    background-color: var(--navs);
-    color: var(--white);
+a{
+    text-decoration: none !important;
 }
-.sideNav .navs li {
-    transition: background-color 0.3s ease;
-    color: var(--white);
+.text-width{
+    width: 11rem !important;
 }
-
-.sideNav .navs li:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-    color: var(--white);
+.li-width{
+    width: 14rem !important;
 }
-
-.sideNav .navs li a,
-.sideNav .navs li button {
-    transition: color 0.3s ease;
-    color: var(--white);
-}
-
-.sideNav .navs li p,
-.sideNav .navs li i {
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.sideNav .navs li a:hover p,
-.sideNav .navs li a:hover i,
-.sideNav .navs li button:hover p,
-.sideNav .navs li button:hover i {
-    color: var(--navs);
-}
-.usersButton{
-    color: var(--white);
-}
-
-.sideNav .navs ul li {
-    transition: background-color 0.3s ease;
-}
-
-.sideNav .navs ul li:hover {
-    background-color: #e9ecef;
-    border-radius: 0.25rem;
-    color: var(--navs);
-}
-.sideNav .navs ul li a:hover {
-    color: var(--navs);
-}
-
-
 /* =================================== DASHBOARD =================================== */
 .validated, .pending, .leave, .reports  {
     transition: all 0.3s ease;
@@ -104,85 +62,8 @@ html, body , main{
     background: none;
     border: none;
 }
-.sideNav{
-    min-width: 5rem;
-    height: 100%;
-    transition: .5s;
-    border-top-right-radius: 10px;
-}
-.row{
-    margin-left: 0!important;
-    margin-right: 0!important;
-}
-.navs li {
-    list-style-type: none;
-    transition: .5s!important;
-    /* transform: translateX(.5rem); */
-    min-width: 100%;
-}
-
-.navs p {
-    display: none;
-    margin: 0;
-    width: 11rem;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-/* .sideNav {
-    width: 5rem;
-    transition: width 0.3s ease;
-    overflow-x: hidden;
-}
-
-.sideNav:hover {
-    width: 20rem !important;
-}
-
-.sideNav:hover .navs p {
-    display: flex !important;
-} */
-
-
-
-.navs i{
-    margin-left: 12px;
-    transition: .5s!important;
-    transform: translateX(.9rem);
-}
-.navs a {
-    color: var(--backGroundDark);
-    text-decoration: none;
-    transition: .5s!important;
-}
-.navs p{
-transform: translateX(.9rem);
-}
-.usersButton button{
-    display: flex;
-    flex-direction: row;
-}
-.hrLi:hover, .payrollLi:hover, .dashboardLi:hover,
-.attendanceLi:hover, .settingsLi:hover{
-    background-color: #e4e4e4;
-}
-.ulHr{
-    height: 20vh;
-    width: 100%;
-}
 .header i{
     color: var(--backGroundDark)
-}
-#hrUl,
-#payrollUl {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    margin-top: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    font-size: 15px;
 }
 .crud-employee button, .buttonUpdate button{
     width: 22%;
@@ -192,6 +73,10 @@ transform: translateX(.9rem);
     transition: .5s ease-in-out;
     border-style: solid;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
+}
+.usersButton button{
+    display: flex;
+    flex-direction: row;
 }
 .buttonUpdate button{
     width: 100%;
@@ -222,44 +107,6 @@ transform: translateX(.9rem);
 }
 .h1{
      font-family: 'Poppins', sans-serif;
-}
-.sideNav{
-    transform: translateX(-.5rem);
-}
-#sideHEhe {
-    min-width: 5rem;
-    width: 5rem;
-    padding-right: 0;
-    overflow: hidden;
-    transition: min-width 0.4s ease, width 0.4s ease, padding-right 0.4s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-#sideHEhe.opened {
-    min-width: 16rem;
-    width: 20rem;
-    padding-right: 1rem;
-}
-
-.side-text {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 0;
-    opacity: 0;
-    transition: max-width 0.4s ease, opacity 0.4s ease;
-}
-#iLeftArrowHr{
-    margin-left: 4px;
-}
-#sideHEhe.opened .side-text {
-    display: flex;
-    max-width: 11rem;
-    opacity: 1;
-}
-#hrUl i, #payrollUl i{
-    transform: translateX(0);
 }
 .search-titles, .search-validated, .search-request, .search-rejected, .search-titles-promotion, .search-leave{
     box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
@@ -498,24 +345,55 @@ transform: translateX(.9rem);
     font-size: 4rem !important;
 }
 .hoverDashboard:hover{
-    background-color: #E53935 !important;
+    background-color: #E53935 ;
     transform: translateY(-5px) !important;
 }
 .BGdashboardContents{
     background-color: #e1dede;
     border: solid 1px #e538355e;
 }
+.navigationsContents{
+    background: linear-gradient(40deg, #e1dede, #e1dedeaf, #e1dede63, #e1dede05);
+     transition: 1s ease-in-out !important;
+     /* border: solid 1px #e538355e; */
+}
+.hoverNavs{
+    transition: 1s !important;
+}
+.hoverNavs:hover{
+    background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
+}
+@keyframes Fadein{
+    0%{opacity: 0;}
+    100%{opacity: 1;}
+}
+.LogoutAniamtion{
+    animation: Fadein 1s forwards ease-in-out;
+}
+.navigationsContents:hover{
+    background-color: #e1dede;
+    transform: translateX(-.5rem) !important;
+}
 .BGGradiant{
     background: linear-gradient(40deg, #E53935, #E32126,#ed4b48, #e96064);
 }
 .text-black{
-    color: #000 !important;
+    color: #000;
 }
 .BGGradiantNav{
     /* background: linear-gradient(40deg, #e53835a9, #e3212797, #E53935, #E32126); */
      background-color: #ffffff;
-    border: solid 1px #e538355e;
+    /* border-right: solid 1px #e538355e; */
     color: #fff !important;
+    margin: 0;
+}
+.NavigationBG{
+    background: linear-gradient(40deg, #E32126, #E53935, #e3212797, #e5383518);
+    transition: 1s ease-in-out;
+}
+.NavigationBG:hover{
+    background-color: #E32126 !important;
+    transition: .5s ease-in-out;
 }
 .header-bg{
     background-color: #E32126;
@@ -526,7 +404,17 @@ transform: translateX(.9rem);
 a{
     text-decoration: none;
 }
+.mediaNavEmployee{
+    display: none;
+}
 @media (max-width: 576px) {
+    .sideNav{
+        position: fixed;
+        top: -50rem !important;
+    }
+    .mediaNavEmployee{
+        display: flex !important;
+    }
     a{
         text-decoration: none;
     }
