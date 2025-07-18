@@ -1,5 +1,5 @@
 <?php
-require_once '../installer/config.php';
+require_once '../../installer/config.php';
 session_start();
 
     $pdo = db_connection();
@@ -18,5 +18,5 @@ session_start();
 
 session_unset();
 session_destroy();
-header("Location: index.php");
+header("Location: ../index.php");
 exit;

@@ -124,24 +124,24 @@
         $stmt->execute();
         $EmployeeData = $stmt->fetch(PDO::FETCH_ASSOC);
     ?>
-    <div class="mediaNavEmployee w-100 h-auto d-flex header-bg" style="display: none; position: absolute; bottom: 0; left:0;">
-        <div class="col-md-2 col-2 m-2 p-0 d-flex align-items-center justify-content-center">
+    <div class="mediaNavEmployee w-100 d-flex header-bg" style="display: none; position: absolute; bottom: 0; left:0; height: 4rem;">
+        <a href="dashboard.php" class="col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="margin-left: .4rem; margin-right: .4rem;">
             <i id="dashoardi" class="fa-solid text-white fa-house fs-5 me-2"></i>
-        </div>
-        <div class="col-md-2 col-2 m-2 p-0 d-flex align-items-center justify-content-center">
+        </a>
+        <a href="hrNavigations.php" class="col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="margin-left: .4rem; margin-right: .4rem;">
             <i class="fa-solid me-2 fa-users text-white hrP"></i>
-        </div>
-        <div class="profile col-md-2 col-2 m-2 p-0 d-flex align-items-center justify-content-center " style="height: 2rem;">
+        </a>
+        <a href="profile.php" class="profile col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="height: 2rem; margin-left: .4rem; margin-right: .4rem;">
             <img src="../../assets/image/upload/<?= htmlspecialchars($EmployeeData["user_profile"]) ?>" alt=""
             style="width: 90px; height: 90px; border-radius: 50%; position: relative; transform: translate(0, -2rem); background-color: #fff !important;">
-        </div>
-        <div class="col-md-2 col-2 m-2 p-0 d-flex align-items-center justify-content-center">
+        </a>
+        <a href="payrollNav.php" class="col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="margin-left: .4rem; margin-right: .4rem;">
             <i class="fa-solid me-2 text-white fa-peso-sign"></i>
-        </div>
-        <div class="col-md-2 col-2 m-2 p-0 d-flex align-items-center justify-content-center">
+        </a>
+        <a href="#" class="col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="margin-left: .4rem; margin-right: .4rem;">
             <i class="fa-solid text-white me-2 fa-clock d-flex align-items-center"></i>
-        </div>
-    </div>
+        </a>
+    </a>
 <?php } ?>  
 
 

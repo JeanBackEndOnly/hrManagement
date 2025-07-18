@@ -16,7 +16,7 @@
         <?= renderHeaderEmployee() ?>
 
 
-        <div class="d-flex w-100 align-items-start" style="height: 91%">
+        <div class="d-flex w-100 align-items-start" style="height: auto;">
             <?= renderNavEmployee() ?>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee m-0 d-flex flex-row justify-content-start align-items-center col-md-11 flex-wrap" style="height: 5rem !important;">

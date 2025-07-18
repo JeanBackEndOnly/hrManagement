@@ -408,6 +408,10 @@ a{
     display: none;
 }
 @media (max-width: 576px) {
+    html{
+        height: 100vh !important;
+        overflow: hidden !important;
+    }
     .sideNav{
         position: fixed;
         top: -50rem !important;
