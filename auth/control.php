@@ -7,10 +7,10 @@ require_once '../../installer/config.php';
 require_once '../../auth/view.php';
 
 // ======================== KEEP INTRUDERS OUT ======================== //
-if (!isset($_SESSION['user_role'])) {
-    header('Location: ../index.php');
-    die();
-}
+// if (!isset($_SESSION['user_role'])) {
+//     header('Location: ../index.php');
+//     die();
+// }
 
     // =========================== Notifications =========================== //
     $AddJobModal = false;
@@ -597,9 +597,9 @@ function getEducationalBG() {
 function getEmployee(): array
     {
     $pdo     = db_connection();
-    if($_SESSION['user_id'] == 1){
+    if($_SESSION['user_id'] ?? '' == 1){
         $user_id = $_GET["users_id"] ?? '';
-    }else if($_SESSION["user_id"] != 1){
+    }else if($_SESSION["user_id"] ?? '' != 1){
         $user_id = $_SESSION['user_id'] ?? null;
     }
     if (!$user_id) {
@@ -1036,7 +1036,7 @@ function getEmployeeLeaveCounts(){
 function getPersonalData(): array
 {
     $pdo      = db_connection();
-    if($_SESSION["user_id"] == 1){
+    if($_SESSION["user_id"] ?? '' == 1){
         $users_id = (int)($_GET['users_id'] ?? 0);
     }else{
         $users_id = (int)($_SESSION['user_id'] ?? 0);

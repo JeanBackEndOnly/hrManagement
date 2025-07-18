@@ -184,6 +184,13 @@
 </head>
 <body>
 <style>
+    a{
+        text-decoration: none !important;
+    }
+    .headerDesktop{
+         background-color: #E32126 !important;
+        color: #fff !important;
+    }
     @media (max-width: 576px) {
     .main-body {
         overflow-x: auto;
@@ -320,6 +327,19 @@
     .loading-lines .line {
         width: 20px;
         height: 3px;
+    }
+    a{
+        text-decoration: none;
+        
+    }
+    .headerMedia{
+        margin-top: 1rem !important;
+        background-color: #E32126 !important;
+        border-radius: 10px !important;
+        color: #fff !important;
+    }
+    .mediah3{
+        font-size: .8rem;
     }
 }
 </style>

@@ -490,13 +490,46 @@ transform: translateX(.9rem);
 .AnimationFinalfirst{
     animation: first 1s forwards ease-in-out;
 }
+.hoverDashboard{
+    transition: .5s ease-in-out;
+}
+.titleFont{
+    font-family: 'Jomhuria', cursive !important;
+    font-size: 4rem !important;
+}
+.hoverDashboard:hover{
+    background-color: #E53935 !important;
+    transform: translateY(-5px) !important;
+}
+.BGdashboardContents{
+    background-color: #e1dede;
+    border: solid 1px #e538355e;
+}
 .BGGradiant{
-    background: linear-gradient(40deg,  #e6233aa2, #D2001A, #D2001A, #e6233aa2);
+    background: linear-gradient(40deg, #E53935, #E32126,#ed4b48, #e96064);
+}
+.text-black{
+    color: #000 !important;
+}
+.BGGradiantNav{
+    /* background: linear-gradient(40deg, #e53835a9, #e3212797, #E53935, #E32126); */
+     background-color: #ffffff;
+    border: solid 1px #e538355e;
+    color: #fff !important;
+}
+.header-bg{
+    background-color: #E32126;
 }
 .txtToWhite{
     color: #fff !important;
 }
+a{
+    text-decoration: none;
+}
 @media (max-width: 576px) {
+    a{
+        text-decoration: none;
+    }
     .logo h4{
         font-size: 12px;
         text-align: center;

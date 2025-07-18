@@ -5,21 +5,27 @@
         window.open('pendingPDF.php?users_id=<?php echo $_GET["users_id"]; ?>&pds_id=<?php echo $getPds_id["pds_id"]; ?>', '_blank');
     };
 </script>
+<style>
+    a{
+        text-decoration: none !important;
+    }
+</style>
 <?php endif;  ?>
-<main>
-    <div class="header d-flex flex-row justify-content-between align-items-center w-100" style="height: 2rem;">
-        <div class="logo d-flex flex-row align-items-center">
-            <img src="../../assets/image/pueri-logo.png" class="mx-3" style="width: 7%; height: auto;"  alt="">
-            <h4>Zamboanga Puericulture Center</h4>
+<main class="mediaMain d-flex flex-column align-items-center justify-content-start">
+    <div class="headerMedia d-flex flex-row justify-content-between align-items-center col-md-12 col-11 h-auto p-2 headerDesktop">
+        <div class="logo d-flex flex-row align-items-center col-md-7 col-10 m-0 p-0">
+            <img src="../../assets/image/pueri-logo.png" class="mx-2" style="width: 40px; height: 40px !important;"  alt="">
+            <h3 class="m-0 w-100 mediah3">Zamboanga Puericulture Center</h3>
         </div>
-        <a href="pendingPDS.php?users_id=<?= $_SESSION["pending_user_id"] ?>" class="btn btn-primary">PDS</a>
-        <a href="../logout.php" class="me-3">Logout</a>
+        <a href="pendingPDS.php?users_id=<?= $_SESSION["pending_user_id"] ?>" class="btn btn-primary col-md-1 col-2 m-0 p-1">PDS</a>
+        <!-- <a href="../logout.php" class="me-3 fw-bold">Logout</a> -->
     </div>
 
 
         <div class="d-flex w-100 align-items-start" style="height: 91%">
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-end p-0 m-0 my-3" style="width: 95%; height: 5rem !important;">
+                <div class="linkToEmployeeManagement d-flex flex-row align-items-center justify-content-between p-0 m-0 my-3 h-auto col-md-11 col-11">
+                    <a href="pending.php" class="col-md-1 col-3 text-center h-auto p-1 text-white fw-bold rounded-2" style="background-color: #E32126 !important; text-decoration: none !important; ">Home</a>
                     <a class="btn btn-primary" href="pendingPDS.php?users_id=<?php echo $_SESSION["pending_user_id"] ?>&open_pdf=1">Create PDF</a>
                 </div>
                 <div class="contents d-flex flex-column align-items-center p-3 m-0 col-md-11 shadow rounded-2" style="height: auto;">
@@ -831,16 +837,16 @@
                         </div>
                     </form>
                         <!-- ============================== BUTTONS ========================================= -->                    
-                    <div class="next col-md-12 d-flex justify-content-between">
-                        <div class="backsButtons">
-                            <button class="btn btn-danger" id="buttonSecondB" onclick="buttonSecondB()" style="display: none;">BACK</button>
-                            <button class="btn btn-danger" id="buttonThirdB" onclick="buttonThirdB()" style="display: none;">BACK</button>
-                            <button class="btn btn-danger" id="buttonFourthB" onclick="buttonFourthB()" style="display: none;">BACK</button>
+                    <div class="next col-md-12 col-12 d-flex justify-content-evenly">
+                        <div class="backsButtons col-md-5 col-5">
+                            <button class="btn btn-danger text-center col-md-12 col-12" id="buttonSecondB" onclick="buttonSecondB()" style="display: none;">BACK</button>
+                            <button class="btn btn-danger text-center col-md-12 col-12" id="buttonThirdB" onclick="buttonThirdB()" style="display: none;">BACK</button>
+                            <button class="btn btn-danger text-center col-md-12 col-12" id="buttonFourthB" onclick="buttonFourthB()" style="display: none;">BACK</button>
                         </div>
-                        <div class="nextButtons">
-                            <button class="btn btn-success" id="buttonFirstN" onclick="buttonFirstN()" style="display: flex;">NEXT</button>
-                            <button class="btn btn-success" id="buttonSecondN" onclick="buttonSecondN()" style="display: none;">NEXT</button>
-                            <button class="btn btn-success" id="buttonThirdN" onclick="buttonThirdN()" style="display: none;">NEXT</button>
+                        <div class="nextButtons col-md-5 col-5">
+                            <button class="btn btn-success text-center col-md-12 col-12" id="buttonFirstN" onclick="buttonFirstN()" style="display: flex;">NEXT</button>
+                            <button class="btn btn-success text-center col-md-12 col-12" id="buttonSecondN" onclick="buttonSecondN()" style="display: none;">NEXT</button>
+                            <button class="btn btn-success text-center col-md-12 col-12" id="buttonThirdN" onclick="buttonThirdN()" style="display: none;">NEXT</button>
                             <button type="button" id="updateButtonEBG" class="btn btn-success" style="display: none;" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
                                 Update
                             </button>
