@@ -20,7 +20,6 @@
     <div class="main-body w-100 h-100 m-0 p-0">
         <?= renderHeaderEmployee() ?>
 
-
         <div class="d-flex w-100 align-items-start" style="height: auto;">
             <?= renderNavEmployee() ?>
             <div class="contents w-100 h-100 d-flex flex-column justify-content-center align-items-center p-0 m-0">

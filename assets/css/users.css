@@ -408,13 +408,16 @@ a{
     display: none;
 } */
 @media (max-width: 576px) {
+    .main-body{
+        overflow: hidden !important;
+    }
     .hideMedia{
         display: none !important;
     }
     .headerFixer{
         align-items: center;
         justify-content: center;
-        margin-top: .5rem !important;
+        padding-top: .5rem !important;
         overflow: hidden !important;
     }
     .roundedMedia{
