@@ -1015,7 +1015,7 @@ function getEmployeeReport(){
     $users_id = $_SESSION['user_id'] ?? '';
     $query = "SELECT * FROM leavereq
     INNER JOIN leave_details ON leavereq.leave_id = leave_details.leaveID
-    WHERE users_id = :users_id;";
+    WHERE users_id = :users_id ORDER BY leave_id DESC ;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":users_id", $users_id);
     $stmt->execute();

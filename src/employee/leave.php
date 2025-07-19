@@ -9,6 +9,11 @@
     color: #fff !important;
     font-weight: bold !important;
 }
+.hrNavI{
+    padding: .5rem;
+    border: solid .2rem #fff !important; 
+    border-radius: 50%;
+}
 </style>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
@@ -20,8 +25,8 @@
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
                 <div class="header-employee mediaTitleMargin m-0 d-flex flex-row justify-content-start align-items-center col-md-11 col-11 flex-wrap" style="height: 5rem !important;">
                     <div class="h1 AnimationFinalfirst">
-                        <h3 class="m-0 titleFont">FILLING LEAVE</h3>
-                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>You request a leave as if it's a important matter</span></p>
+                        <h3 class="m-0 titleFont fontSizeMedia">FILLING LEAVE</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span class="fontSizeMediaP">You request a leave as if it's a important matter</span></p>
                     </div>
                 </div>
                 <div class="container rounded-2 shadow p-0 m-0 heightMediaContent mt-3 d-flex flex-column align-item-center justify-content-start">

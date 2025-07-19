@@ -28,9 +28,6 @@
                         <h3 class="m-0 titleFont">HR MANAGEMENT</h3>
                         <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>Promotions and Manage Job title</span></p>
                     </div>
-                    <div class="h1 flex-row col-md-5 col-12 align-items-center justify-content-end" id="titleSalary" style="display: none;">
-                        <h3 class="m-0">JOB TITLE AND SALARY MANAGEMENT</h3>
-                    </div>
                     <div class="jobSalaryButton d-flex flex-row col-md-5 col-12 align-items-center justify-content-between">
                         <div class="crud-employee d-flex flex-row col-md-5 col-12 align-items-center justify-content-end" style="width: 48%; height: 2rem">
                             <button type="button" class="tab-btns w-100" onclick="jobTitleButton()" style="font-size:15px; border:none; box-shadow: none;" id="jobTtitles">

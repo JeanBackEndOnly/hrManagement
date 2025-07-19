@@ -128,12 +128,12 @@ function jobSalaryButton() {
     showLoadingAndRun(() => {
         console.log("Salary Management tab action triggered.");
 
-        document.getElementById("titleJob").style.display = 'none';
+        // document.getElementById("titleJob").style.display = 'none';
         document.getElementById("buttonJobTitle").style.display = 'none';
         document.getElementById("headerTableJob").style.display = 'none';
         document.getElementById("jobList").style.display = 'none';
 
-         document.getElementById("titleSalary").style.display = 'flex';
+        //  document.getElementById("titleSalary").style.display = 'flex';
          document.getElementById("promotionList").style.display = 'flex';
          document.getElementById("headerTableJobPromotion").style.display = 'flex';
 
@@ -152,14 +152,14 @@ function jobTitleButton() {
     showLoadingAndRun(() => {
         console.log("Job Titles tab action triggered.");
 
-        document.getElementById("titleJob").style.display = 'flex';
+        //document.getElementById("titleJob").style.display = 'flex';
         document.getElementById("buttonJobTitle").style.display = 'flex';
         document.getElementById("headerTableJob").style.display = 'flex';
         document.getElementById("jobList").style.display = 'flex';
 
          document.getElementById("promotionList").style.display = 'none';
          document.getElementById("headerTableJobPromotion").style.display = 'none';
-        document.getElementById("titleSalary").style.display = 'none';
+        // document.getElementById("titleSalary").style.display = 'none';
 
         const salaryContent = document.getElementById("salaryContentArea");
         if (salaryContent) {

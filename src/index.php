@@ -20,36 +20,44 @@ a {
 .noBG {
     background-color: transparent !important;
 }
+
 @media (max-width: 576px) {
-    .mediaHeaderText{
+    .mediaHeaderText {
         font-size: 14px !important;
     }
-    .mediaImgeHeader{
+
+    .mediaImgeHeader {
         width: 40px !important;
         height: 40px !important;
     }
-    .mediaLogin{
+
+    .mediaLogin {
         margin-top: -5rem !important;
     }
-    .mediaFontTitle{
+
+    .mediaFontTitle {
         font-size: 3rem !important;
     }
-    .mediaLoginSub{
+
+    .mediaLoginSub {
         font-size: .8rem !important;
         margin-top: -.8rem;
     }
-    .mediaSignupText{
+
+    .mediaSignupText {
         font-size: 12px !important;
     }
 }
 </style>
-<main id="main" class="login-page px-0 ">
+<main id="" class="px-0">
     <div class="d-flex flex-column h-100 w-100 align-items-center justify-content-start loginBG fadeInAnimation"
         style="position: fixed !important;">
-        <div class="header col-md-11 col-11 mt-2 h-auto rounded-3 d-flex align-items-center justify-content-center p-2"
+        <div class="header col-md-11 col-11 mt-2 h-auto rounded-3 d-flex align-items-center justify-content-start p-2"
             style="background-color: #E32126 !important">
-            <img src="../assets/image/pueri-logo.png" alt="" style="width: 60px; height: 60px;" class="mediaImgeHeader ">
-            <h5 class="text-center ms-2 fw-bold fs-2 m-0 mediaHeaderText" style="color: #fff;">ZAMBOANGA PUERICULTURE CENTER</h5>
+            <img src="../assets/image/pueri-logo.png" alt="" style="width: 60px; height: 60px;"
+                class="mediaImgeHeader ">
+            <h5 class="text-center ms-2 fw-bold fs-2 m-0 mediaHeaderText" style="color: #fff;">ZAMBOANGA PUERICULTURE
+                CENTER</h5>
         </div>
         <div class="h-100 col-md-12 col-12 d-flex align-items-center justify-content-center">
             <div class="container mediaLogin col-md-4 col-10 d-flex shadow flex-column align-items-center h-auto justify-content-center m-0 p-0 rounded-bottom-4"
@@ -89,11 +97,13 @@ a {
                             style="background-color: #E53935; ">Login</button>
                     </div>
                 </form>
-                <button class="btn btn-sm mb-1 fw-bold mediaSignupText" style="background: none; box-shadow: none; color: #000;"
-                    data-bs-toggle="modal" data-bs-target="#changePassword">Forgot Password?</button>
+                <button class="btn btn-sm mb-1 fw-bold mediaSignupText"
+                    style="background: none; box-shadow: none; color: #000;" data-bs-toggle="modal"
+                    data-bs-target="#changePassword">Forgot Password?</button>
                 <div class="mb-1 text-center">
-                    <p class="mediaSignupText">Doesn’t have an account? <a href="register.php" style="color: blue;"><span
-                                style="color: #E53935 !important;" class="fw-bold mediaSignupText">Sign-up</span></a></p>
+                    <p class="mediaSignupText">Doesn’t have an account? <a href="register.php"
+                            style="color: blue;"><span style="color: #E53935 !important;"
+                                class="fw-bold mediaSignupText">Sign-up</span></a></p>
                 </div>
             </div>
         </div>

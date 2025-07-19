@@ -408,19 +408,60 @@ a{
     display: none;
 } */
 @media (max-width: 576px) {
+    .hideMedia{
+        display: none !important;
+    }
+    .headerFixer{
+        align-items: center;
+        justify-content: center;
+        margin-top: .5rem !important;
+        overflow: hidden !important;
+    }
+    .roundedMedia{
+        border-radius: 10px !important;
+    }
+    .logoutMediaWidth{
+        width: 15rem !important;
+    }
+    .textWidthMedia{
+        width: 11rem !important;
+    }
+    .textWidthMediaTitle{
+         width: 14rem !important;
+         margin-left: -5rem !important;
+    }
+    .buttonLogoutMedia{
+        width: 5rem !important;
+    }
+    .fontSizeMedia{
+        font-size: 2.5rem !important;
+    }
+    .fontSizeMediaP{
+        font-size: 12px !important;
+    }
     .heightMediaContent{
         height: 65vh !important;
+        overflow-y: scroll !important;
+    }
+    .DashboardMediaHeight{
+        height: 80vh !important;
         overflow-y: scroll !important;
     }
     .txtMedia13{
         font-size: 13px;
     }
-    .heightMediaContent::-webkit-scrollbar{
+    .heightMediaContent::-webkit-scrollbar, .DashboardMediaHeight::-webkit-scrollbar,
+    .heightMediaContentPds::-webkit-scrollbar{
         display: none !important;
     }
     .mediaTitleMargin{
         margin-bottom: .3rem !important;
         position: relative;
+    }
+    .mediaHeight{
+        max-height: 53% !important;
+        margin-top: 6rem;
+        /* padding-bottom: ; */
     }
     html{
         height: 100vh !important;
@@ -439,7 +480,6 @@ a{
     .logo h4{
         font-size: 12px;
         text-align: center;
-        width: 9rem !important;
     }
     .logo img{
         width: 30px;

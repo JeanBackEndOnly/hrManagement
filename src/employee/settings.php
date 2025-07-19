@@ -9,6 +9,11 @@
     color: #fff !important;
     font-weight: bold !important;
 }
+.settingsNavI{
+       padding: .5rem;
+    border: solid .2rem #fff !important; 
+    border-radius: 50%;
+    }
 </style>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
@@ -18,18 +23,19 @@
         <div class="d-flex w-100 align-items-start" style="height: 91%">
             <?= renderNavEmployee() ?>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center justify-content-start p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center col-md-11 flex-wrap" style="height: 7rem;">
-                    <div class="h1 col-md-4 col-12">
-                        <h3 class="h3-employee">SETTINGS</h3>
-                    </div> 
-                    <div class="History_Pass d-flex flex-row justify-content-between align-items-center col-12 col-md-4">
+                <div class="header-employee mediaTitleMargin m-0 d-flex flex-row justify-content-between align-items-center col-md-11 col-11 flex-wrap">
+                    <div class="h1 AnimationFinalfirst text-start col-md-11 col-11 m-0 p-0">
+                        <h3 class="m-0 titleFont fontSizeMedia col-md-12 col-12 ">ACCOUNT SETTINGS</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important; col-md-12 col-12" class="m-0 p-0"><span class="fontSizeMediaP">Make sure that you're the only one who knows your password</span></p>
+                    </div>
+                    <div class="History_Pass d-flex mt-1 flex-row justify-content-between align-items-center col-12 col-md-4">
                         <button id="idChangePass" class="historyPass active col-md-6 col-6" onclick="changePass()">Change password</button>
                         <button id="idLoginHistory" class="historyPass col-md-4 col-6" onclick="loginHistory()">Login History</button>
                     </div>
                 </div>
                 
                 <div class="container" id="changePAsswordID" style="display: flex;">
-                    <div class="container shadow p-5 rounded-2">
+                    <div class="container shadow p-4 rounded-2">
                         <form class="w-100" method="POST" action="../../auth/authentications.php">
                                 <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
@@ -82,7 +88,7 @@
                     </div>
                 </div>
                 <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:63vh;">
-                    <div class="container shadow p-2 cold-md-12 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
+                    <div class="container shadow heightMediaContent p-2 cold-md-12 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
                         <?php if($employeeHistory): ?>
                             <div class="w-50">
                                 <h4 class="text-center fw-bold col-md-5 col-9">Login Time</h4>
@@ -103,6 +109,7 @@
                         <?php endif ?>
                     </div>
                 </div>
+                 <?= mediaNavEmployee() ?>
             </div>
         </div>
     </div>

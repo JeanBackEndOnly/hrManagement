@@ -1,4 +1,9 @@
 <?php include '../../templates/Uheader.php';  include '../../templates/HN.php';?>
+<style>
+    .borderActiveProfile{
+        border: .2rem solid #E32126 !important;
+    }
+</style>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <?= renderHeaderEmployee() ?>
@@ -6,12 +11,12 @@
 
         <div class="d-flex w-100 align-items-start" style="height: 91%">
             <?= renderNavEmployee() ?>
-            <div class="contents  w-100 h-100 d-flex flex-column justify-content-start align-items-center p-0 m-0">
-                <div class="header-employee mediaTitleMargin m-0 d-flex flex-row justify-content-between align-items-center col-md-11 col-11 flex-wrap"
+            <div class="contents DashboardMediaHeight w-100 d-flex flex-column justify-content-start align-items-center p-0 m-0">
+                <div class="header-employee mediaTitleMargin h-auto m-0 d-flex flex-row justify-content-between align-items-center col-md-11 col-11 flex-wrap"
                     style="height: 5rem !important;">
-                    <div class="h1 AnimationFinalfirst col-md-4">
-                        <h3 class="m-0 titleFont">PROFILE</h3>
-                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>Introduce yourself to others</span></p>
+                    <div class="h1 AnimationFinalfirst col-md-4" style="margin-bottom: -1rem !important;">
+                        <h3 class="m-0 titleFont fontSizeMedia">PROFILE</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span class="fontSizeMediaP">Introduce yourself to others</span></p>
                     </div>
 
                     <div class="navigations col-md-5 col-12 d-flex flex-row justify-content-between align-items-center">
@@ -39,15 +44,14 @@
                     </div>
                 </div>
                 <!-- ============================ PERSONAL INFO TAB ============================ -->
-                <div class="employeeReqProfileINfo flex-column  justify-content-between align-items-center p-0 m-0 mt-2 col-md-12 col-12"
+                <div class="employeeReqProfileINfo  flex-column  justify-content-between align-items-center p-0 m-0 mt-2 col-md-12 col-12"
                     style="height: 74vh; display:flex;" id="personalID">
                     <div
                         class="row  h-100 col-md-12 col-12 d-flex flex-column align-items-center justify-content-start p-0 m-0">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data"
-                            class="w-100 p-0 h-100 d-flex flex-row flex-wrap align-items-center justify-content-center">
-                            <div class="profileSide col-11 col-md-3 flex-column me-md-2 justify-content-start align-items-center
-                                    rounded-1 mb-1 mb-md-0" style="height: 80%; display: flex;"
-                                id="personalProfileInformation">
+                            class="w-100  p-0 h-100 d-flex flex-row flex-wrap align-items-center justify-content-center">
+                            <div class="profileSide mediaHeight col-11 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                                    rounded-1 mb-1 mb-md-0" style="height: 80%; display: flex;" id="personalProfileInformation">
                                 <input type="hidden" name="users_id" value="<?php echo $_SESSION["user_id"]??'no'; ?>">
                                 <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
@@ -77,35 +81,35 @@
                             <div class="informationSide col-12 col-md-8 px-4 flex-row flex-wrap rounded-1 justify-content-start align-items-start"
                                 style="height: 100%; display: flex;" id="personalInformation">
                                 <div class="profileID row w-100">
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <label for="user_profile" class="fw-bold">Profile</label>
                                         <input type="file" name="user_profile" class="form-control" id="user_profile">
                                         <input type="hidden" name="current_profile_image"
                                             value="<?= htmlspecialchars($employeeInfo["user_profile"]) ?>">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <label for="employeeID" class="fw-bold">Employee ID</label>
                                         <input type="text" name="employeeID" class="form-control" id="employeeID"
                                             value="<?= isset($employeeInfo["employeeID"]) ? htmlspecialchars($employeeInfo["employeeID"]) : "N/A" ?>">
                                     </div>
                                 </div>
                                 <div class="inputInfo my-2 row w-100">
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label for="lname" class="fw-bold">Surname</label>
                                         <input type="text" name="lname" class="form-control" id="lname"
                                             value="<?= isset($employeeInfo["lname"]) ? htmlspecialchars($employeeInfo["lname"]) : "N/A" ?>">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label for="fname" class="fw-bold">First Name</label>
                                         <input type="text" name="fname" class="form-control" id="fname"
                                             value="<?= isset($employeeInfo["fname"]) ? htmlspecialchars($employeeInfo["fname"]) : "N/A" ?>">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3  col-6">
                                         <label for="mname" class="fw-bold">Middle Name</label>
                                         <input type="text" name="mname" class="form-control" id="mname"
                                             value="<?= isset($employeeInfo["mname"]) ? htmlspecialchars($employeeInfo["mname"]) : "N/A" ?>">
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2  col-6">
                                         <label for="suffix" class="fw-bold">Suffix</label>
                                         <input type="text" name="suffix" class="form-control" id="suffix"
                                             value="<?= isset($employeeInfo["suffix"]) ? htmlspecialchars($employeeInfo["suffix"]) : "N/A" ?>">
@@ -286,8 +290,8 @@
                     style="width: 95%; height: 74vh; display: none;">
                     <!-- <div class="row h-100 w-100"> -->
                     <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data"
-                        class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                        <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                        class="w-100 p-0 h-100 d-flex flex-row flex-wrap align-items-center justify-content-center"> 
+                        <div class="profileSide mediaHeight col-12 col-md-3 flex-column me-md-2 justify-content-center align-items-center
                                     rounded-1 mb-1 mb-md-0" id="familyProfileInformation"
                             style="height: 80%; display: none;">
                             <input type="hidden" name="users_id" value="<?= $employeeInfo["users_id"] ?>">
@@ -299,7 +303,7 @@
                                     alt="Profile Picture" class="img-fluid rounded-circle">
                             </div>
                             <div
-                                class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-start">
+                                class="profileInfo mt-2 w-100 d-flex flex-column align-items-center justify-content-center">
                                 <h5 class="fs-6 fw-bold">
                                     <?= isset($employeeInfo["employeeID"]) ? htmlspecialchars($employeeInfo["employeeID"]) : "N/A" ?>
                                 </h5>
@@ -582,13 +586,13 @@
                     <!-- </div> -->
                 </div>
                 <!-- ============================ EDUCATIONAL BACKGROUND TAB ============================ -->
-                <div class="educationalbg flex-column justify-content-between p-0 m-0 mt-2" id="educationalbg"
-                    style="display: none; height: 74vh; width: 95%;">
-                    <div class="row h-100 w-100">
+                <div class="educationalbg flex-column justify-content-center align-items-center p-0 m-0 mt-2 col-md-11" id="educationalbg"
+                    style="display: none; height: 74vh;">
+                    <div class="row h-100 col-md-12 d-flex flex-column align-items-center justify-content-center">
                         <form action="../../auth/authentications.php" method="post" enctype="multipart/form-data"
-                            class="w-100 p-0 h-100 d-flex flex-row flex-wrap">
-                            <!-- Left Profile Column -->
-                            <div class="profileSide col-12 col-md-3 flex-column me-md-2 justify-content-start align-items-center
+                            class="w-100 p-0 h-100 d-flex flex-row flex-wrap align-items-center justify-content-center">
+                            <!-- Left Profile Column --> 
+                            <div class="profileSide mediaHeight col-11 col-md-3 flex-column me-md-2 justify-content-center align-items-center
                                     rounded-1 mb-1 mb-md-0" id="educationProfileInformation"
                                 style="height: 80%; display: none;">
 

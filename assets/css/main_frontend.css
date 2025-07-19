@@ -10,7 +10,8 @@
     --navs: #E32126;
 }
 html, main{
-        background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%) !important;
+        /* background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%) !important; */
+        background-color: #dbdbdbff !important;
     }
 html, body, main{
     margin: 0;
@@ -20,7 +21,7 @@ html, body, main{
     justify-content: center;
     align-items: center;
     /* background: linear-gradient(to top, var(--navs), var(--wihite)); */
-    background-color: #141212;
+    background-color: #dbdbdbff;
 }
 .lines {
   height: 2px;
