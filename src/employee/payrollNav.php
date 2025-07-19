@@ -53,6 +53,7 @@
                         <h5 class="m-0 p-0 fw-bold text-muted">REPORTS</h5>
                     </a>
                 </div>
+                <?= mediaNavEmployee() ?>
             </div>
         </div>
     </div>

@@ -7,10 +7,10 @@ require_once '../../installer/config.php';
 require_once '../../auth/view.php';
 
 // ======================== KEEP INTRUDERS OUT ======================== //
-// if (!isset($_SESSION['user_role'])) {
-//     header('Location: ../index.php');
-//     die();
-// }
+if (!isset($_SESSION['user_role'])) {
+    header('Location: ../index.php');
+    die();
+}
 
     // =========================== Notifications =========================== //
     $AddJobModal = false;

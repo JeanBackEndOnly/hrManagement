@@ -15,18 +15,19 @@
         <?= renderHeaderEmployee() ?>
 
 
-        <div class="d-flex w-100 align-items-start" style="height: 91%">
+        <div class="d-flex w-100 align-items-start" style="height: auto;">
             <?= renderNavEmployee() ?>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee col-md-11 d-flex flex-wrap flex-row justify-content-between align-items-center" style="width: 95%; height: 7rem;">
-                    <div class="h1 col-md-3 col-10">
-                        <h3 class="h3-employee" style="margin-left: 0;">LEAVE FILLING</h3>
+                <div class="header-employee mediaTitleMargin m-0 d-flex flex-row justify-content-start align-items-center col-md-11 col-11 flex-wrap" style="height: 5rem !important;">
+                    <div class="h1 AnimationFinalfirst">
+                        <h3 class="m-0 titleFont">FILLING LEAVE</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>You request a leave as if it's a important matter</span></p>
                     </div>
                 </div>
-                <div class="container rounded-2 shadow py-3">
+                <div class="container rounded-2 shadow p-0 m-0 heightMediaContent mt-3 d-flex flex-column align-item-center justify-content-start">
                     <div class="title w-100 h-auto d-flex flex-column justify-content-center align-items-center p-0 m-0">
-                        <h5 class="text-center">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
-                        <h5 style="border-bottom: solid 1px #000;">APPLICATION FOR LEAVE</h5>
+                        <h5 class="text-center txtMedia13">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
+                        <h5 style="border-bottom: solid 1px #000;" class="txtMedia13s">APPLICATION FOR LEAVE</h5>
                     </div>
                     <div class="form col-md-12 col-12 d-flex justify-content-center align-items-center m-0 py-3 h-auto">
                         <form action="../../auth/authentications.php" method="post" clas="d-flex justify-content-center align-items-center py-3 m-0 w-100 mt-1">
@@ -101,20 +102,20 @@
                             <div class="applied col-md-12 col-12 d-flex flex-row h-auto justify-content-center align-items-center p-0 m-0 mt-2 flex-wrap">
                                 <label for="cp" class="fw-bold col-md-12 col-11">CONTACT NO. WHILE ON LEAVE <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span><input required type="text" class="form-control col-11 col-md-11" id="cp" name="contact"></label>
                             </div>
-                            <div class="text col-md-12 col-11">
-                                <p class="text-start">
+                            <div class="text col-md-12 col-12 d-flex align-items-center justify-content-center">
+                                <p class="text-start col-md-12 col-11">
                                     I hereby pledge to report for work immediately the following day after expiration of my approved leave of absence unless <br>
                                     otherwise duly extended. MMy failure to do so shall subject me to disciplinary action
                                 </p>
                             </div>
-                            <div class="recommending col-md-12 col-11 d-flex flex-row justify-content-between m-0 mt-4 p-0">
-                                <p class="fw-bold">Reommending Approval: </p>
+                            <div class="recommending col-md-12 col-12 d-flex flex-row align-items-center justify-content-center m-0 mt-4 p-0">
+                                <p class="fw-bold col-md-5 col-5">Reommending Approval: </p>
                                 <div class="signiture col-md-5 col-5">
                                     <p style="border-bottom: solid 1px #000;" class="m-0"></p>
                                     <p class="text-center">Signiture of Applicant</p>
                                 </div>
                             </div>
-                            <div class="recommending col-md-12 col-11 d-flex flex-row justify-content-start m-0 mt-4 p-0 flex-wrap gap-2">
+                            <div class="recommending col-md-12 col-12 d-flex flex-row align-items-center justify-content-center m-0 mt-4 p-0 flex-wrap gap-2">
                                 <div class="sectionHEad col-md-4 col-11">
                                     <label class="fw-bold" for="sectionHead">Section Head <span class="fw-bold" style="font-size: 12px; color: red;">(required)</span></label>
                                     <input required type="text" class="form-control" id="sectionHead" name="sectionHead">
@@ -125,12 +126,12 @@
                                 </div>
                             </div>
                             <!-- ================================ ADMIN ONLY ================================ -->
-                            <div class="approvalContent col-md-12 col-11 p-0 m-0 mt-4 d-flex flex-column h-auto" 
+                            <div class="approvalContent col-md-12 col-12 p-0 m-0 mt-4 d-flex flex-column h-auto align-items-center justify-content-start" 
                                 style="border: solid 1px #000;">
-                                <div class="detailsTitle col-md-12 col-12" style="border-bottom: solid 1px #000;">
+                                <div class="detailsTitle col-md-12 col-11" style="border-bottom: solid 1px #000;">
                                     <h5 class="text-center my-1">DETAILS OF ACTION ON APPLICATION</h5>
                                 </div>
-                                <div class="row col-md-12 col-12 d-flex flex-row justify-content-center align-items-center h-auto flex-wrap p-2 m-0">
+                                <div class="row col-md-12 col-11 d-flex flex-row justify-content-center align-items-center h-auto flex-wrap p-2 m-0">
                                     <div class="titleContents col-md-7 col-12 d-flex flex-column p-0 m-0">
                                         <div class="entities d-flex col-12 flex-row justify-content-center align-items-center">
                                             <p class="col-md-3 col-3 m-0 mt-3"></p>
@@ -210,12 +211,13 @@
                             </div>
                         </form>
                     </div>
-                    <div class="buttonSubmit mt-3 col-md-12 col-12">
-                        <button type="button" id="updateButtonEBG" class="btn btn-success col-md-12 col-12" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
+                    <div class="buttonSubmit mt-3 col-md-12 col-11 d-flex justify-content-end">
+                        <button type="button" id="updateButtonEBG" class="btn btn-success col-md-12 col-3" data-bs-toggle="modal" data-bs-target="#updateModalEBG">
                             Submit
                         </button>
                     </div>
                 </div>
+                <?= mediaNavEmployee() ?>
             </div>
         </div>
     </div>

@@ -404,10 +404,24 @@ a{
 a{
     text-decoration: none;
 }
-.mediaNavEmployee{
+/* .mediaNavEmployee{
     display: none;
-}
+} */
 @media (max-width: 576px) {
+    .heightMediaContent{
+        height: 65vh !important;
+        overflow-y: scroll !important;
+    }
+    .txtMedia13{
+        font-size: 13px;
+    }
+    .heightMediaContent::-webkit-scrollbar{
+        display: none !important;
+    }
+    .mediaTitleMargin{
+        margin-bottom: .3rem !important;
+        position: relative;
+    }
     html{
         height: 100vh !important;
         overflow: hidden !important;
@@ -417,7 +431,7 @@ a{
         top: -50rem !important;
     }
     .mediaNavEmployee{
-        display: flex !important;
+        display: flex !important    ;
     }
     a{
         text-decoration: none;

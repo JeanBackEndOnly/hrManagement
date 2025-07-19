@@ -26,12 +26,13 @@
         <div class="d-flex w-100 align-items-start" style="height: 91%">
             <?= renderNavEmployee() ?>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee m-0 d-flex flex-row justify-content-start align-items-center col-md-11 flex-wrap" style="height: 5rem !important;">
-                    <div class="h1 col-md-4 col-12 m-0">
-                        <h3 class="h3-employee m-0">REPORTS</h3>
+                <div class="header-employee mediaTitleMargin m-0 d-flex flex-row justify-content-start align-items-center col-md-11 flex-wrap" style="height: 5rem !important;">
+                    <div class="h1 AnimationFinalfirst">
+                        <h3 class="m-0 titleFont">REPORTS</h3>
+                        <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>All notifications will be stored here</span></p>
                     </div>
                 </div>
-                <div class="container col-md-11 col-11 d-flex justify-content-start align-items-start h-auto m-0 flex-wrap">
+                <div class="container heightMediaContent col-md-11 col-11 d-flex justify-content-center align-items-center h-auto m-0 flex-wrap">
                     <?php foreach ($leaveEmployeeResult as $leave) : ?>
                         <?php if ($leave['leaveStatus'] == 'approved') : ?>
                             <div class="reportContainers shadow rounded-2 h-auto col-md-5 col-12 d-flex flex-row justify-content-center align-items-center flex-wrap p-4 m-1">
@@ -47,6 +48,7 @@
                          <?php endif ?>
                     <?php endforeach ?>
                 </div>
+                <?= mediaNavEmployee() ?>
             </div>
         </div>
     </div>

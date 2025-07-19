@@ -24,7 +24,7 @@
         <div class="d-flex w-100 align-items-start" style="height: 91%">
             <?php renderNav() ?>
             <div class="contents w-100 h-100 d-flex flex-column align-items-center p-0 m-0">
-                <div class="header-employee d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
+                <div class="header-employee mediaTitleMargin d-flex flex-row justify-content-between align-items-center " style="height: 7rem; width: 95%;">
                     <div class="h1 AnimationFinalfirst">
                         <h3 class="m-0 titleFont">HR MANAGEMENT</h3>
                         <p style="font-size: 17px !important; margin-top: -1rem !important;"><span>Hr Navigations</span></p>
@@ -41,7 +41,13 @@
                         <i class="fa-solid fa-users mx-1"></i>
                         <h5 class="m-0 p-0 fw-bold text-muted">REPORTS</h5>
                     </a>
+                     <a href="pds.php" class="col-md-5 text-black m-0 p-2 px-3 rounded-2 col-11 navigationsContents mt-2 me-4 AnimationFinalfirst h-auto d-flex h-100 align-items-center">
+                        <i class="fa-solid fa-circle me-3" style="color: rgb(7, 207, 7)"></i>
+                        <i class="fa-solid fa-users mx-1"></i>
+                        <h5 class="m-0 p-0 fw-bold text-muted">PRESONAL DATA SHEET</h5>
+                    </a>
                 </div>
+                <?= mediaNavEmployee() ?>
             </div>
         </div>
     </div>

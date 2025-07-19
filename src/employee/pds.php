@@ -1,4 +1,4 @@
-<?php include '../../templates/Uheader.php';?>
+<?php include '../../templates/Uheader.php';  include '../../templates/HN.php';?>
 <style>
     @media (max-width: 576px) {
     /* General adjustments */
@@ -1049,6 +1049,7 @@
                         </div>
                     </div>
                 </div>
+                <?= mediaNavEmployee() ?>
             </div>
         </div>
     </div>
