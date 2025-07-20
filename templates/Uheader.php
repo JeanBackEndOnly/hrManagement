@@ -46,6 +46,8 @@ $pds = getPdsId();
 $getPds_id = $pds["getPds_id"];
 $employeeStatus = getStatus();
 $status = $employeeStatus["status"];
+$employees = getEmployeeByAdmin();
+$employeeInfoAdmin = $employees["employeeInfoAdmin"] ?? ''; 
 // ================== EMPLOYEE INFO ================== //
 $employee = getEmployee();
 $employeeInfo = $employee["employeeInfo"] ?? '';

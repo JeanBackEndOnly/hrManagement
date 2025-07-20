@@ -5,7 +5,49 @@
 
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
-        <?php echo renderHeader() ?>
+        <div class="header d-flex align-items-center justify-content-between px-3" style="height: 60px; min-width: 100%;">
+            <div class="logo d-flex align-items-center">
+                <button type="button" onclick="sideNav();"><i class="fa-solid fa-bars fs-4 me-3" style="color: #fff;"></i></button>
+                <img src="../../assets/image/pueri-logo.png" alt="Logo" style="height: 40px;" class="me-2">
+                <h4 class="m-0">ZAMBOANGA PUERICULTURE CENTER</h4>
+            </div>
+
+            <div class="usersButton d-flex align-items-center">
+                <div class="pds-wrapper" style="position: relative;">
+                    <p class="fw-bold pNone">Personal Data Sheet</p>
+                    <a href="pds.php?users_id=<?= $_GET["users_id"] ?? '' ?>" class="togglePDS">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-3" style="color: #fff !important;"></i>
+                    </a>
+                </div>
+
+
+                <a href="settings.php"><i class="fa-solid fa-gear" style="color: #fff;"></i></a>
+                <button class="me-3" style="background: none; border:none; width: 20px;" onclick="logoutButton()"><i class="fa-solid fa-right-from-bracket ms-3" style="color: #fff;"></i></button>
+                <button class="align-items-center" type="button" onclick="userButton()">
+                    <img src="../../assets/image/admin.jpg" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
+                    <span class="fw-bold" style="color: #fff;">ADMIN</span>
+                </button>
+            </div>
+        </div>
+        <script>
+            function logoutButton(){
+                document.getElementById("logoutDiv").style.display = 'flex';
+            }
+            function logoutNo(){
+                document.getElementById("logoutDiv").style.display = 'none';
+            }
+        </script>
+        <div class="logout flex-column" id="logoutDiv" class="p-3" style="position: fixed; transform: translate(-50%, -50%); top:50%; left:50%; display: none; z-index: 55;">
+            <div class="shadow rounded p-3" style="background-color:rgb(230, 230, 230);">
+                <div class="question mb-3">
+                    <h5>Are you sure you want to logout?</h5>
+                </div>
+                <div class="buttons d-flex flex-row justify-content-evenly w-100 mt-1" style="border-top: solid 1px rgba(0,0,0,.4);">
+                    <a href="logout.php" id="logoutYes" class="col-md-5 btn btn-danger btn-sm mt-2">Yes</a>
+                    <button id="logoutNo" class="col-md-5 btn btn-secondary btn-sm mt-2" onclick="logoutNo()">No</button>
+                </div>
+            </div>
+        </div>
 
         <div class="d-flex w-100 align-items-start" style="height: 91%">
              <?php renderNav() ?>

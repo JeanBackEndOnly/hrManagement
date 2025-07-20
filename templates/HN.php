@@ -52,10 +52,10 @@
                     <p class="text-start text-black side-text m-0 text-width text-start hrP me-side-text1">MANAGE HR</p>
                 </a>
             </li>
-            <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 w-auto d-flex align-items-center">
+            <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 w-auto d-flex align-items-center payroll">
                 <a class="d-flex m-0 align-items-center" href="payrollNav.php">
-                   <i class="fa-solid me-2 text-black fa-peso-sign"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">MANAGE PAYROLL</p>
+                   <i class="fa-solid me-2 text-black fa-peso-sign payrollP"></i>
+                    <p class="text-start text-black side-text m-0 text-width text-start payrollP">MANAGE PAYROLL</p>
                 </a>
             </li>
             <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
@@ -138,7 +138,7 @@
         </a>
         <a href="profile.php" class="profile col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="height: 2rem; margin-left: .4rem; margin-right: .4rem;">
             <img src="../../assets/image/upload/<?= htmlspecialchars($EmployeeData["user_profile"]) ?>" alt=""
-            style="width: 100px; height: 100px; border-radius: 50%; position: relative; transform: translate(0, -2rem); background-color: #fff !important; border: solid .5rem #fff;" class="borderActiveProfile">
+            style="width: 100px !important; height: 100px !important; border-radius: 50%; position: relative; transform: translate(0, -2rem); background-color: #fff !important; border: solid .5rem #fff;" class="mediaBorderActiveProfile">
         </a>
         <a href="payrollNav.php" class="col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="margin-left: .4rem; margin-right: .4rem;">
             <i class="fa-solid me-2 text-white fa-peso-sign"></i>

@@ -594,16 +594,12 @@ function getEducationalBG() {
 }
 
 // ===================== EMPLOYEE ===================== //
-function getEmployee(): array
+function getEmployeeByAdmin(): array
     {
     $pdo     = db_connection();
-    //  echo $users_id = $_SESSION["user_id"] ?? 'WALANG ID NA NAKUKUHA DITO LMAO';
+    $users_id = $_SESSION["user_id"] ?? 'WALANG ID NA NAKUKUHA DITO LMAO';
     if($users_id ?? '' == 1){
         $user_id = $_GET["users_id"] ?? 'sa admin to';
-    }else if($users_id ?? '' != 1){
-        $user_id = $_SESSION['user_id'] ?? 'dasfsdf';
-    }else{
-         echo "walang nakuha sa session";
     }
     if (!$user_id) {
         return [];                           
@@ -654,7 +650,60 @@ function getEmployee(): array
         'getEduc'      => $getEduc
     ];
 }
+function getEmployee(): array
+    {
+    $pdo     = db_connection();
+    $users_id = $_SESSION["user_id"] ?? 'WALANG ID NA NAKUKUHA DITO LMAO';
+    $user_id = $_SESSION['user_id'] ?? 'dasfsdf';
+    if (!$user_id) {
+        return [];                           
+    }
 
+    $sql = "
+        SELECT
+            *
+        FROM users                     AS u
+        INNER JOIN userInformations    AS ui  ON ui.users_id  = u.id
+        INNER JOIN userHr_Informations AS uhr ON uhr.users_id = u.id
+        LEFT  JOIN family_information  AS fi  ON fi.users_id  = u.id
+        LEFT  JOIN family_informationAddress AS fia
+                                             ON fia.users_id = u.id
+        WHERE u.id = :id
+        LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $user_id]);
+    $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+    $stmt = $pdo->prepare(
+        "SELECT level,
+                school_name,
+                course_or_strand,
+                year_started,
+                year_ended,
+                honors
+         FROM educational_background
+         WHERE users_id = :id"
+    );
+    $stmt->execute([':id' => $user_id]);
+    $educRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $levels   = ['elementary', 'high_school', 'senior_high', 'college', 'graduate'];
+    $getEduc  = array_fill_keys($levels, [
+        'school_name'       => '',
+        'course_or_strand'  => '',
+        'year_started'      => '',
+        'year_ended'        => '',
+        'honors'            => ''
+    ]);
+
+    foreach ($educRows as $row) {
+        $getEduc[$row['level']] = $row;        
+    }
+
+    return [
+        'employeeInfo' => $employeeInfo,
+        'getEduc'      => $getEduc
+    ];
+}
 // ===================== DASHBOARD ===================== //
 function getValidatedCountDashboard() {
     $pdo = db_connection();

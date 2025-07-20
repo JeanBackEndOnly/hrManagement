@@ -453,6 +453,12 @@ a{
     .txtMedia13{
         font-size: 13px;
     }
+    .mediaBorderActiveProfile{
+        border: solid .5rem #fa4848cb !important;
+        height: 100px !important;
+        width: 100px !important;
+        border-radius: 50% !important;
+    }
     .heightMediaContent::-webkit-scrollbar, .DashboardMediaHeight::-webkit-scrollbar,
     .heightMediaContentPds::-webkit-scrollbar{
         display: none !important;

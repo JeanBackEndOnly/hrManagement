@@ -86,82 +86,82 @@
                                     <tbody>
                                     <tr>
                                         <th class="fw-bold">SURNAME</th>
-                                        <td><input type="text" class="form-control" name="lname" value="<?php echo $employeeInfo["lname"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="lname" value="<?php echo $employeeInfoAdmin["lname"] ?? 'wala nakuha'; ?>"></td>
                                         <th class="fw-bold">NICKNAME</th>
-                                        <td><input type="text" class="form-control" name="nickname" value="<?php echo $employeeInfo["nickname"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="nickname" value="<?php echo $employeeInfoAdmin["nickname"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">FIRST NAME</th>
-                                        <td colspan="3"><input type="text" class="form-control" name="fname" value="<?php echo $employeeInfo["fname"]; ?>"></td>
+                                        <td colspan="3"><input type="text" class="form-control" name="fname" value="<?php echo $employeeInfoAdmin["fname"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">MIDDLE NAME</th>
-                                        <td><input type="text" class="form-control" name="mname" value="<?php echo $employeeInfo["mname"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="mname" value="<?php echo $employeeInfoAdmin["mname"]; ?>"></td>
                                         <th class="fw-bold">NAME EXTENSION</th>
-                                        <td><input type="text" class="form-control" name="suffix"  value="<?php echo $employeeInfo["suffix"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="suffix"  value="<?php echo $employeeInfoAdmin["suffix"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">DATE OF BIRTH</th>
-                                        <td><input type="date" class="form-control" name="birthday" value="<?php echo $employeeInfo["birthday"]; ?>"></td>
+                                        <td><input type="date" class="form-control" name="birthday" value="<?php echo $employeeInfoAdmin["birthday"]; ?>"></td>
                                         <th class="fw-bold">PLACE OF BIRTH</th>
-                                        <td><input type="text" class="form-control" name="birthPlace" value="<?php echo $employeeInfo["birthPlace"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="birthPlace" value="<?php echo $employeeInfoAdmin["birthPlace"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">RESIDENTIAL ADDRESS</th>
                                         <td colspan="3"><textarea class="form-control" name="res_address" rows="2">
                                            <?php 
-                                            echo $employeeInfo["houseBlock"] ?? ''; 
+                                            echo $employeeInfoAdmin["houseBlock"] ?? ''; 
                                             echo ' ';
-                                            echo $employeeInfo["street"] ?? ''; 
+                                            echo $employeeInfoAdmin["street"] ?? ''; 
                                             echo ' ';
-                                            echo $employeeInfo["subdivision"] ?? ''; 
+                                            echo $employeeInfoAdmin["subdivision"] ?? ''; 
                                             echo ' ';
-                                            echo $employeeInfo["barangay"] ?? ''; 
+                                            echo $employeeInfoAdmin["barangay"] ?? ''; 
                                             echo ' ';
-                                            echo $employeeInfo["city_muntinlupa"] ?? ''; 
+                                            echo $employeeInfoAdmin["city_muntinlupa"] ?? ''; 
                                             echo ' ';
-                                            echo $employeeInfo["province"] ?? ''; 
+                                            echo $employeeInfoAdmin["province"] ?? ''; 
                                             echo ' ';
-                                            echo $employeeInfo["zip_code"] ?? ''; 
+                                            echo $employeeInfoAdmin["zip_code"] ?? ''; 
                                            ?>
                                         </textarea></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">AGE</th>
-                                        <td><input type="number" class="form-control" name="age" min="0" value="<?php echo $employeeInfo["age"]; ?>"></td>
+                                        <td><input type="number" class="form-control" name="age" min="0" value="<?php echo $employeeInfoAdmin["age"]; ?>"></td>
                                         <th class="fw-bold">ZIP CODE</th>
-                                        <td><input type="text" class="form-control" name="zip_code" value="<?php echo $employeeInfo["zip_code"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="zip_code" value="<?php echo $employeeInfoAdmin["zip_code"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">GENDER</th>
-                                        <td><input type="text" class="form-control" name="gender" value="<?php echo $employeeInfo["gender"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="gender" value="<?php echo $employeeInfoAdmin["gender"]; ?>"></td>
                                         <th class="fw-bold">TELEPHONE NO.</th>
                                         <td><input type="number" class="form-control" name="tel_no" value="<?= htmlspecialchars($getPersonalData['otherInfo']['tel_no'] ?? '') ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">CIVIL STATUS</th>
-                                        <td><input type="text" class="form-control" name="civil_status" value="<?php echo $employeeInfo["civil_status"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="civil_status" value="<?php echo $employeeInfoAdmin["civil_status"]; ?>"></td>
                                         <th class="fw-bold">CELLPHONE NO.</th>
-                                        <td><input type="number" class="form-control" name="contact" value="<?php echo $employeeInfo["contact"]; ?>"></td>
+                                        <td><input type="number" class="form-control" name="contact" value="<?php echo $employeeInfoAdmin["contact"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">CITIZENSHIP</th>
-                                        <td><input type="text" class="form-control" name="citizenship" value="<?php echo $employeeInfo["citizenship"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="citizenship" value="<?php echo $employeeInfoAdmin["citizenship"]; ?>"></td>
                                         <th class="fw-bold">EMAIL ADDRESS</th>
-                                        <td><input type="email" class="form-control" name="email" value="<?php echo $employeeInfo["email"]; ?>"></td>
+                                        <td><input type="email" class="form-control" name="email" value="<?php echo $employeeInfoAdmin["email"]; ?>"></td>
                                     </tr>
 
                                     <tr>
                                         <th class="fw-bold">RELIGION</th>
-                                        <td><input type="text" class="form-control" name="religion" value="<?php echo $employeeInfo["religion"]; ?>"></td>
+                                        <td><input type="text" class="form-control" name="religion" value="<?php echo $employeeInfoAdmin["religion"]; ?>"></td>
                                         <th class="fw-bold">PAG‑IBIG NO.</th>
                                         <td><input type="text" class="form-control" name="pagibig_no" value="<?= htmlspecialchars($getPersonalData['userGovIDs']['pagibig_no'] ?? '') ?>"></td>
                                     </tr>
