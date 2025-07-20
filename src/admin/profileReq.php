@@ -24,7 +24,7 @@
                 <a href="settings.php"><i class="fa-solid fa-gear" style="color: #fff;"></i></a>
                 <button class="me-3" style="background: none; border:none; width: 20px;" onclick="logoutButton()"><i class="fa-solid fa-right-from-bracket ms-3" style="color: #fff;"></i></button>
                 <button class="align-items-center" type="button" onclick="userButton()">
-                    <img src="../../assets/image/admin.jpg" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
+                    <img src="../../assets/image/admin.png" class="rounded-circle me-2 ms-4" style="height: 35px; width: 35px;">
                     <span class="fw-bold" style="color: #fff;">ADMIN</span>
                 </button>
             </div>
@@ -37,14 +37,18 @@
                 document.getElementById("logoutDiv").style.display = 'none';
             }
         </script>
-        <div class="logout flex-column" id="logoutDiv" class="p-3" style="position: fixed; transform: translate(-50%, -50%); top:50%; left:50%; display: none; z-index: 55;">
-            <div class="shadow rounded p-3" style="background-color:rgb(230, 230, 230);">
-                <div class="question mb-3">
-                    <h5>Are you sure you want to logout?</h5>
+        <div class="logout flex-column LogoutAniamtion " id="logoutDiv" class="p-3"
+            style="position: fixed; transform: translate(-50%, -50%); top:50%; left:50%; display: none; z-index: 55;">
+            <div class="shadow rounded p-0 logoutMediaWidth" style="background-color: #fff !important;">
+                <div class="question mb-3 d-flex flex-column h-auto BGGradiant p-3 rounded-top-2">
+                    <span style="font-family: 'Jomhuria', cursive !important;" class="fs-2 text-white">LOGOUT
+                        CONFIRMATION</span>
+                    <span class="text-white">Are you sure you want to logout?</span>
                 </div>
-                <div class="buttons d-flex flex-row justify-content-evenly w-100 mt-1" style="border-top: solid 1px rgba(0,0,0,.4);">
-                    <a href="logout.php" id="logoutYes" class="col-md-5 btn btn-danger btn-sm mt-2">Yes</a>
-                    <button id="logoutNo" class="col-md-5 btn btn-secondary btn-sm mt-2" onclick="logoutNo()">No</button>
+                <div class="buttons d-flex flex-row justify-content-evenly w-100 mt-1 pb-4">
+                    <a href="logout.php" id="logoutYes" class="col-md-5 btn btn-danger btn-sm mt-2 buttonLogoutMedia">Yes</a>
+                    <button id="logoutNo" class="col-md-5 btn btn-secondary btn-sm mt-2 buttonLogoutMedia"
+                        onclick="logoutNo()">No</button>
                 </div>
             </div>
         </div>

@@ -96,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:75vh;">
+                <div class="loginHistory" id="loginHisotryID" style="display:none; width: 95%; height:65vh;">
                     <div
                         class="container shadow p-2 m-0 w-100 h-100 rounded-2 d-flex justify-content-between align-items-start flex-wrap overflow-scroll">
                         <?php if($adminHistory): ?>

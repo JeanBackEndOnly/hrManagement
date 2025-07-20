@@ -618,7 +618,7 @@ function getEmployeeByAdmin(): array
         LIMIT 1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $user_id]);
-    $employeeInfo = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+    $employeeInfoAdmin = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     $stmt = $pdo->prepare(
         "SELECT level,
                 school_name,
@@ -646,7 +646,7 @@ function getEmployeeByAdmin(): array
     }
 
     return [
-        'employeeInfo' => $employeeInfo,
+        'employeeInfoAdmin' => $employeeInfoAdmin,
         'getEduc'      => $getEduc
     ];
 }
@@ -819,6 +819,7 @@ function getReports(
                 r.*,
                 u.username,
                 uhr.department,
+                uhr.jobTitle,
                 ui.lname,
                 ui.fname,
                 lr.leave_id,
