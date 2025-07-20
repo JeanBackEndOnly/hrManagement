@@ -138,7 +138,7 @@
         </a>
         <a href="profile.php" class="profile col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="height: 2rem; margin-left: .4rem; margin-right: .4rem;">
             <img src="../../assets/image/upload/<?= htmlspecialchars($EmployeeData["user_profile"]) ?>" alt=""
-            style="width: 100px !important; height: 100px !important; border-radius: 50%; position: relative; transform: translate(0, -2rem); background-color: #fff !important; border: solid .5rem #fff;" class="mediaBorderActiveProfile">
+            style="width: 100px !important; height: 100px !important; border-radius: 50%; position: relative; transform: translate(0, -2rem); background-color: #fff !important; border: solid .5rem #fff;" class="borderActiveProfile">
         </a>
         <a href="payrollNav.php" class="col-md-2 col-2 p-0 d-flex align-items-center justify-content-center" style="margin-left: .4rem; margin-right: .4rem;">
             <i class="fa-solid me-2 text-white fa-peso-sign"></i>
