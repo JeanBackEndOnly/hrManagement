@@ -118,6 +118,9 @@ a{
 #ablack{
     color: #000!important;
 }
+.container::-webkit-scrollbar{
+    display: none !important;
+}
 .job-list tbody::-webkit-scrollbar {
     width: 6px;
 }
@@ -404,6 +407,9 @@ a{
 a{
     text-decoration: none;
 }
+/* .container-::webkit-scrollbar{
+    display: none;
+} */
 /* .mediaNavEmployee{
     display: none;
 } */

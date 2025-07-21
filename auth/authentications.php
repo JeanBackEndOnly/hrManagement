@@ -196,6 +196,100 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
+
+    // if (isset($_POST["loginAuth"]) && $_POST["loginAuth"] === "true") {
+    //         $username = $_POST["username"] ?? '';
+    //         $password = $_POST["password"] ?? '';
+
+    //         $errors = [];
+
+    //         if (empty($username) || empty($password)) {
+    //             $errors["empty_inputs"] = "Fill all fields!";
+    //         }
+
+    //         try {
+    //             $user = getUsername($pdo, $username);
+
+    //             if (!$user) {
+    //                 $errors["login_incorrect"] = "Incorrect username!";
+    //             } elseif (!password_verify($password, $user["password"])) {
+    //                 $errors["login_incorrect"] = "Wrong password!";
+    //             }
+
+    //             $status = null;
+                
+    //             if ($user && $user["user_role"] === "employee") {
+    //                 $stmt = $pdo->prepare("SELECT status FROM userRequest WHERE users_id = ? ORDER BY request_date DESC LIMIT 1");
+    //                 $stmt->execute([$user['id']]);
+    //                 $request = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+    //                 if ($request) {
+    //                     $status = $request['status'];
+    //                     error_log("Student status found: $status for user ID: {$user['id']}");
+    //                 } else {
+    //                     $status = 'pending';
+    //                     error_log("No status record found for user ID: {$user['id']}, defaulting to pending");
+                        
+    //                 }
+    //             }
+
+    //             // if ($user && $user["user_role"] === "administrator") {
+    //             //     $activeSession = checkActiveAdminSession($pdo, $user["id"]);
+    //             //     if ($activeSession && $activeSession !== session_id()) {
+    //             //         $errors["login_incorrect"] = "Administrator is already logged in elsewhere!";
+    //             //     }
+    //             // }
+
+    //             if (!empty($errors)) {
+    //                 $_SESSION["errors_login"] = $errors;
+    //                 // header("Location: ../src/index.php");
+    //                 echo "Error";
+    //                 exit();
+    //             }
+
+    //             session_regenerate_id(true);
+
+    //             $_SESSION["user_id"] = $user["id"];
+    //             $_SESSION["user_username"] = htmlspecialchars($user["username"]);
+    //             $_SESSION["user_role"] = $user["user_role"];
+    //             $_SESSION["last_regeneration"] = time();
+
+    //             // if ($user["user_role"] === "administrator") {
+    //             //     updateUserSession($pdo, $user["id"], session_id());
+    //             // }
+
+    //             if ($user["user_role"] === "employee") {
+    //                 if ($status === "validated") {
+    //                     header("Location: ../src/employee/dashboard.php");
+    //                     error_log("Redirecting employee to dashboard");
+    //                 }else if ($status === "rejected") {
+    //                     header("Location: ../src/employee/rejected.php");
+    //                     error_log("Redirecting employee to dashboard");
+    //                 } else {
+    //                     header("Location: ../src/employee/pending.php");
+    //                     error_log("Redirecting employee to pending");
+    //                 }
+    //             } 
+    //             elseif ($user["user_role"] === "administrator") {
+    //                 header("Location: ../src/admin/dashboard.php");
+    //                 error_log("Redirecting admin to dashboard");
+    //                 echo "Redirecting admin to dashboard";
+    //             }
+    //             else {
+    //                 // header("Location: ../src/index.php");
+    //                 error_log("Redirecting to index (unknown role)");
+    //             }
+    //         } catch (PDOException $e) {
+    //             error_log("Login error: " . $e->getMessage());
+    //             session_start();
+    //             $_SESSION["errors_login"] = ["login_incorrect" => "System error. Please try again."];
+    //             echo "system error";
+    //             // header("Location: ../src/index.php");
+    //             exit();
+    //         }
+    // }
+
+
     // ============================= User Registration Authentication ============================= //
     if (isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
         $lname = $_POST["lname"];
