@@ -1,7 +1,6 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-// header('Content-Type: application/json');
 require '../vendor/autoload.php';
 
 require_once '../installer/config.php';
@@ -195,100 +194,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
     }
-
-
-    // if (isset($_POST["loginAuth"]) && $_POST["loginAuth"] === "true") {
-    //         $username = $_POST["username"] ?? '';
-    //         $password = $_POST["password"] ?? '';
-
-    //         $errors = [];
-
-    //         if (empty($username) || empty($password)) {
-    //             $errors["empty_inputs"] = "Fill all fields!";
-    //         }
-
-    //         try {
-    //             $user = getUsername($pdo, $username);
-
-    //             if (!$user) {
-    //                 $errors["login_incorrect"] = "Incorrect username!";
-    //             } elseif (!password_verify($password, $user["password"])) {
-    //                 $errors["login_incorrect"] = "Wrong password!";
-    //             }
-
-    //             $status = null;
-                
-    //             if ($user && $user["user_role"] === "employee") {
-    //                 $stmt = $pdo->prepare("SELECT status FROM userRequest WHERE users_id = ? ORDER BY request_date DESC LIMIT 1");
-    //                 $stmt->execute([$user['id']]);
-    //                 $request = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
-    //                 if ($request) {
-    //                     $status = $request['status'];
-    //                     error_log("Student status found: $status for user ID: {$user['id']}");
-    //                 } else {
-    //                     $status = 'pending';
-    //                     error_log("No status record found for user ID: {$user['id']}, defaulting to pending");
-                        
-    //                 }
-    //             }
-
-    //             // if ($user && $user["user_role"] === "administrator") {
-    //             //     $activeSession = checkActiveAdminSession($pdo, $user["id"]);
-    //             //     if ($activeSession && $activeSession !== session_id()) {
-    //             //         $errors["login_incorrect"] = "Administrator is already logged in elsewhere!";
-    //             //     }
-    //             // }
-
-    //             if (!empty($errors)) {
-    //                 $_SESSION["errors_login"] = $errors;
-    //                 // header("Location: ../src/index.php");
-    //                 echo "Error";
-    //                 exit();
-    //             }
-
-    //             session_regenerate_id(true);
-
-    //             $_SESSION["user_id"] = $user["id"];
-    //             $_SESSION["user_username"] = htmlspecialchars($user["username"]);
-    //             $_SESSION["user_role"] = $user["user_role"];
-    //             $_SESSION["last_regeneration"] = time();
-
-    //             // if ($user["user_role"] === "administrator") {
-    //             //     updateUserSession($pdo, $user["id"], session_id());
-    //             // }
-
-    //             if ($user["user_role"] === "employee") {
-    //                 if ($status === "validated") {
-    //                     header("Location: ../src/employee/dashboard.php");
-    //                     error_log("Redirecting employee to dashboard");
-    //                 }else if ($status === "rejected") {
-    //                     header("Location: ../src/employee/rejected.php");
-    //                     error_log("Redirecting employee to dashboard");
-    //                 } else {
-    //                     header("Location: ../src/employee/pending.php");
-    //                     error_log("Redirecting employee to pending");
-    //                 }
-    //             } 
-    //             elseif ($user["user_role"] === "administrator") {
-    //                 header("Location: ../src/admin/dashboard.php");
-    //                 error_log("Redirecting admin to dashboard");
-    //                 echo "Redirecting admin to dashboard";
-    //             }
-    //             else {
-    //                 // header("Location: ../src/index.php");
-    //                 error_log("Redirecting to index (unknown role)");
-    //             }
-    //         } catch (PDOException $e) {
-    //             error_log("Login error: " . $e->getMessage());
-    //             session_start();
-    //             $_SESSION["errors_login"] = ["login_incorrect" => "System error. Please try again."];
-    //             echo "system error";
-    //             // header("Location: ../src/index.php");
-    //             exit();
-    //         }
-    // }
-
 
     // ============================= User Registration Authentication ============================= //
     if (isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
@@ -698,64 +603,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // ============================= ADMIN SETTINGS ============================= //
-    if (isset($_POST["changePassword"]) && $_POST["changePassword"] === "true") {
-        $currentPassword = $_POST["current_password"] ?? "";
-        $newPassword = $_POST["new_password"] ?? "";
-        $confirmPassword = $_POST["confirm_password"] ?? "";
-
-        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
-            echo json_encode(["status" => "error", "message" => "All fields are required."]);
-            header("Location: ../src/admin/settings.php?password=empty");
-            exit;
-        }
-
-        if ($newPassword !== $confirmPassword) {
-            echo json_encode(["status" => "error", "message" => "New passwords do not match."]);
-            header("Location: ../src/admin/settings.php?password=newNotMatched");
-            exit;
-        }
-
-        try {
-            $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
-            $stmt->execute(['id' => 1]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$user) {
-                echo json_encode(["status" => "error", "message" => "Admin user not found."]);
-                exit;
-            }
-
-            if (!password_verify($currentPassword, $user['password'])) {
-                echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
-                header("Location: ../src/admin/settings.php?password=currentNotMatched");
-                exit;
-            }
-
-            $newHashed = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            $updateStmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
-            $updateSuccess = $updateStmt->execute([
-                'password' => $newHashed,
-                'id' => 1
-            ]);
-
-            if ($updateSuccess) {
-                echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
-                header("Location: ../src/admin/settings.php?password=success");
-                exit;
-            } else {
-                echo json_encode(["status" => "error", "message" => "Failed to update password."]);
-                header("Location: ../src/admin/settings.php?password=failed");
-                exit;
-            }
-
-        } catch (PDOException $e) {
-            echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
-            header("Location: ../src/admin/settings.php?password=failed");
-            exit;
-        }
-    }
-
     if (isset($_POST["forgotPassword"]) && $_POST["forgotPassword"] === "true") {
         $usersnameAuth = $_POST["username"] ?? '';
         $mailCode = $_POST["mailCode"] ?? '';
@@ -2108,65 +1955,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    if (isset($_POST["changePasswordEmp"]) && $_POST["changePasswordEmp"] === "true") {
-        $currentPassword = $_POST["current_password"] ?? "";
-        $newPassword = $_POST["new_password"] ?? "";
-        $confirmPassword = $_POST["confirm_password"] ?? "";
-
-        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
-            echo json_encode(["status" => "error", "message" => "All fields are required."]);
-            header("Location: ../src/employee/settings.php?password=empty");
-            exit;
-        }
-
-        if ($newPassword !== $confirmPassword) {
-            echo json_encode(["status" => "error", "message" => "New passwords do not match."]);
-            header("Location: ../src/employee/settings.php?password=newNotMatched");
-            exit;
-        }
-
-        try {
-            echo $employeeId = $_SESSION["user_id"] ?? '';
-            $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
-            $stmt->execute(['id' => $employeeId]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$user) {
-                echo json_encode(["status" => "error", "message" => "employee user not found."]);
-                exit;
-            }
-
-            if (!password_verify($currentPassword, $user['password'])) {
-                echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
-                header("Location: ../src/employee/settings.php?password=currentNotMatched");
-                exit;
-            }
-
-            $newHashed = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            $updateStmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
-            $updateSuccess = $updateStmt->execute([
-                'password' => $newHashed,
-                'id' => $employeeId
-            ]);
-
-            if ($updateSuccess) {
-                echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
-                header("Location: ../src/employee/settings.php?password=success");
-                exit;
-            } else {
-                echo json_encode(["status" => "error", "message" => "Failed to update password."]);
-                header("Location: ../src/employee/settings.php?password=failed");
-                exit;
-            }
-
-        } catch (PDOException $e) {
-            echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
-            header("Location: ../src/employee/settings.php?password=failed");
-            exit;
-        }
-    }
-
     // =============================== LEAVE AREA =============================== //
     if (isset($_POST["LeaveEmployee"]) && $_POST["LeaveEmployee"] === "true") {
         $users_id = $_SESSION["user_id"] ?? '';
@@ -2580,117 +2368,115 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     }
 
-    // ===================== PERSONAL DATA SHEETs ===================== //
-
-    if (isset($_POST['adminSidePDS']) && $_POST['adminSidePDS'] === 'true') {
+    // ============================== PERSONAL DATA SHEET ============================== //
+    if (isset($_POST['pds']) && $_POST['pds'] === "true") {
         $users_id = intval($_POST['users_id'] ?? 0);
+        $pdsType = $_POST['pdsType'] ?? '';
+        
         if ($users_id <= 0) {
-            exit('Invalid user ID');
+            header("Location: ../error.php?message=Invalid+user+ID");
+            exit;
         }
-
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         try {
             $pdo->beginTransaction();
 
-            $stmt = $pdo->prepare(
-                "SELECT pds_id FROM personal_data_sheet
-                WHERE users_id = ?"
-            );
+            // Get PDS ID
+            $stmt = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE users_id = ?");
             $stmt->execute([$users_id]);
             $pds_id = $stmt->fetchColumn();
 
             if (!$pds_id) {
-                throw new RuntimeException(
-                    "No personal_data_sheet row for users_id {$users_id}"
-                );
+                throw new RuntimeException("No personal_data_sheet found for user ID: {$users_id}");
             }
 
+            // Update user information
             $pdo->prepare(
                 "UPDATE userInformations SET
-                    lname         = :ln,
-                    fname         = :fn,
-                    mname         = :mn,
-                    nickname      = :nn,
-                    suffix        = :sx,
-                    citizenship   = :ctz,
-                    gender        = :gen,
-                    civil_status  = :civ,
-                    religion      = :rel,
-                    age           = :age,
-                    birthday      = :bd,
-                    birthPlace    = :bp,
-                    contact       = :cnt,
-                    email         = :em
-                WHERE users_id   = :uid"
+                    lname = :ln,
+                    fname = :fn,
+                    mname = :mn,
+                    nickname = :nn,
+                    suffix = :sx,
+                    citizenship = :ctz,
+                    gender = :gen,
+                    civil_status = :civ,
+                    religion = :rel,
+                    age = :age,
+                    birthday = :bd,
+                    birthPlace = :bp,
+                    contact = :cnt,
+                    email = :em
+                WHERE users_id = :uid"
             )->execute([
-                        ':uid' => $users_id,
-                        ':ln' => $_POST['lname'] ?? null,
-                        ':fn' => $_POST['fname'] ?? null,
-                        ':mn' => $_POST['mname'] ?? null,
-                        ':nn' => $_POST['nickname'] ?? null,
-                        ':sx' => $_POST['suffix'] ?? null,
-                        ':ctz' => $_POST['citizenship'] ?? null,
-                        ':gen' => $_POST['gender'] ?? null,
-                        ':civ' => $_POST['civil_status'] ?? null,
-                        ':rel' => $_POST['religion'] ?? null,
-                        ':age' => $_POST['age'] ?? null,
-                        ':bd' => $_POST['birthday'] ?? null,
-                        ':bp' => $_POST['birthPlace'] ?? null,
-                        ':cnt' => $_POST['contact'] ?? null,
-                        ':em' => $_POST['email'] ?? null
-                    ]);
-            $ok = $pdo->prepare(
+                ':uid' => $users_id,
+                ':ln' => $_POST['lname'] ?? null,
+                ':fn' => $_POST['fname'] ?? null,
+                ':mn' => $_POST['mname'] ?? null,
+                ':nn' => $_POST['nickname'] ?? null,
+                ':sx' => $_POST['suffix'] ?? null,
+                ':ctz' => $_POST['citizenship'] ?? null,
+                ':gen' => $_POST['gender'] ?? null,
+                ':civ' => $_POST['civil_status'] ?? null,
+                ':rel' => $_POST['religion'] ?? null,
+                ':age' => $_POST['age'] ?? null,
+                ':bd' => $_POST['birthday'] ?? null,
+                ':bp' => $_POST['birthPlace'] ?? null,
+                ':cnt' => $_POST['contact'] ?? null,
+                ':em' => $_POST['email'] ?? null
+            ]);
+
+            // Update government IDs
+            $pdo->prepare(
                 "UPDATE userGovIDs SET
-                    sss_no        = ?,
-                    tin_no        = ?,
-                    pagibig_no    = ?,
+                    sss_no = ?,
+                    tin_no = ?,
+                    pagibig_no = ?,
                     philhealth_no = ?
                 WHERE pds_id = ?"
             )->execute([
-                        $_POST['sss_no'] ?? null,
-                        $_POST['tin_no'] ?? null,
-                        $_POST['pagibig_no'] ?? null,
-                        $_POST['philhealth_no'] ?? null,
-                        $pds_id
-                    ]);
-            if (!$ok) {
-                throw new RuntimeException('userGovIDs update failed – row missing');
-            }
-            $ok = $pdo->prepare(
+                $_POST['sss_no'] ?? null,
+                $_POST['tin_no'] ?? null,
+                $_POST['pagibig_no'] ?? null,
+                $_POST['philhealth_no'] ?? null,
+                $pds_id
+            ]);
+
+            // Update spouse information
+            $pdo->prepare(
                 "UPDATE spouseInfo SET
                     spouse_surname = :sur,
-                    spouse_first   = :fir,
-                    spouse_middle  = :mid,
-                    spouse_occupation     = :occ,
-                    spouse_employer       = :emp,
-                    spouse_business_address  = :addr,
-                    spouse_tel   = :tel
+                    spouse_first = :fir,
+                    spouse_middle = :mid,
+                    spouse_occupation = :occ,
+                    spouse_employer = :emp,
+                    spouse_business_address = :addr,
+                    spouse_tel = :tel
                 WHERE pds_id = :pid"
             )->execute([
-                        ':pid' => $pds_id,
-                        ':sur' => $_POST['spouse_surname'] ?? null,
-                        ':fir' => $_POST['spouse_first'] ?? null,
-                        ':mid' => $_POST['spouse_middle'] ?? null,
-                        ':occ' => $_POST['spouse_occupation'] ?? null,
-                        ':emp' => $_POST['spouse_employer'] ?? null,
-                        ':addr' => $_POST['spouse_business_address'] ?? null,
-                        ':tel' => $_POST['spouse_tel'] ?? null
-                    ]);
-            if (!$ok) {
-                throw new RuntimeException('spouseInfo update failed – row missing');
-            }
+                ':pid' => $pds_id,
+                ':sur' => $_POST['spouse_surname'] ?? null,
+                ':fir' => $_POST['spouse_first'] ?? null,
+                ':mid' => $_POST['spouse_middle'] ?? null,
+                ':occ' => $_POST['spouse_occupation'] ?? null,
+                ':emp' => $_POST['spouse_employer'] ?? null,
+                ':addr' => $_POST['spouse_business_address'] ?? null,
+                ':tel' => $_POST['spouse_tel'] ?? null
+            ]);
+
+            // Update parents information
             $parentStmt = $pdo->prepare(
                 "UPDATE parents SET
-                    surname      = :sur,
-                    first_name   = :fir,
-                    middle_name  = :mid,
-                    occupation   = :occ,
-                    address      = :addr
+                    surname = :sur,
+                    first_name = :fir,
+                    middle_name = :mid,
+                    occupation = :occ,
+                    address = :addr
                 WHERE pds_id = :pid AND relation = :rel"
             );
+            
             foreach (['father', 'mother'] as $rel) {
-                $ok = $parentStmt->execute([
+                $parentStmt->execute([
                     ':pid' => $pds_id,
                     ':rel' => $rel,
                     ':sur' => $_POST[strtolower($rel) . '_surname'] ?? null,
@@ -2699,20 +2485,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
                     ':addr' => $_POST[strtolower($rel) . '_address'] ?? null
                 ]);
-                if (!$ok) {
-                    throw new RuntimeException("$rel row missing in parents table");
-                }
             }
 
-            $childUpd = $pdo->prepare(
-                "UPDATE children
-                    SET full_name = ?, dob = ?
-                WHERE id = ? AND pds_id = ?"
-            );
-            $childIns = $pdo->prepare(
-                "INSERT INTO children (pds_id, full_name, dob)
-                VALUES (?, ?, ?)"
-            );
+            // Update children information
+            $childUpd = $pdo->prepare("UPDATE children SET full_name = ?, dob = ? WHERE id = ? AND pds_id = ?");
+            $childIns = $pdo->prepare("INSERT INTO children (pds_id, full_name, dob) VALUES (?, ?, ?)");
 
             for ($i = 1; $i <= 7; $i++) {
                 $cid = intval($_POST["child_id_$i"] ?? 0);
@@ -2720,31 +2497,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $dob = $_POST["child_dob_$i"] ?? null;
 
                 if ($cid > 0) {
-                    $childUpd->execute([
-                        $name !== '' ? $name : null,
-                        $dob,
-                        $cid,
-                        $pds_id
-                    ]);
-
+                    $childUpd->execute([$name !== '' ? $name : null, $dob, $cid, $pds_id]);
                 } elseif ($name !== '') {
-                    $childIns->execute([
-                        $pds_id,
-                        $name,
-                        $dob
-                    ]);
+                    $childIns->execute([$pds_id, $name, $dob]);
                 }
             }
+
+            // Update siblings information
             $sibUpd = $pdo->prepare("
                 UPDATE siblings SET
                     full_name = ?, age = ?, occupation = ?, address = ?
                 WHERE id = ? AND pds_id = ?
             ");
-
             $sibIns = $pdo->prepare("
-                INSERT INTO siblings (
-                    pds_id, full_name, age, occupation, address, birth_order
-                )
+                INSERT INTO siblings (pds_id, full_name, age, occupation, address, birth_order)
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
 
@@ -2756,41 +2522,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $addr = $_POST["sib_addr_$i"] ?? null;
 
                 if ($sid > 0) {
-                    $sibUpd->execute([
-                        $name !== '' ? $name : null,
-                        $age,
-                        $occ,
-                        $addr,
-                        $sid,
-                        $pds_id
-                    ]);
-
+                    $sibUpd->execute([$name !== '' ? $name : null, $age, $occ, $addr, $sid, $pds_id]);
                 } elseif ($name !== '') {
-                    $sibIns->execute([
-                        $pds_id,
-                        $name,
-                        $age,
-                        $occ,
-                        $addr,
-                        $i
-                    ]);
+                    $sibIns->execute([$pds_id, $name, $age, $occ, $addr, $i]);
                 }
             }
+
+            // Update education information
             $updEdu = $pdo->prepare("
                 UPDATE educationInfo
-                SET school_name    = :school,
-                    degree_course  = :course,
+                SET school_name = :school,
+                    degree_course = :course,
                     school_address = :addr,
-                    year_grad      = :yr
-                WHERE id      = :id
-                AND pds_id  = :pds
+                    year_grad = :yr
+                WHERE id = :id AND pds_id = :pds
             ");
-
             $insEdu = $pdo->prepare("
-                INSERT INTO educationInfo (
-                    pds_id, level, school_name,
-                    degree_course, school_address, year_grad
-                )
+                INSERT INTO educationInfo (pds_id, level, school_name, degree_course, school_address, year_grad)
                 VALUES (:pds, :lvl, :school, :course, :addr, :yr)
             ");
 
@@ -2802,10 +2550,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 'grad' => 'Graduate',
             ];
 
-            $updated = $inserted = 0;
-
             foreach ($levels as $prefix => $level) {
-
                 $id = intval($_POST["edu_{$prefix}_id"] ?? 0);
                 $school = trim($_POST["{$prefix}_school"] ?? '');
                 $course = trim($_POST["{$prefix}_course"] ?? '');
@@ -2825,7 +2570,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         ':id' => $id,
                         ':pds' => $pds_id,
                     ]);
-                    $updated += $updEdu->rowCount();
                 } else {
                     $insEdu->execute([
                         ':pds' => $pds_id,
@@ -2835,33 +2579,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         ':addr' => $addr,
                         ':yr' => $yr !== '' ? $yr : null,
                     ]);
-                    $inserted += $insEdu->rowCount();
                 }
             }
 
-            $ins = $pdo->prepare("
-                INSERT INTO workExperience (
-                    pds_id, date_from, date_to,
-                    position_title, department, monthly_salary
-                )
+            // Update work experience
+            $insWork = $pdo->prepare("
+                INSERT INTO workExperience (pds_id, date_from, date_to, position_title, department, monthly_salary)
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
-
-            $upd = $pdo->prepare("
+            $updWork = $pdo->prepare("
                 UPDATE workExperience
-                SET date_from      = ?,
-                    date_to        = ?,
+                SET date_from = ?,
+                    date_to = ?,
                     position_title = ?,
-                    department     = ?,
+                    department = ?,
                     monthly_salary = ?
-                WHERE id      = ?
-                AND pds_id  = ?
+                WHERE id = ? AND pds_id = ?
             ");
 
-            $inserted = $updated = 0;
-
             for ($i = 1; $i <= 5; $i++) {
-
                 $id = (int) ($_POST["exp_{$i}_id"] ?? 0);
                 $from = $_POST["exp_{$i}_from"] ?? '';
                 $to = $_POST["exp_{$i}_to"] ?? '';
@@ -2874,34 +2610,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
 
                 if ($id > 0) {
-                    $upd->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
-                    $updated += $upd->rowCount();
+                    $updWork->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
                 } else {
-                    $ins->execute([$pds_id, $from, $to, $title, $dept, $salary]);
-                    $inserted += $ins->rowCount();
+                    $insWork->execute([$pds_id, $from, $to, $title, $dept, $salary]);
                 }
             }
 
+            // Update seminars and trainings
             $insSem = $pdo->prepare("
-                INSERT INTO seminarsTrainings (
-                    pds_id, inclusive_dates, title, place
-                )
+                INSERT INTO seminarsTrainings (pds_id, inclusive_dates, title, place)
                 VALUES (?, ?, ?, ?)
             ");
-
             $updSem = $pdo->prepare("
                 UPDATE seminarsTrainings
                 SET inclusive_dates = ?,
-                    title           = ?,
-                    place           = ?
-                WHERE id     = ? 
-                AND pds_id = ?
+                    title = ?,
+                    place = ?
+                WHERE id = ? AND pds_id = ?
             ");
 
-            $inserted = $updated = 0;
-
             for ($i = 1; $i <= 5; $i++) {
-
                 $id = intval($_POST["seminar_{$i}_id"] ?? 0);
                 $dates = trim($_POST["seminar_{$i}_dates"] ?? '');
                 $title = trim($_POST["seminar_{$i}_title"] ?? '');
@@ -2910,15 +2638,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($id === 0 && $dates === '' && $title === '' && $place === '') {
                     continue;
                 }
+                
                 if ($id > 0) {
                     $updSem->execute([$dates ?: null, $title ?: null, $place ?: null, $id, $pds_id]);
-                    $updated += $updSem->rowCount();
                 } else {
                     $insSem->execute([$pds_id, $dates ?: null, $title, $place ?: null]);
-                    $inserted += $insSem->rowCount();
                 }
             }
 
+            // Update other information
             $status = $_POST['house_status'] ?? null;
             $type = $_POST['house_type'] ?? null;
             $rent = $_POST['rental_amount'] ?? null;
@@ -2930,22 +2658,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $rent = ($rent !== '' && $rent !== null) ? number_format((float) $rent, 2, '.', '') : null;
 
-            $sql = "UPDATE otherInfo SET
-                        special_skills    = :skills,
-                        house_status      = :status,
-                        rental_amount     = :rent,
-                        house_type        = :type,
-                        household_members = :members,
-                        height            = :h,
-                        weight            = :w,
-                        blood_type        = :b,
-                        emergency_contact = :emg,
-                        tel_no            = :tel
-                    WHERE pds_id = :pid";
-
-            $stmt = $pdo->prepare($sql);
-
-            $ok = $stmt->execute([
+            $pdo->prepare(
+                "UPDATE otherInfo SET
+                    special_skills = :skills,
+                    house_status = :status,
+                    rental_amount = :rent,
+                    house_type = :type,
+                    household_members = :members,
+                    height = :h,
+                    weight = :w,
+                    blood_type = :b,
+                    emergency_contact = :emg,
+                    tel_no = :tel
+                WHERE pds_id = :pid"
+            )->execute([
                 ':pid' => $pds_id,
                 ':skills' => $_POST['special_skills'] ?? null,
                 ':status' => $status,
@@ -2959,799 +2685,85 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ':tel' => $_POST['tel_no'] ?? null
             ]);
 
-            if (!$ok) {
-                throw new RuntimeException('otherInfo update failed – SQL error');
-            }
-
             $pdo->commit();
-            header("Location: ../src/admin/pds.php?users_id={$users_id}");
-            exit;
+
+            // Redirect based on pdsType
+            $redirectPaths = [
+                'pending' => "../src/employee/pendingPDS.php?users_id={$users_id}&pending=pds",
+                'validated' => "../src/employee/pds.php?users_id={$users_id}&employee=pds",
+                'adminPds' => "../src/admin/pds.php?users_id={$users_id}"
+            ];
+
+            if (isset($redirectPaths[$pdsType])) {
+                header("Location: " . $redirectPaths[$pdsType]);
+                exit;
+            } else {
+                header("Location: ../error.php?message=Invalid+pdsType");
+                exit;
+            }
 
         } catch (Throwable $e) {
             $pdo->rollBack();
-            die("DB error: " . $e->getMessage());
+            header("Location: ../error.php?message=" . urlencode($e->getMessage()));
+            exit;
         }
     }
+    
+    // ============================== CHANGE PASSWORD ============================== //
+    if ((isset($_POST["changePassword"]) && $_POST["changePassword"] === "true") || (isset($_POST["changePasswordEmp"]) && $_POST["changePasswordEmp"] === "true")) {
+        $currentPassword = $_POST["current_password"] ?? "";
+        $newPassword     = $_POST["new_password"] ?? "";
+        $confirmPassword = $_POST["confirm_password"] ?? "";
+        $userId          = $_SESSION["user_id"] ?? '';
+        $userRole        = $_SESSION["user_role"] ?? '';
 
-    if (isset($_POST['pendingSidePDS']) && $_POST['pendingSidePDS'] === 'true') {
-        $users_id = intval($_POST['users_id'] ?? 0);
-        if ($users_id <= 0) {
-            exit('Invalid user ID');
+        // Role-based redirect path
+        $redirectPath = ($userRole === "administrator") ? "../src/admin/settings.php" : "../src/employee/settings.php";
+
+        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+            header("Location: $redirectPath?password=empty");
+            exit;
         }
 
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if ($newPassword !== $confirmPassword) {
+            header("Location: $redirectPath?password=newNotMatched");
+            exit;
+        }
 
         try {
-            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
+            $stmt->execute(['id' => $userId]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $stmt = $pdo->prepare(
-                "SELECT pds_id FROM personal_data_sheet
-                WHERE users_id = ?"
-            );
-            $stmt->execute([$users_id]);
-            $pds_id = $stmt->fetchColumn();
-
-            if (!$pds_id) {
-                throw new RuntimeException(
-                    "No personal_data_sheet row for users_id {$users_id}"
-                );
+            if (!$user) {
+                header("Location: $redirectPath?password=userNotFound");
+                exit;
             }
 
-            $pdo->prepare(
-                "UPDATE userInformations SET
-                    lname         = :ln,
-                    fname         = :fn,
-                    mname         = :mn,
-                    nickname      = :nn,
-                    suffix        = :sx,
-                    citizenship   = :ctz,
-                    gender        = :gen,
-                    civil_status  = :civ,
-                    religion      = :rel,
-                    age           = :age,
-                    birthday      = :bd,
-                    birthPlace    = :bp,
-                    contact       = :cnt,
-                    email         = :em
-                WHERE users_id   = :uid"
-            )->execute([
-                        ':uid' => $users_id,
-                        ':ln' => $_POST['lname'] ?? null,
-                        ':fn' => $_POST['fname'] ?? null,
-                        ':mn' => $_POST['mname'] ?? null,
-                        ':nn' => $_POST['nickname'] ?? null,
-                        ':sx' => $_POST['suffix'] ?? null,
-                        ':ctz' => $_POST['citizenship'] ?? null,
-                        ':gen' => $_POST['gender'] ?? null,
-                        ':civ' => $_POST['civil_status'] ?? null,
-                        ':rel' => $_POST['religion'] ?? null,
-                        ':age' => $_POST['age'] ?? null,
-                        ':bd' => $_POST['birthday'] ?? null,
-                        ':bp' => $_POST['birthPlace'] ?? null,
-                        ':cnt' => $_POST['contact'] ?? null,
-                        ':em' => $_POST['email'] ?? null
-                    ]);
-            $ok = $pdo->prepare(
-                "UPDATE userGovIDs SET
-                    sss_no        = ?,
-                    tin_no        = ?,
-                    pagibig_no    = ?,
-                    philhealth_no = ?
-                WHERE pds_id = ?"
-            )->execute([
-                        $_POST['sss_no'] ?? null,
-                        $_POST['tin_no'] ?? null,
-                        $_POST['pagibig_no'] ?? null,
-                        $_POST['philhealth_no'] ?? null,
-                        $pds_id
-                    ]);
-            if (!$ok) {
-                throw new RuntimeException('userGovIDs update failed – row missing');
-            }
-            $ok = $pdo->prepare(
-                "UPDATE spouseInfo SET
-                    spouse_surname = :sur,
-                    spouse_first   = :fir,
-                    spouse_middle  = :mid,
-                    spouse_occupation     = :occ,
-                    spouse_employer       = :emp,
-                    spouse_business_address  = :addr,
-                    spouse_tel   = :tel
-                WHERE pds_id = :pid"
-            )->execute([
-                        ':pid' => $pds_id,
-                        ':sur' => $_POST['spouse_surname'] ?? null,
-                        ':fir' => $_POST['spouse_first'] ?? null,
-                        ':mid' => $_POST['spouse_middle'] ?? null,
-                        ':occ' => $_POST['spouse_occupation'] ?? null,
-                        ':emp' => $_POST['spouse_employer'] ?? null,
-                        ':addr' => $_POST['spouse_business_address'] ?? null,
-                        ':tel' => $_POST['spouse_tel'] ?? null
-                    ]);
-            if (!$ok) {
-                throw new RuntimeException('spouseInfo update failed – row missing');
-            }
-            $parentStmt = $pdo->prepare(
-                "UPDATE parents SET
-                    surname      = :sur,
-                    first_name   = :fir,
-                    middle_name  = :mid,
-                    occupation   = :occ,
-                    address      = :addr
-                WHERE pds_id = :pid AND relation = :rel"
-            );
-            foreach (['father', 'mother'] as $rel) {
-                $ok = $parentStmt->execute([
-                    ':pid' => $pds_id,
-                    ':rel' => $rel,
-                    ':sur' => $_POST[strtolower($rel) . '_surname'] ?? null,
-                    ':fir' => $_POST[strtolower($rel) . '_first'] ?? null,
-                    ':mid' => $_POST[strtolower($rel) . '_middle'] ?? null,
-                    ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
-                    ':addr' => $_POST[strtolower($rel) . '_address'] ?? null
-                ]);
-                if (!$ok) {
-                    throw new RuntimeException("$rel row missing in parents table");
-                }
+            if (!password_verify($currentPassword, $user['password'])) {
+                header("Location: $redirectPath?password=currentNotMatched");
+                exit;
             }
 
-            $childUpd = $pdo->prepare(
-                "UPDATE children
-                    SET full_name = ?, dob = ?
-                WHERE id = ? AND pds_id = ?"
-            );
-            $childIns = $pdo->prepare(
-                "INSERT INTO children (pds_id, full_name, dob)
-                VALUES (?, ?, ?)"
-            );
+            $newHashed = password_hash($newPassword, PASSWORD_DEFAULT);
 
-            for ($i = 1; $i <= 7; $i++) {
-                $cid = intval($_POST["child_id_$i"] ?? 0);
-                $name = trim($_POST["child_name_$i"] ?? '');
-                $dob = $_POST["child_dob_$i"] ?? null;
-
-                if ($cid > 0) {
-                    $childUpd->execute([
-                        $name !== '' ? $name : null,
-                        $dob,
-                        $cid,
-                        $pds_id
-                    ]);
-
-                } elseif ($name !== '') {
-                    $childIns->execute([
-                        $pds_id,
-                        $name,
-                        $dob
-                    ]);
-                }
-            }
-            $sibUpd = $pdo->prepare("
-                UPDATE siblings SET
-                    full_name = ?, age = ?, occupation = ?, address = ?
-                WHERE id = ? AND pds_id = ?
-            ");
-
-            $sibIns = $pdo->prepare("
-                INSERT INTO siblings (
-                    pds_id, full_name, age, occupation, address, birth_order
-                )
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-
-            for ($i = 1; $i <= 8; $i++) {
-                $sid = intval($_POST["sibling_id_$i"] ?? 0);
-                $name = trim($_POST["sib_name_$i"] ?? '');
-                $age = $_POST["sib_age_$i"] ?? null;
-                $occ = $_POST["sib_occ_$i"] ?? null;
-                $addr = $_POST["sib_addr_$i"] ?? null;
-
-                if ($sid > 0) {
-                    $sibUpd->execute([
-                        $name !== '' ? $name : null,
-                        $age,
-                        $occ,
-                        $addr,
-                        $sid,
-                        $pds_id
-                    ]);
-
-                } elseif ($name !== '') {
-                    $sibIns->execute([
-                        $pds_id,
-                        $name,
-                        $age,
-                        $occ,
-                        $addr,
-                        $i
-                    ]);
-                }
-            }
-            $updEdu = $pdo->prepare("
-                UPDATE educationInfo
-                SET school_name    = :school,
-                    degree_course  = :course,
-                    school_address = :addr,
-                    year_grad      = :yr
-                WHERE id      = :id
-                AND pds_id  = :pds
-            ");
-
-            $insEdu = $pdo->prepare("
-                INSERT INTO educationInfo (
-                    pds_id, level, school_name,
-                    degree_course, school_address, year_grad
-                )
-                VALUES (:pds, :lvl, :school, :course, :addr, :yr)
-            ");
-
-            $levels = [
-                'elem' => 'Elementary',
-                'sec' => 'Secondary',
-                'voc' => 'Vocational',
-                'college' => 'College',
-                'grad' => 'Graduate',
-            ];
-
-            $updated = $inserted = 0;
-
-            foreach ($levels as $prefix => $level) {
-
-                $id = intval($_POST["edu_{$prefix}_id"] ?? 0);
-                $school = trim($_POST["{$prefix}_school"] ?? '');
-                $course = trim($_POST["{$prefix}_course"] ?? '');
-                $addr = trim($_POST["{$prefix}_address"] ?? '');
-                $yr = trim($_POST["{$prefix}_year"] ?? '');
-
-                if ($id === 0 && $school === '' && $course === '' && $addr === '' && $yr === '') {
-                    continue;
-                }
-
-                if ($id > 0) {
-                    $updEdu->execute([
-                        ':school' => $school,
-                        ':course' => $course,
-                        ':addr' => $addr,
-                        ':yr' => $yr !== '' ? $yr : null,
-                        ':id' => $id,
-                        ':pds' => $pds_id,
-                    ]);
-                    $updated += $updEdu->rowCount();
-                } else {
-                    $insEdu->execute([
-                        ':pds' => $pds_id,
-                        ':lvl' => $level,
-                        ':school' => $school,
-                        ':course' => $course,
-                        ':addr' => $addr,
-                        ':yr' => $yr !== '' ? $yr : null,
-                    ]);
-                    $inserted += $insEdu->rowCount();
-                }
-            }
-
-            $ins = $pdo->prepare("
-                INSERT INTO workExperience (
-                    pds_id, date_from, date_to,
-                    position_title, department, monthly_salary
-                )
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-
-            $upd = $pdo->prepare("
-                UPDATE workExperience
-                SET date_from      = ?,
-                    date_to        = ?,
-                    position_title = ?,
-                    department     = ?,
-                    monthly_salary = ?
-                WHERE id      = ?
-                AND pds_id  = ?
-            ");
-
-            $inserted = $updated = 0;
-
-            for ($i = 1; $i <= 5; $i++) {
-
-                $id = (int) ($_POST["exp_{$i}_id"] ?? 0);
-                $from = $_POST["exp_{$i}_from"] ?? '';
-                $to = $_POST["exp_{$i}_to"] ?? '';
-                $title = trim($_POST["exp_{$i}_position"] ?? '');
-                $dept = trim($_POST["exp_{$i}_department"] ?? '');
-                $salary = $_POST["exp_{$i}_salary"] ?? '';
-
-                if ($id === 0 && $from === '' && $to === '' && $title === '' && $dept === '' && $salary === '') {
-                    continue;
-                }
-
-                if ($id > 0) {
-                    $upd->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
-                    $updated += $upd->rowCount();
-                } else {
-                    $ins->execute([$pds_id, $from, $to, $title, $dept, $salary]);
-                    $inserted += $ins->rowCount();
-                }
-            }
-
-            $insSem = $pdo->prepare("
-                INSERT INTO seminarsTrainings (
-                    pds_id, inclusive_dates, title, place
-                )
-                VALUES (?, ?, ?, ?)
-            ");
-
-            $updSem = $pdo->prepare("
-                UPDATE seminarsTrainings
-                SET inclusive_dates = ?,
-                    title           = ?,
-                    place           = ?
-                WHERE id     = ? 
-                AND pds_id = ?
-            ");
-
-            $inserted = $updated = 0;
-
-            for ($i = 1; $i <= 5; $i++) {
-
-                $id = intval($_POST["seminar_{$i}_id"] ?? 0);
-                $dates = trim($_POST["seminar_{$i}_dates"] ?? '');
-                $title = trim($_POST["seminar_{$i}_title"] ?? '');
-                $place = trim($_POST["seminar_{$i}_place"] ?? '');
-
-                if ($id === 0 && $dates === '' && $title === '' && $place === '') {
-                    continue;
-                }
-                if ($id > 0) {
-                    $updSem->execute([$dates ?: null, $title ?: null, $place ?: null, $id, $pds_id]);
-                    $updated += $updSem->rowCount();
-                } else {
-                    $insSem->execute([$pds_id, $dates ?: null, $title, $place ?: null]);
-                    $inserted += $insSem->rowCount();
-                }
-            }
-
-            $status = $_POST['house_status'] ?? null;
-            $type = $_POST['house_type'] ?? null;
-            $rent = $_POST['rental_amount'] ?? null;
-
-            $allowedTypes = ['light', 'semi_concrete', 'concrete'];
-            if (!in_array($type, $allowedTypes, true)) {
-                $type = null;
-            }
-
-            $rent = ($rent !== '' && $rent !== null) ? number_format((float) $rent, 2, '.', '') : null;
-
-            $sql = "UPDATE otherInfo SET
-                        special_skills    = :skills,
-                        house_status      = :status,
-                        rental_amount     = :rent,
-                        house_type        = :type,
-                        household_members = :members,
-                        height            = :h,
-                        weight            = :w,
-                        blood_type        = :b,
-                        emergency_contact = :emg,
-                        tel_no            = :tel
-                    WHERE pds_id = :pid";
-
-            $stmt = $pdo->prepare($sql);
-
-            $ok = $stmt->execute([
-                ':pid' => $pds_id,
-                ':skills' => $_POST['special_skills'] ?? null,
-                ':status' => $status,
-                ':rent' => $rent,
-                ':type' => $type,
-                ':members' => $_POST['household_members'] ?? null,
-                ':h' => $_POST['height'] ?? null,
-                ':w' => $_POST['weight'] ?? null,
-                ':b' => $_POST['blood_type'] ?? null,
-                ':emg' => $_POST['emergency_contact'] ?? null,
-                ':tel' => $_POST['tel_no'] ?? null
+            $updateStmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
+            $updateSuccess = $updateStmt->execute([
+                'password' => $newHashed,
+                'id'       => $userId
             ]);
 
-            if (!$ok) {
-                throw new RuntimeException('otherInfo update failed – SQL error');
+            if ($updateSuccess) {
+                header("Location: $redirectPath?password=success");
+                exit;
+            } else {
+                header("Location: $redirectPath?password=failed");
+                exit;
             }
 
-            $pdo->commit();
-            header("Location: ../src/employee/pendingPDS.php?users_id={$users_id}&pending=pds");
+        } catch (PDOException $e) {
+            header("Location: $redirectPath?password=failed");
             exit;
-
-        } catch (Throwable $e) {
-            $pdo->rollBack();
-            die("DB error: " . $e->getMessage());
-        }
-    }
-
-    if (isset($_POST['employeeSidePDS']) && $_POST['employeeSidePDS'] === 'true') {
-        $users_id = intval($_POST['users_id'] ?? 0);
-        if ($users_id <= 0) {
-            exit('Invalid user ID');
-        }
-
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        try {
-            $pdo->beginTransaction();
-
-            $stmt = $pdo->prepare(
-                "SELECT pds_id FROM personal_data_sheet
-                WHERE users_id = ?"
-            );
-            $stmt->execute([$users_id]);
-            $pds_id = $stmt->fetchColumn();
-
-            if (!$pds_id) {
-                throw new RuntimeException(
-                    "No personal_data_sheet row for users_id {$users_id}"
-                );
-            }
-
-            $pdo->prepare(
-                "UPDATE userInformations SET
-                    lname         = :ln,
-                    fname         = :fn,
-                    mname         = :mn,
-                    nickname      = :nn,
-                    suffix        = :sx,
-                    citizenship   = :ctz,
-                    gender        = :gen,
-                    civil_status  = :civ,
-                    religion      = :rel,
-                    age           = :age,
-                    birthday      = :bd,
-                    birthPlace    = :bp,
-                    contact       = :cnt,
-                    email         = :em
-                WHERE users_id   = :uid"
-            )->execute([
-                        ':uid' => $users_id,
-                        ':ln' => $_POST['lname'] ?? null,
-                        ':fn' => $_POST['fname'] ?? null,
-                        ':mn' => $_POST['mname'] ?? null,
-                        ':nn' => $_POST['nickname'] ?? null,
-                        ':sx' => $_POST['suffix'] ?? null,
-                        ':ctz' => $_POST['citizenship'] ?? null,
-                        ':gen' => $_POST['gender'] ?? null,
-                        ':civ' => $_POST['civil_status'] ?? null,
-                        ':rel' => $_POST['religion'] ?? null,
-                        ':age' => $_POST['age'] ?? null,
-                        ':bd' => $_POST['birthday'] ?? null,
-                        ':bp' => $_POST['birthPlace'] ?? null,
-                        ':cnt' => $_POST['contact'] ?? null,
-                        ':em' => $_POST['email'] ?? null
-                    ]);
-            $ok = $pdo->prepare(
-                "UPDATE userGovIDs SET
-                    sss_no        = ?,
-                    tin_no        = ?,
-                    pagibig_no    = ?,
-                    philhealth_no = ?
-                WHERE pds_id = ?"
-            )->execute([
-                        $_POST['sss_no'] ?? null,
-                        $_POST['tin_no'] ?? null,
-                        $_POST['pagibig_no'] ?? null,
-                        $_POST['philhealth_no'] ?? null,
-                        $pds_id
-                    ]);
-            if (!$ok) {
-                throw new RuntimeException('userGovIDs update failed – row missing');
-            }
-            $ok = $pdo->prepare(
-                "UPDATE spouseInfo SET
-                    spouse_surname = :sur,
-                    spouse_first   = :fir,
-                    spouse_middle  = :mid,
-                    spouse_occupation     = :occ,
-                    spouse_employer       = :emp,
-                    spouse_business_address  = :addr,
-                    spouse_tel   = :tel
-                WHERE pds_id = :pid"
-            )->execute([
-                        ':pid' => $pds_id,
-                        ':sur' => $_POST['spouse_surname'] ?? null,
-                        ':fir' => $_POST['spouse_first'] ?? null,
-                        ':mid' => $_POST['spouse_middle'] ?? null,
-                        ':occ' => $_POST['spouse_occupation'] ?? null,
-                        ':emp' => $_POST['spouse_employer'] ?? null,
-                        ':addr' => $_POST['spouse_business_address'] ?? null,
-                        ':tel' => $_POST['spouse_tel'] ?? null
-                    ]);
-            if (!$ok) {
-                throw new RuntimeException('spouseInfo update failed – row missing');
-            }
-            $parentStmt = $pdo->prepare(
-                "UPDATE parents SET
-                    surname      = :sur,
-                    first_name   = :fir,
-                    middle_name  = :mid,
-                    occupation   = :occ,
-                    address      = :addr
-                WHERE pds_id = :pid AND relation = :rel"
-            );
-            foreach (['father', 'mother'] as $rel) {
-                $ok = $parentStmt->execute([
-                    ':pid' => $pds_id,
-                    ':rel' => $rel,
-                    ':sur' => $_POST[strtolower($rel) . '_surname'] ?? null,
-                    ':fir' => $_POST[strtolower($rel) . '_first'] ?? null,
-                    ':mid' => $_POST[strtolower($rel) . '_middle'] ?? null,
-                    ':occ' => $_POST[strtolower($rel) . '_occupation'] ?? null,
-                    ':addr' => $_POST[strtolower($rel) . '_address'] ?? null
-                ]);
-                if (!$ok) {
-                    throw new RuntimeException("$rel row missing in parents table");
-                }
-            }
-
-            $childUpd = $pdo->prepare(
-                "UPDATE children
-                    SET full_name = ?, dob = ?
-                WHERE id = ? AND pds_id = ?"
-            );
-            $childIns = $pdo->prepare(
-                "INSERT INTO children (pds_id, full_name, dob)
-                VALUES (?, ?, ?)"
-            );
-
-            for ($i = 1; $i <= 7; $i++) {
-                $cid = intval($_POST["child_id_$i"] ?? 0);
-                $name = trim($_POST["child_name_$i"] ?? '');
-                $dob = $_POST["child_dob_$i"] ?? null;
-
-                if ($cid > 0) {
-                    $childUpd->execute([
-                        $name !== '' ? $name : null,
-                        $dob,
-                        $cid,
-                        $pds_id
-                    ]);
-
-                } elseif ($name !== '') {
-                    $childIns->execute([
-                        $pds_id,
-                        $name,
-                        $dob
-                    ]);
-                }
-            }
-            $sibUpd = $pdo->prepare("
-                UPDATE siblings SET
-                    full_name = ?, age = ?, occupation = ?, address = ?
-                WHERE id = ? AND pds_id = ?
-            ");
-
-            $sibIns = $pdo->prepare("
-                INSERT INTO siblings (
-                    pds_id, full_name, age, occupation, address, birth_order
-                )
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-
-            for ($i = 1; $i <= 8; $i++) {
-                $sid = intval($_POST["sibling_id_$i"] ?? 0);
-                $name = trim($_POST["sib_name_$i"] ?? '');
-                $age = $_POST["sib_age_$i"] ?? null;
-                $occ = $_POST["sib_occ_$i"] ?? null;
-                $addr = $_POST["sib_addr_$i"] ?? null;
-
-                if ($sid > 0) {
-                    $sibUpd->execute([
-                        $name !== '' ? $name : null,
-                        $age,
-                        $occ,
-                        $addr,
-                        $sid,
-                        $pds_id
-                    ]);
-
-                } elseif ($name !== '') {
-                    $sibIns->execute([
-                        $pds_id,
-                        $name,
-                        $age,
-                        $occ,
-                        $addr,
-                        $i
-                    ]);
-                }
-            }
-            $updEdu = $pdo->prepare("
-                UPDATE educationInfo
-                SET school_name    = :school,
-                    degree_course  = :course,
-                    school_address = :addr,
-                    year_grad      = :yr
-                WHERE id      = :id
-                AND pds_id  = :pds
-            ");
-
-            $insEdu = $pdo->prepare("
-                INSERT INTO educationInfo (
-                    pds_id, level, school_name,
-                    degree_course, school_address, year_grad
-                )
-                VALUES (:pds, :lvl, :school, :course, :addr, :yr)
-            ");
-
-            $levels = [
-                'elem' => 'Elementary',
-                'sec' => 'Secondary',
-                'voc' => 'Vocational',
-                'college' => 'College',
-                'grad' => 'Graduate',
-            ];
-
-            $updated = $inserted = 0;
-
-            foreach ($levels as $prefix => $level) {
-
-                $id = intval($_POST["edu_{$prefix}_id"] ?? 0);
-                $school = trim($_POST["{$prefix}_school"] ?? '');
-                $course = trim($_POST["{$prefix}_course"] ?? '');
-                $addr = trim($_POST["{$prefix}_address"] ?? '');
-                $yr = trim($_POST["{$prefix}_year"] ?? '');
-
-                if ($id === 0 && $school === '' && $course === '' && $addr === '' && $yr === '') {
-                    continue;
-                }
-
-                if ($id > 0) {
-                    $updEdu->execute([
-                        ':school' => $school,
-                        ':course' => $course,
-                        ':addr' => $addr,
-                        ':yr' => $yr !== '' ? $yr : null,
-                        ':id' => $id,
-                        ':pds' => $pds_id,
-                    ]);
-                    $updated += $updEdu->rowCount();
-                } else {
-                    $insEdu->execute([
-                        ':pds' => $pds_id,
-                        ':lvl' => $level,
-                        ':school' => $school,
-                        ':course' => $course,
-                        ':addr' => $addr,
-                        ':yr' => $yr !== '' ? $yr : null,
-                    ]);
-                    $inserted += $insEdu->rowCount();
-                }
-            }
-
-            $ins = $pdo->prepare("
-                INSERT INTO workExperience (
-                    pds_id, date_from, date_to,
-                    position_title, department, monthly_salary
-                )
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-
-            $upd = $pdo->prepare("
-                UPDATE workExperience
-                SET date_from      = ?,
-                    date_to        = ?,
-                    position_title = ?,
-                    department     = ?,
-                    monthly_salary = ?
-                WHERE id      = ?
-                AND pds_id  = ?
-            ");
-
-            $inserted = $updated = 0;
-
-            for ($i = 1; $i <= 5; $i++) {
-
-                $id = (int) ($_POST["exp_{$i}_id"] ?? 0);
-                $from = $_POST["exp_{$i}_from"] ?? '';
-                $to = $_POST["exp_{$i}_to"] ?? '';
-                $title = trim($_POST["exp_{$i}_position"] ?? '');
-                $dept = trim($_POST["exp_{$i}_department"] ?? '');
-                $salary = $_POST["exp_{$i}_salary"] ?? '';
-
-                if ($id === 0 && $from === '' && $to === '' && $title === '' && $dept === '' && $salary === '') {
-                    continue;
-                }
-
-                if ($id > 0) {
-                    $upd->execute([$from, $to, $title, $dept, $salary, $id, $pds_id]);
-                    $updated += $upd->rowCount();
-                } else {
-                    $ins->execute([$pds_id, $from, $to, $title, $dept, $salary]);
-                    $inserted += $ins->rowCount();
-                }
-            }
-
-            $insSem = $pdo->prepare("
-                INSERT INTO seminarsTrainings (
-                    pds_id, inclusive_dates, title, place
-                )
-                VALUES (?, ?, ?, ?)
-            ");
-
-            $updSem = $pdo->prepare("
-                UPDATE seminarsTrainings
-                SET inclusive_dates = ?,
-                    title           = ?,
-                    place           = ?
-                WHERE id     = ? 
-                AND pds_id = ?
-            ");
-
-            $inserted = $updated = 0;
-
-            for ($i = 1; $i <= 5; $i++) {
-
-                $id = intval($_POST["seminar_{$i}_id"] ?? 0);
-                $dates = trim($_POST["seminar_{$i}_dates"] ?? '');
-                $title = trim($_POST["seminar_{$i}_title"] ?? '');
-                $place = trim($_POST["seminar_{$i}_place"] ?? '');
-
-                if ($id === 0 && $dates === '' && $title === '' && $place === '') {
-                    continue;
-                }
-                if ($id > 0) {
-                    $updSem->execute([$dates ?: null, $title ?: null, $place ?: null, $id, $pds_id]);
-                    $updated += $updSem->rowCount();
-                } else {
-                    $insSem->execute([$pds_id, $dates ?: null, $title, $place ?: null]);
-                    $inserted += $insSem->rowCount();
-                }
-            }
-
-            $status = $_POST['house_status'] ?? null;
-            $type = $_POST['house_type'] ?? null;
-            $rent = $_POST['rental_amount'] ?? null;
-
-            $allowedTypes = ['light', 'semi_concrete', 'concrete'];
-            if (!in_array($type, $allowedTypes, true)) {
-                $type = null;
-            }
-
-            $rent = ($rent !== '' && $rent !== null) ? number_format((float) $rent, 2, '.', '') : null;
-
-            $sql = "UPDATE otherInfo SET
-                        special_skills    = :skills,
-                        house_status      = :status,
-                        rental_amount     = :rent,
-                        house_type        = :type,
-                        household_members = :members,
-                        height            = :h,
-                        weight            = :w,
-                        blood_type        = :b,
-                        emergency_contact = :emg,
-                        tel_no            = :tel
-                    WHERE pds_id = :pid";
-
-            $stmt = $pdo->prepare($sql);
-
-            $ok = $stmt->execute([
-                ':pid' => $pds_id,
-                ':skills' => $_POST['special_skills'] ?? null,
-                ':status' => $status,
-                ':rent' => $rent,
-                ':type' => $type,
-                ':members' => $_POST['household_members'] ?? null,
-                ':h' => $_POST['height'] ?? null,
-                ':w' => $_POST['weight'] ?? null,
-                ':b' => $_POST['blood_type'] ?? null,
-                ':emg' => $_POST['emergency_contact'] ?? null,
-                ':tel' => $_POST['tel_no'] ?? null
-            ]);
-
-            if (!$ok) {
-                throw new RuntimeException('otherInfo update failed – SQL error');
-            }
-
-            $pdo->commit();
-            header("Location: ../src/employee/pds.php?users_id={$users_id}&employee=pds");
-            exit;
-
-        } catch (Throwable $e) {
-            $pdo->rollBack();
-            die("DB error: " . $e->getMessage());
         }
     }
 

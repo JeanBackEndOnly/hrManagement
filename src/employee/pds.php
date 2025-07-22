@@ -205,7 +205,8 @@
                         <div class="step active">4</div>
                     </div>
                     <form action="../../auth/authentications.php" method="post" class="col-md-12">
-                        <input type="hidden" name="employeeSidePDS" value="true">
+                        <input type="hidden" name="pds" value="true">
+                        <input type="hidden" name="pdsType" value="validated">
                         <?php isset($_SESSION["csrf_token"]) && $_SESSION["csrf_token"] !== "" ? $csrf = $_SESSION["csrf_token"] : " null "; ?>
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                         <input type="hidden" name="users_id" value="<?php echo $_SESSION["user_id"] ?? ''; ?>">
