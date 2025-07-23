@@ -1,7 +1,7 @@
 <?php include '../../templates/funcHeader.php';?>
 
-<main class="w-100">
-    <div class="main-body w-100 h-100 m-0 p-0 d-flex justify-content-center align-items-center">
+<main class="w-100 noBG">
+    <div class="main-body w-100 h-100 m-0 p-0 d-flex justify-content-center align-items-center noBG">
 
         <div class="d-flex w-100 align-items-center justify-content-center" style="height: 91%">
             <div class="contents shadow rounded-2 w-100 h-auto d-flex flex-column align-items-center p-5 justify-content-center p-0 m-0" style="background-color: #f7f7f7;">
@@ -31,11 +31,11 @@
                                     <label for="newPassword" class="form-label text-start fw-bold">New Password</label>
                                     <input type="password" class="form-control" name="new_password" placeholder="New Password" required id="passInput" style="flex: 1;">
                                     
-                                    <button type="button" id="showPasswords" style="background: none; border: none;  position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px;">
+                                    <button type="button" class="mediaButton" id="showPasswords" style="background: none; border: none;  position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px;">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <button type="button" id="hidePasswords" style="background: none; border: none; position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px; display: none;">
+                                    <button type="button" class="mediaButton" id="hidePasswords" style="background: none; border: none; position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px; display: none;">
                                         <i class="fa-solid fa-eye-slash"></i>
                                     </button>
                                 </li>
@@ -46,16 +46,16 @@
                                     <label for="confirmPassword" class="form-label text-start fw-bold">Confirm New Password</label>
                                     <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required id="chInput" style="flex: 1;">
                                     
-                                    <button type="button" id="showConfirmPasswords" style="background: none; border: none;  position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px;">
+                                    <button type="button" class="mediaButton" id="showConfirmPasswords" style="background: none; border: none;  position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px;">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <button type="button" id="hideConfirmPasswords" style="background: none; border: none; position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px; display: none;">
+                                    <button type="button" class="mediaButton" id="hideConfirmPasswords" style="background: none; border: none; position:fixed; right: 27rem; transform: translateY(2rem); margin-left: 5px; display: none;">
                                         <i class="fa-solid fa-eye-slash"></i>
                                     </button>
                                 </li>
                             </div>
-                            <button type="submit" class="btn btn-success">Change Password</button>
+                            <button type="submit" class="btn text-white mainBG">Change Password</button>
                         </form>
                     </div>
                 </div>

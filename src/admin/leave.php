@@ -10,13 +10,12 @@
 </script>
 <?php endif;  ?>
 <style>
-.hr {
+.leaveHightLight {
     background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
     color: #fff !important;
 }
 
-.hrP,
-.me-side-text1 {
+.leaveP{
     color: #fff !important;
     font-weight: bold !important;
 }

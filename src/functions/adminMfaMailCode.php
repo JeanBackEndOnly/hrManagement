@@ -44,12 +44,14 @@ a {
 }
 </style>
 <main id="main" class="login-page px-0 ">
-    <div class="d-flex flex-column h-100 w-100 align-items-center justify-content-start loginBG fadeInAnimation"
+    <div class="d-flex flex-column h-100 w-100 align-items-center justify-content-start loginBG"
         style="position: fixed !important;">
-        <div class="header col-md-11 col-11 mt-2 h-auto rounded-3 d-flex align-items-center justify-content-center p-2"
+        <div class="header col-md-11 col-11 mt-2 h-auto rounded-3 d-flex align-items-center justify-content-start p-2"
             style="background-color: #E32126 !important">
-            <img src="../../assets/image/pueri-logo.png" alt="" style="width: 60px; height: 60px;" class="mediaImgeHeader ">
-            <h5 class="text-center ms-2 fw-bold fs-2 m-0 mediaHeaderText" style="color: #fff;">ZAMBOANGA PUERICULTURE CENTER</h5>
+            <img src="../../assets/image/pueri-logo.png" alt="" style="width: 50px; height: 50px;"
+                class="mediaImgeHeader ">
+            <h5 class="text-center ms-2 fw-bold fs-4 m-0 mediaHeaderText" style="color: #fff;">ZAMBOANGA PUERICULTURE
+                CENTER</h5>
         </div>
         <div class="h-100 col-md-12 col-12 d-flex align-items-center justify-content-center" style="background-color: #dbdbdbff !important;">
             <div class="container mediaLogin col-md-4 col-10 d-flex shadow flex-column align-items-center h-auto justify-content-center m-0 p-0 pb-2 rounded-bottom-4"

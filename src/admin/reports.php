@@ -3,13 +3,12 @@
  include '../../templates/HN.php';
 ?>
 <style>
-.hr {
+.reportsHightLight {
     background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
     color: #fff !important;
 }
 
-.hrP,
-.me-side-text1 {
+.reportsP{
     color: #fff !important;
     font-weight: bold !important;
 }

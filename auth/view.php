@@ -14,7 +14,7 @@ function signup_inputs(){
         echo '<div class="column-container h-auto py-4 w-100 rounded-2 p-2 px-4 shadow" style="background-color: #fefefe;">';
             echo '<div class="col-md-12">';
                 echo '<div class="back-button w-100">';
-                    echo '<a href="index.php" class="text-start" style="z-index: 0;"><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
+                    echo '<a href="index.php" class="text-start btn-confirm" style="z-index: 0;"><i class="fa-solid fa-arrow-left-long fs-4"></i></a>';
                 echo '</div>';
                echo '<form id="signupFormEmp" action="../auth/authentications.php" method="post" enctype="multipart/form-data"
                     class="form-signup w-100 overflow-y-auto d-flex flex-column justify-content-start align-items-center m-0 p-0" style="max-height: 72.5vh; overflow-y: auto;">';

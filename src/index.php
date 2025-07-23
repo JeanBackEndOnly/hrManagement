@@ -54,9 +54,9 @@ a {
         style="position: fixed !important;">
         <div class="header col-md-11 col-11 mt-2 h-auto rounded-3 d-flex align-items-center justify-content-start p-2"
             style="background-color: #E32126 !important">
-            <img src="../assets/image/pueri-logo.png" alt="" style="width: 60px; height: 60px;"
+            <img src="../assets/image/pueri-logo.png" alt="" style="width: 50px; height: 50px;"
                 class="mediaImgeHeader ">
-            <h5 class="text-center ms-2 fw-bold fs-2 m-0 mediaHeaderText" style="color: #fff;">ZAMBOANGA PUERICULTURE
+            <h5 class="text-center ms-2 fw-bold fs-4 m-0 mediaHeaderText" style="color: #fff;">ZAMBOANGA PUERICULTURE
                 CENTER</h5>
         </div>
         <div class="h-100 col-md-12 col-12 d-flex align-items-center justify-content-center">
@@ -93,7 +93,7 @@ a {
                         </li>
                     </div>
                     <div class="mb-3 mt-3 text-center w-100">
-                        <button type="submit" class="btn btn-danger w-100 p-2 mb-0 fw-bold buttonHover"
+                        <button type="submit" class="btn btn-danger w-100 p-2 mb-0 fw-bold buttonHover btn-confirm"
                             style="background-color: #E53935; ">Login</button>
                     </div>
                 </form>
@@ -103,7 +103,7 @@ a {
                 <div class="mb-1 text-center">
                     <p class="mediaSignupText">Doesn’t have an account? <a href="register.php"
                             style="color: blue;"><span style="color: #E53935 !important;"
-                                class="fw-bold mediaSignupText">Sign-up</span></a></p>
+                                class="fw-bold mediaSignupText btn-confirm">Sign-up</span></a></p>
                 </div>
             </div>
         </div>

@@ -35,10 +35,31 @@ a{
 .text-width{
     width: 11rem !important;
 }
+.text-width-hr{
+    width: 9rem !important;
+}
 .li-width{
     width: 14rem !important;
 }
+.dropDownHeight{
+    height: 3rem !important;
+}
+.fadeNav{
+    animation: Fadein 1s forwards ease-in-out;
+}
+.hrFields {
+    overflow: hidden;
+    transition: height 0.4s ease, opacity 0.4s ease;
+    height: 0;
+    opacity: 0;
+    display: block; /* allow animation, then control visibility via JS */
+}
 
+/* Active/open state */
+.hrFields.open {
+    opacity: 1;
+    height: auto; /* we'll override this with JS for smoother control */
+}
 /*  =================================  loader */
 #loaderOverlay {
     position: fixed;
@@ -46,7 +67,7 @@ a{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.8);
+    background: rgba(0,0,0,0.8);
     z-index: 9999;
     display: none;
     align-items: center;
@@ -59,7 +80,7 @@ a{
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    animation: spin 1.5s linear infinite;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -394,13 +415,18 @@ a{
 }
 .hoverNavs:hover{
     background: linear-gradient(40deg, #E53935, #e53835c2, #e538358f, #e538352f) !important;
+    color: #fff !important;
+}
+.hoverColor:hover{
+    color: #fff !important;
 }
 @keyframes Fadein{
     0%{opacity: 0;}
     100%{opacity: 1;}
 }
+
 .LogoutAniamtion{
-    animation: Fadein 1s forwards ease-in-out;
+    animation: Fadein .2s forwards ease-in-out;
 }
 .navigationsContents:hover{
     background-color: #e1dede;

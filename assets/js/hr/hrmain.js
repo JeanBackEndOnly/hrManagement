@@ -400,13 +400,13 @@ function payrollButton() {
 
 
 document.querySelectorAll('.btn-confirm').forEach(btn => {
-    alert('button clicked');
     btn.addEventListener('click', function () {
+        //  alert('button clicked');
         const loader = document.getElementById('loaderOverlay');
         if (loader) {
             loader.style.display = 'flex';
         }
-        setTimeout(() => loader.style.display = 'none', 3000);
+        setTimeout(() => loader.style.display = 'none', 2000);
     });
 });
 

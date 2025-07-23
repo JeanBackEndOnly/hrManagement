@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="d-flex col-ms-12 flex-row justify-content-start align-items-center flex-wrap" style="height: 7rem; width: 95%;">
-                   <a href="employee.php" class="pending BGdashboardContents hoverDashboard AnimationFinalfirst shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                   <a href="employee.php" class="btn-confirm pending BGdashboardContents hoverDashboard AnimationFinalfirst shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
                                 <h1 class="fw-bold text-primary txtToWhite m-0"><?php echo $validatedCount; ?></h1>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="employee.php?tab=request" class="pending BGdashboardContents hoverDashboard AnimationFinalsecond shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                    <a href="employee.php?tab=request" class="btn-confirm pending BGdashboardContents hoverDashboard AnimationFinalsecond shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
                                 <h1 class="fw-bold text-primary txtToWhite m-0"><?php echo $pendingCount; ?></h1>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="reports.php" class="pending BGdashboardContents hoverDashboard AnimationFinalthird shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                    <a href="reports.php" class="btn-confirm pending BGdashboardContents hoverDashboard AnimationFinalthird shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
                                 <h1 class="fw-bold text-primary txtToWhite m-0">
@@ -67,7 +67,7 @@
                         </div>
                     </a>
 
-                    <a href="leave.php" class="leave BGdashboardContents hoverDashboard AnimationFinalLast shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
+                    <a href="leave.php" class="btn-confirm leave BGdashboardContents hoverDashboard AnimationFinalLast shadow-sm rounded-2 p-2 d-flex flex-column justify-content-center align-items-center bg-white me-3 mt-3 col-md-3 col-12" style="min-height: 100px; text-decoration: none;">
                         <div class="d-flex align-items-center mb-3">
                             <div class="text-center me-3">
                                 <h1 class="fw-bold text-primary txtToWhite m-0">

@@ -32,7 +32,7 @@ require_once '../../auth/view.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="registerArea">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,7 +75,7 @@ require_once '../../auth/view.php';
 
     </style>
 </head>
-    <body class="body w-50" style="background: none; !important">
+    <body class="body w-50 noBG" style="background: none; !important">
 <div id="loaderOverlay">
     <div class="loader"></div>
 </div>

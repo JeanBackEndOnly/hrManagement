@@ -334,6 +334,7 @@ if (!function_exists('db_connection')) {
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
             )",
             ];
+            
             foreach ($tableQueries as $query) {
                 $pdo->exec($query);
             }

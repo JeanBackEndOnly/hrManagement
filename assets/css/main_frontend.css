@@ -13,6 +13,12 @@ html, main{
         /* background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%) !important; */
         background-color: #dbdbdbff !important;
     }
+    .registerArea{
+        background: linear-gradient(130deg, #E32126 49.9%, #000000 .1%, #ffffff 50%) !important;
+    }
+    .noBG{
+        background-color: transparent !important;
+    }
 html, body, main{
     margin: 0;
     height: 100vh;
@@ -124,7 +130,7 @@ main h4, main h3{
     transition: .5s;
     border-radius: 3px;
 }
-#next:hover, #nexts:hover, #back:hover, #backs:hover, #button-signup-rds:hover, #button-signups:hover{
+#next:hover, #nexts:hover, #back:hover, #backs:hover, #button-signup-rds:hover, #button-signups:hover, .mainBG{
        background-color: #E32126 !important;
 }
 @keyframes fadeIn {
@@ -157,7 +163,7 @@ main h4, main h3{
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    animation: spin 1.5s linear infinite;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -217,6 +223,9 @@ select {
     }
 }
 @media (max-width: 576px) {
+    .mediaButton{
+        right: 5rem !important;
+    }
     .mediaHeaderText{
         font-size: 15px !important;
     }
