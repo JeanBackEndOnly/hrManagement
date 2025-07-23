@@ -72,7 +72,7 @@ a {
                         <input type="text" name="AdminMailCode" id="emailLabel" class="form-control w-100 text-center fw-bold p-2 fs-6" placeholder="Authentication Code" required>
                     </div>
                     <div class="button w-100 d-flex justify-content-center">
-                        <button class="btn p-1 rounded-0 col-md-11 rounded-2 text-white fw-bold" style="background-color: #E53935;">Confirm</button>
+                        <button class="btn p-1 rounded-0 col-md-11 rounded-2 text-white fw-bold btn-confirm" style="background-color: #E53935;">Confirm</button>
                     </div>
                 </form>
                 <div class="resendCode my-2">
@@ -130,5 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
             window.history.replaceState({}, document.title, url.toString());
         }
 });
+document.querySelectorAll('.btn-confirm').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const loader = document.getElementById('loaderOverlay');
+        if (loader) {
+            loader.style.display = 'flex';
+        }
+        setTimeout(() => loader.style.display = 'none', 3000);
+    });
+});
+
+
 </script>
 <?php include '../../templates/funcFooter.php'; ?>

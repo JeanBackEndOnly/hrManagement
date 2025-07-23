@@ -399,13 +399,6 @@
             </div>
         </div>
     </div>
-    <div id="loading-overlay" style="display:none;">
-        <div class="loading-lines">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
-    </div>
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {

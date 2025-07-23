@@ -50,7 +50,7 @@ a {
 }
 </style>
 <main id="" class="px-0">
-    <div class="d-flex flex-column h-100 w-100 align-items-center justify-content-start loginBG fadeInAnimation"
+    <div class="d-flex flex-column h-100 w-100 align-items-center justify-content-start loginBG"
         style="position: fixed !important;">
         <div class="header col-md-11 col-11 mt-2 h-auto rounded-3 d-flex align-items-center justify-content-start p-2"
             style="background-color: #E32126 !important">
@@ -133,8 +133,7 @@ a {
     </div>
 </div>
 </div>
-
-<script>
+<Script>
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
         .then(reg => console.log('✅ SW registered ➜', reg.scope))

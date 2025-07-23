@@ -343,3 +343,6 @@
     }
 }
 </style>
+<div id="loaderOverlay">
+    <div class="loader"></div>
+</div>

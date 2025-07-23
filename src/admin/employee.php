@@ -273,12 +273,5 @@
         </div>
     </div>
 </main>
-<div id="loadingAnimation" style="display:none;">
-  <div class="loading-lines">
-    <div class="line"></div>
-    <div class="line"></div>
-    <div class="line"></div>
-  </div>
-</div>
 <script src="../../assets/js/hr/employee.js"></script>
 <?php include '../../templates/Ufooter.php'?>

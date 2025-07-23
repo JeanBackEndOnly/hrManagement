@@ -289,3 +289,6 @@ $reportData = getReports($reportsPerPage, $reportOffset, $reportSortColumn, $rep
 
 </head>
 <body class="body h-100" style="min-width:100vw;">
+<div id="loaderOverlay">
+    <div class="loader"></div>
+</div>

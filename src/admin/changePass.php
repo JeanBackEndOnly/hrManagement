@@ -72,13 +72,6 @@
         </div>
     </div>
 </main>
-<div id="loadingAnimationSettings" style="display:none;">
-        <div class="loading-lines">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
-    </div>
     <script>
         const passwordInputs = document.getElementById('passInput');
 const showPasswords = document.getElementById('showPasswords');

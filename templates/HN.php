@@ -8,7 +8,7 @@
     </div>
 
     <div class="usersButton d-flex align-items-center">
-        <a href="settings.php"><i class="fa-solid text-white fa-gear" style="color: #fff;"></i></a>
+        <a href="settings.php"><i class="fa-solid text-white fa-gear btn-confirm" style="color: #fff;"></i></a>
         <button class="me-3" style="background: none; border:none; width: 20px;" onclick="logoutButton()"><i
                 class="fa-solid text-white fa-right-from-bracket ms-3" style="color: #fff;"></i></button>
         <button class="align-items-center" type="button" onclick="userButton()">
@@ -18,6 +18,16 @@
     </div>
 </div>
 <script>
+document.querySelectorAll('.btn-confirm').forEach(btn => {
+    // alert('button clicked');
+    btn.addEventListener('click', function () {
+        const loader = document.getElementById('loaderOverlay');
+        if (loader) {
+            loader.style.display = 'flex';
+        }
+        setTimeout(() => loader.style.display = 'none', 3000);
+    });
+});
 function logoutButton() {
     document.getElementById("logoutDiv").style.display = 'flex';
 }

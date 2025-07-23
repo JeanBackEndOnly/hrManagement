@@ -399,15 +399,16 @@ function payrollButton() {
 }
 
 
+document.querySelectorAll('.btn-confirm').forEach(btn => {
+    alert('button clicked');
+    btn.addEventListener('click', function () {
+        const loader = document.getElementById('loaderOverlay');
+        if (loader) {
+            loader.style.display = 'flex';
+        }
+        setTimeout(() => loader.style.display = 'none', 3000);
+    });
+});
 
-function showLoading() {
-    const loading = document.getElementById("loadingAnimation");
-    loading.style.display = "flex";
-}
-
-function hideLoading() {
-    const loading = document.getElementById("loadingAnimation");
-    loading.style.display = "none";
-}
 
 // ============= END ==================== //

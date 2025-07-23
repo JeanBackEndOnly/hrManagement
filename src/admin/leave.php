@@ -277,13 +277,6 @@
         </div>
     </div>
 </main>
-<div id="loadingAnimation" style="display:none;">
-  <div class="loading-lines">
-    <div class="line"></div>
-    <div class="line"></div>
-    <div class="line"></div>
-  </div>
-</div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.needs-loader').forEach(el =>

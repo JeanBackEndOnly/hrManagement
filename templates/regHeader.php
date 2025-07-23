@@ -42,3 +42,6 @@ require_once '../../auth/view.php';
     </style>
 </head>
     <body class="body w-50">
+<div id="loaderOverlay">
+    <div class="loader"></div>
+</div>
