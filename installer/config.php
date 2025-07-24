@@ -2,29 +2,37 @@
 if (!function_exists('db_connection')) {
     function db_connection()
     {
+        static $pdo = null;
+        if ($pdo !== null) return $pdo;
+
         $host = 'localhost';
         $username = 'root';
         $password = '';
         $database = 'hrPuericulture';
 
         try {
-            $pdo = new PDO("mysql:host=$host;charset=utf8mb4", $username, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // Step 1: Connect without selecting a DB
+            $pdoTemp = new PDO("mysql:host=$host;charset=utf8mb4", $username, $password);
+            $pdoTemp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $pdo->exec("CREATE DATABASE IF NOT EXISTS `$database` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+            // Step 2: Create database if it doesn't exist
+            $pdoTemp->exec("CREATE DATABASE IF NOT EXISTS `$database` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
 
+            // Step 3: Connect to the newly created DB
             $pdo = new PDO("mysql:host=$host;dbname=$database;charset=utf8mb4", $username, $password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            // Step 4: Create all tables
             $tableQueries = [
                 "CREATE TABLE IF NOT EXISTS users (
-                    id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    user_profile BLOB,
-                    username VARCHAR(100) NOT NULL,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    username VARCHAR(255) NOT NULL UNIQUE,
                     password VARCHAR(255) NOT NULL,
-                    email VARCHAR(100),
-                    user_role VARCHAR(20) NOT NULL,
-                    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                    email VARCHAR(255) NOT NULL,
+                    user_role VARCHAR(50) NOT NULL,
+                    subRole VARCHAR(50) NOT NULL,
+                    user_profile BLOB,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )",
                 "CREATE TABLE IF NOT EXISTS userInformations(
                 id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -334,9 +342,44 @@ if (!function_exists('db_connection')) {
                 FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE
             )",
             ];
-            
+            // $pdo = db_connection();
+
+            // Sample credentials
             foreach ($tableQueries as $query) {
                 $pdo->exec($query);
+            }
+
+            // Step 5: Insert default admin users
+            $defaultAdmins = [
+                [
+                    'username' => 'HR@pueri2025',
+                    'password' => password_hash('admin123', PASSWORD_DEFAULT),
+                    'email' => 'pagotaisidromarcojean@gmail.com',
+                    'user_role' => 'Administrator',
+                    'subRole' => 'HR'
+                ],
+                [
+                    'username' => 'PAYROLL@pueri2025',
+                    'password' => password_hash('admin123', PASSWORD_DEFAULT),
+                    'email' => 'payroll@example.com',
+                    'user_role' => 'Administrator',
+                    'subRole' => 'PAYROLL'
+                ]
+            ];
+
+            foreach ($defaultAdmins as $admin) {
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
+                $stmt->execute(['username' => $admin['username']]);
+                if ($stmt->fetchColumn() == 0) {
+                    $stmt = $pdo->prepare("INSERT INTO users (username, password, email, user_role, subRole) VALUES (:username, :password, :email, :user_role, :subRole)");
+                    $stmt->execute([
+                        'username' => $admin['username'],
+                        'password' => $admin['password'],
+                        'email' => $admin['email'],
+                        'user_role' => $admin['user_role'],
+                        'subRole' => $admin['subRole']
+                    ]);
+                }
             }
 
             return $pdo;

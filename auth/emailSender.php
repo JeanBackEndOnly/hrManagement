@@ -53,7 +53,21 @@ try {
     // ===================================================== //
 
     if (!$user && $createdUserId == 1) {
-        $query = "SELECT * FROM users WHERE id = 1";
+        $query = "SELECT * FROM users WHERE id = 1 OR id = 2";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($admin) {
+            $user = [
+                'email' => $admin['email'],
+                'fname' => 'Admin',
+                'lname' => 'Account'
+            ];
+        }
+    }
+    if (!$user && $createdUserId == 2) {
+        $query = "SELECT * FROM users WHERE id = 2";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);

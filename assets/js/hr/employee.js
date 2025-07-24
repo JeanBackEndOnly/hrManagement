@@ -120,7 +120,7 @@ function getValidated() {
 }
 
 function getRequest() {
-    showLoading();
+    // showLoading();
     setTimeout(() => {
         document.getElementById("requestList").style.display = 'flex';
         document.getElementById("requestSearch").style.display = 'flex';

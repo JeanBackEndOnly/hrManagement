@@ -35,39 +35,48 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $userRole = $_SESSION['pending_user_role'] ?? null;
 
                 if (!$userId || !$userRole) {
-                    $_SESSION['errors_login']['login_incorrect'] = 'Session expired. Please log in again.';
+                    echo $_SESSION['errors_login']['login_incorrect'] = 'Session expired. Please log in again.';
                     header('Location: ../src/index.php');
                     exit();
                 }
 
-                $stmt = $pdo->prepare('SELECT id, email, user_role FROM users WHERE id = ?');
-                $stmt->execute([$userId]);
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                // function getUsername($pdo, $username) {
+                //     $stmt = $pdo->prepare('SELECT id, username, password, email, user_role, subRole FROM users WHERE username = ?');
+                //     $stmt->execute([$username]);
+                //     return $stmt->fetch(PDO::FETCH_ASSOC);
+                // }
 
-                if (!$user) {
-                    $_SESSION['errors_login']['login_incorrect'] = 'User not found. Please log in again.';
-                    header('Location: ../src/index.php');
-                    exit();
-                }
+
+                // if (!$user) {
+                //     $_SESSION['errors_login']['login_incorrect'] = 'User not found. Please log in again.';
+                    // header('Location: ../src/index.php');
+                //     exit();
+                // }
 
                 $code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
                 $_SESSION['EmailAuth'] = $code;
 
                 $script = realpath(__DIR__ . '/emailSender.php');
-                $cmdParts = [
-                    'php',
-                    escapeshellarg($script),
-                    escapeshellarg($user['id']),
-                    escapeshellarg('MFA'),
-                    escapeshellarg(''),
-                    escapeshellarg(''),
-                    escapeshellarg(''),
-                    escapeshellarg(''),
-                    escapeshellarg(''),
-                    escapeshellarg($code),
-                    escapeshellarg('')
-                ];
-                pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));
+                $stmt = $pdo->prepare('SELECT id, email FROM users WHERE user_role = ?');
+                $stmt->execute(['administrator']);
+                $admins = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($admins as $admin) {
+                    $cmdParts = [
+                        'php',
+                        escapeshellarg($script),
+                        escapeshellarg($admin['id']),
+                        escapeshellarg('MFA'),
+                        escapeshellarg(''),
+                        escapeshellarg(''),
+                        escapeshellarg(''),
+                        escapeshellarg(''),
+                        escapeshellarg(''),
+                        escapeshellarg($code),
+                        escapeshellarg('')
+                    ];
+                    pclose(popen('start /B ' . implode(' ', $cmdParts), 'r'));
+                }
 
                 if ($AdminResendCode === 'true') {
                     header('Location: ../src/functions/adminMfaMailCode.php?resent=true');
@@ -105,6 +114,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['EmailAuth'] = $code;
                 $_SESSION['pending_user_id'] = $user['id'];
                 $_SESSION['pending_user_role'] = $user['user_role'];
+                $_SESSION['pending_user_subrole'] = $user['subRole']; 
+
 
                 $script = realpath(__DIR__ . '/emailSender.php');
                 $cmdParts = [
@@ -154,6 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $userId = $_SESSION['pending_user_id'] ?? null;
                 $userRole = $_SESSION['pending_user_role'] ?? null;
+                $userSubRole = $_SESSION['pending_user_subrole'] ?? null;
                 if (!$userId || !$userRole) {
                     $_SESSION['errors_login']['login_incorrect'] = 'Session expired. Please log in again.';
                     header('Location: ../src/index.php');
@@ -162,20 +174,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $_SESSION['user_id'] = $userId;
                 $_SESSION['user_role'] = $userRole;
+                $_SESSION['user_subrole'] = $userSubRole;
 
                 if ($userRole === 'employee') {
                     $stmt = $pdo->prepare('INSERT INTO employee_history (employee_id, login_time) VALUES (?, NOW())');
                     $stmt->execute([$userId]);
-                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['EmailAuth']);
+                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['pending_user_subrole'], $_SESSION['EmailAuth']);
                     header('Location: ../src/employee/dashboard.php');
                     exit();
                 }
 
-                if ($userRole === 'administrator') {
+                if ($userRole === 'administrator' && $userSubRole === 'HR') {
                     $stmt = $pdo->prepare('INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW())');
                     $stmt->execute([$userId]);
-                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['EmailAuth']);
+                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['pending_user_subrole'], $_SESSION['EmailAuth']);
                     header('Location: ../src/admin/dashboard.php');
+                    exit();
+                }
+
+                if ($userRole === 'administrator' && $userSubRole === 'PAYROLL') {
+                    $stmt = $pdo->prepare('INSERT INTO admin_history (admin_id, login_time) VALUES (?, NOW())');
+                    $stmt->execute([$userId]);
+                    unset($_SESSION['pending_user_id'], $_SESSION['pending_user_role'], $_SESSION['pending_user_subrole'], $_SESSION['EmailAuth']);
+                    header('Location: ../src/payroll/dashboard.php');
                     exit();
                 }
 
@@ -194,6 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
     }
+
 
     // ============================= User Registration Authentication ============================= //
     if (isset($_POST["register_user"]) && $_POST["register_user"] === "true") {
@@ -2718,7 +2740,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $userRole        = $_SESSION["user_role"] ?? '';
 
         // Role-based redirect path
-        $redirectPath = ($userRole === "administrator") ? "../src/admin/settings.php" : "../src/employee/settings.php";
+        $redirectPath = ($userRole === "HR" || $userRole === "PAYROLL") ? "../src/admin/settings.php" : "../src/employee/settings.php";
 
         if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
             header("Location: $redirectPath?password=empty");
