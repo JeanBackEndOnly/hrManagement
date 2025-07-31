@@ -106,14 +106,14 @@ function getValidated() {
     setTimeout(() => {
         document.getElementById("validatedList").style.display = 'flex';
         document.getElementById("validateSearch").style.display = 'flex';
-        document.getElementById("validatedEmployees").style.display = 'flex';
+        // document.getElementById("validatedEmployees").style.display = 'flex';
 
         document.getElementById("requestList").style.display = 'none';
         document.getElementById("requestSearch").style.display = 'none';
-        document.getElementById("employeesRequest").style.display = 'none';
+        // document.getElementById("employeesRequest").style.display = 'none';
         document.getElementById("rejectedList").style.display = 'none';
         document.getElementById("rejectedSearch").style.display = 'none';
-        document.getElementById("rejectedEmployees").style.display = 'none';
+        // document.getElementById("rejectedEmployees").style.display = 'none';
 
         hideLoading();
     }, 800); 
@@ -124,14 +124,14 @@ function getRequest() {
     setTimeout(() => {
         document.getElementById("requestList").style.display = 'flex';
         document.getElementById("requestSearch").style.display = 'flex';
-        document.getElementById("employeesRequest").style.display = 'flex';
+        // document.getElementById("employeesRequest").style.display = 'flex';
 
         document.getElementById("validatedList").style.display = 'none';
         document.getElementById("validateSearch").style.display = 'none';
-        document.getElementById("validatedEmployees").style.display = 'none';
+        // document.getElementById("validatedEmployees").style.display = 'none';
         document.getElementById("rejectedList").style.display = 'none';
         document.getElementById("rejectedSearch").style.display = 'none';
-        document.getElementById("rejectedEmployees").style.display = 'none';
+        // document.getElementById("rejectedEmployees").style.display = 'none';
 
         hideLoading();
     }, 800); 
@@ -143,14 +143,14 @@ function getRejected(){
     setTimeout(() => {
         document.getElementById("rejectedList").style.display = 'flex';
         document.getElementById("rejectedSearch").style.display = 'flex';
-        document.getElementById("rejectedEmployees").style.display = 'flex';
+        // document.getElementById("rejectedEmployees").style.display = 'flex';
 
         document.getElementById("requestList").style.display = 'none';
         document.getElementById("requestSearch").style.display = 'none';
-        document.getElementById("employeesRequest").style.display = 'none';
+        // document.getElementById("employeesRequest").style.display = 'none';
         document.getElementById("validatedList").style.display = 'none';
         document.getElementById("validateSearch").style.display = 'none';
-        document.getElementById("validatedEmployees").style.display = 'none';
+        // document.getElementById("validatedEmployees").style.display = 'none';
 
         hideLoading();
     }, 800); 

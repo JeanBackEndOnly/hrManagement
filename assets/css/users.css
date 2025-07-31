@@ -47,7 +47,7 @@ a{
 .fadeNav{
     animation: Fadein 1s forwards ease-in-out;
 }
-.hrFields {
+.hrFields, .payrollFields {
     overflow: hidden;
     transition: height 0.4s ease, opacity 0.4s ease;
     height: 0;
@@ -56,7 +56,7 @@ a{
 }
 
 /* Active/open state */
-.hrFields.open {
+.hrFields.open, .payrollFields.open{
     opacity: 1;
     height: auto; /* we'll override this with JS for smoother control */
 }
@@ -115,7 +115,7 @@ a{
 .header i{
     color: var(--backGroundDark)
 }
-.crud-employee button, .buttonUpdate button{
+/* .crud-employee button, .buttonUpdate button{
     width: 22%;
     height: 100%;
     color: var(--backGroundDark);
@@ -123,8 +123,8 @@ a{
     transition: .5s ease-in-out;
     border-style: solid;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
-}
-.usersButton button{
+} */
+/* .usersButton button{
     display: flex;
     flex-direction: row;
 }
@@ -154,7 +154,7 @@ a{
 }
 #requet:active, #reject:active, #add:active, .buttonUpdate button:active{
     opacity: 0.5;
-}
+} */
 .h1{
      font-family: 'Poppins', sans-serif;
 }

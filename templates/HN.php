@@ -17,23 +17,24 @@
     </div>
 </div>
 <script>
-    document.querySelectorAll('.btn-confirm').forEach(btn => {
-        // alert('button clicked');
-        btn.addEventListener('click', function () {
-            const loader = document.getElementById('loaderOverlay');
-            if (loader) {
-                loader.style.display = 'flex';
-            }
-            setTimeout(() => loader.style.display = 'none', 3000);
-        });
+document.querySelectorAll('.btn-confirm').forEach(btn => {
+    // alert('button clicked');
+    btn.addEventListener('click', function() {
+        const loader = document.getElementById('loaderOverlay');
+        if (loader) {
+            loader.style.display = 'flex';
+        }
+        setTimeout(() => loader.style.display = 'none', 3000);
     });
-    function logoutButton() {
-        document.getElementById("logoutDiv").style.display = 'flex';
-    }
+});
 
-    function logoutNo() {
-        document.getElementById("logoutDiv").style.display = 'none';
-    }
+function logoutButton() {
+    document.getElementById("logoutDiv").style.display = 'flex';
+}
+
+function logoutNo() {
+    document.getElementById("logoutDiv").style.display = 'none';
+}
 </script>
 <div class="logout flex-column LogoutAniamtion " id="logoutDiv" class="p-3"
     style="position: fixed; transform: translate(-50%, -50%); top:50%; left:50%; display: none; z-index: 55;">
@@ -55,59 +56,79 @@
 <?php function renderNav() { ?>
 <div class="sideNav px-2 pt-2 BGGradiantNav d-flex flex-column align-items-center h-100 w-auto p-0">
     <div class="navs p-0 m-0 col-md-11 d-flex flex-column align-items-center">
-        <li class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm btn-confirm rounded-1 li-width d-flex align-items-center dashboard">
+        <li
+            class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm btn-confirm rounded-1 li-width d-flex align-items-center dashboard">
             <a class="d-flex m-0 align-items-center" href="dashboard.php">
                 <i class="fa-solid text-black fa-house fs-5 me-2 me-side-text2"></i>
                 <p class="text-start text-black side-text m-0 text-width pdashboard">Dashboard</p>
             </a>
         </li>
 
+        <!-- Manage HR -->
         <li class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center hr">
-            <button class="d-flex m-0 align-items-center bg-transparent border-0 w-100" id="toggleButton">
+            <button class="d-flex m-0 align-items-center bg-transparent border-0 w-100" id="hrToggle">
                 <i class="fa-solid me-2 fa-users text-black hrP me-side-text1"></i>
                 <p class="text-start text-black side-text m-0 text-width-hr hrP me-side-text1">MANAGE HR</p>
                 <i class="fa-solid fa-caret-down ms-auto me-side-text1"></i>
             </button>
         </li>
-
-        <div class="hrFields ps-3" style="height: 0; opacity: 0; overflow: hidden; transition: height 0.4s ease, opacity 0.4s ease;">
+        <div class="hrFields ps-3"
+            style="height: 0; opacity: 0; overflow: hidden; transition: height 0.4s ease, opacity 0.4s ease;">
             <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
                 <a class="d-flex m-0 align-items-center" href="job.php">
-                    <i class="fa-solid text-black me-3 d-flex align-items-center fa-briefcase"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">Job & Salary</p>
+                    <i class="fa-solid text-black me-3 fa-briefcase"></i>
+                    <p class="text-start text-black side-text m-0 text-width">Job & Salary</p>
                 </a>
             </li>
             <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
                 <a class="d-flex m-0 align-items-center" href="department.php">
                     <i class="fa-solid fa-building text-black me-3"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">Departments</p>
+                    <p class="text-start text-black side-text m-0 text-width">Departments</p>
                 </a>
             </li>
             <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
                 <a class="d-flex m-0 align-items-center" href="employee.php">
                     <i class="fa-solid me-2 fa-users text-black"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">Manage Employee</p>
+                    <p class="text-start text-black side-text m-0 text-width">Manage Employee</p>
+                </a>
+            </li>
+            <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
+                <a class="d-flex m-0 align-items-center" href="leave.php">
+                    <i class="fa-solid me-2 fa-users text-black"></i>
+                    <p class="text-start text-black side-text m-0 text-width">LEAVE REQUEST</p>
+                </a>
+            </li>
+            <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
+                <a class="d-flex m-0 align-items-center" href="reports.php">
+                    <i class="fa-solid me-2 fa-users text-black"></i>
+                    <p class="text-start text-black side-text m-0 text-width">REPORTS</p>
                 </a>
             </li>
         </div>
-        <li class="p-2 px-2 m-0 my-2 ms-3 leaveHightLight hoverNavs shadow-sm btn-confirm rounded-1 li-width d-flex align-items-center">
-            <a class="d-flex m-0 align-items-center" href="leave.php">
-                <i class="fa-solid text-black me-1 d-flex align-items-center fa-file-export leaveP"></i>
-                <p class="text-start text-black side-text m-0 text-width leaveP">LEAVE REQUEST</p>
-            </a>
+
+        <!-- Manage Payroll -->
+        <li class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center payroll">
+            <button class="d-flex m-0 align-items-center bg-transparent border-0 w-100" id="payrollToggle">
+                <i class="fa-solid me-2 fa-users text-black"></i>
+                <p class="text-start text-black side-text m-0 text-width-hr">Manage payroll</p>
+                <i class="fa-solid fa-caret-down ms-auto"></i>
+            </button>
         </li>
-        <li class="p-2 px-2 m-0 my-2 ms-3 reportsHightLight hoverNavs shadow-sm btn-confirm rounded-1 li-width d-flex align-items-center">
-            <a class="d-flex m-0 align-items-center" href="reports.php">
-                <i class="fa-solid text-black me-1 fa-flag d-flex align-items-center reportsP"></i>
-                <p class="text-start text-black side-text m-0 text-width reportsP">REPORTS</p>
-            </a>
-        </li>
-        <li class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm btn-confirm rounded-1 w-auto d-flex align-items-center payroll">
-            <a class="d-flex m-0 align-items-center" href="payrollNav.php">
-                <i class="fa-solid me-2 text-black fa-peso-sign payrollP"></i>
-                <p class="text-start text-black side-text m-0 text-width payrollP">MANAGE PAYROLL</p>
-            </a>
-        </li>
+        <div class="payrollFields ps-3"
+            style="height: 0; opacity: 0; overflow: hidden; transition: height 0.4s ease, opacity 0.4s ease;">
+            <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
+                <a class="d-flex m-0 align-items-center" href="../payroll/payroll.php">
+                    <i class="fa-solid text-black me-3 fa-briefcase"></i>
+                    <p class="text-start text-black side-text m-0 text-width">Payroll</p>
+                </a>
+            </li>
+            <li class="d-flex align-items-center hoverNavs p-2 shadow-sm btn-confirm rounded-2 my-2">
+                <a class="d-flex m-0 align-items-center" href="../payroll/Payslip.php">
+                    <i class="fa-solid fa-building text-black me-3"></i>
+                    <p class="text-start text-black side-text m-0 text-width">Payslip</p>
+                </a>
+            </li>
+        </div>
 
         <li class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm btn-confirm rounded-1 li-width d-flex align-items-center">
             <a class="d-flex m-0 align-items-center" href="#">
@@ -116,7 +137,8 @@
             </a>
         </li>
 
-        <li class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm btn-confirm rounded-1 settings d-flex li-width align-items-center">
+        <li
+            class="p-2 px-2 m-0 my-2 ms-3 hoverNavs shadow-sm btn-confirm rounded-1 settings d-flex li-width align-items-center">
             <a class="d-flex m-0 align-items-center" href="settings.php">
                 <i class="fa-solid text-black me-2 fa-gear d-flex align-items-center settings"></i>
                 <p class="text-start text-black side-text m-0 text-width settings">SETTINGS</p>
@@ -126,76 +148,86 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.getElementById("toggleButton");
-        const hrFields = document.querySelector(".hrFields");
+document.addEventListener("DOMContentLoaded", function () {
+    function setupToggle(buttonId, targetClass) {
+        const button = document.getElementById(buttonId);
+        const target = document.querySelector("." + targetClass);
 
         let isOpen = false;
 
-        toggleButton.addEventListener("click", function () {
+        button.addEventListener("click", function () {
             if (!isOpen) {
-                hrFields.style.maxHeight = "500px"; 
-                hrFields.style.opacity = "1";
+                target.style.height = target.scrollHeight + "px";
+                target.style.opacity = "1";
             } else {
-                hrFields.style.maxHeight = "0";
-                hrFields.style.opacity = "0";
+                target.style.height = "0";
+                target.style.opacity = "0";
             }
             isOpen = !isOpen;
         });
-    });
-    </script>
+    }
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.getElementById("toggleButton");
-        const hrFields = document.querySelector(".hrFields");
+    setupToggle("hrToggle", "hrFields");
+    setupToggle("payrollToggle", "payrollFields");
+});
+</script>
 
-        let isOpen = false;
-        let isAnimating = false;
 
-        toggleButton.addEventListener("click", function () {
-            if (isAnimating) return;
-            isAnimating = true;
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const toggleButton = document.getElementById("toggleButton");
+    const hrFields = document.querySelector(".hrFields");
 
-            const targetHeight = hrFields.scrollHeight;
+    let isOpen = false;
+    let isAnimating = false;
 
-            if (!isOpen) {
-                hrFields.style.display = 'block';
-                hrFields.style.height = "150px";
-                hrFields.style.opacity = '0';
+    toggleButton.addEventListener("click", function() {
+        if (isAnimating) return;
+        isAnimating = true;
 
-                requestAnimationFrame(() => {
-                    hrFields.style.transition = "height 0.4s ease, opacity 0.4s ease";
-                    hrFields.style.height = targetHeight + "px";
-                    hrFields.style.opacity = '1';
-                });
+        const targetHeight = hrFields.scrollHeight;
 
-                hrFields.addEventListener("transitionend", function openEnd(e) {
-                    if (e.propertyName === "height") {
-                        hrFields.style.height = 'auto';
-                        isAnimating = false;
-                        isOpen = true;
-                    }
-                }, { once: true });
+        if (!isOpen) {
+            hrFields.style.display = 'block';
+            hrFields.style.height = "150px";
+            hrFields.style.opacity = '0';
 
-            } else {
-                const currentHeight = hrFields.scrollHeight;
-                hrFields.style.height = currentHeight + "px";
-                hrFields.offsetHeight; 
+            requestAnimationFrame(() => {
                 hrFields.style.transition = "height 0.4s ease, opacity 0.4s ease";
-                hrFields.style.height = "150px";
-                hrFields.style.opacity = '0';
+                hrFields.style.height = targetHeight + "px";
+                hrFields.style.opacity = '1';
+            });
 
-                hrFields.addEventListener("transitionend", function closeEnd(e) {
-                    if (e.propertyName === "height") {
-                        hrFields.style.display = 'none';
-                        isAnimating = false;
-                        isOpen = false;
-                    }
-                }, { once: true });
-            }
-        });
+            hrFields.addEventListener("transitionend", function openEnd(e) {
+                if (e.propertyName === "height") {
+                    hrFields.style.height = 'auto';
+                    isAnimating = false;
+                    isOpen = true;
+                }
+            }, {
+                once: true
+            });
+
+        } else {
+            const currentHeight = hrFields.scrollHeight;
+            hrFields.style.height = currentHeight + "px";
+            hrFields.offsetHeight;
+            hrFields.style.transition = "height 0.4s ease, opacity 0.4s ease";
+            hrFields.style.height = "150px";
+            hrFields.style.opacity = '0';
+
+            hrFields.addEventListener("transitionend", function closeEnd(e) {
+                if (e.propertyName === "height") {
+                    hrFields.style.display = 'none';
+                    isAnimating = false;
+                    isOpen = false;
+                }
+            }, {
+                once: true
+            });
+        }
     });
+});
 </script>
 
 <?php } ?>
@@ -213,24 +245,24 @@
                 <p class="text-start text-black side-text m-0 text-width text-start pdashboard m-0">Dashboard</p>
             </a>
         </li>
-            <li  class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
-                <a class="d-flex m-0 align-items-center" href="leave.php">
-                    <i class="fa-solid text-black me-1 d-flex align-items-center fa-file-export"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">Leave Filing</p>
-                </a>
-            </li>
-            <li  class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
-                <a class="d-flex m-0 align-items-center" href="pds.php">
-                    <i class="fa-solid fa-file-word me-2 text-black"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">PDS</p>
-                </a>
-            </li>
-            <li  class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
-                <a class="d-flex m-0 align-items-center" href="reports.php">
-                    <i class="fa-solid text-black me-2 fa-flag"></i>
-                    <p class="text-start text-black side-text m-0 text-width text-start">Reports</p>
-                </a>
-            </li>
+        <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
+            <a class="d-flex m-0 align-items-center" href="leave.php">
+                <i class="fa-solid text-black me-1 d-flex align-items-center fa-file-export"></i>
+                <p class="text-start text-black side-text m-0 text-width text-start">Leave Filing</p>
+            </a>
+        </li>
+        <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
+            <a class="d-flex m-0 align-items-center" href="pds.php">
+                <i class="fa-solid fa-file-word me-2 text-black"></i>
+                <p class="text-start text-black side-text m-0 text-width text-start">PDS</p>
+            </a>
+        </li>
+        <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
+            <a class="d-flex m-0 align-items-center" href="reports.php">
+                <i class="fa-solid text-black me-2 fa-flag"></i>
+                <p class="text-start text-black side-text m-0 text-width text-start">Reports</p>
+            </a>
+        </li>
         <li class="p-0 p-2 px-2 m-0 h-100 my-2 ms-3 hoverNavs shadow-sm rounded-1 li-width d-flex align-items-center">
             <a class="d-flex m-0 align-items-center" href="#">
                 <i class="fa-solid text-black me-2 fa-clock d-flex align-items-center"></i>
@@ -249,7 +281,7 @@
 
 
 <script>
-   document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     const toggleButton = document.getElementById("toggleButton");
     const hrFields = document.querySelector(".employeeHrFields");
 
@@ -261,7 +293,7 @@
     hrFields.style.transition = `height ${duration}ms ease, opacity ${duration}ms ease`;
     hrFields.style.overflow = 'hidden'; // start with hidden overflow
 
-    toggleButton.addEventListener("click", function () {
+    toggleButton.addEventListener("click", function() {
         if (isAnimating) return;
         isAnimating = true;
 
@@ -284,7 +316,7 @@
 
             setTimeout(() => {
                 hrFields.style.height = 'auto'; // reset height for responsive content
-                hrFields.style.overflow = '';   // remove overflow hidden after animation
+                hrFields.style.overflow = ''; // remove overflow hidden after animation
                 isAnimating = false;
                 isOpen = true;
             }, duration);
@@ -311,7 +343,6 @@
         }
     });
 });
-
 </script>
 
 <?php } ?>
@@ -336,7 +367,8 @@
         style="margin-left: .4rem; margin-right: .4rem;">
         <i class="fa-solid me-2 fa-users text-white hrP hrNavI"></i>
     </a>
-    <a href="profile.php" class="profile col-md-2 col-2 p-0 d-flex align-items-center justify-content-center btn-confirm"
+    <a href="profile.php"
+        class="profile col-md-2 col-2 p-0 d-flex align-items-center justify-content-center btn-confirm"
         style="height: 2rem; margin-left: .4rem; margin-right: .4rem;">
         <img src="../../assets/image/upload/<?= htmlspecialchars($EmployeeData["user_profile"]) ?>" alt=""
             style="width: 100px !important; height: 100px !important; border-radius: 50%; position: relative; transform: translate(0, -2rem); background-color: #fff !important; border: solid .5rem #fff;"
